@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/cole-cochran/Project-3/issues"
   },
-  "homepage": "https://github.com/cole-cochran/Project-3#readme"
+  "homepage": "https://github.com/cole-cochran/Project-3#readme",
+  "dependencies": {
+    "sendbird-uikit": "^2.4.3"
+  }
 }
