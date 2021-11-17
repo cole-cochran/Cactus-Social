@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cole-cochran/Project-3#readme",
   "dependencies": {
-    "sendbird-uikit": "^2.4.3"
+    "bcrypt": "^5.0.1",
+    "mongoose": "^6.0.13"
   }
 }
