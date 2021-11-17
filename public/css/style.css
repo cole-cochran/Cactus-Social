@@ -1,0 +1,42 @@
+/*************GLOBAL:STYLES************/
+
+/* importing default font */
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+* {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/*************GLOBAL:STYLES************/
+/*************LOGIN.HTML:STYLES************/
+
+.login-banner-mobile {
+    height: 4rem;
+    background-color: blue;
+}
+
+.login-form label {
+    font-size: .75rem;
+    display: block;
+}
+
+.login-form input {
+    display: block;
+}
+
+.login-form a {
+    display: inline;
+}
+
+
+
+/*************LOGIN.HTML:STYLES************/
+/*************LOGIN.HTML:MEDIA-QUERIES************/
+
+@media only screen and (max-width: 776px) {
+
+    .login-banner {
+        display: none;
+    }
+}
+/*************LOGIN.HTML:MEDIA-QUERIES************/
