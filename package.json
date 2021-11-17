@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/cole-cochran/Project-3/issues"
   },
-  "homepage": "https://github.com/cole-cochran/Project-3#readme"
+  "homepage": "https://github.com/cole-cochran/Project-3#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "mongoose": "^6.0.13"
+  }
 }
