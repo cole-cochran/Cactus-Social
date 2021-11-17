@@ -19,6 +19,7 @@
   "homepage": "https://github.com/cole-cochran/Project-3#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "google-auth-library": "^7.10.2",
     "mongoose": "^6.0.13"
   }
 }
