@@ -25,6 +25,7 @@
     "dialogflow": "^1.2.0",
     "dotenv": "^10.0.0",
     "express": "4.17.0",
+    "google-auth-library": "^7.10.2",
     "mongoose": "^6.0.13",
     "sendbird": "^3.0.137"
   }
