@@ -92,6 +92,81 @@
 
 
 /*************LOGIN.HTML:STYLES************/
+
+/*************SIGNUP.HTML:STYLES************/
+.signup-form-section {
+    padding-top: 3rem;
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-form-section h3 {
+    font-size: 1.5rem;
+}
+.signup-banner-mobile {
+    height: 4rem;
+    background-color: blue;
+}
+
+.signup-form {
+    max-width: 30rem;
+}
+.signup-form label {
+    margin-left: 0;
+    font-size: .75rem;
+    display: block;
+}
+
+.signup-form input {
+    display: block;
+    width: calc(100% - 1rem);
+    height: 2rem;
+}
+
+.signup-form a {
+    display: inline;
+}
+
+.signup-form button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: blue;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.signup-form p {
+    margin-top: 1rem;
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.signup-form a {
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.signup-banner {
+    background-color: blueviolet;
+    color: white;
+    height: 100vh;
+    padding: 3rem;
+}
+.signup-banner h1 {
+    font-size: 2rem;
+}
+.signup-banner p {
+    font-size: 1rem;
+}
+/*************SIGNUP.HTML:STYLES************/
 /*************LOGIN.HTML:MEDIA-QUERIES************/
 
 @media only screen and (max-width: 776px) {
