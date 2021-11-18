@@ -2,10 +2,15 @@
 /**
  * Enter your Sendbird information
  */
- var APP_ID = '';
- var USER_ID = 'test1';
- var TOKEN = '';
- var ENTRYPOINT = '';
+// require('dotenv').config()
+// const dialogflow = require('@google-cloud/dialogflow').v2beta1;
+
+ var APP_ID = '2A488EFC-38F6-4F1A-884D-7870EA5A647A';
+
+ var USER_ID = 'Cactus Social';
+
+ var TOKEN = 'db7de0a50c69963b1b1dd2b60f4ac323b1029e5b';
+ var ENTRYPOINT = 'https://api-2A488EFC-38F6-4F1A-884D-7870EA5A647A.sendbird.com';
  
  
  /**
@@ -17,12 +22,13 @@
   * INSTALL gcloud FROM HERE:
   * https://cloud.google.com/sdk/docs/install
  */
- var DIALOGFLOW_PROJECT_ID = '';
- var GOOGLE_SESSION_ID = '';
+ var DIALOGFLOW_PROJECT_ID = 'newagent-sqel';
+ var GOOGLE_SESSION_ID = '108247526070210001139';
  var DIALOGFLOW_LANG = 'en-US';
  
  /**
   * Sendbird global object
+  * 
   */
  var sb;
  
