@@ -15,7 +15,7 @@ const threadSchema = new Schema({
         {
             type: String,
             required: true,
-            default: "A New Thread Has Been Created!",
+            default: "Your Thread Has Been Created!",
             minLength: [2, "Your post should be longer than that!"],
             maxLength: [5000, "Your post is too long!"],
             dateCreated: {
