@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
 
 //* Set up validation for schema
 
@@ -48,14 +49,29 @@ const userSchema = new Schema({
 		trim: true
 		// validate: {...}
 	},
-	profile_picture: {
+	picture: {
 		type: String
 		// default: "empty profile template"
 	},
 	bio: {
 		type: String,
 		maxLength: [ 500, 'Your bio can only be 500 characters long' ]
-	}
+	},
+	threads: [
+		{
+			type: ObjectId
+		}
+	],
+	tech_stack: [
+		{
+			type: String,
+			max: 50
+		}
+	],
+	date_joined: {
+        type: Date,
+        default: Date.now
+    }
 });
 
 userSchema.pre('save', function(next) {
