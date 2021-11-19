@@ -93,6 +93,37 @@
 
 /*************LOGIN.HTML:STYLES************/
 
+
+@media only screen and (max-width: 776px) {
+
+    .login-banner {
+        display: none;
+    }
+}
+
+
+@media only screen and (min-width: 776px) {
+
+    .login-banner-mobile {
+        display: none;
+    }
+
+    .login-page-body {
+        display:flex;
+    }
+
+    .login-form-section {
+        padding-top: 6rem;
+        width: 45%;
+        max-width: 22rem;
+    }
+    .login-banner {
+        width: 100%;
+    }
+}
+
+/*************LOGIN.HTML:MEDIA-QUERIES************/
+
 /*************SIGNUP.HTML:STYLES************/
 .signup-form-section {
     padding-top: 3rem;
@@ -155,7 +186,7 @@
 }
 
 .signup-banner {
-    background-color: blueviolet;
+    background-color: #964E77;
     color: white;
     height: 100vh;
     padding: 3rem;
@@ -167,34 +198,4 @@
     font-size: 1rem;
 }
 /*************SIGNUP.HTML:STYLES************/
-/*************LOGIN.HTML:MEDIA-QUERIES************/
 
-@media only screen and (max-width: 776px) {
-
-    .login-banner {
-        display: none;
-    }
-}
-
-
-@media only screen and (min-width: 776px) {
-
-    .login-banner-mobile {
-        display: none;
-    }
-
-    .login-page-body {
-        display:flex;
-    }
-
-    .login-form-section {
-        padding-top: 6rem;
-        width: 45%;
-        max-width: 22rem;
-    }
-    .login-banner {
-        width: 100%;
-    }
-}
-
-/*************LOGIN.HTML:MEDIA-QUERIES************/
