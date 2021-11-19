@@ -12,8 +12,17 @@
 /*************GLOBAL:STYLES************/
 /*************LOGIN.HTML:STYLES************/
 
+.logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.logo {
+    margin-top: 1rem;
+    width: 7rem;
+}
 .login-form-section {
-    padding-top: 3rem;
     width: calc(100% - 1rem);
     margin-left: 1rem;
     display: flex;
@@ -22,11 +31,12 @@
 }
 
 .login-form-section h3 {
+    padding-top: 3rem;
     font-size: 1.5rem;
 }
 .login-banner-mobile {
     height: 4rem;
-    background-color: blue;
+    background-color: #B945FF;
 }
 
 .login-form {
@@ -51,7 +61,7 @@
 .login-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: blue;
+    background-color: #56B524;
     color: white;
     border: none;
     font-size: .875rem;
@@ -73,7 +83,7 @@
 }
 
 .login-banner {
-    background-color: blueviolet;
+    background-color: #501069;
     color: white;
     height: 100vh;
     padding: 3rem;
@@ -113,13 +123,14 @@
     }
 
     .login-form-section {
-        padding-top: 6rem;
-        width: 45%;
+        /* padding-top: 2rem; */
+        width: 50%;
         max-width: 22rem;
     }
     .login-banner {
         width: 100%;
     }
+    
 }
 
 /*************LOGIN.HTML:MEDIA-QUERIES************/
@@ -139,7 +150,7 @@
 }
 .signup-banner-mobile {
     height: 4rem;
-    background-color: blue;
+    background-color: #B945FF;
 }
 
 .signup-form {
@@ -164,7 +175,7 @@
 .signup-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: blue;
+    background-color: #56B524;;
     color: white;
     border: none;
     font-size: .875rem;
@@ -186,7 +197,7 @@
 }
 
 .signup-banner {
-    background-color: #964E77;
+   background-color: #501069;
     color: white;
     height: 100vh;
     padding: 3rem;
