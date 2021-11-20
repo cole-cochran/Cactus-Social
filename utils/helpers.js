@@ -3,10 +3,13 @@ export function validateEmail(email) {
     return re.test(String(email).toLowerCase());
   }
   
-  export function checkPassword(input) {
-    const passw = /^[A-Za-z]\w{7,14}$/;
-    if (input.match(passw)) {
-      return true;
-    }
-    return false;
+export function checkPassword(input) {
+  const passw = /^[A-Za-z]\w{7,14}$/;
+  if (input.match(passw)) {
+    return true;
   }
+  return false;
+}
+
+//* Depending how MONGO DB handles the formatting of our dates and times, we should add some helper functions to render the exact format we want to display the date and time to our users
+
