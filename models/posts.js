@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-let ObjectId = Schema.ObjectId;
+let ObjectId = Schema.Types.ObjectId;
 
 const postSchema = new Schema({
     post_text: {
@@ -16,7 +16,8 @@ const postSchema = new Schema({
         default: Date.now
     },
     author: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'User'
     },
     reactions: [
         {
@@ -28,7 +29,8 @@ const postSchema = new Schema({
         default: false
     },
     thread: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'Thread'
     }
 });
 

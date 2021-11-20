@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.Types.ObjectId;
 
 //* Set up validation for schema
 
@@ -59,7 +59,8 @@ const userSchema = new Schema({
 	},
 	threads: [
 		{
-			type: ObjectId
+			type: ObjectId,
+			ref:'Thread'
 		}
 	],
 	tech_stack: [

@@ -1,51 +1,27 @@
-
 const loginFormHandler = async (event) => {
-    event.preventDefault();
-  
-  const email=$('#email-login').val().trim();
-  const password=$('#password-login').val().trim();
-    
-    if (email && password) {
-     
-      const response = await fetch('/api/users/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
-      if (response.ok) {
-        document.location.replace('/recipe');
-      } else {
-        alert(response.statusText);
-      }
+  // Stop the browser from submitting the form so we can do so with JavaScript
+  event.preventDefault();
+
+  // Gather the data from the form elements on the page
+  const email = document.querySelector('#email-login').value.trim();
+  const password = document.querySelector('#password-login').value.trim();
+
+  if (email && password) {
+    // Send the e-mail and password to the server
+    const response = await fetch('/api/users/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    if (response.ok) {
+      document.location.replace('/');
+    } else {
+      alert('Failed to log in');
     }
-  };
-  
-  const signupFormHandler = async (event) => {
-    event.preventDefault();
-  
-    const name=$('#username-signup').val().trim();
-    const email=$('#email-signup').val().trim();
-    const password=$('#password-signup').val().trim();
-  
-    if (name && email && password) {
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        body: JSON.stringify({ name, email, password }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-  
-      if (response.ok) {
-       document.location.replace('/recipe');
-      } else {
-        alert(response.statusText);
-      }
-    }
-  };
-  
-  
-    $('.login-form').on('submit', loginFormHandler);
-  
-  
-    $('.signup-form').on('submit', signupFormHandler);
-  
+  }
+};
+
+document
+  .querySelector('.login-form')
+  .addEventListener('submit', loginFormHandler);
