@@ -55,7 +55,7 @@ const userSeeds = [
 		email: "jackmanzer88@gmail.com",
 		password: "830bedtime",
 		picture: "",
-		bio: "I code in my sleep, and I sleep in my code",
+		bio: "I code in my sleep, and I sleep in my code. Jesus is dope.",
 		threads: [101,202],
 		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/15/2021
