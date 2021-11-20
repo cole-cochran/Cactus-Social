@@ -59,7 +59,8 @@ const userSchema = new Schema({
 	},
 	threads: [
 		{
-			type: ObjectId
+			type: ObjectId,
+			ref:'Thread'
 		}
 	],
 	tech_stack: [

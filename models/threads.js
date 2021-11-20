@@ -15,26 +15,32 @@ const threadSchema = new Schema({
 	},
 	posts: [
         {
-            type: ObjectId
+            type: ObjectId,
+			ref:'Post'
+
         }
     ],
 	pins: [
 		{
-			type: ObjectId
+			type: ObjectId,
+			ref:'Pin'
 		}
 	],
     events: [
         {
-            type: ObjectId
+            type: ObjectId,
+			ref:'Event'
         }
     ],
 	moderator: {
-		type: ObjectId
+		type: ObjectId,
+		ref:'User'
 	},
 	members: [
 		{
 			type: ObjectId,
-            max: 50
+            max: 50,
+			ref:'User'
 		}
 	],
 	date_created: {

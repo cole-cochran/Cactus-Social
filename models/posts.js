@@ -16,7 +16,8 @@ const postSchema = new Schema({
         default: Date.now
     },
     author: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'User'
     },
     reactions: [
         {
@@ -28,7 +29,8 @@ const postSchema = new Schema({
         default: false
     },
     thread: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'Thread'
     }
 });
 

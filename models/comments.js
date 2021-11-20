@@ -16,7 +16,8 @@ const commentSchema = new Schema({
         default: Date.now
     },
     author: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'User'
     },
     reactions: [
         {
@@ -28,7 +29,8 @@ const commentSchema = new Schema({
         default: false
     },
     post: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'Post'
     }
 });
 
