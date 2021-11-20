@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.Types.ObjectId;
 
 const threadSchema = new Schema({
 	title: {
@@ -15,26 +15,32 @@ const threadSchema = new Schema({
 	},
 	posts: [
         {
-            type: ObjectId
+            type: ObjectId,
+			ref:'Post'
+
         }
     ],
 	pins: [
 		{
-			type: ObjectId
+			type: ObjectId,
+			ref:'Pin'
 		}
 	],
     events: [
         {
-            type: ObjectId
+            type: ObjectId,
+			ref:'Event'
         }
     ],
 	moderator: {
-		type: ObjectId
+		type: ObjectId,
+		ref:'User'
 	},
 	members: [
 		{
 			type: ObjectId,
-            max: 50
+            max: 50,
+			ref:'User'
 		}
 	],
 	date_created: {
