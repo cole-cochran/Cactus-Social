@@ -1,9 +1,16 @@
 const router = require("express").Router();
 const db = require('../../models')
 
+
+
 router.get('/', async (req,res)=>{
     try{
-        const resData=await db.Thread.find({}).populate()
+        const resData=await db.Thread.find({})
+        .populate("posts")
+        .populate("pins")
+        .populate("events")
+        .populate("moderator")
+        .populate("members")
 
         if(resData.length){
             console.log('fuckupsgonnafuckup');
@@ -27,5 +34,8 @@ res.status(400).json(err)
 }
 });
 
+router.put('/addUser',async(req,res)=>{
+const resData=await db.Thread.Up
+});
 
 module.exports=router
