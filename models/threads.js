@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema;
 
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.Types.ObjectId;
 
 const threadSchema = new Schema({
 	title: {

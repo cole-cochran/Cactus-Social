@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.types.ObjectId;
 
 const eventSchema = new Schema({
     title: {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-let ObjectId = Schema.ObjectId;
+let ObjectId = Schema.Types.ObjectId;
 
 const postSchema = new Schema({
     post_text: {
