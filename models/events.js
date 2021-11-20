@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.Types.ObjectId;
 
 const eventSchema = new Schema({
     title: {
@@ -36,12 +36,14 @@ const eventSchema = new Schema({
         required: true
     },
     owner: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'User'
     },
     attendees: [
         {
             type: ObjectId,
-            max: 50
+            max: 50,
+            ref:'User'
         }
     ],
     category: {
@@ -61,11 +63,13 @@ const eventSchema = new Schema({
         default: ""
     },
     thread: {
-        type: ObjectId
+        type: ObjectId,
+        ref:'Thread'
     },
     comments: [
         {
-            type: ObjectId
+            type: ObjectId,
+            ref:'Comment'
         }
     ],
     date_created: {
