@@ -264,14 +264,19 @@ textarea {
 }
 button {
     display: block;
-    margin: 10px 0;
+    margin-top: 1.5rem;
+    background-color: #56B524;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
 }
-.top-bar {
-    background-color: skyblue;
-    padding: 0 40px;
-}
+
 .main {
-    background-color: #F6F6EF;
+    background-color: #DAF5CB;
     padding: 10px 40px;
 }
 .comments {
@@ -293,6 +298,16 @@ button {
 }
 .comment-ts {
     padding-left: 10px;
+}
+
+signup-form-section {
+    padding-top: 3rem;
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .dashboard-form-section h3 {
     font-size: 1.5rem;
@@ -300,25 +315,6 @@ button {
 .dashboard-banner-mobile {
     height: 4rem;
     background-color: #B945FF;
-}
-
-.dashboard-form {
-    max-width: 30rem;
-}
-.dashboard-form label {
-    margin-left: 0;
-    font-size: .75rem;
-    display: block;
-}
-
-.dashboard-form input {
-    display: block;
-    width: calc(100% - 1rem);
-    height: 2rem;
-}
-
-.dashboard-form a {
-    display: inline;
 }
 
 .dashboard-form button {
@@ -346,7 +342,7 @@ button {
 }
 
 .dashboard-banner {
-   background-color: #501069;
+   background-color: #56B524;;
     color: white;
     height: 100vh;
     padding: 3rem;
