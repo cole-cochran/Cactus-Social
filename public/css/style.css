@@ -210,3 +210,114 @@
 }
 /*************SIGNUP.HTML:STYLES************/
 
+/*************LOGIN.HTML:STYLES************/
+
+
+@media only screen and (max-width: 776px) {
+
+    .login-banner {
+        display: none;
+    }
+}
+
+
+@media only screen and (min-width: 776px) {
+
+    .login-banner-mobile {
+        display: none;
+    }
+
+    .login-page-body {
+        display:flex;
+    }
+
+    .login-form-section {
+        /* padding-top: 2rem; */
+        width: 50%;
+        max-width: 22rem;
+    }
+    .login-banner {
+        width: 100%;
+    }
+    
+}
+
+/*************LOGIN.HTML:MEDIA-QUERIES************/
+
+/*************DASHBOARD.HTML:STYLING************/
+body {
+    margin: 10px 60px;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+h1, h4, ol {
+    margin: 0;
+}
+p {
+    margin: 5px 0;
+}
+textarea {
+    width: 80%;
+    height: 80px;
+}
+button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.main {
+    background-color: #DAF5CB;
+    padding: 10px 40px;
+}
+.comments {
+    margin: 40px 0;
+}
+.row {
+    padding: 5px 0;
+}
+.comment-ts {
+    padding-left: 10px;
+}
+
+.dashboard-banner-mobile {
+    height: 4rem;
+    background-color: #B945FF;
+}
+
+.dashboard-form button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.dashboard-banner {
+   background-color: #56B524;
+    color: white;
+    height: 100vh;
+    padding: 3rem;
+}
+.dashboard-banner h1 {
+    font-size: 2rem;
+}
+.dashboard-banner p {
+    font-size: 1rem;
+}
+
+/*************DASHBOARD.HTML:STYLING************/
