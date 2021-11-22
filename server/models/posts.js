@@ -31,7 +31,12 @@ const postSchema = new Schema({
     thread: {
         type: ObjectId,
         ref:'Thread'
-    }
+    },
+    comments: [
+        {
+            type: ObjectId
+        }
+    ]
 });
 
 const Post = mongoose.model('Post', postSchema);

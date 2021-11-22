@@ -55,7 +55,7 @@ const userSeeds = [
 		email: "jackmanzer88@gmail.com",
 		password: "830bedtime",
 		picture: "",
-		bio: "I code in my sleep, and I sleep in my code",
+		bio: "I code in my sleep, and I sleep in my code. Jesus is dope.",
 		threads: [101,202],
 		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/15/2021
@@ -86,7 +86,7 @@ const threadSeeds = [
 			1,2
 		],
 		events: [
-			2
+			
 		],
 		moderator: 33,
 		members: [
@@ -114,8 +114,8 @@ const threadSeeds = [
 const postSeeds = [
 	{
 		_id: 1,
-		post_text: "",
-		date_created: "",
+		post_text: "Hey team! In this thread, let's toss around some ideas for project 3. I definitely want to do a social media app. Maybe we can start by making it a social media for developers. Thoughts?",
+		date_created: 11/17/2021,
 		author: 33,
 		reactions: [],
 		edited: false,
@@ -123,8 +123,8 @@ const postSeeds = [
 	},
 	{
 		_id: 2,
-		post_text: "",
-		date_created: "",
+		post_text: "Bet. I'm gonna start making the video and designing some sick backgrounds.",
+		date_created: 11/17/2021,
 		author: 55,
 		reactions: [],
 		edited: false,
@@ -132,8 +132,8 @@ const postSeeds = [
 	},
 	{
 		_id: 3,
-		post_text: "",
-		date_created: "",
+		post_text: "Sounds good! Let's start making this thing! I want to work on the frontend.",
+		date_created: 11/18/2021,
 		author: 44,
 		reactions: [],
 		edited: false,
@@ -141,8 +141,8 @@ const postSeeds = [
 	},
 	{
 		_id: 4,
-		post_text: "",
-		date_created: "",
+		post_text: "I was thinking we could plan a camping trip for after the bootcamp. How does that sound to everyone?",
+		date_created: 11/19/2021,
 		author: 22,
 		reactions: [],
 		edited: false,
@@ -150,8 +150,8 @@ const postSeeds = [
 	},
 	{
 		_id: 5,
-		post_text: "",
-		date_created: "",
+		post_text: "Hell yes. We should definitely do something like that.",
+		date_created: 11/19/2021,
 		author: 11,
 		reactions: [],
 		edited: false,
@@ -159,8 +159,8 @@ const postSeeds = [
 	},
 	{
 		_id: 6,
-		post_text: "",
-		date_created: "",
+		post_text: "That would be dope. I'll bring marshmallows!",
+		date_created: 11/20/2021,
 		author: 55,
 		reactions: [],
 		edited: false,
@@ -171,8 +171,8 @@ const postSeeds = [
 const commentSeeds = [
 	{
 		_id: 1,
-		comment_text: "",
-		date_created: "",
+		comment_text: "We should do a Star Wars theme.",
+		date_created: 11/18/2021,
 		author: 11,
 		reactions: [],
 		edited: false,
@@ -180,8 +180,8 @@ const commentSeeds = [
 	},
 	{
 		_id: 2,
-		comment_text: "",
-		date_created: "",
+		comment_text: "How neat is that?",
+		date_created: 11/18/2021,
 		author: 22,
 		reactions: [],
 		edited: false,
@@ -189,8 +189,8 @@ const commentSeeds = [
 	},
 	{
 		_id: 3,
-		comment_text: "",
-		date_created: "",
+		comment_text: "I'd love to join in on some of the frontend stuff if that's cool.",
+		date_created: 11/19/2021,
 		author: 22,
 		reactions: [],
 		edited: false,
@@ -198,17 +198,17 @@ const commentSeeds = [
 	},
 	{
 		_id: 4,
-		comment_text: "",
-		date_created: "",
-		author: 44,
+		comment_text: "I'm in! 100%",
+		date_created: 11/19/2021,
+		author: 33,
 		reactions: [],
 		edited: false,
 		post: 4
 	},
 	{
 		_id: 5,
-		comment_text: "",
-		date_created: "",
+		comment_text: "You should def visit Austin for that.",
+		date_created: 11/20/2021,
 		author: 55,
 		reactions: [],
 		edited: false,
@@ -216,19 +216,39 @@ const commentSeeds = [
 	},
 	{
 		_id: 6,
-		comment_text: "",
-		date_created: "",
+		comment_text: "I will bring chocolate.",
+		date_created: 11/20/2021,
 		author: 33,
 		reactions: [],
 		edited: false,
-		post: 5
+		post: 6
 	}
 ]
 
-const eventSeeds = [{}]
+const eventSeeds = [
+	{
+		_id: 1001,
+		title: "Camping Trip",
+		description: "Let's go camping in February! Let's plan for a two night trip out in nature. Bring a sleeping bag, backpack, and everything you need to spend a few days off the grid.",
+		start_date: 1/15/2022,
+		end_date: 1/17/2022,
+		start_time: 10,
+		end_time: 10,
+		owner: 22,
+		attendees: [22,11,33,55],
+		category: "trip",
+		in_person: true,
+		location: "TBD",
+		// images: ,
+		thread: 202,
+		// comments: ,
+		date_created: 11/20/2022
+	}
+]
 
 
-db.User.deleteMany({})
+db.User
+	.deleteMany({})
 	.then(() => db.User.collection.insertMany(userSeeds))
 	.then((data) => {
 		console.log(data.result.n + ' records inserted!');
