@@ -104,7 +104,7 @@ type User {
   }
   type Mutation {
       addUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!, picture: String, bio: String, tech_stack: [String], date_joined: dateScalar!):User
-
+      
 
     
   }
