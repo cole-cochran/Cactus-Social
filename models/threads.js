@@ -17,7 +17,6 @@ const threadSchema = new Schema({
         {
             type: ObjectId,
 			ref:'Post'
-
         }
     ],
 	pins: [
