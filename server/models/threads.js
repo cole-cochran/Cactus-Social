@@ -19,12 +19,12 @@ const threadSchema = new Schema({
 			ref:'Post'
         }
     ],
-	pins: [
-		{
-			type: ObjectId,
-			ref:'Pin'
-		}
-	],
+	// pins: [
+	// 	{
+	// 		type: ObjectId,
+	// 		ref:'Pin'
+	// 	}
+	// ],
     events: [
         {
             type: ObjectId,
@@ -33,7 +33,8 @@ const threadSchema = new Schema({
     ],
 	moderator: {
 		type: ObjectId,
-		ref:'User'
+		ref:'User',
+		maxlength:[2]
 	},
 	members: [
 		{

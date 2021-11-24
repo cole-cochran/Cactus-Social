@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server-express');
-const JSON = require('graphql-type-json');
+//const JSON = require('graphql-type-json');
 const { GraphQLScalarType, Kind } = require('graphql');
 // $ npm install graphql-type-json
 
@@ -24,7 +24,6 @@ const dateScalar = new GraphQLScalarType({
 const typeDefs=gql`
 scalar JSON
 scalar dateScalar
-
 type User {
     _id: ID
     first_name: String!
@@ -36,36 +35,35 @@ type User {
     bio:String
     threads:[Thread]
     tech_stack:[String]
-    date_joined:dateScalar!
+    date_joined:dateScalar
   }
-
   type Thread {
       _id:ID
       title:String!
       posts:[Post]
-      pins:[Pin]//////////////////////////
       events:[Event]
       moderator:User
-      members[User]
-      date_created:dateScalar!
+      members:[User]
+      date_created:dateScalar
   }
-
   type Post{
+      _id:ID
       post_text:String!
-      date_created:dateScalar!
+      date_created:dateScalar
       author:User
       reactions:[JSON]
       edited:Boolean
       thread:Thread
+      comments:[Comment]
   }
-
   type Event{
+      _id:ID
       title:String!
       description:String!
-      start_date:??????
-      end_date:///////
-      start_time:??????
-      end_time:?????
+      start_date:dateScalar
+      end_date:dateScalar
+      start_time:dateScalar
+      end_time:dateScalar
       owner:User
       attendees:[User]
       category:String
@@ -74,36 +72,29 @@ type User {
       image:String
       thread:Thread
       comments:[Comment]
-      date_created:dateScalar!
+      date_created:dateScalar
   }
   type Comment {
+      _id:ID
       comment_text:String!
-      date_created:dateScalar!
+      date_created:dateScalar
       author:User
       reactions:[JSON]
       edited:Boolean
       post:Post
-
   }
-
-  type Auth {
-    token: ID!
-    user: User
-  }
-
   type Query{
     users: [User]
     threads: [Thread]
     posts: [Post]
     comments: [Comment]
     events: [Event]
-    pin //??
-    user(id: ID!): User
-    thread(id: ID!): Thread
+    user(id:ID!): User
+    thread(id:ID!): Thread
     post(id:ID!):Post   
   }
   type Mutation {
-      addUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!, picture: String, bio: String, tech_stack: [String], date_joined: dateScalar!):User
+      addUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!, picture: String, bio: String, tech_stack: [String], date_joined: dateScalar):User
       
 
     

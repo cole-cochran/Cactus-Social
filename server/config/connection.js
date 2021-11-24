@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cactus_social', {
 	useNewUrlParser: true,
-	useFindAndModify: false,
+	// useFindAndModify: false,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    // useCreateIndex: true
 });
 
 
