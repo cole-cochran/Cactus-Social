@@ -21,10 +21,14 @@ const postSchema = new Schema({
     },
     reactions: [
         {
-            type: Object
+            type: String
         }
     ],
     edited: {
+        type: Boolean,
+        default: false
+    },
+    pinned: {
         type: Boolean,
         default: false
     },
@@ -34,7 +38,8 @@ const postSchema = new Schema({
     },
     comments: [
         {
-            type: ObjectId
+            type: ObjectId,
+            ref: "Comment"
         }
     ]
 });

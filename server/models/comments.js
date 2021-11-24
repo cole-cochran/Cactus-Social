@@ -21,7 +21,7 @@ const commentSchema = new Schema({
     },
     reactions: [
         {
-            type: Object
+            type: String
         }
     ],
     edited: {
