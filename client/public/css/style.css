@@ -1,12 +1,24 @@
 /*************GLOBAL:STYLES************/
 
 /* importing default font */
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --primary-green: #7ADA46;
+    --grey1: #F8F9FC;
+    --grey2: #E6E7EA;
+    --secondary-purple: #9200BB;
+}
 
 * {
     font-family: 'Montserrat', sans-serif;
     font-size: 1rem;
     box-sizing: border-box;
+
+}
+
+.app-container {
+    display: flex;
 }
 
 /*************GLOBAL:STYLES************/
@@ -245,7 +257,7 @@
 /*************LOGIN.HTML:MEDIA-QUERIES************/
 
 /*************DASHBOARD.HTML:STYLING************/
-body {
+/* body {
     margin: 10px 60px;
 }
 a {
@@ -289,11 +301,6 @@ button {
     padding-left: 10px;
 }
 
-.dashboard-banner-mobile {
-    height: 4rem;
-    background-color: #B945FF;
-}
-
 .dashboard-form button {
     display: block;
     margin-top: 1.5rem;
@@ -318,6 +325,194 @@ button {
 }
 .dashboard-banner p {
     font-size: 1rem;
+} */
+
+/********Mobile************/
+.header {
+    height: 2.25rem;
+    background-color: var(--primary-green);
 }
 
+.sticky-dash {
+    height: calc(100vh - 4rem);
+    background-color: var(--grey2);
+    width: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    min-width: 2.5rem;
+}
+
+.sticky-dash ul {
+    margin-top: .5rem;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.mobile-nav img {
+    width: 2rem;
+    margin-right: .25rem;
+}
+
+.sidebar {
+    height: 2rem;
+    background-color: var(--primary-green);
+    z-index: 2;
+}
+
+#sidebar {
+    background-color: var(--grey1);
+    transition: .5s;
+    padding-top: 2rem;
+    height: calc(100vh - 4rem);
+    /* background-color: var(--grey1); */
+    width: calc( 100% - 2.5rem);
+    max-width: 20rem;
+    z-index: 2;
+}
+
+.sidebar h3 {
+    font-size: .875rem;
+    font-weight: 600;
+    margin-left: .5rem;
+}
+
+.mobile-dashboard-section-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-add-icon {
+    width: 1rem;
+    margin-right: .1rem;
+}
+
+.add-thread-row {
+    display: flex;
+    align-items: center;
+}
+.add-thread-row span {
+    font-size: .875rem;
+}
+
+.add-dm-row {
+    display: flex;
+    align-items: center;
+}
+.add-dm-row span {
+    font-size: .875rem;
+}
+
+.sidebar ul {
+    border-top: 1px solid var(--grey2);
+    list-style: none;
+    padding-left: 0;
+    background-color: var(--grey1);
+}
+
+.sidebar li a {
+    font-size: .875rem;
+    color: black;
+    text-decoration: none;
+}
+
+.sidebar li {
+    font-size: .875rem;
+    padding-left: .5rem;
+    padding-top: .65rem;
+    padding-bottom: .65rem;
+    border-bottom: 1px solid var(--grey2);
+    color: black;
+    text-decoration: none;
+}
+
+.mobile-dashboard-footer {
+    height: 2rem;
+    background-color: var(--secondary-purple);
+}
+
+
+/********Mobile************/
 /*************DASHBOARD.HTML:STYLING************/
+/*************DASHBOARD.HTML:MEDIA-QUERIES************/
+
+/* @media only screen and (min-width: 500px) {
+
+    .mobile-nav img {
+        display: none;
+    }
+    
+} */
+
+/*************DASHBOARD.HTML:MEDIA-QUERIES************/
+/* ***********THREAD-Content-Container*************/
+
+.thread-content-container {
+    z-index: 1;
+    /* position: absolute; */
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.thread-content-container h3 {
+    font-size: 1rem;
+    margin-top: 2rem;
+}
+
+.thread-content-container p {
+    font-size: .875rem;
+}
+.center-thread {
+    width: 100%;
+    max-width: 30rem;
+}
+.chat {
+    line-height: 1.1rem;
+    font-size: .75rem;
+    background-color: #FFB240;
+    color: white;
+    padding: .5rem;
+    border-radius: .25rem;
+    margin-top: .5rem;
+    margin-left: .875rem;
+}
+.chat p {
+    font-size: .75rem;
+    margin-bottom: 0;
+}
+
+.chat-container {
+    display: flex;
+    margin-left: -2.75rem;
+}
+
+/* .chat-container span {
+    font-size: .75rem;
+    font-weight: 500;
+} */
+.chat-name {
+    font-size: .75rem;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+.chat-date {
+    font-size: .5rem;
+}
+.chat-date-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat span {
+    font-size: .5rem;
+    width: 100%;
+    display: block;
+    text-align: end;
+    margin-right: 1.25rem;
+}
+
+/************THREAD-Content-Container*************/
