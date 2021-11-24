@@ -328,11 +328,8 @@ button {
 } */
 
 /********Mobile************/
-.mobile-nav {
+.header {
     height: 2.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: end;
     background-color: var(--primary-green);
 }
 
@@ -358,7 +355,7 @@ button {
     margin-right: .25rem;
 }
 
-.dashboard-banner-mobile {
+.sidebar {
     height: 2rem;
     background-color: var(--primary-green);
     z-index: 2;
@@ -375,7 +372,7 @@ button {
     z-index: 2;
 }
 
-.mobile-dashboard-container h3 {
+.sidebar h3 {
     font-size: .875rem;
     font-weight: 600;
     margin-left: .5rem;
@@ -387,7 +384,7 @@ button {
     justify-content: space-between;
 }
 
-.mobile-dashboard-add-icon {
+.sidebar-add-icon {
     width: 1rem;
     margin-right: .1rem;
 }
@@ -408,20 +405,20 @@ button {
     font-size: .875rem;
 }
 
-.mobile-dashboard-container ul {
+.sidebar ul {
     border-top: 1px solid var(--grey2);
     list-style: none;
     padding-left: 0;
     background-color: var(--grey1);
 }
 
-.mobile-dashboard-container li a {
+.sidebar li a {
     font-size: .875rem;
     color: black;
     text-decoration: none;
 }
 
-.mobile-dashboard-container li {
+.sidebar li {
     font-size: .875rem;
     padding-left: .5rem;
     padding-top: .65rem;
