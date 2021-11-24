@@ -18,7 +18,7 @@ const userSeeds = [
 		picture: "",
 		bio: "I love coding and working out!",
 		threads: [101,202],
-		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
+		tech_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/15/2021
 	},
 	{
@@ -31,7 +31,7 @@ const userSeeds = [
 		picture: "",
 		bio: "I like to bike. How neat is that?",
 		threads: [101,202],
-		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
+		tech_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/16/2021
 	},
 	{
@@ -44,7 +44,7 @@ const userSeeds = [
 		picture: "",
 		bio: "I have a weird thing with ducks",
 		threads: [101,202],
-		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
+		tech_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/17/2021
 	},
 	{
@@ -57,7 +57,7 @@ const userSeeds = [
 		picture: "",
 		bio: "I code in my sleep, and I sleep in my code. Jesus is dope.",
 		threads: [101,202],
-		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
+		tech_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/15/2021
 	},
 	{
@@ -70,7 +70,7 @@ const userSeeds = [
 		picture: "",
 		bio: "I make cool videos. Jesus is my homie.",
 		threads: [101,202],
-		teach_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
+		tech_stack: ["JavaScript", "React.js", "Express.js", "MongoDB", "MySQL", "CSS"],
 		date_joined: 11/17/2021
 	}
 ];
@@ -306,3 +306,4 @@ db.Event
 		console.error(err);
 		process.exit(1);
 	});
+
