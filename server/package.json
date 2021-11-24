@@ -4,7 +4,9 @@
   "description": "A sleek, secure, and transparent platform.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "watch": "nodemon",
+    "seed": "node seeds/seed.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "graphql": "^14.6.0",
     "graphql-type-json": "^0.3.2",
     "mongoose": "^6.0.13",
-    "sendbird": "^3.0.137"
+    "sendbird": "^3.0.137",
+    "morgan": "^1.10.0"
   }
 }

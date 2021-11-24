@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const compression = require('compression');
 
+const logger = require("morgan");
+const db = require('./config/connection');
+const path =require('path');
+
 //* Get ApolloServer and grab typeDefs and resolvers from schemas
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
@@ -18,6 +22,8 @@ const server = new ApolloServer({
 	typeDefs,
 	resolvers
 });
+
+app.use(logger("dev"));
 
 //* link apollo server to express app
 server.applyMiddleware({ app });
