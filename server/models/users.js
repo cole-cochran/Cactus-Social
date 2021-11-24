@@ -66,13 +66,20 @@ const userSchema = new Schema({
 	tech_stack: [
 		{
 			type: String,
-			max: 50
+			max: 50,
+			ref: 'Tech'
 		}
 	],
 	date_joined: {
         type: Date,
         default: Date.now
-    }
+	},
+	friends: [
+		{
+			type: ObjectId,
+			ref: 'User'
+		}
+	]
 });
 
 userSchema.pre('save', function(next) {
