@@ -106,30 +106,32 @@ const typeDefs = gql`
     type Post {
         _id: ID!
         post_text: String!
-        date_created: String!
-        author: User!
-        reactions: [String!]!
-        edited: Boolean!
-        pinned: Boolean!
-        thread: Thread!
-        comments: [Comment!]!
+        date_created: String
+        author: User
+        reactions: [String]
+        edited: Boolean
+        pinned: Boolean
+        thread: Thread
+        comments: [Comment]
     }
 
     type Comment {
         _id: ID!
         comment_text: String!
-        date_created: String!
-        author: User!
-        reactions: [String!]!
-        edited: Boolean!
-        post: Post!
+        date_created: String
+        author: User
+        reactions: [String]
+        edited: Boolean
+        post: Post
     }
 
-    type Tech {
+    type Tech [
+      {
         _id: ID!
-        user: User!
+        user: User
         technology: String!
-    }
+      }
+    ]
 
     type User {
         _id: ID!
@@ -138,23 +140,22 @@ const typeDefs = gql`
         username: String!
         email: String!
         password: String!
-        picture: String!
-        bio: String!
-        threads: [Thread!]!
-        events: [Event!]!
-        tech_stack: [Tech!]!
-        date_joined: String!
-        friends: [User!]!
+        picture: String
+        bio: String
+        threads: [Thread]
+        events: [Event]
+        date_joined: String
+        friends: [User]
     }
 
     type Thread {
         _id: ID!
         title: String!
-        posts: [Post!]!
-        events: [Event!]!
-        moderator: User!
-        members: [User!]!
-        date_created: String!
+        posts: [Post]
+        events: [Event]
+        moderator: [User]
+        members: [User]
+        date_created: String
     }
 
     type Auth {
@@ -162,7 +163,7 @@ const typeDefs = gql`
       user: User
     }
 
-      type Event {
+    type Event {
         _id: ID!
         title: String!
         description: String!
@@ -170,33 +171,31 @@ const typeDefs = gql`
         end_date: String!
         start_time: String!
         end_time: String!
-        owner: User!
-        attendees: [User!]!
-        category: String!
+        owner: User
+        attendees: [User]
+        category: String
         in_person: Boolean!
         location: String!
-        image: String!
-        thread: Thread!
-        comments: [Comment!]!
-        date_created: String!
+        image: String
+        thread: Thread
+        comments: [Comment]
+        date_created: String
     }
 
     type Query {
-        comments: [Comment!]!
-        author(threadAuthor: ID!): User!
+        comments: [Comment!]
+        author(authorId: ID!): User!
         thread(threadId: ID!): Thread!
-        userThreads(userId: ID!): [Thread!]!
-        posts: [Posts!]!
-        threads: [Thread!]!
+        threads(userId: ID!): [Thread!]
+        posts: [Posts!]
         post(postId: ID!): Post!
-        events: [Event!]!
-        moderator(id: ID!): User!
-        members: [User!]!
+        events: [Event!]
+        moderator(userId: ID!): User!
+        members: [User!]
         owner(userId: ID!): User!
-        attendees: [User!]!
-        techStack: [Tech!]!
-        friends: [User!]!
-  
+        attendees: [User!]
+        techStack: [Tech!]
+        friends: [User!]
     }
 
     type Mutation {
@@ -216,7 +215,7 @@ const typeDefs = gql`
 
         removePostComment(postId: ID!, commentId: ID!): Post
         
-        removeEventComment(eventId: ID!, commentId: ID!): Post
+        removeEventComment(eventId: ID!, commentId: ID!): Event
 
         removeThread(threadId: ID!, userId: ID!): User
 
@@ -226,21 +225,17 @@ const typeDefs = gql`
 
         editPostComment(commentId: ID!, postId!: ID!, edited: Boolean!, comment_text: String!): Post
         
-        editEventComment(commentId: ID!, eventId!: ID!, edited: Boolean!, comment_text: String!): Post
+        editEventComment(commentId: ID!, eventId!: ID!, edited: Boolean!, comment_text: String!): Event
 
         editEvent(eventId: ID!, threadId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
 
-        editThread(threadId: ID!, moderatorId: ID!, title: String!): Thread
-        
-        removeMember(threadId: ID!, memberId: ID!): Thread
-
-        addMember(threadId: ID!, memberId: ID!): Thread
+        editThread(threadId: ID!, moderatorId: ID!, title: String!, moderator: [User], members: [User]): User
 
         attendEvent(eventId: ID!, attendeeId: ID!): Event
 
         leaveEvent(eventId: ID!, attendeeId: ID!): Event
 
-        editUser(userId: ID!, first_name: String!, last_name: String!, username: String!, email: String!, picture: String!, bio: String!)
+        editUser(userId: ID!, first_name: String!, last_name: String!, username: String!, email: String!, picture: String!, bio: String!): User
 
         addTech(userId: ID!, technology: String!): User
 
@@ -254,12 +249,19 @@ const typeDefs = gql`
 
         addFriend(userId: ID!, friendId: ID!): User
 
-        addMembers(threadId: ID!, member: User!): Thread
-    }`;
+    }
+`;
 
 module.exports = typeDefs;
 
-// const typeDefs=gql
+// removeMember(threadId: ID!, memberId: ID!): Thread
+
+// addMember(threadId: ID!, memberId: ID!): Thread
+
+// addMembers(threadId: ID!, member: User!): Thread
+
+
+// const typeDefs=gql`
 // scalar JSON
 // scalar dateScalar
 
