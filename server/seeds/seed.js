@@ -175,15 +175,14 @@ db.once('open', async () => {
 	// bulk create each model
 
 	const users = await User.insertMany(userSeeds);
-	//console.log(users)
 	const threads = await Thread.insertMany(threadSeeds);
-	//console.log(threads)
-	const posts = await Post.insertMany(postSeeds);
-	//console.log(posts)
-	const events = await Event.insertMany(eventSeeds);
-	//console.log(events)
-	await Comment.insertMany(commentSeeds);
 
+	const posts = await Post.insertMany(postSeeds);
+	console.log(posts)
+	const events = await Event.insertMany(eventSeeds);
+
+	const comments=await Comment.insertMany(commentSeeds);
+	console.log(comments)
 	for (newUsers of users) {
 		// randomly add users to threads
 
@@ -199,6 +198,8 @@ db.once('open', async () => {
 
 		tempAttendees.attendees.push(newUsers._id);
 
+		tempMembers.moderator.push(newUsers._id);
+
 		await tempAttendees.save();
 
 		// randomly add a thread for users
@@ -206,16 +207,24 @@ db.once('open', async () => {
 
 		newUsers.threads = tempThread._id;
 
-		//newUsers.moderator = tempThread._id;
+		//.moderator.push(newUsers._id);
 		await newUsers.save();
 
 	
 	}
 		for(newPost of posts){
 		const tempThreadPost=threads[Math.floor(Math.random() * threads.length)];
-		tempThreadPost.posts.push(newPost._id)
-		
-		tempThreadPost.save()
+
+		tempThreadPost.posts.push(newPost._id);
+
+		await tempThreadPost.save()
+
+		//const tempCommentPost = comments[Math.floor(Math.random() * comments.length)];
+
+			//newPost.comments=tempCommentPost._id
+
+		//await tempCommentPost.save()
+
 		}
 	console.log('all done!');
 	process.exit(0);
