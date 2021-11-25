@@ -1,6 +1,7 @@
 import Dashboard from './components/Dashboard';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
+import Home from '../../src/components/home'
 // import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 export default function App() {
@@ -13,7 +14,7 @@ export default function App() {
         // </Router>
         <>
             <div>
-                <Navbar />
+                <Home />
             </div>
             {
                 (loggedIn) ? (
