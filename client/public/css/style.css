@@ -516,3 +516,65 @@ button {
 }
 
 /************THREAD-Content-Container*************/
+/*************404.HTML:STYLES************/
+.error-banner-mobile {
+    height: 4rem;
+    background-color: #B945FF;
+}
+
+.error-form {
+    max-width: 30rem;
+}
+.error-form label {
+    margin-left: 0;
+    font-size: .75rem;
+    display: block;
+}
+
+.signup-form input {
+    display: block;
+    width: calc(100% - 1rem);
+    height: 2rem;
+}
+
+.signup-form a {
+    display: inline;
+}
+
+.signup-form button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.signup-form p {
+    margin-top: 1rem;
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.signup-form a {
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.signup-banner {
+   background-color: #501069;
+    color: white;
+    height: 100vh;
+    padding: 3rem;
+}
+.signup-banner h1 {
+    font-size: 2rem;
+}
+.signup-banner p {
+    font-size: 1rem;
+}
+/*************404.HTML:STYLES************/
