@@ -531,17 +531,17 @@ button {
     display: block;
 }
 
-.signup-form input {
+.error-form input {
     display: block;
     width: calc(100% - 1rem);
     height: 2rem;
 }
 
-.signup-form a {
+.error-form a {
     display: inline;
 }
 
-.signup-form button {
+.error-form button {
     display: block;
     margin-top: 1.5rem;
     background-color: #56B524;;
