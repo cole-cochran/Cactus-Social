@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
@@ -60,23 +61,29 @@ const userSchema = new Schema({
 	threads: [
 		{
 			type: ObjectId,
-			ref:'Thread'
+			ref: 'Thread'
+		}
+	],
+	events: [
+		{
+			type: ObjectId,
+			ref: 'Event'
 		}
 	],
 	tech_stack: [
 		{
 			type: String,
-			max: 50,
-			ref: 'Tech'
+			trim: true
 		}
 	],
 	date_joined: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+		get: (timestamp) => dateFormat(timestamp)
 	},
 	friends: [
 		{
-			type: ObjectId,
+			type: String,
 			ref: 'User'
 		}
 	]
