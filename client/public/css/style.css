@@ -521,44 +521,6 @@ button {
     height: 4rem;
     background-color: #B945FF;
 }
-
-.error-form {
-    max-width: 30rem;
-}
-.error-form label {
-    margin-left: 0;
-    font-size: .75rem;
-    display: block;
-}
-
-.error-form input {
-    display: block;
-    width: calc(100% - 1rem);
-    height: 2rem;
-}
-
-.error-form a {
-    display: inline;
-}
-
-.error-form button {
-    display: block;
-    margin-top: 1.5rem;
-    background-color: #56B524;;
-    color: white;
-    border: none;
-    font-size: .875rem;
-    width: 6rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    border-radius: .25rem;
-}
-
-.error-form p {
-    margin-top: 1rem;
-    font-size: .875rem;
-    display: inline-block;
-}
 .error-banner {
    background-color: #501069;
     color: white;
@@ -568,6 +530,13 @@ button {
 .error-banner h1 {
     font-size: 2rem;
 }
+.centered {
+    position: absolute;
+    top: 37%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
 .error-banner p {
     font-size: 1rem;
 }
