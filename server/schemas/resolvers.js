@@ -23,9 +23,9 @@ const resolvers = {
 		},
 
 		//* get all user threads
-		//! add user context to filter results
+		//! add user context to filter results and then go back and change query in typeDefs
 		userThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('members');
+			return await Thread.findOne({username: args.username}).populate('members');
 		},
 
 		//* get specific thread
@@ -51,9 +51,9 @@ const resolvers = {
 		},
 
 		//* find user's friends
-		//! add user context to ensure they are logged in
+		//! add user context to ensure they are logged in and change query in typeDefs
 		userFriends: async (parent, args, context) => {
-			return await User.findById(args.userId).populate('friends');
+			return await User.findById(args.username).populate('friends');
 		}
 	},
 	Mutation: {
@@ -70,8 +70,6 @@ const resolvers = {
 			// if (!correctPassword) {
 			// throw new AuthenticationError('Incorrect credentials!');
 			// }
-
-			// return foundUser;
 
 			// const token = signToken(foundUser);
 			// return { token, foundUser };
@@ -92,8 +90,8 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			await User.findOneAndUpdate(
+				// would user context instead here
 				{ _id: userId },
-				// { _id: userId },
 				{
 					$addToSet: {
 						tech_stack: {
@@ -110,10 +108,10 @@ const resolvers = {
 		//* remove technology from user tech stack
 		removeTechnology: async (parent, args, context) => {
 			const { userId, technology } = args;
-			// const userId = "619f163a1d455824cc304ab1";
 			//! use user context to authenticate
 			// if (context.user) {
 			return await User.findOneAndUpdate(
+				// use context here instead
 				{ _id: userId },
 				{
 					$pull: {
@@ -131,15 +129,16 @@ const resolvers = {
 		//* add a friend to user friends array
 		addFriend: async (parent, args, context) => {
 			const { username, friend } = args;
-			//! add user context to authenticate
+			//! add user context to authenticate and change the mutation in typeDefs
 			// if (context.user) {
 			await User.findOneAndUpdate(
+				// use context here instead
 				{ username: username },
-				// { _id: userId },
 				{
 					$addToSet: {
 						friends: {
-							friend: friend
+							//! need to clarify how to do this
+							username: friend
 						}
 					}
 				},
@@ -152,15 +151,15 @@ const resolvers = {
 		//* remove friend from user tech stack
 		removeFriend: async (parent, args, context) => {
 			const { username, friend } = args;
-			// const userId = "619f163a1d455824cc304ab1";
-			//! use user context to authenticate
+			//! add user context to authenticate and change the mutation in typeDefs
 			// if (context.user) {
 			return await User.findOneAndUpdate(
 				{ username: username },
 				{
 					$pull: {
 						friends: {
-							friend: friend
+							//! need to clarify how to do this
+							username: friend
 						}
 					}
 				},
@@ -194,11 +193,11 @@ const resolvers = {
 		createThread: async (parent, args, context) => {
 			//! add user context to authenticate
 			// if (context.user) {
-            const { title, username } = args;
+            const { title, moderator } = args;
 			const newThread = await Thread.create(
                 {
                     title: title, 
-                    moderator: username
+                    moderator: moderator
                 }, 
                 { new: true }
             );
@@ -240,13 +239,12 @@ const resolvers = {
                 },
                 { new: true }
             )
-			const { _id } = newPost;
             await Thread.findOneAndUpdate(
                 { thread: thread }
                 {
                     $addToSet: {
                         posts: {
-                            postId: _id
+                            postId: newPost._id
                         }
                     }
                 }, 
@@ -260,7 +258,6 @@ const resolvers = {
         //* remove thread post
 		removePost: async (parent, args, context) => {
 			const { thread, postId } = args;
-			// const userId = "619f163a1d455824cc304ab1";
 			//! add user context to authenticate
 			// if (context.user) {
             await Post.findOneAndDelete(
@@ -272,6 +269,7 @@ const resolvers = {
                 {
                     $pull: {
                         posts: {
+							//! need to verify this
                             postId: postId
                         }
                     }
@@ -314,6 +312,7 @@ const resolvers = {
 
         //* give user ability to pin posts
         pinPost: async (parent, args, context) => {
+			//! probably need to add user context here as well to make sure they have permission
             const { postId } = args;
             return await Post.findOneAndUpdate(
                 { _id: postId },
@@ -322,8 +321,11 @@ const resolvers = {
             )
         },
 
+		// TODO  FINISH THIS MUTATION AND KEEP GOING!
+
 		//* let users add post comments
 		createPostComment: async (parent, args, context) => {
+			//! probably need to add user context here as well to make sure they have permission
 			const { postId, comment_text } = args;
 			const newComment = await Comment.create(
 				{

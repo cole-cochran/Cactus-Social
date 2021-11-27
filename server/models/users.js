@@ -30,6 +30,8 @@ const userSchema = new Schema({
 		type: String,
 		trim: true,
 		lowercase: true,
+		minLength: [ 6, 'You need a longer password' ],
+		maxLength: [ 24, 'Your password is too long' ],
 		required: 'Username is required',
 		unique: true
 	},
@@ -56,11 +58,11 @@ const userSchema = new Schema({
 	},
 	bio: {
 		type: String,
-		maxLength: [ 500, 'Your bio can only be 500 characters long' ]
+		maxLength: [ 255, 'Your bio can only be 255 characters long' ]
 	},
 	threads: [
 		{
-			type: ObjectId,
+			type: String,
 			ref: 'Thread'
 		}
 	],
