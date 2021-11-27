@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 const bcrypt = require('bcrypt');
 const SALT_WORK_FACTOR = 10;
 
@@ -29,6 +30,8 @@ const userSchema = new Schema({
 		type: String,
 		trim: true,
 		lowercase: true,
+		minLength: [ 6, 'You need a longer password' ],
+		maxLength: [ 24, 'Your password is too long' ],
 		required: 'Username is required',
 		unique: true
 	},
@@ -55,28 +58,34 @@ const userSchema = new Schema({
 	},
 	bio: {
 		type: String,
-		maxLength: [ 500, 'Your bio can only be 500 characters long' ]
+		maxLength: [ 255, 'Your bio can only be 255 characters long' ]
 	},
 	threads: [
 		{
+			type: String,
+			ref: 'Thread'
+		}
+	],
+	events: [
+		{
 			type: ObjectId,
-			ref:'Thread'
+			ref: 'Event'
 		}
 	],
 	tech_stack: [
 		{
 			type: String,
-			max: 50,
-			ref: 'Tech'
+			trim: true
 		}
 	],
 	date_joined: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+		get: (timestamp) => dateFormat(timestamp)
 	},
 	friends: [
 		{
-			type: ObjectId,
+			type: String,
 			ref: 'User'
 		}
 	]
