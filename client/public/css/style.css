@@ -554,27 +554,27 @@ button {
     border-radius: .25rem;
 }
 
-.signup-form p {
+.error-form p {
     margin-top: 1rem;
     font-size: .875rem;
     display: inline-block;
 }
 
-.signup-form a {
+.error-form a {
     font-size: .875rem;
     display: inline-block;
 }
 
-.signup-banner {
+.error-banner {
    background-color: #501069;
     color: white;
     height: 100vh;
     padding: 3rem;
 }
-.signup-banner h1 {
+.error-banner h1 {
     font-size: 2rem;
 }
-.signup-banner p {
+.error-banner p {
     font-size: 1rem;
 }
 /*************404.HTML:STYLES************/
