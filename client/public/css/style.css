@@ -17,7 +17,7 @@
 
 }
 
-.app-container {
+.app-content-container {
     display: flex;
 }
 
@@ -327,12 +327,26 @@ button {
     font-size: 1rem;
 } */
 
-/********Mobile************/
-.header {
-    height: 2.25rem;
-    background-color: var(--primary-green);
+
+/********HEADER:START************/
+
+header {
+  height: 2.25rem;
+  background-color: var(--primary-green);
 }
 
+.mobile-nav img {
+  width: 2rem;
+  margin-right: .25rem;
+}
+
+/********HEADER:END************/
+
+/********SIDEBAR.JS:START************/
+.aside {
+  display: flex;
+  width: 2.5rem;
+}
 .sticky-dash {
     height: calc(100vh - 4rem);
     background-color: var(--grey2);
@@ -350,26 +364,17 @@ button {
     padding-left: 0;
 }
 
-.mobile-nav img {
-    width: 2rem;
-    margin-right: .25rem;
-}
-
 .sidebar {
-    height: 2rem;
-    background-color: var(--primary-green);
+    position: absolute;
+    left: -100%;
+    top: 2.28rem;
     z-index: 2;
-}
-
-#sidebar {
     background-color: var(--grey1);
     transition: .5s;
     padding-top: 2rem;
     height: calc(100vh - 4rem);
-    /* background-color: var(--grey1); */
-    width: calc( 100% - 2.5rem);
-    max-width: 20rem;
-    z-index: 2;
+    width: calc(100% - 2.5rem);
+    /* max-width: 20rem; */
 }
 
 .sidebar h3 {
@@ -378,15 +383,32 @@ button {
     margin-left: .5rem;
 }
 
-.mobile-dashboard-section-title-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .sidebar-add-icon {
     width: 1rem;
     margin-right: .1rem;
+}
+
+.sidebar ul {
+  border-top: 1px solid var(--grey2);
+  list-style: none;
+  padding-left: 0;
+  background-color: var(--grey1);
+}
+
+.sidebar li a {
+  font-size: .875rem;
+  color: black;
+  text-decoration: none;
+}
+
+.sidebar li {
+  font-size: .875rem;
+  padding-left: .5rem;
+  padding-top: .65rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid var(--grey2);
+  color: black;
+  text-decoration: none;
 }
 
 .add-thread-row {
@@ -405,117 +427,121 @@ button {
     font-size: .875rem;
 }
 
-.sidebar ul {
-    border-top: 1px solid var(--grey2);
-    list-style: none;
-    padding-left: 0;
-    background-color: var(--grey1);
+/*************SIDEBAR.JS:END************/
+/*************FOOTER:START************/
+
+footer {
+  height: 2rem;
+  background-color: var(--secondary-purple);
 }
 
-.sidebar li a {
-    font-size: .875rem;
-    color: black;
-    text-decoration: none;
-}
+/*************FOOTER:END************/
+/*************THREEDDISPLAY:START****************/
 
-.sidebar li {
-    font-size: .875rem;
-    padding-left: .5rem;
-    padding-top: .65rem;
-    padding-bottom: .65rem;
-    border-bottom: 1px solid var(--grey2);
-    color: black;
-    text-decoration: none;
-}
-
-.mobile-dashboard-footer {
-    height: 2rem;
-    background-color: var(--secondary-purple);
-}
-
-
-/********Mobile************/
-/*************DASHBOARD.HTML:STYLING************/
-/*************DASHBOARD.HTML:MEDIA-QUERIES************/
-
-/* @media only screen and (min-width: 500px) {
-
-    .mobile-nav img {
-        display: none;
-    }
-    
-} */
-
-/*************DASHBOARD.HTML:MEDIA-QUERIES************/
-/* ***********THREAD-Content-Container*************/
-
-.thread-content-container {
+.thread-wrapper {
     z-index: 1;
-    /* position: absolute; */
+    position: absolute;
     display: flex;
     justify-content: center;
     width: 100%;
 }
-
-.thread-content-container h3 {
-    font-size: 1rem;
-    margin-top: 2rem;
+.thread-content-container {
+  padding-left: 1.5rem;
+  width: calc(100% - 2.5rem);
+  max-width: 40rem;
 }
 
-.thread-content-container p {
-    font-size: .875rem;
+.thread-header h3 {
+  margin-left: 1rem;
+  font-size: 1rem;
+  margin-top: 2rem;
 }
-.center-thread {
-    width: 100%;
-    max-width: 30rem;
+
+.thread-header p {
+  margin-left: 1rem;
+  font-size: .75rem;
 }
+
 .chat {
     line-height: 1.1rem;
     font-size: .75rem;
-    background-color: #FFB240;
+    background-color: #FFA000;
     color: white;
     padding: .5rem;
     border-radius: .25rem;
     margin-top: .5rem;
     margin-left: .875rem;
 }
+
 .chat p {
-    font-size: .75rem;
+    font-size: .65rem;
     margin-bottom: 0;
 }
 
-.chat-container {
-    display: flex;
-    margin-left: -2.75rem;
-}
-
-/* .chat-container span {
-    font-size: .75rem;
-    font-weight: 500;
-} */
 .chat-name {
     font-size: .75rem;
     margin-top: 1rem;
     font-weight: 500;
 }
 .chat-date {
-    font-size: .5rem;
+    font-size: .55rem;
+    color: #FFE3A1;
+    margin-left: 1rem;
 }
-.chat-date-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/*************THREEDDISPLAY:END****************/
+/*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
+
+@media only screen and (min-width: 680px) {
+  
+    .aside {
+      max-width: 20rem;
+    }
+    .sidebar {
+        max-width: 20rem;
+    }
+    .thread-wrapper {
+      position: static;
+      width: 100%;
+    }
 }
 
-.chat span {
-    font-size: .5rem;
-    width: 100%;
+/*************THREEDDISPLAY-MEDIA-QUERIES:END****************/
+/*************RIGHTSHELF:START****************/
+
+.right-shelf {
+  display: none;
+  background-color: var(--grey1);
+  width: 14rem;
+  padding-left: 1rem;
+}
+
+.right-shelf h3 {
+  margin-top: 2rem;
+  font-weight: 500;
+  font-size: .75rem;
+}
+
+.right-shelf ul {
+  margin-top: 1rem;
+  list-style: none;
+  padding-left: 0;
+}
+.right-shelf li {
+  margin-top: .75rem;
+  font-size: .75rem;
+}
+
+/*************RIGHTSHELF:END****************/
+/*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
+
+@media only screen and (min-width: 925px) {
+  
+  .right-shelf {
     display: block;
-    text-align: end;
-    margin-right: 1.25rem;
+  }
 }
 
-/************THREAD-Content-Container*************/
+/*************THREEDDISPLAY-MEDIA-QUERIES:END****************/
 /*************404.HTML:STYLES************/
 .error-banner-mobile {
     height: 4rem;
