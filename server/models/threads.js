@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// const bcrypt = require('bcrypt');
+const dateFormat = require('../utils/dateFormat');
 
 const Schema = mongoose.Schema;
 
@@ -8,10 +8,10 @@ const ObjectId = Schema.Types.ObjectId;
 const threadSchema = new Schema({
 	title: {
 		type: String,
-		required: 'You must provide a title for your thread',
+		required: [true, 'You must provide a title for your thread'],
 		trim: true,
-		minLength: [ 3, 'Provide a title with at least 3 characters' ],
-		maxLength: [ 128, 'Provide a title with less than 128 characters' ]
+		minLength: [ 4, 'Provide a title with at least 4 characters' ],
+		maxLength: [ 36, 'Provide a title with less than 36 characters' ]
 	},
 	posts: [
         {
@@ -26,19 +26,20 @@ const threadSchema = new Schema({
         }
     ],
 	moderator: {
-		type: ObjectId,
-		ref:'User'
+		type: String,
+		ref:'User',
+		required: true
 	},
 	members: [
 		{
-			type: ObjectId,
-            max: 50,
+			type: String,
 			ref:'User'
 		}
 	],
 	date_created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+		get: (timestamp) => dateFormat(timestamp)
     }
 });
 

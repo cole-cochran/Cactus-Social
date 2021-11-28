@@ -1,31 +1,9 @@
 const { gql } = require('apollo-server-express');
-const JSON = require('graphql-type-json');
-const { GraphQLScalarType, Kind } = require('graphql');
+
+//* Potentially for reaction emojis
 // $ npm install graphql-type-json
-
-const dateScalar = new GraphQLScalarType({
-  name: 'Date',
-  description: 'Date custom scalar type',
-  serialize(value) {
-    return value.getTime(); // Convert outgoing Date to integer for JSON
-  },
-  parseValue(value) {
-    return new Date(value); // Convert incoming integer to Date
-  },
-  parseLiteral(ast) {
-    if (ast.kind === Kind.INT) {
-      return new Date(parseInt(ast.value, 10)); // Convert hard-coded AST string to integer and then to Date
-    }
-    return null; // Invalid hard-coded value (not an integer)
-  },
-});
-
-//* potentially for the date_joined areas
-//! date_joined:dateScalar!
-
-//* Potentially at the top
-//! scalar JSON
-//! scalar dateScalar
+// const JSON = require('graphql-type-json');
+// scalar JSON
 
 const typeDefs = gql`
     type Post {
@@ -33,11 +11,11 @@ const typeDefs = gql`
         post_text: String!
         date_created: String
         author: User
-        reactions: [String]
+        reactions: [String]!
         edited: Boolean
         pinned: Boolean
         thread: Thread
-        comments: [Comment]
+        comments: [Comment]!
     }
 
     type Comment {
@@ -45,18 +23,10 @@ const typeDefs = gql`
         comment_text: String!
         date_created: String
         author: User
-        reactions: [String]
+        reactions: [String]!
         edited: Boolean
         post: Post
     }
-
-    type Tech [
-      {
-        _id: ID!
-        user: User
-        technology: String!
-      }
-    ]
 
     type User {
         _id: ID!
@@ -67,25 +37,26 @@ const typeDefs = gql`
         password: String!
         picture: String
         bio: String
-        threads: [Thread]
-        events: [Event]
+        threads: [Thread]!
+        events: [Event]!
+        tech_stack: [String]!
         date_joined: String
-        friends: [User]
+        friends: [User]!
     }
 
     type Thread {
         _id: ID!
         title: String!
-        posts: [Post]
-        events: [Event]
-        moderator: [User]
-        members: [User]
+        posts: [Post]!
+        events: [Event]!
+        moderator: User
+        members: [User]!
         date_created: String
     }
 
     type Auth {
-      token: ID!
-      user: User
+        token: ID!
+        user: User!
     }
 
     type Event {
@@ -97,189 +68,89 @@ const typeDefs = gql`
         start_time: String!
         end_time: String!
         owner: User
-        attendees: [User]
-        category: String
+        attendees: [User]!
+        category: String!
         in_person: Boolean!
         location: String!
         image: String
         thread: Thread
-        comments: [Comment]
+        comments: [Comment]!
         date_created: String
     }
 
     type Query {
-        comments: [Comment!]
-        author(authorId: ID!): User!
-        thread(threadId: ID!): Thread!
-        threads(userId: ID!): [Thread!]
-        posts: [Posts!]
-        post(postId: ID!): Post!
-        events: [Event!]
-        moderator(userId: ID!): User!
-        members: [User!]
-        owner(userId: ID!): User!
-        attendees: [User!]
-        techStack: [Tech!]
-        friends: [User!]
+        allUsers: [User]
+        allThreads: [Thread]
+        threadDetails(threadId: ID!): Thread
+        postDetails(postId: ID!): Post
+        eventDetails(eventId: ID!): Event
+        userProfile(username: String!): User
+        userThreads(username: String!): [Thread]
+        userFriends(username: String!): [User]
     }
 
     type Mutation {
-        createPost(threadId: ID!, post_text: String!, date_created: String!, author: User!, edited: Boolean!, pinned: Boolean!): Thread
 
-        createPostComment(postId: ID!, comment_text: String!, date_created: String!, author: User!, edited: Boolean!): Post
+        loginUser(username: String!, password: String!): Auth
 
-        createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!, picture: String!, bio: String!, date_joined: String!, tech_stack: [Tech!]!): User
+        createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!): Auth
 
-        createThread(moderatorId: ID!, title: String!, date_created: String!): Thread
+        addTechnology(userId: ID!, technology: String!): User
 
-        createEvent(threadId = ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, owner: User!, category: String!, in_person: Boolean!, location: String!, image: String!, thread: Thread!, date_created: String!): Thread
+        removeTechnology(userId: ID!, technology: String!): User
 
-        createEventComment(eventId: ID!, comment_text: String!, date_created: String!, author: User!, edited: Boolean!): Event
+        addFriend(userId: ID!, friend: String!): User
 
-        removePost(threadId: ID!, postId: ID!): Thread
+        removeFriend(userId: ID!, friend: String!): User
 
-        removePostComment(postId: ID!, commentId: ID!): Post
-        
-        removeEventComment(eventId: ID!, commentId: ID!): Event
+        updatePhoto(userId: ID!, picture: String!): User
 
-        removeThread(threadId: ID!, userId: ID!): User
+        updateBio(userId: ID!, bio: String!): User
 
-        removeEvent(threadId: ID!, eventId: ID!): Thread
 
-        editPost(threadId: ID!, postId: ID!, edited: Boolean!, post_text: String!): Thread
+        createThread(title: String!, moderator: String!): Thread
 
-        editPostComment(commentId: ID!, postId!: ID!, edited: Boolean!, comment_text: String!): Post
-        
-        editEventComment(commentId: ID!, eventId!: ID!, edited: Boolean!, comment_text: String!): Event
+        removeThread(threadId: ID!): User
 
-        editEvent(eventId: ID!, threadId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+        createPost(thread: String!, post_text: String!): Thread
 
-        editThread(threadId: ID!, moderatorId: ID!, title: String!, moderator: [User], members: [User]): User
+        removePost(thread: String!, postId: ID!): Thread
 
-        attendEvent(eventId: ID!, attendeeId: ID!): Event
+        updatePost(thread: String!, postId: ID!, post_text: String!): Thread
 
-        leaveEvent(eventId: ID!, attendeeId: ID!): Event
-
-        editUser(userId: ID!, first_name: String!, last_name: String!, username: String!, email: String!, picture: String!, bio: String!): User
-
-        addTech(userId: ID!, technology: String!): User
-
-        removeTech(userId: ID!, technology: String!): User
-
-        pinPost(postId: ID!, threadId: ID!, pinned: Boolean!): Thread
+        pinPost(thread: String!, postId: ID!, pinTitle: String!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
 
-        addCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        addFriend(userId: ID!, friendId: ID!): User
+        createPostComment(postId: ID!, comment_text: String!): Post
 
+        removePostComment(postId: ID!, commentId: ID!): Post
+
+        updatePostComment(postId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Post
+
+        addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
+
+        createEvent(thread: String!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+
+        updateEvent(thread: String!, eventId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+
+        removeEvent(threadId: ID!, eventId: ID!): Thread
+
+        attendEvent(eventId: ID!, attendee: String!): Event
+
+        leaveEvent(eventId: ID!, attendee: String!): Event
+
+        createEventComment(eventId: ID!, comment_text: String!): Event
+
+        removeEventComment(eventId: ID!, commentId: ID!): Event
+
+        updateEventComment(eventId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Event
+
+        addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Post
     }
 `;
 
 module.exports = typeDefs;
 
-// removeMember(threadId: ID!, memberId: ID!): Thread
-
-// addMember(threadId: ID!, memberId: ID!): Thread
-
-// addMembers(threadId: ID!, member: User!): Thread
-
-
-// const typeDefs=gql`
-// scalar JSON
-// scalar dateScalar
-
-// type User {
-//     _id: ID
-//     first_name: String!
-//     last_name:String!
-//     username: String!
-//     email: String!
-//     password:String!
-//     picture:String
-//     bio:String
-//     threads:[Thread]
-//     tech_stack:[String]
-//     date_joined:dateScalar!
-//   }
-
-//   type Thread {
-//       _id:ID
-//       title:String!
-//       posts:[Post]
-//       pins:[Pin]//////////////////////////
-//       events:[Event]
-//       moderator:User
-//       members[User]
-//       date_created:dateScalar!
-//   }
-
-//   type Post{
-//       post_text:String!
-//       date_created:dateScalar!
-//       author:User
-//       reactions:[JSON]
-//       edited:Boolean
-//       thread:Thread
-//   }
-
-//   type Event{
-//       title:String!
-//       description:String!
-//       start_date:??????
-//       end_date:///////
-//       start_time:??????
-//       end_time:?????
-//       owner:User
-//       attendees:[User]
-//       category:String
-//       in_person:Boolean
-//       location:String!
-//       image:String
-//       thread:Thread
-//       comments:[Comment]
-//       date_created:dateScalar!
-//   }
-//   type Comment {
-//       comment_text:String!
-//       date_created:dateScalar!
-//       author:User
-//       reactions:[JSON]
-//       edited:Boolean
-//       post:Post
-
-//   }
-
-  // type Auth {
-  //   token: ID!
-  //   user: User
-  // }
-
-  // type Query{
-  //   users: [User]
-  //   threads: [Thread]
-  //   posts: [Post]
-  //   comments: [Comment]
-  //   events: [Event]
-  //   pin //??
-  //   user(id: ID!): User
-  //   thread(id: ID!): Thread
-  //   post(id:ID!):Post   
-  // }
-  // type Mutation {
-  //     addUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!, picture: String, bio: String, tech_stack: [String], date_joined: dateScalar!):User
-
-
-    
-  // }
-// `
-
-
-
-
-// type Mutation {
-//     addSchool(name: String!, location: String!, studentCount: Int!): School
-//     updateClass(id: ID!, building: String!): Class
-//     addClass(name:String!,building:String!,creditHours:Int!):Class
-//   }
+// updateUser(userId: ID!, first_name: String!, last_name: String!, username: String!, email: String!): User

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
 const Schema = mongoose.Schema;
 
@@ -9,6 +10,7 @@ const eventSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
 		minLength: [ 3, 'Provide a title with at least 3 characters' ],
 		maxLength: [ 128, 'Provide a title with less than 128 characters' ]
     },
@@ -36,13 +38,13 @@ const eventSchema = new Schema({
         required: true
     },
     owner: {
-        type: ObjectId,
-        ref:'User'
+        type: String,
+        ref:'User',
+        required: true
     },
     attendees: [
         {
-            type: ObjectId,
-            max: 50,
+            type: String,
             ref:'User'
         }
     ],
@@ -63,7 +65,7 @@ const eventSchema = new Schema({
         default: ""
     },
     thread: {
-        type: ObjectId,
+        type: String,
         ref:'Thread'
     },
     comments: [
@@ -74,7 +76,8 @@ const eventSchema = new Schema({
     ],
     date_created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+        get: (timestamp) => dateFormat(timestamp)
     }
 })
 
