@@ -5,33 +5,8 @@ import { TextField } from "@mui/material";
 import { FormControlLabel } from "@mui/material";
 import { Checkbox } from "@mui/material";
 import { Button } from "@mui/material";
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { LoginDesktop } from "./LoginDesktop";
 
 
-export function MediaQuery(){
-    const [isDesktop, setDesktop] = useState(window.innerWidth > 1450);
-  
-    const updateMedia = () => {
-      setDesktop(window.innerWidth > 1450);
-    };
-  
-    useEffect(() => {
-      window.addEventListener("resize", updateMedia);
-      return () => window.removeEventListener("resize", updateMedia);
-    });
-  
-    return (
-      <div>
-        {isDesktop ? (
-           <LoginDesktop/>
-        ) : (
-          <Login/>
-        )}
-      </div>
-    );
-  }
 
 const LogoImg="./assets/img/logo.png"
 //STYLING WILL COME BACK AND CHANGE TO SX
@@ -41,17 +16,16 @@ const LogoImg="./assets/img/logo.png"
     })
 
  const LoginFormSection=styled("section")({
-    width:"calc(100% - 1rem)",
-    marginLeft:"1rem",
-    display:"flex",
-    flexDirection:"column",
-    alignItems:"center"
+    width:"50%",
+    margin:'2rem',
+    maxWidth:'22rem'
 
 })
  export const Banner=styled("div")({
-    height:"4rem",
-    //width:'100%',
-    backgroundColor:"#B945FF"
+    height:"86.5vh",
+    padding:'3rem',
+    width:'100%',
+    backgroundColor:"#501069"
   
 })
  const LogoBox=styled("div")({
@@ -66,7 +40,7 @@ const LogoImg="./assets/img/logo.png"
    maxWidth:"30rem"  
 }
 )
-export function Login(){
+export function LoginDesktop(){
 
     const loginSubmit=(e)=>{
         e.preventDefault();
@@ -76,9 +50,8 @@ export function Login(){
         //come back later/////////////////////////
     }   
 return(
-    <div>
-    <Banner>
-    </Banner>
+    <MainDiv>
+        
         <LoginFormSection>
             <LogoBox>
                 <img style={{ marginTop:"1rem",
@@ -128,7 +101,16 @@ return(
             </Button>
                 </LoginForm>
         </LoginFormSection>
-    </div>   
+        <Banner>
+            <Typography
+            component='h1'
+            sx={{fontSize:'2rem',color:'white',fontFamily:'sans-serif',fontWeight:'bold'}}
+            >
+                 A sleek, secure,<br/>
+            and transparent platform...
+            </Typography>
+        </Banner>
+    </MainDiv>   
 )
 }
 
