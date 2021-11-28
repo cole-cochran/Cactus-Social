@@ -3,10 +3,10 @@ const User = require("./users");
 const Post = require("./posts");
 const Comment = require("./comments");
 const Event = require("./events");
-const Tech = require("./tech")
+// const Tech = require("./tech");
 
 module.exports = {
-    Tech: Tech,
+    // Tech: Tech,
     User: User,
     Thread: Thread,
     Event: Event,

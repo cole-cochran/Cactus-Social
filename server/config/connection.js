@@ -8,5 +8,4 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cactus_social',
     // useCreateIndex: true
 });
 
-
 module.exports = mongoose.connection;

@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const compression = require('compression');
 
 const logger = require("morgan");
@@ -34,13 +34,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-//* connect to mongodb database
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cactus_social', {
-	useNewUrlParser: true,
-	useFindAndModify: false,
-	useUnifiedTopology: true,
-	useCreateIndex: true
-});
+// //* connect to mongodb database
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cactus_social', {
+// 	useNewUrlParser: true,
+// 	useFindAndModify: false,
+// 	useUnifiedTopology: true,
+// 	useCreateIndex: true
+// });
 
 //* set up middleware for routes
 app.use(routes);
