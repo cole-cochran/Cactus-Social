@@ -18,8 +18,6 @@ const server = new ApolloServer({
 
 //* Get ApolloServer and grab typeDefs and resolvers from schemas
 
-//* grab express routes from the controller
-// const routes = require('./controllers/index');
 
 //* set up port andexpress app
 const PORT = process.env.PORT || 3000;
