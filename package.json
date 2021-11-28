@@ -18,18 +18,15 @@
   },
   "homepage": "https://github.com/cole-cochran/Project-3#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
-<<<<<<< HEAD
-    "google-auth-library": "^7.10.2",
-    "mongoose": "^6.0.13"
-=======
     "mongoose": "^6.0.13",
     "@google-cloud/dialogflow": "^3.3.0",
     "axios": "^0.21.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "dialogflow": "^1.2.0",
+    "dotenv": "^10.0.0",
     "express": "4.17.0",
+    "mongoose": "^6.0.13",
     "sendbird": "^3.0.137"
->>>>>>> 08360bc (set up groundwork for bot's script need to touch base on .env tings)
   }
 }

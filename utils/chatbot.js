@@ -2,6 +2,7 @@
 /**
  * Enter your Sendbird information
  */
+require('dotenv').config()
  var APP_ID = '';
  var USER_ID = 'test1';
  var TOKEN = '';
