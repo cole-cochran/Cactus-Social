@@ -37,13 +37,11 @@ const postSchema = new Schema({
     },
     pinTitle: {
         type: String,
-        required: true,
         minLength: [3, "Pin title needs to be at least three characters!"],
         maxLength: [36, "Pin title needs to be at least three characters!"]
     },
     pinHash: {
         type: String,
-        required: true,
         minLength: [3, "Pin hash needs to be at least three characters!"],
         maxLength: [18, "Pin hash needs to be at least three characters!"]
     },

@@ -1,4 +1,4 @@
-// var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var db = require('../config/connection');
 
 const { User, Thread, Event, Comment, Post } = require('../models/index');
@@ -94,8 +94,8 @@ const postSeeds = [
 	{
 		post_text:
 			"Hey team! In this thread, let's toss around some ideas for project 3. I definitely want to do a social media app. Maybe we can start by making it a social media for developers. Thoughts?",
-		edited: false,
-		pinned: false,
+		// edited: false,
+		// pinned: false,
 		author: 'damienluzzo33',
 		thread: "Project 3 Ideas",
 		// _id: "101101101101"
@@ -104,8 +104,8 @@ const postSeeds = [
 	},
 	{
 		post_text: "Bet. I'm gonna start making the video and designing some sick backgrounds.",
-		edited: false,
-		pinned: false,
+		// edited: false,
+		// pinned: false,
 		author: 'foxrigney1',
 		thread: "Project 3 Ideas",
 		// _id: "102102102102"
@@ -114,8 +114,8 @@ const postSeeds = [
 	},
 	{
 		post_text: "Sounds good! Let's start making this thing! I want to work on the frontend.",
-		edited: false,
-		pinned: false,
+		// edited: false,
+		// pinned: false,
 		author: 'jackattack88',
 		thread: "Project 3 Ideas",
 		// _id: "103103103103"
@@ -125,8 +125,8 @@ const postSeeds = [
 	{
 		post_text:
 			'I was thinking we could plan a camping trip for after the bootcamp. How does that sound to everyone?',
-		edited: false,
-		pinned: false,
+		// edited: false,
+		// pinned: false,
 		author: 'bikerCole234',
 		thread: 'Camping Trip',
 		// _id: "201201201201"
@@ -135,8 +135,8 @@ const postSeeds = [
 	},
 	{
 		post_text: 'Hell yes. We should definitely do something like that.',
-		edited: false,
-		pinned: false,
+		// edited: false,
+		// pinned: false,
 		author: 'delmanat32',
 		thread: 'Camping Trip',
 		// _id: "202202202202"
@@ -145,8 +145,8 @@ const postSeeds = [
 	},
 	{
 		post_text: "That would be dope. I'll bring marshmallows!",
-		edited: false,
-		pinned: false,
+		// edited: false,
+		// pinned: false,
 		author: 'foxrigney1',
 		thread: 'Camping Trip',
 		// _id: "203203203203"
@@ -251,21 +251,23 @@ db.once('open', async () => {
 		await User.create(userSeeds);
 
 		for (let i = 0; i < threadSeeds.length; i++) {
-			const { _id, moderator } = await Thread.create(threadSeeds[i]);
+			const { title, moderator } = await Thread.create(threadSeeds[i]);
 			await User.findOneAndUpdate(
 				{ username: moderator },
 				{
 					$addToSet: {
-						threads: _id
+						threads: title
 					}
 				}
 			);
 		}
 
+		
+
 		for (let i = 0; i < postSeeds.length; i++) {
 			const { _id, thread } = await Post.create(postSeeds[i]);
 			await Thread.findOneAndUpdate(
-				{ _id: thread },
+				{ title: thread },
 				{
 					$addToSet: {
 						posts: _id
@@ -275,9 +277,9 @@ db.once('open', async () => {
 		}
 
 		for (let i = 0; i < eventSeeds.length; i++) {
-			const { _id, thread, attendees } = await Event.create(eventSeeds[i]);
+			const { _id, thread } = await Event.create(eventSeeds[i]);
 			await Thread.findOneAndUpdate(
-				{ _id: thread },
+				{ title: thread },
 				{
 					$addToSet: {
 						events: _id
@@ -285,16 +287,16 @@ db.once('open', async () => {
 				}
 			);
 
-			for (let i = 0; i < attendees.length; i++) {
-				await User.findOneAndUpdate(
-					{ _id: attendees[i] },
-					{
-						$addToSet: {
-							events: _id
-						}
-					}
-				);
-			}
+			// for (let i = 0; i < attendees.length; i++) {
+			// 	await User.findOneAndUpdate(
+			// 		{ _id: attendees[i] },
+			// 		{
+			// 			$addToSet: {
+			// 				events: 
+			// 			}
+			// 		}
+			// 	);
+			// }
 		}
 
 		for (let i = 0; i < commentPostSeeds.length; i++) {
