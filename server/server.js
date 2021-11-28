@@ -15,10 +15,7 @@ const server = new ApolloServer({
   });
 
 // const mongoose = require('mongoose');
-
 //* Get ApolloServer and grab typeDefs and resolvers from schemas
-
-
 //* set up port andexpress app
 const PORT = process.env.PORT || 3000;
 

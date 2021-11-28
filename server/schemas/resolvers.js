@@ -240,7 +240,7 @@ const resolvers = {
                 { new: true }
             )
             await Thread.findOneAndUpdate(
-                { thread: thread }
+                { thread: thread },
                 {
                     $addToSet: {
                         posts: {
