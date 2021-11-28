@@ -10,8 +10,8 @@ const threadSchema = new Schema({
 		type: String,
 		required: [true, 'You must provide a title for your thread'],
 		trim: true,
-		minLength: [ 4, 'Provide a title with at least 3 characters' ],
-		maxLength: [ 36, 'Provide a title with less than 128 characters' ]
+		minLength: [ 4, 'Provide a title with at least 4 characters' ],
+		maxLength: [ 36, 'Provide a title with less than 36 characters' ]
 	},
 	posts: [
         {
