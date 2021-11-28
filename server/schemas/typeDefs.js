@@ -17,6 +17,7 @@ const typeDefs = gql`
         thread: Thread
         comments: [Comment]!
     }
+
     type Comment {
         _id: ID!
         comment_text: String!
@@ -26,6 +27,7 @@ const typeDefs = gql`
         edited: Boolean
         post: Post
     }
+
     type User {
         _id: ID!
         first_name: String!
@@ -41,6 +43,7 @@ const typeDefs = gql`
         date_joined: String
         friends: [User]!
     }
+
     type Thread {
         _id: ID!
         title: String!
@@ -50,10 +53,12 @@ const typeDefs = gql`
         members: [User]!
         date_created: String
     }
+
     type Auth {
         token: ID!
         user: User
     }
+
     type Event {
         _id: ID!
         title: String!
@@ -72,6 +77,7 @@ const typeDefs = gql`
         comments: [Comment]!
         date_created: String
     }
+
     type Query {
         allUsers: [User]
         allThreads: [Thread]
@@ -82,23 +88,43 @@ const typeDefs = gql`
         userThreads(username: String!): [Thread]
         userFriends(username: String!): [User]
     }
+
     type Mutation {
+
         loginUser(username: String!, password: String!): Auth
+
         createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!): Auth
+
         addTechnology(userId: ID!, technology: String!): User
+
         removeTechnology(userId: ID!, technology: String!): User
+
         addFriend(userId: ID!, friend: String!): User
+
         removeFriend(userId: ID!, friend: String!): User
+
         updatePhoto(userId: ID!, picture: String!): User
+
         updateBio(userId: ID!, bio: String!): User
+
+
         createThread(title: String!, moderator: String!): Thread
+
         removeThread(threadId: ID!): User
+
         createPost(thread: String!, post_text: String!): Thread
+
         removePost(thread: String!, postId: ID!): Thread
+
         updatePost(thread: String!, postId: ID!, post_text: String!): Thread
+
         pinPost(thread: String!, postId: ID!, pinTitle: String!): Thread
+
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
+
+
         createPostComment(postId: ID!, comment_text: String!): Post
+
         removePostComment(postId: ID!, commentId: ID!): Post
 
         updatePostComment(postId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Post
@@ -126,3 +152,5 @@ const typeDefs = gql`
 `;
 
 module.exports = typeDefs;
+
+// updateUser(userId: ID!, first_name: String!, last_name: String!, username: String!, email: String!): User
