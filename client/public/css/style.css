@@ -556,13 +556,7 @@ footer {
 .error-banner h1 {
     font-size: 2rem;
 }
-/* .centered {
-    position: absolute;
-    top: 37%;
-    left: 40%;
-    transform: translate(-50%, -50%);
-    color: white;
-  } */
+
 .error-banner p {
     font-size: 1rem;
 }
@@ -584,7 +578,7 @@ footer {
   } */
   #parallax_illustration {
     display: block;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     width: 100%;
     height: auto;
     position: relative;
