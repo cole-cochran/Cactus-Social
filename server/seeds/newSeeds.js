@@ -75,7 +75,7 @@ const threadSeeds = [
 	{
 		title: 'Project 3 Ideas',
 		moderator: 'damienluzzo33',
-		_id: 11,
+		// _id: "111111111111",
 		members: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33', 'foxrigney1' ]
 		// posts: [],
 		// events: []
@@ -83,7 +83,7 @@ const threadSeeds = [
 	{
 		title: 'Camping Trip',
 		moderator: 'bikerCole234',
-		_id: 22,
+		// _id: "222222222222",
 		members: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33', 'foxrigney1' ]
 		// posts: [],
 		// events: []
@@ -97,8 +97,8 @@ const postSeeds = [
 		edited: false,
 		pinned: false,
 		author: 'damienluzzo33',
-		thread: 11,
-		_id: 101
+		thread: "Project 3 Ideas",
+		// _id: "101101101101"
 		// reactions: [],
 		// comments: []
 	},
@@ -107,8 +107,8 @@ const postSeeds = [
 		edited: false,
 		pinned: false,
 		author: 'foxrigney1',
-		thread: 11,
-		_id: 102
+		thread: "Project 3 Ideas",
+		// _id: "102102102102"
 		// reactions: [],
 		// comments: []
 	},
@@ -117,8 +117,8 @@ const postSeeds = [
 		edited: false,
 		pinned: false,
 		author: 'jackattack88',
-		thread: 11,
-		_id: 103
+		thread: "Project 3 Ideas",
+		// _id: "103103103103"
 		// reactions: [],
 		// comments: []
 	},
@@ -128,8 +128,8 @@ const postSeeds = [
 		edited: false,
 		pinned: false,
 		author: 'bikerCole234',
-		thread: 22,
-		_id: 201
+		thread: 'Camping Trip',
+		// _id: "201201201201"
 		// reactions: [],
 		// comments: []
 	},
@@ -138,8 +138,8 @@ const postSeeds = [
 		edited: false,
 		pinned: false,
 		author: 'delmanat32',
-		thread: 22,
-		_id: 202
+		thread: 'Camping Trip',
+		// _id: "202202202202"
 		// reactions: [],
 		// comments: []
 	},
@@ -148,8 +148,8 @@ const postSeeds = [
 		edited: false,
 		pinned: false,
 		author: 'foxrigney1',
-		thread: 22,
-		_id: 203
+		thread: 'Camping Trip',
+		// _id: "203203203203"
 		// reactions: [],
 		// comments: []
 	}
@@ -160,48 +160,48 @@ const commentPostSeeds = [
 		comment_text: 'We should do a Star Wars theme.',
 		edited: false,
 		author: 'foxrigney1',
-		post: 101,
-		_id: 1001
+		// post: "101101101101",
+		// _id: "100110011001"
 		// reactions: []
 	},
 	{
 		comment_text: 'How neat is that?',
 		edited: false,
 		author: 'bikerCole234',
-		post: 102,
-		_id: 1002
+		// post: "102102102102",
+		// _id: "100210021002"
 		// reactions: []
 	},
 	{
 		comment_text: "I'd love to join in on some of the frontend stuff if that's cool.",
 		edited: false,
 		author: 'bikerCole234',
-		post: 103,
-		_id: 1003
+		// post: "103103103103",
+		// _id: "100310031003"
 		// reactions: []
 	},
 	{
 		comment_text: "I'm in! 100%",
 		edited: false,
 		author: 'damienluzzo33',
-		post: 201,
-		_id: 2001
+		// post: "201201201201",
+		// _id: "200120012001"
 		// reactions: []
 	},
 	{
 		comment_text: 'You should def visit Austin for that.',
 		edited: false,
 		author: 'bikerCole234',
-		post: 202,
-		_id: 2002
+		// post: "202202202202",
+		// _id: "200220022002"
 		// reactions: []
 	},
 	{
 		comment_text: 'I will bring chocolate.',
 		edited: false,
 		author: 'jackattack88',
-		post: 203,
-		_id: 2003
+		// post: "203203203203",
+		// _id: "200320032003"
 		// reactions: []
 	}
 ];
@@ -211,19 +211,19 @@ const eventSeeds = [
 		title: 'Camping Trip',
 		description:
 			"Let's go camping in February! Let's plan for a two night trip out in nature. Bring a sleeping bag, backpack, and everything you need to spend a few days off the grid.",
-		start_date: 1 / 15 / 2022,
-		end_date: 1 / 17 / 2022,
-		start_time: 10,
-		end_time: 12,
+		start_date: "1/15/2022",
+		end_date: "1/17/2022",
+		start_time: "10",
+		end_time: "12",
 		category: 'trip',
 		in_person: true,
 		location: 'TBD',
 		owner: 'bikerCole234',
-		thread: 22,
+		thread: 'Camping Trip',
 		// image: "",
 		// comments: [],
 		attendees: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33', 'foxrigney1' ],
-        _id: 10001
+        // _id: "100011000100"
 	}
 ];
 
@@ -232,8 +232,8 @@ const commentEventSeeds = [
 		comment_text: 'Bet',
 		edited: false,
 		author: 'foxrigney1',
-		event: 10001,
-		_id: 3001
+		// event: "100011000100",
+		// _id: "300130013001"
 		// reactions: []
 	}
 ];
@@ -284,6 +284,7 @@ db.once('open', async () => {
 					}
 				}
 			);
+
 			for (let i = 0; i < attendees.length; i++) {
 				await User.findOneAndUpdate(
 					{ _id: attendees[i] },
@@ -296,27 +297,28 @@ db.once('open', async () => {
 			}
 		}
 
-		for (let i = 0; i < commentSeeds.length; i++) {
-			const { _id, post, event } = await Comment.create(commentPostSeeds[i]);
-			if (post) {
-				await Post.findOneAndUpdate(
-					{ _id: post },
-					{
-						$addToSet: {
-							comments: _id
-						}
+		for (let i = 0; i < commentPostSeeds.length; i++) {
+			const { _id, post } = await Comment.create(commentPostSeeds[i]);
+			await Post.findOneAndUpdate(
+				{ _id: post },
+				{
+					$addToSet: {
+						comments: _id
 					}
-				);
-			} else {
-				await Event.findOneAndUpdate(
-					{ _id: event },
-					{
-						$addToSet: {
-							comments: _id
-						}
+				}
+			);
+		}
+
+		for (let i = 0; i < commentEventSeeds.length; i++) {
+			const { _id, event } = await Comment.create(commentEventSeeds[i]);
+			await Event.findOneAndUpdate(
+				{ _id: event },
+				{
+					$addToSet: {
+						comments: _id
 					}
-				);
-			}
+				}
+			);
 		}
 
 		console.log('All seeds successfully inserted!');

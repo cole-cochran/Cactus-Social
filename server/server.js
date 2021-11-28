@@ -2,16 +2,16 @@ const express = require('express');
 // const mongoose = require('mongoose');
 const compression = require('compression');
 
-const logger = require("morgan");
+const logger = require('morgan');
 const db = require('./config/connection');
-const path =require('path');
+const path = require('path');
 
 //* Get ApolloServer and grab typeDefs and resolvers from schemas
 const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
 
 //* grab express routes from the controller
-const routes = require('./controllers/index');
+// const routes = require('./controllers/index');
 
 //* set up port and express app
 const PORT = process.env.PORT || 3000;
@@ -23,7 +23,7 @@ const server = new ApolloServer({
 	resolvers
 });
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 
 //* link apollo server to express app
 server.applyMiddleware({ app });
@@ -42,8 +42,12 @@ app.use(express.static('public'));
 // 	useCreateIndex: true
 // });
 
+app.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, '../client/public/index.html'));
+});
+
 //* set up middleware for routes
-app.use(routes);
+// app.use(routes);
 
 //* set up server to listen on port and open connection to graphql
 db.once('open', () => {

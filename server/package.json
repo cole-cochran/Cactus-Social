@@ -2,11 +2,11 @@
   "name": "project-3",
   "version": "1.0.0",
   "description": "A sleek, secure, and transparent platform.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "watch": "nodemon",
-    "seed": "node seeds/seed.js"
+    "seed": "node seeds/newSeeds.js"
   },
   "repository": {
     "type": "git",
