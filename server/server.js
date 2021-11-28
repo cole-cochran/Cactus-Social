@@ -3,16 +3,14 @@ const compression = require("compression");
 // const routes = require("./controllers/index");
 const { ApolloServer } = require('apollo-server-express');
 
-const { typeDefs, resolvers } = require('./schemas');
+const logger = require('morgan');
 const db = require('./config/connection');
-//const logger = require("morgan");
+const path = require('path');
 
 const path =require('path');
 
-const server = new ApolloServer({
-	typeDefs,
-	resolvers,
-  });
+//* grab express routes from the controller
+// const routes = require('./controllers/index');
 
 // const mongoose = require('mongoose');
 //* Get ApolloServer and grab typeDefs and resolvers from schemas
@@ -21,7 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-//app.use(logger("dev"));
+app.use(logger('dev'));
 
 server.applyMiddleware({ app });
 
@@ -42,6 +40,10 @@ app.get('/', (req, res) => {
   });
 
 //* connect to mongodb database
+
+app.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, '../client/public/index.html'));
+});
 
 //* set up middleware for routes
 // app.use(routes);

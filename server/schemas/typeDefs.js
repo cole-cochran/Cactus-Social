@@ -100,16 +100,27 @@ const typeDefs = gql`
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
         createPostComment(postId: ID!, comment_text: String!): Post
         removePostComment(postId: ID!, commentId: ID!): Post
+
         updatePostComment(postId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Post
+
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
+
         createEvent(thread: String!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+
         updateEvent(thread: String!, eventId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+
         removeEvent(threadId: ID!, eventId: ID!): Thread
+
         attendEvent(eventId: ID!, attendee: String!): Event
+
         leaveEvent(eventId: ID!, attendee: String!): Event
+
         createEventComment(eventId: ID!, comment_text: String!): Event
+
         removeEventComment(eventId: ID!, commentId: ID!): Event
+
         updateEventComment(eventId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Event
+
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Post
     }
 `;
