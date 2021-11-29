@@ -54,8 +54,7 @@ thread {
         username
     }
     date_created
-}
-`
+}`;
 
 const userResponse = `
 user {
@@ -107,8 +106,7 @@ user {
     friends {
         username
     }
-}
-`
+}`;
 
 const postResponse = `
 post {
@@ -128,8 +126,7 @@ post {
         edited
         post
     }
-}
-`
+}`;
 
 const eventResponse = `
 events {
@@ -159,11 +156,9 @@ events {
     }
     date_created
     edited
-}
-`
+}`;
 
 //*  USER STUFF
-
 export const LOGIN_USER = gql`
 mutation loginUser($username: String!, #password: String!) {
     loginUser(username: $username, password: $password) {
@@ -174,8 +169,20 @@ mutation loginUser($username: String!, #password: String!) {
 `;
 
 export const CREATE_USER = gql`
-mutation addUser($first_name: String!, $last_name: String!,$username: String!, $email: String!, $password: String!) {
-    addUser( first_name: $first_name, last_name: $last_name, username: $username, email: $email, password: $password) {
+mutation addUser(
+    $first_name: String!
+    $last_name: String!
+    $username: String!
+    $email: String!
+    $password: String!
+) {
+    addUser(
+        first_name: $first_name
+        last_name: $last_name
+        username: $username
+        email: $email
+        password: $password
+    ) {
         token
         user {
             first_name
@@ -234,9 +241,7 @@ mutation updateBio($userId: ID!, $bio: String!) {
     }
 }
 `;
-
 //*  THREAD STUFF
-
 export const CREATE_THREAD = gql`
 mutation createThread($moderator: String!, $title: String!) {
     createThread( moderator: $moderator, title: $title) {
@@ -261,9 +266,7 @@ mutation removeThread($threadId: ID!) {
     }
 }
 `;
-
 // * POST STUFF
-
 export const CREATE_POST = gql`
 mutation createPost($thread: String!, $post_text: String!) {
     createPost( thread: $thread, post_text: $post_text) {
@@ -343,9 +346,7 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
     }
 }
 `;
-
 //*  EVENT STUFF
-
 export const CREATE_EVENT = gql`
 mutation createEvent($thread: String!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
     createEvent(thread: $thread, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
@@ -417,4 +418,3 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
     }
 }
 `;
-//*  YEP

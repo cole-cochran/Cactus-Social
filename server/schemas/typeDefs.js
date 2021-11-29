@@ -125,7 +125,6 @@ const typeDefs = gql`
 
         addPostReaction(thread: String!, postId: ID!, reaction: String!): Thread
 
-
         createPostComment(postId: ID!, comment_text: String!): Post
 
         removePostComment(postId: ID!, commentId: ID!): Post
@@ -150,7 +149,7 @@ const typeDefs = gql`
 
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
 
-        addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Post
+        addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
     }
 `;
 
