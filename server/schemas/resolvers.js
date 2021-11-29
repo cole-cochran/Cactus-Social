@@ -314,7 +314,7 @@ const resolvers = {
 		//* give user ability to pin posts
 		pinPost: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
-			const { postId } = args;
+			const { postId, pinTitle, pinHash } = args;
 			return await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
@@ -333,8 +333,8 @@ const resolvers = {
 			return await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
-					pinTitle: pinTitle,
-					pinHash: pinHash,
+					pinTitle: '',
+					pinHash: '',
 					pinned: false
 				},
 				{ new: true }
