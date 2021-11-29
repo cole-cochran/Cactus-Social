@@ -19,7 +19,7 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
-		// get all threads
+		//* get all threads
 		allThreads: async (parent, args, context) => {
 			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
 		},
@@ -40,13 +40,13 @@ const resolvers = {
 				.populate('moderator');
 		},
 
-		//* find comments belonging to single post
+		//* find details of a single post
 		//! add user context to ensure they are logged in
 		postDetails: async (parent, args, context) => {
 			return await Post.findById(args.postId).populate('comments').populate('author');
 		},
 
-		//* find comments belonging to single event
+		//* find details of a single event
 		//! add user context to ensure they are logged in
 		eventDetails: async (parent, args, context) => {
 			return await Event.findById(args.eventId).populate('comments').populate('author');
@@ -282,7 +282,6 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
-		//! NEED TO ADD SOME SORT OF INDEXER TO THREAD CREATION TO KEEP TRACK OF IT AND USE IT TO UPDATE A POST IN A GIVEN THREAD
 		//* update thread post
 		updatePost: async (parent, args, context) => {
 			const { thread, postId, post_text } = args;
@@ -327,7 +326,7 @@ const resolvers = {
 			);
 		},
 
-		//* give user ability to pin posts
+		//* give user ability to unpin posts
 		unpinPost: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
 			const { postId } = args;
@@ -378,6 +377,31 @@ const resolvers = {
 			);
 			// }
 			// throw new AuthenticationError('Could not find User!');
+		},
+
+		//* let users update post comments
+		updatePostComment: async (parent, args, context) => {
+			//! add user context here as well to make sure they have permission
+			const { postId, comment_text, commentId } = args;
+			await Comment.findOneAndUpdate(
+				{ _id: commentId },
+				{
+					comment_text: comment_text,
+					edited: true
+				},
+				{ new: true }
+			);
+
+			return await Post.findOneAndUpdate(
+				{
+					_id: postId,
+					'comments._id': commentId
+				},
+				{
+					'comments.comment_text': post_text,
+					'comments.edited': true
+				}
+			);
 		},
 
 		//* create new event
@@ -467,6 +491,62 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
+		//* let users update events
+		updateEvent: async (parent, args, context) => {
+			//! add user context here as well to make sure they have permission
+			const {
+				thread,
+				eventId,
+				title,
+				description,
+				start_date,
+				end_date,
+				start_time,
+				end_time,
+				category,
+				in_person,
+				location,
+				image
+			} = args;
+			await Event.findOneAndUpdate(
+				{ _id: eventId },
+				{
+					title: title,
+					description: description,
+					start_date: start_date,
+					end_date: end_date,
+					start_time: start_time,
+					end_time: end_time,
+					category: category,
+					in_person: in_person,
+					location: location,
+					image: image,
+					edited: true
+				},
+				{ new: true }
+			);
+
+			return await Thread.findOneAndUpdate(
+				{
+					title: thread,
+					'events._id': eventId
+				},
+				{
+					'events.title': title,
+					'events.description': description,
+					'events.start_date': start_date,
+					'events.end_date': end_date,
+					'events.start_time': start_time,
+					'events.end_time': end_time,
+					'events.category': category,
+					'events.in_person': in_person,
+					'events.location': location,
+					'events.image': image,
+					'events.edited': true
+				}
+			);
+		},
+
 		//* let user attend an event
 		attendEvent: async (parent, args, context) => {
 			const { eventId, attendee } = args;
@@ -493,7 +573,7 @@ const resolvers = {
 			);
 		},
 
-		//* let user attend an event
+		//* let user leave an event
 		leaveEvent: async (parent, args, context) => {
 			const { eventId, attendee } = args;
 			//! add user context to authenticate
@@ -576,112 +656,6 @@ const resolvers = {
 				{
 					'comments.comment_text': post_text,
 					'comments.edited': true
-				}
-			);
-		},
-
-		//* let users update post comments
-		updatePostComment: async (parent, args, context) => {
-			//! add user context here as well to make sure they have permission
-			const { postId, comment_text, commentId } = args;
-			await Comment.findOneAndUpdate(
-				{ _id: commentId },
-				{
-					comment_text: comment_text,
-					edited: true
-				},
-				{ new: true }
-			);
-
-			return await Post.findOneAndUpdate(
-				{
-					_id: postId,
-					'comments._id': commentId
-				},
-				{
-					'comments.comment_text': post_text,
-					'comments.edited': true
-				}
-			);
-		},
-
-		//* let users update posts
-		updatePost: async (parent, args, context) => {
-			//! add user context here as well to make sure they have permission
-			const { postId, post_text, thread } = args;
-			await Post.findOneAndUpdate(
-				{ _id: postId },
-				{
-					post_text: post_text,
-					edited: true
-				},
-				{ new: true }
-			);
-
-			return await Thread.findOneAndUpdate(
-				{
-					title: thread,
-					'posts._id': commentId
-				},
-				{
-					'posts.post_text': post_text,
-					'posts.edited': true
-				}
-			);
-		},
-
-		//* let users update events
-		updateEvent: async (parent, args, context) => {
-			//! add user context here as well to make sure they have permission
-			const {
-				thread,
-				eventId,
-				title,
-				description,
-				start_date,
-				end_date,
-				start_time,
-				end_time,
-				category,
-				in_person,
-				location,
-				image
-			} = args;
-			await Event.findOneAndUpdate(
-				{ _id: eventId },
-				{
-					title: title,
-					description: description,
-					start_date: start_date,
-					end_date: end_date,
-					start_time: start_time,
-					end_time: end_time,
-					category: category,
-					in_person: in_person,
-					location: location,
-					image: image,
-					edited: true
-				},
-				{ new: true }
-			);
-
-			return await Thread.findOneAndUpdate(
-				{
-					title: thread,
-					'events._id': eventId
-				},
-				{
-					'events.title': title,
-					'events.description': description,
-					'events.start_date': start_date,
-					'events.end_date': end_date,
-					'events.start_time': start_time,
-					'events.end_time': end_time,
-					'events.category': category,
-					'events.in_person': in_person,
-					'events.location': location,
-					'events.image': image,
-					'events.edited': true
 				}
 			);
 		},
