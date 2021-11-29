@@ -8,6 +8,8 @@ import { Button } from "@mui/material";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { LoginDesktop } from "./LoginDesktop";
+//* bring in authorization
+import AuthService from '../utils/auth';
 
 
 export function MediaQuery(){
@@ -25,7 +27,7 @@ export function MediaQuery(){
     return (
       <div>
         {isDesktop ? (
-           <LoginDesktop/>
+          <LoginDesktop/>
         ) : (
           <Login/>
         )}
@@ -66,15 +68,50 @@ const LogoImg="./assets/img/logo.png"
    maxWidth:"30rem"  
 }
 )
-export function Login(){
 
-    const loginSubmit=(e)=>{
-        e.preventDefault();
-        const loginBody = new FormData(e.currentTarget)
-        console.log(loginBody.get('email'))
-        console.log(loginBody.get('password'))
-        //come back later/////////////////////////
-    }   
+//* ACTUAL LOGIN STUFF
+export function Login(){
+  const [formState, setFormState] = useState({ username: '', password: '' });
+  
+  const [loginUser, { error, data }] = useMutation(LOGIN_USER);
+
+  // update state based on form input changes
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  // submit form
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    console.log(formState);
+    try {
+      const { data } = await loginUser({
+        variables: { ...formState },
+      });
+
+      AuthService.login(data.login.token);
+    } catch (e) {
+      console.error(e);
+    }
+
+    // clear form values
+    setFormState({
+      username: '',
+      password: '',
+    });
+  };
+    // const loginSubmit=(e)=>{
+    //     e.preventDefault();
+    //     const loginBody = new FormData(e.currentTarget)
+    //     console.log(loginBody.get('email'))
+    //     console.log(loginBody.get('password'))
+    //     //come back later/////////////////////////
+    // }   
 return(
     <div>
     <Banner>
