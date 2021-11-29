@@ -120,7 +120,7 @@ const typeDefs = gql`
 
         pinPost(thread: String!, postId: ID!, pinTitle: String!): Thread
 
-        addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
+        addPostReaction(thread: String!, postId: ID!, reaction: String!): Thread
 
 
         createPostComment(postId: ID!, comment_text: String!): Post
