@@ -542,6 +542,67 @@ footer {
 }
 
 /*************THREEDDISPLAY-MEDIA-QUERIES:END****************/
+/*************PROFILE.JS:START****************/
+
+.profile-header {
+    margin-top: 2rem;
+}
+.profile-header h3 {
+    font-size: 1rem;
+}
+
+.profile-wrapper {
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.profile-content-container {
+    padding-left: 1.5rem;
+    width: calc(100% - 2.5rem);
+    max-width: 40rem;
+}
+
+.placeholder-img {
+    width: 10rem;
+    height: 10rem;
+    background-color: lightblue;
+}
+
+.user-info {
+    margin-top: 1rem;
+}
+
+.user-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.tech-stack {
+    margin-top: .75rem;
+}
+
+.tech-stack ul {
+    padding-left: 0;
+    list-style-type: none;
+    display: inline-block;
+}
+.tech-stack ul li {
+    margin-right: 1rem;
+    font-size: .75rem;
+    display: inline-block;
+}
+
+/*************PROFILE.JS:END****************/
+/*************PROFILE.JS:MEDIA-QUERIES-START***************/
+
+.profile-wrapper {
+    position: static;
+    width: 100%;
+}
+
+/*************PROFILE.JS:MEDIA-QUERIES-END***************/
 /*************404.HTML:STYLES************/
 .error-banner-mobile {
     height: 4rem;
