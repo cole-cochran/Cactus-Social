@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../Header";
-import Sidebar from "../Sidebar";
-import Footer from "../Footer";
-import ThreadDisplay from "../ThreadDisplay";
-import RightShelf from "../RightShelf";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
+import ThreadDisplay from "../components/ThreadDisplay";
+import RightShelf from "../components/RightShelf";
 
 function Dashboard(props) {
     return (
