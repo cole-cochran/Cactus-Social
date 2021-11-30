@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/system';
-import { Typography } from '@mui/material';
-import { TextField } from '@mui/material';
-import { FormControlLabel } from '@mui/material';
-import { Checkbox } from '@mui/material';
-import { Button } from '@mui/material';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
+
 import { LoginDesktop } from './LoginDesktop';
+
 //* bring in authorization
 import AuthService from '../utils/auth';
+//* bring in mutation(s) and useMutation
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 
@@ -31,9 +28,9 @@ export function MediaQuery() {
 const LogoImg = './assets/img/logo.png';
 //STYLING WILL COME BACK AND CHANGE TO SX
 
-const MainDiv = styled('div')({
-	display: 'flex'
-});
+// const MainDiv = styled('div')({
+	// display: 'flex'
+// });
 
 const LoginFormSection = styled('section')({
 	width: 'calc(100% - 1rem)',
@@ -114,7 +111,7 @@ export function Login() {
 						alt="wiener"
 					/>
 				</LogoBox>
-				<LoginForm onClick={loginSubmit}>
+				<LoginForm onClick={null}>
 					<Typography
 						component="h3"
 						sx={{
