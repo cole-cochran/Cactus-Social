@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { EVENT_DETAILS } from '../utils/queries';
+// import React, { useState } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { useQuery } from '@apollo/client';
+// import { EVENT_DETAILS } from '../utils/queries';
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -12,8 +12,6 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function EventDisplay() {
