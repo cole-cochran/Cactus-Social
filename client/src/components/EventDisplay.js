@@ -2,7 +2,6 @@
 // import { useParams } from 'react-router-dom';
 // import { useQuery } from '@apollo/client';
 // import { EVENT_DETAILS } from '../utils/queries';
-
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,6 +12,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 export default function EventDisplay() {
     
