@@ -76,6 +76,7 @@ const typeDefs = gql`
         thread: Thread
         comments: [Comment]!
         date_created: String
+        edited: Boolean
     }
 
     type Query {
@@ -118,16 +119,17 @@ const typeDefs = gql`
 
         updatePost(thread: String!, postId: ID!, post_text: String!): Thread
 
-        pinPost(thread: String!, postId: ID!, pinTitle: String!): Thread
+        pinPost(thread: String!, postId: ID!, pinTitle: String!, pinHash: String!): Thread
 
-        addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
+        unpinPost(thread: String!, postId: ID!): Thread
 
+        addPostReaction(thread: String!, postId: ID!, reaction: String!): Thread
 
         createPostComment(postId: ID!, comment_text: String!): Post
 
         removePostComment(postId: ID!, commentId: ID!): Post
 
-        updatePostComment(postId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Post
+        updatePostComment(postId: ID!, commentId: ID!, comment_text: String!): Post
 
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
@@ -145,9 +147,9 @@ const typeDefs = gql`
 
         removeEventComment(eventId: ID!, commentId: ID!): Event
 
-        updateEventComment(eventId: ID!, commentId: ID!, edited: Boolean!, comment_text: String!): Event
+        updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
 
-        addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Post
+        addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
     }
 `;
 
