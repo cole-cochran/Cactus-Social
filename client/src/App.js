@@ -1,14 +1,15 @@
-import './App.css';
-import Dashboard from './jactus-components/Dashboard';
-import Profile from './jactus-components/Profile'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignUp from './pages/SignUp';
+import { Login } from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
 
 function App() {
   return (
     <Router>
         <Routes>
-            <Route path="/signup" element={<Dashboard/>}/>
-            <Route path="/login" element={<Dashboard/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/login" element={<Login/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/profile" element={<Profile/>}/>
         </Routes>

@@ -24,6 +24,9 @@ function ThreadDisplay(props) {
                          <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
                     </div>
                 </div>
+                <div class="add-chat">
+                    <input type="text" placeholder="Message the thread"/>
+                </div>
             </div>
         </main>
     )

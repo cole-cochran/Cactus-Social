@@ -488,6 +488,13 @@ footer {
     color: #FFE3A1;
     margin-left: 1rem;
 }
+
+.add-chat {
+    width: 100%;
+}
+.add-chat input {
+    width: 100%;
+}
 /*************THREEDDISPLAY:END****************/
 /*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
 
