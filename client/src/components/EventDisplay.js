@@ -78,7 +78,7 @@ export default function EventDisplay() {
 
 	return (
 		<div>
-			<Card style={styles.card} className="card" sx={{ maxWidth: 750 }}>
+			<Card style={styles.card} sx={{ maxWidth: 750 }}>
 				<CardMedia component="img" height="345" image={event.image} alt={event.title} />
 				<CardContent>
 					<Typography gutterBottom variant="h5" component="div">
