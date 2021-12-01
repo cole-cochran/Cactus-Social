@@ -26,6 +26,7 @@ const typeDefs = gql`
         reactions: [String]!
         edited: Boolean
         post: Post
+        event: Event
     }
 
     type User {
@@ -82,11 +83,11 @@ const typeDefs = gql`
     type Query {
         allUsers: [User]
         allThreads: [Thread]
+        userEventsAndThreads: User
         threadDetails(threadId: ID!): Thread
         postDetails(postId: ID!): Post
         eventDetails(eventId: ID!): Event
-        userProfile(username: String!): User
-        userThreads(username: String!): [Thread]
+        userProfile(userId: ID!): User
         userFriends(username: String!): [User]
     }
 
@@ -156,3 +157,5 @@ const typeDefs = gql`
 module.exports = typeDefs;
 
 // updateUser(userId: ID!, first_name: String!, last_name: String!, username: String!, email: String!): User
+
+// userThreads(username: String!): [Thread]
