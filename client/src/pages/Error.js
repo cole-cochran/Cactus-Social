@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+import React from "react";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../../src/jass.css">
-</head>
+
+export function Error() {
 <body class="error-page-body">
     <div class="error-banner-mobile">
         <img src="#" alt="">
@@ -29,11 +24,12 @@
 </body>
 <footer class="mobile-dashboard-footer">
 </footer>
-    <script src="../js/parallax.js"></script>
+    <script src=""></script>
 </html>
+}
 
 
-<!-- <body data-new-gr-c-s-loaded="14.1040.0">
+{/* <!-- <body data-new-gr-c-s-loaded="14.1040.0">
     <div id="parallax_wrapper">
         <div id="parallax_field">
             <img id="img" src="./assets/img/error.png" alt="error page with a bird and text">
@@ -53,4 +49,4 @@
 
 
     <script src="./js/parallax.js"></script>
-</body> -->
+</body> --> */}

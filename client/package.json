@@ -14,9 +14,7 @@
     "web-vitals": "^1.1.2",
     "@apollo/client": "^3.3.5",
     "graphql": "^14.6.0",
-    "jwt-decode": "^2.2.0",
-    "babel-eslint": "10.0.3",
-    "webpack": "4.41.2"
+    "jwt-decode": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
