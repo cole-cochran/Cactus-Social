@@ -1,52 +1,27 @@
 import React from "react";
 import NavBar from "../components/NavBar";
+import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
+import ProfileDisplay from "../components/ProfileDisplay";
 
 
-export function Error() {
-<body class="error-page-body">
+export default function Error() {
+<main class="error-page-body">
     <div class="error-banner-mobile">
-        <img src="#" alt="">
     </div>
     <div>   
     <div id="parallax_illustration">
             <img src="../assets/img/error.png"alt="Error page with a bird and text" class="js-plaxify" data-invert="true" data-xrange="50" data-yrange="50" height=""
-                 id="parallax_sign" width="" src="">
+                 id="parallax_sign" width="" src=""/>
         </div>
     </div>     
-    <section class="error-banner">
+    {/* <section class="error-banner">
         <h1>
             Cactus Social<br>
             A sleek, secure,<br>
             and transparent platform...
         </h1>
-    </section>
-</body>
-<footer class="mobile-dashboard-footer">
-</footer>
-    <script src=""></script>
-</html>
+    </section> */}
+</main>
 }
 
-
-{/* <!-- <body data-new-gr-c-s-loaded="14.1040.0">
-    <div id="parallax_wrapper">
-        <div id="parallax_field">
-            <img id="img" src="./assets/img/error.png" alt="error page with a bird and text">
-        </div>
-        <div id="parallax_illustration">
-            <img alt="" class="js-plaxify" data-xrange="10" data-yrange="10" height="204" id="parallax_octocat"
-                width="175" src="" style="top: 66px; left: 431px; transform: translate3d(4.9814px, -3.96985px, 0px);">
-            <img alt="500 Error" class="js-plaxify" data-invert="true" data-xrange="20" data-yrange="40" height="181"
-                id="parallax_sign" width="211" src=""
-                style="top: 25px; left: 582px; transform: translate3d(-9.96279px, 15.8794px, 0px);">
-            <p id="parallax_error_text" class="js-plaxify" data-xrange="25" data-yrange="25"
-                style="top: 175px; left: 152px; transform: translate3d(12.9535px, -9.42462px, 0px);">
-            </p>
-        </div>
-        <span id="error_500"></span>
-    </div>
-
-
-    <script src="./js/parallax.js"></script>
-</body> --> */}
