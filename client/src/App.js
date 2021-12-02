@@ -4,6 +4,7 @@ import AuthService from './utils/auth';
 //* Bring in Apollo
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import ProfilePopout from './components/ProfilePopout';
 
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({ uri: (window.location.hostname === '<OUR WEBSITE>') ? '/graphql' : 'http://localhost:3000/graphql' });
@@ -45,16 +46,17 @@ function App() {
 	// 	}
 	// }
   return (
+    <ProfilePopout />
     // <ApolloProvider client={client}>
-    <Router>
-        <Routes>
-            <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/dashboard" element={<Dashboard/>}/>
-            <Route path="/profile" element={<Profile/>}/>
-            {/* <Route path="/" element={checkAuth()}/> */}
-        </Routes>
-    </Router>
+    // <Router>
+        // <Routes>
+            // {/* <Route path="/signup" element={<SignUp/>}/> */}
+            // {/* <Route path="/login" element={<Login/>}/> */}
+            // {/* <Route path="/dashboard" element={<Dashboard/>}/> */}
+            // {/* <Route path="/profile" element={<Profile/>}/> */}
+            // {/* <Route path="/" element={checkAuth()}/> */}
+        // </Routes>
+    // </Router>
     // </ApolloProvider>
   );
 }
