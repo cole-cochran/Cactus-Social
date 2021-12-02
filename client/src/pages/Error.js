@@ -1,8 +1,5 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
-import ProfileDisplay from "../components/ProfileDisplay";
 
 
 export default function Error() {
