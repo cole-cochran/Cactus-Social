@@ -1,19 +1,19 @@
 import React from "react";
-import cactusVideo from "./video/CACTUSVIDEO.mp4";
+import cactusVideo from "./CACTUSVIDEO.mp4";
 
-const splashpage = () => {
+function SplashPage(){
     return (
         <div className="App">
             <video autoPlay loop muted
             
             style={{
                 postition:"absolute",
-                width="100%",
-                left="50%",
-                top:"50%",
-                height: "100%",
+                width:"100vw",
+                // left:"50%",
+                // top:"50%",
+                height: "100vh",
                 objectFit: "cover",
-                transform: "translate(-50%, -50%)",
+                // transform: "translate(-50%, -50%)",
                 zIndex: "-1",
             }}
             >
@@ -23,4 +23,4 @@ const splashpage = () => {
     );
 };
 
-export default splashpage;
+export default SplashPage;
