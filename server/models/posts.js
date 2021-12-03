@@ -18,9 +18,8 @@ const postSchema = new Schema({
         get: (timestamp) => dateFormat(timestamp)
     },
     author: {
-        type: String,
-        ref:'User',
-        required: true
+        type: ObjectId,
+        ref:'User'
     },
     reactions: [
         {
@@ -46,7 +45,7 @@ const postSchema = new Schema({
         maxLength: [18, "Pin hash needs to be less than 18 characters!"]
     },
     thread: {
-        type: String,
+        type: ObjectId,
         ref:'Thread'
     },
     comments: [
