@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AuthService from './utils/auth';
-// import Dashboard from './pages/Dashboard';
-// import Profile from './pages/Profile';
-// import SplashPage from './pages/Splashpage/splashpage';
-import Sendbird from './pages/Sendbird/Sendbird'
-import EventCreation from './components/EventCreation';
-=======
 //*import pages
 import Splashpage from './pages/Splashpage/Splashpage';
 import SignUp from './pages/SignUp';
@@ -16,7 +7,6 @@ import Profile from './pages/Profile';
 
 //*import browser router 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
->>>>>>> 1af4ffe6392a19580d28f8785d63b2885ba1f6f6
 
 //* Bring in Apollo
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, } from '@apollo/client';
@@ -56,18 +46,6 @@ function App() {
   return (
     // <SplashPage/>
     // <EventCreation/>
-<<<<<<< HEAD
-    <Sendbird/>
-    // <ApolloProvider client={client}>
-    // <Router>
-            //  <Route path="/signup" element={<SignUp/>}/>
-          //  {<Route path="/login" element={<Login/>}/> 
-          //  <Route path="/dashboard" element={<Dashboard/>}/> 
-          //  <Route path="/profile" element={<Profile/>}/>
-        //  <Route path="/" element={checkAuth()}/> 
-          // <Route path="/sendbird" element={<Sendbird/>}/>
-    // </Router> 
-=======
     // <ApolloProvider client={client}>
     <Router>
       <div className="App">
@@ -90,7 +68,6 @@ function App() {
         </Switch>
       </div>
     </Router>
->>>>>>> 1af4ffe6392a19580d28f8785d63b2885ba1f6f6
     // </ApolloProvider>
   );
 }
