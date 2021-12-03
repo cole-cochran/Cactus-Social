@@ -22,6 +22,88 @@
 }
 
 /*************GLOBAL:STYLES************/
+/*************SPLASHPAGE:STYLES************/ 
+.splash-page-header {
+    padding-top: 1rem;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+}
+
+.splash-page-header button {
+    background-color: white;
+    font-size: .75rem;
+    height: 2rem;
+    border: none;
+    width: 6rem;
+    border-radius: 1rem;
+    margin-right: 1rem;
+}
+
+
+.splash-page-content {
+    padding-top: 3rem;
+    background-color: black;
+    color: white;
+    padding-bottom: 12rem;
+}
+
+.splash-page-content h1 {
+    font-size: 2rem;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+}
+
+
+.splash-page-content p {
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    font-size: .875rem;
+}
+
+
+.splash-page-sign-up-button {
+    background-color: white;
+    font-size: .75rem;
+    height: 3rem;
+    border: none;
+    width: 12rem;
+    border-radius: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.splash-page-download-button {
+    background-color: var(--primary-green);
+    font-size: .875rem;
+    font-weight: 700;
+    height: 3rem;
+    border: none;
+    width: 16rem;
+    border-radius: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.splash-page-video {
+    height: 30rem;
+    /* width: 100%; */
+}
+
+/*************SPLASHPAGE:STYLES************/ 
+/*************SPLASHPAGE:MEDIA-QUERIES************/
+
+@media only screen and (min-width: 610px) {
+
+    
+.splash-page-content {
+    padding-top: 10rem;
+    text-align: center;
+}
+
+}
+
+/*************SPLASHPAGE:MEDIA-QUERIES************/ 
 /*************LOGIN.HTML:STYLES************/
 
 .logo-container {

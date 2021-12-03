@@ -1,60 +1,60 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '../utils/mutations';
+// import { CREATE_USER } from '../utils/mutations';
 import AuthService from '../utils/auth';
 
 function SignUp(props) {
-	const [ formState, setFormState ] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		password: '',
-		username: ''
-	});
-	const [ addUser ] = useMutation(CREATE_USER);
+	// const [ formState, setFormState ] = useState({
+	// 	first_name: '',
+	// 	last_name: '',
+	// 	email: '',
+	// 	password: '',
+	// 	username: ''
+	// });
+	// const [ addUser ] = useMutation(CREATE_USER);
 
-	const handleFormChange = (event) => {
-		const { name, value } = event.target;
-		setFormState({
-			...formState,
-			[name]: value
-		});
-	};
+	// const handleFormChange = (event) => {
+	// 	const { name, value } = event.target;
+	// 	setFormState({
+	// 		...formState,
+	// 		[name]: value
+	// 	});
+	// };
 
-	const handleFormSubmit = async (event) => {
-		event.preventDefault();
-		console.log(formState);
-		try {
-			window.localStorage.clear();
-			const { data } = await addUser({
-				variables: {
-					first_name: formState.first_name,
-					last_name: formState.last_name,
-					username: formState.username,
-					email: formState.email,
-					password: formState.password
-				}
-			});
+	// const handleFormSubmit = async (event) => {
+	// 	event.preventDefault();
+	// 	console.log(formState);
+	// 	try {
+	// 		window.localStorage.clear();
+	// 		const { data } = await addUser({
+	// 			variables: {
+	// 				first_name: formState.first_name,
+	// 				last_name: formState.last_name,
+	// 				username: formState.username,
+	// 				email: formState.email,
+	// 				password: formState.password
+	// 			}
+	// 		});
 
-			const token = data.addUser.token;
-			AuthService.login(token);
-		} catch (e) {
-			console.error(e);
-		}
-	};
+	// 		const token = data.addUser.token;
+	// 		AuthService.login(token);
+	// 	} catch (e) {
+	// 		console.error(e);
+	// 	}
+	// };
 
 	return (
 		<div>
 			<h1>Sign Up!</h1>
-			<form onSubmit={handleFormSubmit}>
+			<form onSubmit={null}>
 				<label for="firstName">First Name: </label>
 				<input
 					type="text"
 					id="firstName"
 					name="firstName"
 					placeholder="First"
-					value={formState.first_name}
-					onChange={handleFormChange}
+					// value={formState.first_name}
+					// onChange={handleFormChange}
 				/>
 				<label for="lastName">Last Name: </label>
 				<input
@@ -62,8 +62,8 @@ function SignUp(props) {
 					id="lastName"
 					name="lastName"
 					placeholder="Last"
-					value={formState.last_name}
-					onChange={handleFormChange}
+					// value={formState.last_name}
+					// onChange={handleFormChange}
 				/>
 				<label for="username">Username: </label>
 				<input
@@ -71,8 +71,8 @@ function SignUp(props) {
 					id="username"
 					name="username"
 					placeholder="Username"
-					value={formState.username}
-					onChange={handleFormChange}
+					// value={formState.username}
+					// onChange={handleFormChange}
 				/>
 				<label for="email">Email: </label>
 				<input
@@ -80,8 +80,8 @@ function SignUp(props) {
 					id="email"
 					name="email"
 					placeholder="Email"
-					value={formState.email}
-					onChange={handleFormChange}
+					// value={formState.email}
+					// onChange={handleFormChange}
 				/>
 				<label for="password">Password: </label>
 				<input
@@ -89,8 +89,8 @@ function SignUp(props) {
 					id="password"
 					name="password"
 					placeholder="password"
-					value={formState.password}
-					onChange={handleFormChange}
+					// value={formState.password}
+					// onChange={handleFormChange}
 				/>
 				<button type="submit">Create Account</button>
 			</form>
