@@ -19,7 +19,7 @@ const userSchema = new Schema({
 		trim: true,
 		lowercase: true,
 		required: 'First name is required',
-		minLength: [4, "First Name cant be less than 2 characters"],
+		minLength: [2, "First Name cant be less than 2 characters"],
 		maxLength: [40, "First name can't be longer than 40 character"]
 	},
 	last_name: {
@@ -66,7 +66,7 @@ const userSchema = new Schema({
 	},
 	threads: [
 		{
-			type: String,
+			type: ObjectId,
 			ref: 'Thread'
 		}
 	],
@@ -89,7 +89,7 @@ const userSchema = new Schema({
 	},
 	friends: [
 		{
-			type: String,
+			type: ObjectId,
 			ref: 'User'
 		}
 	]

@@ -26,13 +26,12 @@ const threadSchema = new Schema({
         }
     ],
 	moderator: {
-		type: String,
-		ref:'User',
-		required: true
+		type: ObjectId,
+		ref:'User'
 	},
 	members: [
 		{
-			type: String,
+			type: ObjectId,
 			ref:'User'
 		}
 	],
