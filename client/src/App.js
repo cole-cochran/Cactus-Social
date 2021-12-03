@@ -3,6 +3,7 @@ import AuthService from './utils/auth';
 // import Dashboard from './pages/Dashboard';
 // import Profile from './pages/Profile';
 // import SplashPage from './pages/Splashpage/splashpage';
+import Sendbird from './pages/Sendbird/Sendbird'
 import EventCreation from './components/EventCreation';
 
 //* Bring in Apollo
@@ -54,17 +55,17 @@ function App() {
 	// }
   return (
     // <SplashPage/>
-    <EventCreation/>
+    // <EventCreation/>
+    <Sendbird/>
     // <ApolloProvider client={client}>
     // <Router>
-    //     <Routes>
-            //{/* <Route path="/signup" element={<SignUp/>}/>
-           // <Route path="/login" element={<Login/>}/> */}
-           // {/* <Route path="/dashboard" element={<Dashboard/>}/> */}
-            //{/* <Route path="/profile" element={<Profile/>}/> */}
-          //  {/* <Route path="/" element={checkAuth()}/> */}
-    //     </Routes>
-    // </Router>
+            //  <Route path="/signup" element={<SignUp/>}/>
+          //  {<Route path="/login" element={<Login/>}/> 
+          //  <Route path="/dashboard" element={<Dashboard/>}/> 
+          //  <Route path="/profile" element={<Profile/>}/>
+        //  <Route path="/" element={checkAuth()}/> 
+          // <Route path="/sendbird" element={<Sendbird/>}/>
+    // </Router> 
     // </ApolloProvider>
   );
 }

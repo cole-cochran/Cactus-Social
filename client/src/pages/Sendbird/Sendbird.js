@@ -5,7 +5,7 @@ import "sendbird-uikit/dist/index.css";
 import "./sendbird.css";
 import { APP_ID, USER_ID, NICKNAME, THEME } from "./const";
 
-export default function App() {
+export default function Sendbird() {
   return (
     <div className="customized-app">
       <SendbirdApp
