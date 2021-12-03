@@ -6,29 +6,44 @@ const resolvers = {
 	Query: {
 		//* get all users
 		allUsers: async (parent, args, context) => {
-			return await User.find({}).populate('threads').populate('events').populate('events.owner').populate('friends');
+			return await User.find({})
+				.populate('threads')
+				.populate('events')
+				.populate('events.owner')
+				.populate('friends');
 		},
 
 		//* get single user
 		//! add user to the context when we create it and refer to the id as "_id"
 		userProfile: async (parent, args, context) => {
 			// if (context.user) {
-			return await User.findOne({ _id: args.userId })
+			return await User.findOne({ _id: args.userId });
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
+			return await Thread.find({})
+				.populate('posts')
+				.populate('events')
+				.populate('members')
+				.populate('moderator');
 		},
 
 		allPosts: async (parent, args, context) => {
-			return await Post.find({}).populate('author').populate('thread').populate('comments');
+			return await Post.find({})
+				.populate('author')
+				.populate('thread')
+				.populate('comments');
 		},
 
 		allEvents: async (parent, args, context) => {
-			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
+			return await Event.find({})
+				.populate('owner')
+				.populate('attendees')
+				.populate('thread')
+				.populate('comments');
 		},
 
 		//* get all user events and threads
@@ -36,7 +51,9 @@ const resolvers = {
 		userEventsAndThreads: async (parent, args, context) => {
 			// if (context.user) {
 			const { userId } = args;
-			return await User.findOne({ _id: userId }).populate('threads').populate('events');
+			return await User.findOne({ _id: userId })
+				.populate('threads')
+				.populate('events');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!')
 		},
@@ -58,7 +75,8 @@ const resolvers = {
 		//! add user context to ensure they are logged in and change query in typeDefs
 		userFriends: async (parent, args, context) => {
 			// if (context.user) {
-			return await User.findById(args.username).populate('friends');
+			return await User.findById(args.username)
+				.populate('friends');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -77,7 +95,10 @@ const resolvers = {
 		//! add user context to ensure they are logged in
 		postDetails: async (parent, args, context) => {
 			// if (context.user) {
-			return await Post.findById(args.postId).populate('author').populate('thread').populate('comments');
+			return await Post.findById(args.postId)
+				.populate('author')
+				.populate('thread')
+				.populate('comments');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -85,10 +106,12 @@ const resolvers = {
 		//* find details of a single event
 		//! add user context to ensure they are logged in
 		eventDetails: async (parent, args, context) => {
-			return await Event.findById(args.eventId).populate('owner').populate('attendees').populate('thread').populate('comments');
-		},
-
-		
+			return await Event.findById(args.eventId)
+				.populate('owner')
+				.populate('attendees')
+				.populate('thread')
+				.populate('comments');
+		}
 	},
 	Mutation: {
 		//* log the user in
