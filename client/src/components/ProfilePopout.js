@@ -1,16 +1,16 @@
 // import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { USER_EVENTS_AND_THREADS } from '../utils/queries';
+// import { useParams } from 'react-router-dom';
+// import { useQuery } from '@apollo/client';
+// import { USER_EVENTS_AND_THREADS } from '../utils/queries';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+// import CardMedia from '@mui/material/CardMedia';
 // import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import Box from '@mui/material/Box';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from '@mui/material/Avatar';
 
 export default function ProfilePopout() {

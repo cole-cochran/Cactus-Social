@@ -11,11 +11,11 @@ const typeDefs = gql`
         post_text: String!
         date_created: String
         author: User
-        reactions: [String]!
+        reactions: [String]
         edited: Boolean
         pinned: Boolean
         thread: Thread
-        comments: [Comment]!
+        comments: [Comment]
     }
 
     type Comment {
@@ -23,7 +23,7 @@ const typeDefs = gql`
         comment_text: String!
         date_created: String
         author: User
-        reactions: [String]!
+        reactions: [String]
         edited: Boolean
         post: Post
         event: Event
@@ -38,20 +38,20 @@ const typeDefs = gql`
         password: String!
         picture: String
         bio: String
-        threads: [Thread]!
-        events: [Event]!
-        tech_stack: [String]!
+        threads: [Thread]
+        events: [Event]
+        tech_stack: [String]
         date_joined: String
-        friends: [User]!
+        friends: [User]
     }
 
     type Thread {
         _id: ID!
         title: String!
-        posts: [Post]!
-        events: [Event]!
+        posts: [Post]
+        events: [Event]
         moderator: User
-        members: [User]!
+        members: [User]
         date_created: String
     }
 
@@ -69,13 +69,13 @@ const typeDefs = gql`
         start_time: String!
         end_time: String!
         owner: User
-        attendees: [User]!
+        attendees: [User]
         category: String!
         in_person: Boolean!
         location: String!
         image: String
         thread: Thread
-        comments: [Comment]!
+        comments: [Comment]
         date_created: String
         edited: Boolean
     }
@@ -87,8 +87,10 @@ const typeDefs = gql`
         threadDetails(threadId: ID!): Thread
         postDetails(postId: ID!): Post
         eventDetails(eventId: ID!): Event
+        allEvents: [Event]
+        allPosts: [Post]
         userProfile(userId: ID!): User
-        userFriends(username: String!): [User]
+        userFriends(userId: ID!): [User]
     }
 
     type Mutation {

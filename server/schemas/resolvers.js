@@ -1,12 +1,12 @@
-const { User, Comment, Post, Thread, Tech, Event } = require('../models/index');
+const { User, Comment, Post, Thread, Event } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
 	Query: {
 		//* get all users
-		allUsers: async () => {
-			return await User.find({}).populate('events').populate('threads').populate('friends');
+		allUsers: async (parent, args, context) => {
+			return await User.find({}).populate('threads').populate('events').populate('events.owner').populate('friends');
 		},
 
 		//* get single user
@@ -21,6 +21,14 @@ const resolvers = {
 		//* get all threads
 		allThreads: async (parent, args, context) => {
 			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
+		},
+
+		allPosts: async (parent, args, context) => {
+			return await Post.find({}).populate('author').populate('thread').populate('comments');
+		},
+
+		allEvents: async (parent, args, context) => {
+			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
 		},
 
 		//* get all user events and threads
