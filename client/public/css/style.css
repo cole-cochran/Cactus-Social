@@ -574,12 +574,12 @@ footer {
   } */
   #parallax_field {
     position: absolute;
-    width: 130%;
+    width: 200%;
   }
   #parallax_illustration {
     width: 100%;
     height: 100%;
-    position: relative;
+    position: absolute;
     overflow: hidden;
 
   }

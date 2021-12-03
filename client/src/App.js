@@ -4,6 +4,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Error from './pages/Error'
 
 //*import browser router 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -14,6 +15,7 @@ import { setContext } from '@apollo/client/link/context';
 
 //*import authService middleware
 import AuthService from './utils/auth';
+import Sendbird from './pages/Sendbird/Sendbird';
 
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({ uri: (window.location.hostname === '<OUR WEBSITE>') ? '/graphql' : 'http://localhost:3000/graphql' });
@@ -64,6 +66,12 @@ function App() {
           </Route>
           <Route exact path="/profile">
             <Profile/>
+          </Route>
+          <Route exact path="/sendbird">
+            <Sendbird/>
+          </Route>
+          <Route exact path="/404">
+            <Error/>
           </Route>
         </Switch>
       </div>
