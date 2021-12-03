@@ -8,6 +8,7 @@ import EventCreation from './components/EventCreation';
 //* Bring in Apollo
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+// import ProfilePopout from './components/ProfilePopout';
 
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({ uri: (window.location.hostname === '<OUR WEBSITE>') ? '/graphql' : 'http://localhost:3000/graphql' });
