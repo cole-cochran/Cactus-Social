@@ -44,6 +44,8 @@ const client = new ApolloClient({
 function App() {
 
   return (
+    // <SplashPage/>
+    // <EventCreation/>
     // <ApolloProvider client={client}>
     <Router>
       <div className="App">
