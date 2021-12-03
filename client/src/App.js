@@ -1,7 +1,7 @@
 //*import pages
 import Splashpage from './pages/Splashpage/Splashpage';
 import SignUp from './pages/SignUp';
-// import Login from './pages/OldLogin';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
@@ -55,7 +55,7 @@ function App() {
             <SignUp/>
           </Route>
           <Route exact path="/login">
-            {/* <Login/> */}
+            <Login/>
           </Route>
           <Route exact path="/home">
             <Dashboard/>
