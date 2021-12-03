@@ -85,8 +85,8 @@ const typeDefs = gql`
         allThreads: [Thread]
         allPosts: [Post]
         allEvents: [Event]
-        userEventsAndThreads: User
-        userFriends(userId: ID!): [User]
+        userEventsAndThreads(userId: ID!): User
+        userFriends(userId: ID!): User
         threadDetails(threadId: ID!): Thread
         postDetails(postId: ID!): Post
         eventDetails(eventId: ID!): Event

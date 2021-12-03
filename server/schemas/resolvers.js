@@ -50,8 +50,7 @@ const resolvers = {
 		//! add user context to filter results and then go back and change query in typeDefs
 		userEventsAndThreads: async (parent, args, context) => {
 			// if (context.user) {
-			const { userId } = args;
-			return await User.findOne({ _id: userId })
+			return await User.findOne({ _id: args.userId })
 				.populate('threads')
 				.populate('events');
 			// }
@@ -62,8 +61,7 @@ const resolvers = {
 		//! add user context to ensure they are logged in and change query in typeDefs
 		userFriends: async (parent, args, context) => {
 			// if (context.user) {
-			return await User.findById(args.username)
-				.populate('friends');
+			return await User.findOne({ _id: args.userId}).populate('friends');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
