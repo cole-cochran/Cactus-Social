@@ -1,20 +1,19 @@
-const { User, Comment, Post, Thread, Tech, Event } = require('../models/index');
+const { User, Comment, Post, Thread, Event } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
 	Query: {
 		//* get all users
-		allUsers: async () => {
-			return await User.find({}).populate('events').populate('threads').populate('friends');
+		allUsers: async (parent, args, context) => {
+			return await User.find({}).populate('threads').populate('events').populate('events.owner').populate('friends');
 		},
 
-		//* get single (logged-in) user
+		//* get single user
 		//! add user to the context when we create it and refer to the id as "_id"
 		userProfile: async (parent, args, context) => {
 			// if (context.user) {
-			// return await User.findOne({ _id: context.user._id })
-			return await User.findOne({ _id: args.userId }).populate('events').populate('threads').populate('friends');
+			return await User.findOne({ _id: args.userId })
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -24,39 +23,72 @@ const resolvers = {
 			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
 		},
 
-		//* get all user threads
+		allPosts: async (parent, args, context) => {
+			return await Post.find({}).populate('author').populate('thread').populate('comments');
+		},
+
+		allEvents: async (parent, args, context) => {
+			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
+		},
+
+		//* get all user events and threads
 		//! add user context to filter results and then go back and change query in typeDefs
-		userThreads: async (parent, args, context) => {
-			return await Thread.findOne({ username: args.username }).populate('members');
+		userEventsAndThreads: async (parent, args, context) => {
+			// if (context.user) {
+			const { userId } = args;
+			return await User.findOne({ _id: userId }).populate('threads').populate('events');
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!')
 		},
 
 		//* get specific thread
 		//! add user context to ensure they are logged in
 		threadDetails: async (parent, args, context) => {
+			// if (context.user) {
 			return await Thread.findById(args.threadId)
 				.populate('posts')
 				.populate('events')
 				.populate('members')
 				.populate('moderator');
-		},
-
-		//* find details of a single post
-		//! add user context to ensure they are logged in
-		postDetails: async (parent, args, context) => {
-			return await Post.findById(args.postId).populate('comments').populate('author');
-		},
-
-		//* find details of a single event
-		//! add user context to ensure they are logged in
-		eventDetails: async (parent, args, context) => {
-			return await Event.findById(args.eventId).populate('comments').populate('author');
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
 		//* find user's friends
 		//! add user context to ensure they are logged in and change query in typeDefs
 		userFriends: async (parent, args, context) => {
+			// if (context.user) {
 			return await User.findById(args.username).populate('friends');
-		}
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		// // find user events
+		// // add user context to ensure they are logged in
+		// userEvents: async (parent, args, context) => {
+		// 	// if (context.user) {
+		// 	const { userId } = args;
+		// 	return await User.findOne({ _id: userId }).populate('events')
+		// 	// }
+		// 	// throw new AuthenticationError('You need to be logged in to do that!');
+		// },
+
+		//* find details of a single post
+		//! add user context to ensure they are logged in
+		postDetails: async (parent, args, context) => {
+			// if (context.user) {
+			return await Post.findById(args.postId).populate('author').populate('thread').populate('comments');
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		//* find details of a single event
+		//! add user context to ensure they are logged in
+		eventDetails: async (parent, args, context) => {
+			return await Event.findById(args.eventId).populate('owner').populate('attendees').populate('thread').populate('comments');
+		},
+
+		
 	},
 	Mutation: {
 		//* log the user in
