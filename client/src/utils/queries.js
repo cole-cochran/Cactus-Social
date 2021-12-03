@@ -13,6 +13,9 @@ export const ALL_USERS = gql`
 			threads {
 				_id
 				title
+				posts {
+					_id
+				}
 			}
 			events {
 				_id
@@ -91,14 +94,13 @@ export const THREAD_DETAILS = gql`
 				post_text
 				date_created
 				author {
-					username
+					_id
 				}
 				reactions
 				edited
 				pinned
 				comments {
 					_id
-					author
 				}
 			}
 			events {
@@ -110,24 +112,22 @@ export const THREAD_DETAILS = gql`
 				end_time
 				owner {
 					_id
-					username
-					picture
 				}
 				attendees {
 					_id
-					username
-					picture
 				}
 				category
 				in_person
 				location
 				image
-				comments {
+				thread {
 					_id
-					author
 				}
 				date_created
 				edited
+				comments {
+					_id
+				}
 			}
 			moderator {
 				_id
@@ -145,16 +145,81 @@ export const THREAD_DETAILS = gql`
 `;
 
 export const USER_FRIENDS = gql`
-	query userFriends($username: String!) {
-		userFriends(username: $username) {
+	query userFriends($userId: ID!) {
+		userFriends(userId: $userId) {
+			_id
+			username
 			friends {
 				_id
 				username
-				picture
 			}
 		}
 	}
 `;
+
+export const ALL_POSTS = gql`
+	query allPosts {
+		allPosts {
+			_id
+			post_text
+			date_created
+			author {
+				_id
+				username
+			}
+			reactions
+			edited
+			pinned
+			thread {
+				_id
+				title
+			}
+			comments {
+				_id
+				comment_text
+				author {
+					_id
+				}
+			}
+		}
+	}
+`;
+
+export const ALL_EVENTS = gql`
+	query allEvents {
+		allEvents {
+			_id
+			title
+			start_date
+			end_date
+			start_time
+			end_time
+			owner {
+				_id
+				username
+			}
+			attendees {
+				_id
+				username
+			}
+			category
+			in_person
+			location
+			image
+			thread {
+				_id
+				title
+			}
+			date_created
+			edited
+			comments {
+				_id
+				comment_text
+			}
+		}
+	}
+`;
+
 //! FILTER ON THE FRONTEND TO SEE IF THE LOGGED IN USER IS THE MODERATOR OR A MEMBER
 export const USER_EVENTS_AND_THREADS = gql`
 	query userEventsAndThreads($userId: ID!) {
@@ -164,11 +229,9 @@ export const USER_EVENTS_AND_THREADS = gql`
 				title
 				moderator {
 					_id
-					username
 				}
 				members {
 					_id
-					username
 				}
 				date_created
 			}
@@ -181,13 +244,9 @@ export const USER_EVENTS_AND_THREADS = gql`
 				end_time
 				owner {
 					_id
-					username
-					picture
 				}
 				attendees {
 					_id
-					username
-					picture
 				}
 				category
 				in_person
@@ -195,7 +254,6 @@ export const USER_EVENTS_AND_THREADS = gql`
 				image
 				thread {
 					_id
-					title
 				}
 				date_created
 				edited
@@ -226,7 +284,9 @@ export const POST_DETAILS = gql`
 				_id
 				comment_text
 				date_created
-				author
+				author {
+					_id
+				}
 				reactions
 				edited
 			}
@@ -266,7 +326,9 @@ export const EVENT_DETAILS = gql`
 				_id
 				comment_text
 				date_created
-				author
+				author {
+					_id
+				}
 				reactions
 				edited
 			}

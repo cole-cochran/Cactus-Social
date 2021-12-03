@@ -83,14 +83,14 @@ const typeDefs = gql`
     type Query {
         allUsers: [User]
         allThreads: [Thread]
-        userEventsAndThreads: User
+        allPosts: [Post]
+        allEvents: [Event]
+        userEventsAndThreads(userId: ID!): User
+        userFriends(userId: ID!): User
         threadDetails(threadId: ID!): Thread
         postDetails(postId: ID!): Post
         eventDetails(eventId: ID!): Event
-        allEvents: [Event]
-        allPosts: [Post]
         userProfile(userId: ID!): User
-        userFriends(userId: ID!): [User]
     }
 
     type Mutation {
