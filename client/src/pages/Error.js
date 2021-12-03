@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import Parallax from "../public/js/parallax"
+import Parallax from "./client/public/js/parallax.js"
 
 
 export default function Error() {
