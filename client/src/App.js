@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthService from './utils/auth';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
+// import Dashboard from './pages/Dashboard';
+// import Profile from './pages/Profile';
+// import SplashPage from './pages/Splashpage/splashpage';
+import EventCreation from './components/EventCreation';
 
 //* Bring in Apollo
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink, } from '@apollo/client';
@@ -51,16 +53,18 @@ function App() {
 	// 	}
 	// }
   return (
+    // <SplashPage/>
+    <EventCreation/>
     // <ApolloProvider client={client}>
-    <Router>
-        <Routes>
-            {/* <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/login" element={<Login/>}/> */}
-            <Route path="/dashboard" element={<Dashboard/>}/>
-            {/* <Route path="/profile" element={<Profile/>}/> */}
-            {/* <Route path="/" element={checkAuth()}/> */}
-        </Routes>
-    </Router>
+    // <Router>
+    //     <Routes>
+            //{/* <Route path="/signup" element={<SignUp/>}/>
+           // <Route path="/login" element={<Login/>}/> */}
+           // {/* <Route path="/dashboard" element={<Dashboard/>}/> */}
+            //{/* <Route path="/profile" element={<Profile/>}/> */}
+          //  {/* <Route path="/" element={checkAuth()}/> */}
+    //     </Routes>
+    // </Router>
     // </ApolloProvider>
   );
 }

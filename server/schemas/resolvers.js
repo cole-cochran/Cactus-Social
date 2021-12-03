@@ -58,6 +58,16 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!')
 		},
 
+		//* find user's friends
+		//! add user context to ensure they are logged in and change query in typeDefs
+		userFriends: async (parent, args, context) => {
+			// if (context.user) {
+			return await User.findById(args.username)
+				.populate('friends');
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
 		//* get specific thread
 		//! add user context to ensure they are logged in
 		threadDetails: async (parent, args, context) => {
@@ -67,16 +77,6 @@ const resolvers = {
 				.populate('events')
 				.populate('members')
 				.populate('moderator');
-			// }
-			// throw new AuthenticationError('You need to be logged in to do that!');
-		},
-
-		//* find user's friends
-		//! add user context to ensure they are logged in and change query in typeDefs
-		userFriends: async (parent, args, context) => {
-			// if (context.user) {
-			return await User.findById(args.username)
-				.populate('friends');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
