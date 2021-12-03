@@ -1,101 +1,37 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '../utils/mutations';
-import AuthService from '../utils/auth';
+import React from "react";
 
 function SignUp(props) {
-	const [ formState, setFormState ] = useState({
-		first_name: '',
-		last_name: '',
-		email: '',
-		password: '',
-		username: ''
-	});
-	const [ addUser ] = useMutation(CREATE_USER);
-
-	const handleFormChange = (event) => {
-		const { name, value } = event.target;
-		setFormState({
-			...formState,
-			[name]: value
-		});
-	};
-
-	const handleFormSubmit = async (event) => {
-		event.preventDefault();
-		console.log(formState);
-		try {
-			window.localStorage.clear();
-			const { data } = await addUser({
-				variables: {
-					first_name: formState.first_name,
-					last_name: formState.last_name,
-					username: formState.username,
-					email: formState.email,
-					password: formState.password
-				}
-			});
-
-			const token = data.addUser.token;
-			AuthService.login(token);
-		} catch (e) {
-			console.error(e);
-		}
-	};
-
-	return (
-		<div>
-			<h1>Sign Up!</h1>
-			<form onSubmit={handleFormSubmit}>
-				<label for="firstName">First Name: </label>
-				<input
-					type="text"
-					id="firstName"
-					name="firstName"
-					placeholder="First"
-					value={formState.first_name}
-					onChange={handleFormChange}
-				/>
-				<label for="lastName">Last Name: </label>
-				<input
-					type="text"
-					id="lastName"
-					name="lastName"
-					placeholder="Last"
-					value={formState.last_name}
-					onChange={handleFormChange}
-				/>
-				<label for="username">Username: </label>
-				<input
-					type="text"
-					id="username"
-					name="username"
-					placeholder="Username"
-					value={formState.username}
-					onChange={handleFormChange}
-				/>
-				<label for="email">Email: </label>
-				<input
-					type="email"
-					id="email"
-					name="email"
-					placeholder="Email"
-					value={formState.email}
-					onChange={handleFormChange}
-				/>
-				<label for="password">Password: </label>
-				<input
-					type="password"
-					id="password"
-					name="password"
-					placeholder="password"
-					value={formState.password}
-					onChange={handleFormChange}
-				/>
-				<button type="submit">Create Account</button>
-			</form>
-		</div>
-	);
+    return (
+        <div className="signup-page-body">
+            <div className="signup-banner-mobile">
+                <img src="#" alt=""/>
+            </div>
+            <div className="signup-form-section">    
+                <form class="signup-form">
+                    <h3>Don't have an account?</h3>
+                    <h3>Signup for Cactus Social!</h3>
+                    <label for="signup-name">Name</label>
+                    <input type="text" id="signup-name"/>
+                    <label for="signup-email">Email Address</label>
+                    <input type="text" id="signup-email"/>
+                    <label for="signup-password">Password</label>
+                    <input type="text" id="signup-password"/>
+                    <button>Signup</button>
+                </form>
+            </div>
+            <div className="signup-banner">
+                <h1>
+                    A sleek, secure,<br/>
+                    and transparent platform...
+                </h1>
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
+                    praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias
+                    excepturi sint occaecat
+                </p>
+                <img src="" alt=""/>
+            </div>
+        </div>
+    )
 }
 
 export default SignUp;
