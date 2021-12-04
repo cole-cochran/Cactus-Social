@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Error from './pages/Error';
-import NavBar from './components/NavBar'
+
 //*import browser router 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
