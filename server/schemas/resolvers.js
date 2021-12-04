@@ -2,6 +2,8 @@ const { User, Comment, Post, Thread, Event } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 
+//! ADD ARRAY OF PIN STRINGS TO THREADS MODEL 
+
 const resolvers = {
 	Query: {
 		//* get all users
@@ -24,46 +26,7 @@ const resolvers = {
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({})
-				.populate('posts')
-				.populate('events')
-				.populate('members')
-				.populate('moderator');
-		},
-
-		allPosts: async (parent, args, context) => {
-			return await Post.find({})
-				.populate('author')
-				.populate('thread')
-				.populate('comments');
-		},
-
-		allEvents: async (parent, args, context) => {
-			return await Event.find({})
-				.populate('owner')
-				.populate('attendees')
-				.populate('thread')
-				.populate('comments');
-		},
-
-		//* get all user events and threads
-		//! add user context to filter results and then go back and change query in typeDefs
-		userEventsAndThreads: async (parent, args, context) => {
-			// if (context.user) {
-			return await User.findOne({ _id: args.userId })
-				.populate('threads')
-				.populate('events');
-			// }
-			// throw new AuthenticationError('You need to be logged in to do that!')
-		},
-
-		//* find user's friends
-		//! add user context to ensure they are logged in and change query in typeDefs
-		userFriends: async (parent, args, context) => {
-			// if (context.user) {
-			return await User.findOne({ _id: args.userId}).populate('friends');
-			// }
-			// throw new AuthenticationError('You need to be logged in to do that!');
+			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
 		},
 
 		//* get specific thread
@@ -79,24 +42,41 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
-		// // find user events
-		// // add user context to ensure they are logged in
-		// userEvents: async (parent, args, context) => {
-		// 	// if (context.user) {
-		// 	const { userId } = args;
-		// 	return await User.findOne({ _id: userId }).populate('events')
-		// 	// }
-		// 	// throw new AuthenticationError('You need to be logged in to do that!');
-		// },
+		//* find user's friends
+		//! add user context to ensure they are logged in and change query in typeDefs
+		userFriends: async (parent, args, context) => {
+			// if (context.user) {
+			return await User.findOne({ _id: args.userId }).populate('friends');
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		allPosts: async (parent, args, context) => {
+			return await Post.find({}).populate('author').populate('thread').populate('comments');
+		},
+
+		allComments: async (parent, args, context) => {
+			return await Comment.find({}).populate('author').populate('post').populate('event');
+		},
+
+		allEvents: async (parent, args, context) => {
+			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
+		},
+
+		//* get all user events and threads
+		//! add user context to filter results and then go back and change query in typeDefs
+		userEventsAndThreads: async (parent, args, context) => {
+			// if (context.user) {
+			return await User.findOne({ _id: args.userId }).populate('threads').populate('events');
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!')
+		},
 
 		//* find details of a single post
 		//! add user context to ensure they are logged in
 		postDetails: async (parent, args, context) => {
 			// if (context.user) {
-			return await Post.findById(args.postId)
-				.populate('author')
-				.populate('thread')
-				.populate('comments');
+			return await Post.findById(args.postId).populate('author').populate('thread').populate('comments');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -110,6 +90,16 @@ const resolvers = {
 				.populate('thread')
 				.populate('comments');
 		}
+
+		// // find user events
+		// // add user context to ensure they are logged in
+		// userEvents: async (parent, args, context) => {
+		// 	// if (context.user) {
+		// 	const { userId } = args;
+		// 	return await User.findOne({ _id: userId }).populate('events')
+		// 	// }
+		// 	// throw new AuthenticationError('You need to be logged in to do that!');
+		// },
 	},
 	Mutation: {
 		//* log the user in
@@ -147,7 +137,7 @@ const resolvers = {
 			const { userId, technology } = args;
 			//! add user context to authenticate
 			// if (context.user._id) {
-			await User.findOneAndUpdate(
+			const user = await User.findOneAndUpdate(
 				// would user context instead here
 				{ _id: userId },
 				{
@@ -157,6 +147,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			return user;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -167,7 +158,7 @@ const resolvers = {
 			const { userId, technology } = args;
 			//! use user context to authenticate
 			// if (context.user._id) {
-			return await User.findOneAndUpdate(
+			const user = await User.findOneAndUpdate(
 				// use context here instead
 				{ _id: userId },
 				{
@@ -177,6 +168,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -187,7 +179,7 @@ const resolvers = {
 			const { userId, friend } = args;
 			//! add user context to authenticate and change the mutation in typeDefs
 			// if (context.user) {
-			await User.findOneAndUpdate(
+			const user = await User.findOneAndUpdate(
 				// use context here instead
 				{ _id: userId },
 				{
@@ -197,6 +189,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			return user;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -207,7 +200,7 @@ const resolvers = {
 			const { userId, friend } = args;
 			//! add user context to authenticate and change the mutation in typeDefs
 			// if (context.user) {
-			return await User.findOneAndUpdate(
+			const user = await User.findOneAndUpdate(
 				{ _id: userId },
 				{
 					$pull: {
@@ -216,6 +209,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -226,8 +220,9 @@ const resolvers = {
 			const { userId, picture } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			await User.findOneAndUpdate({ _id: userId }, { picture: picture }, { new: true });
+			const user = await User.findOneAndUpdate({ _id: userId }, { picture: picture }, { new: true });
 			// }
+			return user;
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
@@ -237,8 +232,9 @@ const resolvers = {
 			const { userId, bio } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			await User.findOneAndUpdate({ _id: userId }, { bio: bio }, { new: true });
+			const user = await User.findOneAndUpdate({ _id: userId }, { bio: bio }, { new: true });
 			// }
+			return user;
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
@@ -247,13 +243,13 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			//! get rid of userId when we can user the context to our advantage
-			const { title, moderator, userId } = args;
+			const { title, moderator } = args;
 			const newThread = await Thread.create({
 				title: title,
 				moderator: moderator
 			});
 			await User.findOneAndUpdate(
-				{ _id: userId },
+				{ _id: moderator },
 				{
 					$addToSet: {
 						threads: newThread._id
@@ -283,7 +279,7 @@ const resolvers = {
 			// 	},
 			//	{ new: true }
 			// )
-			// return updatedUser
+			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -292,16 +288,16 @@ const resolvers = {
 		createPost: async (parent, args, context) => {
 			//! add user context to authenticate
 			// if (context.user) {
-			const { thread, post_text } = args;
+			const { threadId, post_text } = args;
 			const newPost = await Post.create(
 				{
-					thread: thread,
+					thread: threadId,
 					post_text: post_text
 				},
 				{ new: true }
 			);
-			await Thread.findOneAndUpdate(
-				{ thread: thread },
+			const thread = await Thread.findOneAndUpdate(
+				{ _id: threadId },
 				{
 					$addToSet: {
 						posts: {
@@ -311,19 +307,19 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			return newPost;
+			return thread;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
 		//* remove thread post
 		removePost: async (parent, args, context) => {
-			const { thread, postId } = args;
+			const { threadId, postId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
 			await Post.findOneAndDelete({ _id: postId }, { new: true });
-			return await Thread.findOneAndUpdate(
-				{ thread: thread },
+			const thread = await Thread.findOneAndUpdate(
+				{ _id: threadId },
 				{
 					$pull: {
 						posts: postId
@@ -331,13 +327,14 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			return thread
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
 
 		//* update thread post
 		updatePost: async (parent, args, context) => {
-			const { thread, postId, post_text } = args;
+			const { threadId, postId, post_text } = args;
 			// const userId = "619f163a1d455824cc304ab1";
 			//! add user context to authenticate
 			// if (context.user) {
@@ -350,9 +347,9 @@ const resolvers = {
 				{ new: true }
 			);
 
-			return await Thread.findOneAndUpdate(
+			const thread =  await Thread.findOneAndUpdate(
 				{
-					title: thread,
+					_id: threadId,
 					'posts._id': postId
 				},
 				{
@@ -360,15 +357,18 @@ const resolvers = {
 					'posts.edited': true
 				}
 			);
+			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
 
+		//! update when models, mutations, typeDefs, and queries are up to date with pinned_posts data field
 		//* give user ability to pin posts
 		pinPost: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
-			const { postId, pinTitle, pinHash } = args;
-			return await Post.findOneAndUpdate(
+			const { threadId, postId, pinTitle, pinHash } = args;
+			// const post = 
+			await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
 					pinTitle: pinTitle,
@@ -377,12 +377,15 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			//! update this
+			const thread = await Thread.findOne({_id: threadId})
+			return thread;
 		},
 
 		//* give user ability to unpin posts
 		unpinPost: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
-			const { postId } = args;
+			const { threadId, postId } = args;
 			return await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
@@ -392,18 +395,48 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			//! update this
+			const thread = await Thread.findOne({_id: threadId})
+			return thread;
+		},
+
+		//* let users react to a post
+		addPostReaction: async (parent, args, context) => {
+			const { threadId, postId, reaction } = args;
+			await Post.findOneAndUpdate(
+				{ _id: postId },
+				{
+					$addToSet: {
+						reactions: reaction
+					}
+				}
+			);
+			// const thread = await Thread.findOneAndUpdate(
+			// 	{
+			// 		_id: threadId,
+			// 		'posts._id': postId
+			// 	},
+			// 	{
+			// 		$addToSet: {
+			// 			'posts.reactions': reaction
+			// 		}
+			// 	}
+			// );
+			const thread = await Thread.findOne({ _id: threadId })
+			return thread;
 		},
 
 		//* let users add post comments
 		createPostComment: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
-			const { postId, comment_text } = args;
+			const { postId, comment_text, author } = args;
 			const newComment = await Comment.create({
 				post: postId,
-				comment_text: comment_text
+				comment_text: comment_text,
+				author: author
 			});
 
-			return await Post.findOneAndUpdate(
+			const post = await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
 					$addToSet: {
@@ -411,6 +444,7 @@ const resolvers = {
 					}
 				}
 			);
+			return post;
 		},
 
 		//* remove post comment
@@ -419,7 +453,7 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			await Comment.findOneAndDelete({ _id: commentId }, { new: true });
-			return await Post.findOneAndUpdate(
+			const post = await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
 					$pull: {
@@ -428,6 +462,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
+			return post;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -445,7 +480,7 @@ const resolvers = {
 				{ new: true }
 			);
 
-			return await Post.findOneAndUpdate(
+			const post = await Post.findOneAndUpdate(
 				{
 					_id: postId,
 					'comments._id': commentId
@@ -455,6 +490,33 @@ const resolvers = {
 					'comments.edited': true
 				}
 			);
+			return post;
+		},
+
+		//* let users react to a comment in a post
+		addPostCommentReaction: async (parent, args, context) => {
+			const { commentId, postId, reaction } = args;
+			await Comment.findOneAndUpdate(
+				{ _id: commentId },
+				{
+					$addToSet: {
+						reactions: reaction
+					}
+				}
+			);
+			// const post = await Post.findOneAndUpdate(
+			// 	{
+			// 		_id: postId,
+			// 		'comments._id': commentId
+			// 	},
+			// 	{
+			// 		$addToSet: {
+			// 			'comments.reactions': reaction
+			// 		}
+			// 	}
+			// );
+			const post = await Post.findOne({ _id: postId });
+			return post;
 		},
 
 		//* create new event
@@ -709,54 +771,6 @@ const resolvers = {
 				{
 					'comments.comment_text': post_text,
 					'comments.edited': true
-				}
-			);
-		},
-
-		//* let users react to a post
-		addPostReaction: async (parent, args, context) => {
-			const { thread, postId, reaction } = args;
-			await Post.findOneAndUpdate(
-				{ _id: postId },
-				{
-					$addToSet: {
-						reactions: reaction
-					}
-				}
-			);
-			return await Thread.findOneAndUpdate(
-				{
-					title: thread,
-					'posts._id': postId
-				},
-				{
-					$addToSet: {
-						'posts.reactions': reaction
-					}
-				}
-			);
-		},
-
-		//* let users react to a comment in a post
-		addPostCommentReaction: async (parent, args, context) => {
-			const { commentId, postId, reaction } = args;
-			await Comment.findOneAndUpdate(
-				{ _id: commentId },
-				{
-					$addToSet: {
-						reactions: reaction
-					}
-				}
-			);
-			return await Post.findOneAndUpdate(
-				{
-					_id: postId,
-					'comments._id': commentId
-				},
-				{
-					$addToSet: {
-						'comments.reactions': reaction
-					}
 				}
 			);
 		},
