@@ -73,9 +73,6 @@ function App() {
           <Route exact path="/404">
             <Error/>
           </Route>
-          <Route exact path="/navbar">
-            <NavBar/>
-          </Route>
         </Switch>
       </div>
     </Router>
