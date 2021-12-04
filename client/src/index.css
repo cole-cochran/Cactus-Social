@@ -469,7 +469,6 @@ button {
 /********HEADER:START************/
 
 header {
-  height: 2.25rem;
   background-color: var(--primary-green);
 }
 
