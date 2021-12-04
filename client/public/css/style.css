@@ -330,10 +330,10 @@ button {
 
 /********HEADER:START************/
 
-header {
+/* header {
   height: 2.25rem;
   background-color: var(--primary-green);
-}
+} */
 
 .mobile-nav img {
   width: 2rem;

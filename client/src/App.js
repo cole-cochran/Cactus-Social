@@ -4,8 +4,8 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import Error from './pages/Error'
-
+import Error from './pages/Error';
+import NavBar from './components/NavBar'
 //*import browser router 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -72,6 +72,9 @@ function App() {
           </Route>
           <Route exact path="/404">
             <Error/>
+          </Route>
+          <Route exact path="/navbar">
+            <NavBar/>
           </Route>
         </Switch>
       </div>

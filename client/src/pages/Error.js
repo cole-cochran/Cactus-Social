@@ -1,12 +1,11 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import Parallax from "./client/public/js/parallax.js"
+// import Parallax from "/js/parallax"
 
 
 export default function Error() {
-    return(
- <main>       
-<body class="error-page-body">
+    return(     
+<main class="error-page-body">
     <div class="error-banner-mobile">
         <img src="#" alt=""/>
     </div>
@@ -23,7 +22,7 @@ export default function Error() {
             and transparent platform...
         </h1>
     </section>
-</body>
+
 <footer class="mobile-dashboard-footer">
 </footer>
     <script src="../js/parallax.js"></script>
