@@ -8,6 +8,7 @@
     --grey1: #F8F9FC;
     --grey2: #E6E7EA;
     --secondary-purple: #9200BB;
+    --hero-green: #2FB65E;
 }
 
 * {
@@ -469,7 +470,6 @@ button {
 /********HEADER:START************/
 
 header {
-  height: 2.25rem;
   background-color: var(--primary-green);
 }
 
@@ -505,7 +505,6 @@ header {
 .sidebar {
     position: absolute;
     left: -100%;
-    top: 2.28rem;
     z-index: 2;
     background-color: var(--grey1);
     transition: .5s;
