@@ -65,6 +65,14 @@ export const ALL_THREADS = gql`
 				}
 				post_text
 			}
+			pinned_posts {
+				_id
+				author {
+					_id
+				}
+				pinTitle
+				pinHash
+			}
 			events {
 				title
 				owner {
@@ -189,6 +197,21 @@ export const ALL_POSTS = gql`
 			}
 		}
 	}
+`;
+
+export const PINNED_POSTS = gql`
+query pinnedPosts($threadId: ID!) {
+	pinnedPosts(threadId: $threadId) {
+		pinnedPosts{
+			_id
+			author {
+				_id
+			}
+			pinTitle
+			pinHash
+		}
+	}
+}
 `;
 
 // export const ALL_COMMENTS = gql`
@@ -318,6 +341,8 @@ export const POST_DETAILS = gql`
 			reactions
 			edited
 			pinned
+			pinTitle
+			pinHash
 			thread {
 				_id
 				title

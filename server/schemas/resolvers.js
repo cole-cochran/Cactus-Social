@@ -55,6 +55,10 @@ const resolvers = {
 			return await Post.find({}).populate('author').populate('thread').populate('comments');
 		},
 
+		pinnedPosts: async (parent, args, context) => {
+			return await Thread.findOne({ _id: args.threadId }).populate('pinnedPosts');
+		},
+
 		// allComments: async (parent, args, context) => {
 		// 	return await Comment.find({}).populate('author').populate('post').populate('event');
 		// },
@@ -361,7 +365,6 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
-		//! update when models, mutations, typeDefs, and queries are up to date with a pinned_posts data field
 		//* give user ability to pin posts
 		pinPost: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
@@ -377,16 +380,17 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const thread = await Thread.findOne({_id: threadId});
-			// const thread = await Thread.findOneAndUpdate(
-				// { _id: threadId },
-				// { $addToSet: 
-					// 	{
-					// 		pinned_posts: postId
-					// 	} 
-				//  },
-				//  { new: true }
-			// );
+			const thread = await Thread.findOneAndUpdate(
+				{ _id: threadId },
+				{ 
+					$addToSet: 
+						{
+							pinned_posts: postId
+						} 
+				},
+				{ new: true }
+			);
+
 			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -406,15 +410,17 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const thread = await Thread.findOne({_id: threadId});
-			// const thread = await Thread.findOneAndUpdate(
-				// { _id: threadId },
-				// { $pull: 
-					// 	{
-					// 		pinned_posts: postId
-					// 	} 
-				//  }
-			// );
+			const thread = await Thread.findOneAndUpdate(
+				{ _id: threadId },
+				{ 
+					$pull: 
+						{
+							pinned_posts: postId
+						} 
+				},
+				{ new: true }
+			);
+
 			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');

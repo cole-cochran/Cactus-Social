@@ -14,6 +14,8 @@ const typeDefs = gql`
         reactions: [String]
         edited: Boolean
         pinned: Boolean
+        pinTitle: String
+        pinHash: String
         thread: Thread
         comments: [Comment]
     }
@@ -49,6 +51,7 @@ const typeDefs = gql`
         _id: ID!
         title: String!
         posts: [Post]
+        pinned_posts: [Post]
         events: [Event]
         moderator: User
         members: [User]
@@ -84,6 +87,7 @@ const typeDefs = gql`
         allUsers: [User]
         allThreads: [Thread]
         allPosts: [Post]
+        pinnedPosts(threadId: ID!): Thread
         allEvents: [Event]
         userEventsAndThreads(userId: ID!): User
         userFriends(userId: ID!): User
