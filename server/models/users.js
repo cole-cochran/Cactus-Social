@@ -27,7 +27,7 @@ const userSchema = new Schema({
 		trim: true,
 		lowercase: true,
 		required: 'Last name is required',
-		minLength: [4, "Last Name cant be less than 2 characters"],
+		minLength: [2, "Last Name cant be less than 2 characters"],
 		maxLength: [40, "Last name can't be longer than 40 character"]
 	},
 	username: {

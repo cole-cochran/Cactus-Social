@@ -168,24 +168,24 @@ event {
     edited
 }`;
 
-const commentResponse = `
-comment {
-    _id
-    comment_text
-    date_created
-    author {
-        _id
-    }
-    reactions
-    edited
-    post {
-        _id
-    }
-    event {
-        _id
-    }
-}
-`;
+// const commentResponse = `
+// comment {
+//     _id
+//     comment_text
+//     date_created
+//     author {
+//         _id
+//     }
+//     reactions
+//     edited
+//     post {
+//         _id
+//     }
+//     event {
+//         _id
+//     }
+// }
+// `;
 
 //*  USER STUFF
 
@@ -386,24 +386,24 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
 //*  EVENT STUFF
 
 export const CREATE_EVENT = gql`
-mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String) {
-    createEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
+mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String, $owner: ID!) {
+    createEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
         ${eventResponse}
     }
 }
 `;
 
 export const REMOVE_EVENT = gql`
-mutation removeEvent($threadId: ID!, $eventId: ID!) {
-    removeEvent(threadId: $threadId, eventId: $eventId) {
+mutation removeEvent($threadId: ID!, $eventId: ID!, $userId: ID!) {
+    removeEvent(threadId: $threadId, eventId: $eventId, userId: $userId) {
         ${threadResponse}
     }
 }
 `;
 
 export const UPDATE_EVENT = gql`
-mutation updateEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
-    updateEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
+mutation updateEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
+    updateEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
         ${eventResponse}
     }
 }
