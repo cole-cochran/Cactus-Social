@@ -65,6 +65,14 @@ export const ALL_THREADS = gql`
 				}
 				post_text
 			}
+			pinned_posts {
+				_id
+				author {
+					_id
+				}
+				pinTitle
+				pinHash
+			}
 			events {
 				title
 				owner {
@@ -177,13 +185,55 @@ export const ALL_POSTS = gql`
 			comments {
 				_id
 				comment_text
+				date_created
 				author {
+					_id
+				}
+				reactions
+				edited
+				post {
 					_id
 				}
 			}
 		}
 	}
 `;
+
+export const PINNED_POSTS = gql`
+query pinnedPosts($threadId: ID!) {
+	pinnedPosts(threadId: $threadId) {
+		pinnedPosts{
+			_id
+			author {
+				_id
+			}
+			pinTitle
+			pinHash
+		}
+	}
+}
+`;
+
+// export const ALL_COMMENTS = gql`
+// 	query allComments() {
+// 		allComments {
+// 			_id
+// 			comment_text
+// 			date_created
+// 			author {
+// 				_id
+// 			}
+// 			reactions
+// 			edited
+// 			post {
+// 				_id
+// 			}
+// 			event {
+// 				_id
+// 			}
+// 		}
+// 	}
+// `;
 
 export const ALL_EVENTS = gql`
 	query allEvents {
@@ -215,6 +265,15 @@ export const ALL_EVENTS = gql`
 			comments {
 				_id
 				comment_text
+				date_created
+				author {
+					_id
+				}
+				reactions
+				edited
+				event {
+					_id
+				}
 			}
 		}
 	}
@@ -234,6 +293,9 @@ export const USER_EVENTS_AND_THREADS = gql`
 					_id
 				}
 				date_created
+				comments {
+					_id
+				}
 			}
 			events {
 				_id
@@ -257,6 +319,9 @@ export const USER_EVENTS_AND_THREADS = gql`
 				}
 				date_created
 				edited
+				comments {
+					_id
+				}
 			}
 		}
 	}
@@ -276,6 +341,8 @@ export const POST_DETAILS = gql`
 			reactions
 			edited
 			pinned
+			pinTitle
+			pinHash
 			thread {
 				_id
 				title
@@ -289,6 +356,9 @@ export const POST_DETAILS = gql`
 				}
 				reactions
 				edited
+				post {
+					_id
+				}
 			}
 		}
 	}
@@ -331,6 +401,9 @@ export const EVENT_DETAILS = gql`
 				}
 				reactions
 				edited
+				event {
+					_id
+				}
 			}
 			date_created
 			edited

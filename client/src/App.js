@@ -1,5 +1,5 @@
 //*import pages
-import Splashpage from './pages/Splashpage/Splashpage';
+import SplashPage from './pages/Splashpage/Splashpage';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -53,7 +53,7 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path="/">
-            <Splashpage/>
+            <SplashPage/>
           </Route>
           <Route exact path="/sign-up">
             <SignUp/>
