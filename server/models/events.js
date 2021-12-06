@@ -38,13 +38,12 @@ const eventSchema = new Schema({
         required: true
     },
     owner: {
-        type: String,
-        ref:'User',
-        required: true
+        type: ObjectId,
+        ref:'User'
     },
     attendees: [
         {
-            type: String,
+            type: ObjectId,
             ref:'User'
         }
     ],
@@ -65,7 +64,7 @@ const eventSchema = new Schema({
         default: ""
     },
     thread: {
-        type: String,
+        type: ObjectId,
         ref:'Thread'
     },
     comments: [

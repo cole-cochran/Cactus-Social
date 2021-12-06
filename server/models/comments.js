@@ -18,9 +18,8 @@ const commentSchema = new Schema({
         get: (timestamp) => dateFormat(timestamp)
     },
     author: {
-        type: String,
-        ref:'User',
-        required: true
+        type: ObjectId,
+        ref:'User'
     },
     reactions: [
         {
