@@ -8,6 +8,7 @@
     --grey1: #F8F9FC;
     --grey2: #E6E7EA;
     --secondary-purple: #9200BB;
+    --hero-green: #2FB65E;
 }
 
 * {
@@ -21,7 +22,145 @@
     display: flex;
 }
 
+.input {
+    width: 300px;
+    min-height: 17px;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
 /*************GLOBAL:STYLES************/
+/*************SPLASHPAGE:STYLES************/ 
+.splash-page-header {
+    padding-top: 1rem;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+}
+
+.splash-page-header button {
+    background-color: #80deea;
+    color: black;
+    font-size: .75rem;
+    height: 2rem;
+    border: none;
+    width: 6rem;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    font-weight: 700;
+}
+
+
+.splash-page-content {
+    padding-top: 3rem;
+    background-color: black;
+    color: white;
+    padding-bottom: 12rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.splash-page-content h1 {
+    font-size: 2rem;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+}
+
+
+.splash-page-content p {
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    font-size: .875rem;
+    max-width: 40rem;
+}
+
+
+.splash-page-sign-up-button {
+    background-color: white;
+    font-size: .75rem;
+    height: 3rem;
+    border: none;
+    width: 12rem;
+    border-radius: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-weight: 700;
+}
+
+.splash-page-download-button {
+    background-color: var(--primary-green);
+    font-size: .875rem;
+    font-weight: 700;
+    height: 3rem;
+    border: none;
+    width: 16rem;
+    border-radius: 2rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+}
+
+.splash-page-video {
+    height: 30rem;
+    /* width: 100%; */
+}
+
+/*************SPLASHPAGE:STYLES************/ 
+/*************SPLASHPAGE:MEDIA-QUERIES************/
+
+@media only screen and (min-width: 600px) {
+
+    
+.splash-page-content {
+    padding-top: 10rem;
+    text-align: center;
+}
+
+.splash-page-video {
+    height: 40rem;
+    /* width: 100%; */
+}
+
+.splash-page-content {
+    padding-bottom: 0rem;
+}
+
+}
+
+@media only screen and (min-width: 796px) {
+
+    
+    .splash-page-content-overflow-wrapper {
+        overflow: hidden;
+        background-color: black;
+    }
+    .shift-content-wrapper {
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+
+    .splash-page-content {
+        width: 100%;
+        background-color: initial;
+    }
+    .splash-page-header {
+        width: 100%;
+        background-color: initial;
+    }
+    .splash-page-video {
+       width: 100vw;
+       object-fit: cover;
+       height: 100vh;
+       
+    }
+
+    
+    }
+
+/*************SPLASHPAGE:MEDIA-QUERIES************/ 
 /*************LOGIN.HTML:STYLES************/
 
 .logo-container {
@@ -331,9 +470,8 @@ button {
 /********HEADER:START************/
 
 header {
-  height: 2.25rem;
   background-color: var(--primary-green);
-}
+} */
 
 .mobile-nav img {
   width: 2rem;
@@ -367,7 +505,6 @@ header {
 .sidebar {
     position: absolute;
     left: -100%;
-    top: 2.28rem;
     z-index: 2;
     background-color: var(--grey1);
     transition: .5s;
@@ -487,6 +624,18 @@ footer {
     font-size: .55rem;
     color: #FFE3A1;
     margin-left: 1rem;
+}
+
+.add-chat {
+    border: 1px solid red;
+    margin-top: 1rem;
+    margin-left: .875rem;
+    width: 100%;
+}
+.add-chat input {
+    border: none;
+    font-size: .75rem;
+    width:calc(100% - 1rem) 
 }
 /*************THREEDDISPLAY:END****************/
 /*************THREEDDISPLAY-MEDIA-QUERIES:START****************/

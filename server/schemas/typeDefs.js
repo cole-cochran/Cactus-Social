@@ -14,6 +14,8 @@ const typeDefs = gql`
         reactions: [String]
         edited: Boolean
         pinned: Boolean
+        pinTitle: String
+        pinHash: String
         thread: Thread
         comments: [Comment]
     }
@@ -49,6 +51,7 @@ const typeDefs = gql`
         _id: ID!
         title: String!
         posts: [Post]
+        pinned_posts: [Post]
         events: [Event]
         moderator: User
         members: [User]
@@ -83,14 +86,16 @@ const typeDefs = gql`
     type Query {
         allUsers: [User]
         allThreads: [Thread]
-        userEventsAndThreads: User
+        allPosts: [Post]
+        pinnedPosts(threadId: ID!): Thread
+        allEvents: [Event]
+        userEventsAndThreads(userId: ID!): User
+        userFriends(userId: ID!): User
         threadDetails(threadId: ID!): Thread
         postDetails(postId: ID!): Post
         eventDetails(eventId: ID!): Event
-        allEvents: [Event]
-        allPosts: [Post]
         userProfile(userId: ID!): User
-        userFriends(userId: ID!): [User]
+        allComments: [Comment]
     }
 
     type Mutation {
@@ -103,32 +108,33 @@ const typeDefs = gql`
 
         removeTechnology(userId: ID!, technology: String!): User
 
-        addFriend(userId: ID!, friend: String!): User
+        addFriend(userId: ID!, friend: ID!): User
 
-        removeFriend(userId: ID!, friend: String!): User
+        removeFriend(userId: ID!, friend: ID!): User
 
         updatePhoto(userId: ID!, picture: String!): User
 
         updateBio(userId: ID!, bio: String!): User
 
 
-        createThread(title: String!, moderator: String!): Thread
+        createThread(title: String!, moderator: ID!): Thread
 
         removeThread(threadId: ID!): User
 
-        createPost(thread: String!, post_text: String!): Thread
 
-        removePost(thread: String!, postId: ID!): Thread
+        createPost(threadId: ID!, post_text: String!): Thread
 
-        updatePost(thread: String!, postId: ID!, post_text: String!): Thread
+        removePost(threadId: ID!, postId: ID!): Thread
 
-        pinPost(thread: String!, postId: ID!, pinTitle: String!, pinHash: String!): Thread
+        updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
 
-        unpinPost(thread: String!, postId: ID!): Thread
+        pinPost(threadId: ID!, postId: ID!, pinTitle: String!, pinHash: String!): Thread
 
-        addPostReaction(thread: String!, postId: ID!, reaction: String!): Thread
+        unpinPost(threadId: ID!, postId: ID!): Thread
 
-        createPostComment(postId: ID!, comment_text: String!): Post
+        addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
+
+        createPostComment(postId: ID!, comment_text: String!, author: ID!): Post
 
         removePostComment(postId: ID!, commentId: ID!): Post
 
@@ -136,15 +142,15 @@ const typeDefs = gql`
 
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(thread: String!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+        createEvent(threadId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event
 
-        updateEvent(thread: String!, eventId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Thread
+        updateEvent(threadId: ID!, eventId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String): Event
 
-        removeEvent(threadId: ID!, eventId: ID!): Thread
+        removeEvent(threadId: ID!, eventId: ID!, userId: ID!): Thread
 
-        attendEvent(eventId: ID!, attendee: String!): Event
+        attendEvent(eventId: ID!, attendee: ID!): Event
 
-        leaveEvent(eventId: ID!, attendee: String!): Event
+        leaveEvent(eventId: ID!, attendee: ID!): Event
 
         createEventComment(eventId: ID!, comment_text: String!): Event
 

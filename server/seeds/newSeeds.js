@@ -12,10 +12,7 @@ const userSeeds = [
 		password: 'shroomisbetter',
 		picture: '',
 		bio: 'I love coding and working out!',
-		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ],
-		// threads: [],
-		// events: [],
-		// friends: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'foxrigney1' ]
+		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ]
 	},
 	{
 		first_name: 'Cole',
@@ -25,10 +22,7 @@ const userSeeds = [
 		password: 'sirbikesalot',
 		picture: '',
 		bio: 'I like to bike. How neat is that?',
-		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ],
-		// threads: [],
-		// events: [],
-		// friends: [ 'delmanat32', 'jackattack88', 'foxrigney1', 'damienluzzo33' ]
+		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ]
 	},
 	{
 		first_name: 'Nathan',
@@ -38,10 +32,7 @@ const userSeeds = [
 		password: 'duckforluck',
 		picture: '',
 		bio: 'I have a weird thing with ducks',
-		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ],
-		// threads: [],
-		// events: [],
-		// friends: [ 'bikerCole234', 'jackattack88', 'foxrigney1', 'damienluzzo33' ]
+		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ]
 	},
 	{
 		first_name: 'Jack',
@@ -51,10 +42,7 @@ const userSeeds = [
 		password: '830bedtime',
 		picture: '',
 		bio: 'I code in my sleep, and I sleep in my code. Jesus is dope.',
-		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ],
-		// threads: [],
-		// events: [],
-		// friends: [ 'bikerCole234', 'delmanat32', 'foxrigney1', 'damienluzzo33' ]
+		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ]
 	},
 	{
 		first_name: 'Fox',
@@ -64,27 +52,16 @@ const userSeeds = [
 		password: 'whoisjson',
 		picture: '',
 		bio: 'I make cool videos. Jesus is my homie.',
-		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ],
-		// threads: [],
-		// events: [],
-		// friends: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33' ]
+		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ]
 	}
 ];
 
 const threadSeeds = [
 	{
-		title: 'Project 3 Ideas',
-		// moderator: 'damienluzzo33',
-		// members: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33', 'foxrigney1' ]
-		// posts: [],
-		// events: []
+		title: 'Project 3 Ideas'
 	},
 	{
-		title: 'Camping Trip',
-		// moderator: 'bikerCole234',
-		// members: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33', 'foxrigney1' ]
-		// posts: [],
-		// events: []
+		title: 'Camping Trip'
 	}
 ];
 
@@ -93,111 +70,60 @@ const postSeeds = [
 		post_text:
 			"Hey team! In this thread, let's toss around some ideas for project 3. I definitely want to do a social media app. Maybe we can start by making it a social media for developers. Thoughts?",
 		edited: false,
-		pinned: false,
-		// author: 'damienluzzo33',
-		// thread: "Project 3 Ideas",
-		// reactions: [],
-		// comments: []
+		pinned: false
 	},
 	{
 		post_text: "Bet. I'm gonna start making the video and designing some sick backgrounds.",
 		edited: false,
-		pinned: false,
-		// author: 'foxrigney1',
-		// thread: "Project 3 Ideas",
-		// reactions: [],
-		// comments: []
+		pinned: false
 	},
 	{
 		post_text: "Sounds good! Let's start making this thing! I want to work on the frontend.",
 		edited: false,
-		pinned: false,
-		// author: 'jackattack88',
-		// thread: "Project 3 Ideas",
-		// reactions: [],
-		// comments: []
+		pinned: false
 	},
 	{
 		post_text:
 			'I was thinking we could plan a camping trip for after the bootcamp. How does that sound to everyone?',
 		edited: false,
-		pinned: false,
-		// author: 'bikerCole234',
-		// thread: 'Camping Trip',
-		// _id: "201201201201"
-		// reactions: [],
-		// comments: []
+		pinned: false
 	},
 	{
 		post_text: 'Hell yes. We should definitely do something like that.',
 		edited: false,
-		pinned: false,
-		// author: 'delmanat32',
-		// thread: 'Camping Trip',
-		// _id: "202202202202"
-		// reactions: [],
-		// comments: []
+		pinned: false
 	},
 	{
 		post_text: "That would be dope. I'll bring marshmallows!",
 		edited: false,
-		pinned: false,
-		// author: 'foxrigney1',
-		// thread: 'Camping Trip',
-		// _id: "203203203203"
-		// reactions: [],
-		// comments: []
+		pinned: false
 	}
 ];
 
 const commentPostSeeds = [
 	{
 		comment_text: 'We should do a Star Wars theme.',
-		edited: false,
-		// author: 'foxrigney1',
-		// post: "101101101101",
-		// _id: "100110011001"
-		// reactions: []
+		edited: false
 	},
 	{
 		comment_text: 'How neat is that?',
-		edited: false,
-		// author: 'bikerCole234',
-		// post: "102102102102",
-		// _id: "100210021002"
-		// reactions: []
+		edited: false
 	},
 	{
 		comment_text: "I'd love to join in on some of the frontend stuff if that's cool.",
-		edited: false,
-		// author: 'bikerCole234',
-		// post: "103103103103",
-		// _id: "100310031003"
-		// reactions: []
+		edited: false
 	},
 	{
 		comment_text: "I'm in! 100%",
-		edited: false,
-		// author: 'damienluzzo33',
-		// post: "201201201201",
-		// _id: "200120012001"
-		// reactions: []
+		edited: false
 	},
 	{
 		comment_text: 'You should def visit Austin for that.',
-		edited: false,
-		// author: 'bikerCole234',
-		// post: "202202202202",
-		// _id: "200220022002"
-		// reactions: []
+		edited: false
 	},
 	{
 		comment_text: 'I will bring chocolate.',
-		edited: false,
-		// author: 'jackattack88',
-		// post: "203203203203",
-		// _id: "200320032003"
-		// reactions: []
+		edited: false
 	}
 ];
 
@@ -213,21 +139,14 @@ const eventSeeds = [
 		category: 'trip',
 		in_person: true,
 		location: 'TBD',
-		// owner: 'bikerCole234',
-		// thread: 'Camping Trip',
 		image: ""
-		// comments: [],
-		// attendees: [ 'bikerCole234', 'delmanat32', 'jackattack88', 'damienluzzo33', 'foxrigney1' ]
 	}
 ];
 
 const commentEventSeeds = [
 	{
 		comment_text: 'Bet',
-		edited: false,
-		// author: 'foxrigney1',
-		// event: "100011000100",
-		// _id: "300130013001"
+		edited: false
 	}
 ];
 
