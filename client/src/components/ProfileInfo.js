@@ -1,4 +1,7 @@
 import React from "react";
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import FaceIcon from '@mui/icons-material/Face';
 
 function ProfileInfo(props) {
     return (
@@ -10,22 +13,23 @@ function ProfileInfo(props) {
                 <div className="profile-img">
                     <div className="placeholder-img"/>
                 </div>
-                <div className="user-info">
-                    <span className="user-name">Cole Cochran</span>
-                    <div className="tech-stack">
-                        <ul>
-                            <li>Javascript</li>
-                            <li>React</li>
-                            <li>Node.js</li>
-                            <li>MySQL</li>
-                        </ul>
-                        <span>member since 2021</span>
-                    </div>
-                </div>
+                <span className="user-name">Cole Cochran</span>
+                <br/>
+                <span>Member since 2021</span>
                 <div className="Bio">
                         sadasdsad asd asd asd asd asd asd asd as dsad asd asd asd sad 
                         asd asd asd asd asd asd as dasd sad asd as asdad asd asd asd asdasd
                         
+                </div>
+                <div className="user-info">
+                    <div className="tech-stack">
+                        <ul>
+                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
+                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
+                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
+                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import React from "react";
 import NavBar from "../components/NavBar";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-import ProfileDisplay from "../components/ProfileDisplay";
+import ProfileInfo from "../components/ProfileInfo";
 
 
 function Profile(props) {
@@ -11,7 +11,7 @@ function Profile(props) {
             <NavBar/>
             <div className="app-content-container">
                 <Sidebar/>
-                <ProfileDisplay/>
+                <ProfileInfo/>
             </div>
             <Footer/>
         </React.Fragment>

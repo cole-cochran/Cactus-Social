@@ -7,9 +7,9 @@ export const USER_ID = "Coleman.Lantern-620639";
 export const NICKNAME = "Cole Cochran";
 export const THEME = "light" || "dark";
 
-// export default {
-//   APP_ID,
-//   USER_ID,
-//   NICKNAME,
-//   THEME
-// };
+export default {
+  APP_ID,
+  USER_ID,
+  NICKNAME,
+  THEME
+};
