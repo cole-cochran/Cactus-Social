@@ -1,3 +1,6 @@
+
+
+
 // import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
@@ -12,6 +15,8 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+
 
 export default function EventDisplay() {
 	// for when we get the routes going
