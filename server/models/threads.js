@@ -19,6 +19,12 @@ const threadSchema = new Schema({
 			ref:'Post'
         }
     ],
+	pinned_posts: [
+		{
+			type: ObjectId,
+			ref: 'Post'
+		}
+	],
     events: [
         {
             type: ObjectId,
