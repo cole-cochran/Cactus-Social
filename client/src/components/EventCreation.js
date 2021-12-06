@@ -19,6 +19,8 @@ import TimePicker from '@mui/lab/TimePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import Stack from '@mui/material/Stack';
+
 
 
 
@@ -54,27 +56,27 @@ export default function FullWidthTextField() {
         <DesktopDatePicker
           label="Date desktop"
           inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
+          // value={value}
+          // onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}
         />
         <MobileDatePicker
           label="Date mobile"
           inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
+          // value={value}
+          // onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}
         />
         <TimePicker
           label="Time"
-          value={value}
-          onChange={handleChange}
+          // value={value}
+          // onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}
         />
         <DateTimePicker
           label="Date&Time picker"
-          value={value}
-          onChange={handleChange}
+          // value={value}
+          // onChange={handleChange}
           renderInput={(params) => <TextField {...params} />}
         />
       </Stack>
