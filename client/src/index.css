@@ -596,6 +596,7 @@ footer {
     justify-content: center;
     width: 100%;
     background-color:  green;
+    min-height: calc(100% - 6.24rem);
 }
 .thread-content-container {
   background-color: red;
@@ -620,7 +621,7 @@ footer {
   font-size: .75rem;
 }
 .chats-container {
-    height: 70vh;
+    height: 80vh;
     overflow: auto;
 }
 
@@ -653,8 +654,6 @@ footer {
 
 
 .chat-input {
-    bottom: 2;
-    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -664,6 +663,9 @@ footer {
     border: 1px solid slategray;
     border-radius: .25rem;
     margin-bottom: 1rem;
+    position: sticky;
+    bottom: 20px;
+    background-color: green;
 }
 
 .chat-input span {
@@ -704,6 +706,14 @@ footer {
     .thread-wrapper {
       position: static;
       width: 100%;
+    }
+}
+
+
+@media only screen and (height: 475px) {
+  
+    .chats-container {
+        height: 30rem;
     }
 }
 
