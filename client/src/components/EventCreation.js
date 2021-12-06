@@ -20,77 +20,66 @@ import DateTimePicker from '@mui/lab/DateTimePicker';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
-
-
-
-
 export default function FullWidthTextField() {
-  
-  return (
-    <div>
-    <Box
-      sx={{
-        width: 500,
-        maxWidth: '100%',
-      }}
-    >
-      <TextField fullWidth label="Title" id="fullWidth" />
-    </Box>
-  <Box
-  sx={{
-    width: 500,
-    maxWidth: '100%',
-  }}
->
-  <TextField fullWidth label="Description" id="fullWidth" />
-</Box>
-{/* checkbox in person */}
-<FormGroup>
-      <FormControlLabel control={<Checkbox defaultChecked />} label="In Person" />
-    </FormGroup>
-{/* date and time */}
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack spacing={3}>
-        <DesktopDatePicker
-          label="Date desktop"
-          inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <MobileDatePicker
-          label="Date mobile"
-          inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <TimePicker
-          label="Time"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <DateTimePicker
-          label="Date&Time picker"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </Stack>
-    </LocalizationProvider>
-</div>
-  );
+	return (
+		<div>
+			<Box
+				sx={{
+					width: 500,
+					maxWidth: '100%'
+				}}
+			>
+				<TextField fullWidth label="Title" id="fullWidth" />
+			</Box>
+			<Box
+				sx={{
+					width: 500,
+					maxWidth: '100%'
+				}}
+			>
+				<TextField fullWidth label="Description" id="fullWidth" />
+			</Box>
+			{/* checkbox in person */}
+			<FormGroup>
+				<FormControlLabel control={<Checkbox defaultChecked />} label="In Person" />
+			</FormGroup>
+			{/* date and time */}
+			<LocalizationProvider dateAdapter={AdapterDateFns}>
+				<Stack spacing={3}>
+					<DesktopDatePicker
+						label="Date desktop"
+						inputFormat="MM/dd/yyyy"
+						value={value}
+						onChange={handleChange}
+						renderInput={(params) => <TextField {...params} />}
+					/>
+					<MobileDatePicker
+						label="Date mobile"
+						inputFormat="MM/dd/yyyy"
+						value={value}
+						onChange={handleChange}
+						renderInput={(params) => <TextField {...params} />}
+					/>
+					<TimePicker
+						label="Time"
+						value={value}
+						onChange={handleChange}
+						renderInput={(params) => <TextField {...params} />}
+					/>
+					<DateTimePicker
+						label="Date&Time picker"
+						value={value}
+						onChange={handleChange}
+						renderInput={(params) => <TextField {...params} />}
+					/>
+				</Stack>
+			</LocalizationProvider>
+		</div>
+	);
 }
 // title, tex input description text input, start date and end date modal, start time end time modal, category text input
 // inperson or not (true or false selector or switch) location text input
 // image input(empty)
-
-
- 
-
-
-
 
 // export default function EventCreation() {
 //     const [values, setValues] = React.useState({
@@ -101,24 +90,23 @@ export default function FullWidthTextField() {
 //         password: '',
 //         showPassword: false,
 //       });
-    
+
 //       const handleChange = (prop) => (event) => {
 //         setValues({ ...values, [prop]: event.target.value });
 //       };
-    
+
 //       const handleClickShowPassword = () => {
 //         setValues({
 //           ...values,
 //           showPassword: !values.showPassword,
 //         });
 //       };
-    
+
 //       const handleMouseDownPassword = (event) => {
 //         event.preventDefault();
 //     }
 //   return (
 
-    
 //     <Box
 //       component="form"
 //       sx={{
@@ -194,14 +182,8 @@ export default function FullWidthTextField() {
 //         />
 //       </div>
 
-
-    
-
-     
-      {/* // title, tex input description text input, start date and end date modal, start time end time modal, category text input
+{
+	/* // title, tex input description text input, start date and end date modal, start time end time modal, category text input
 // inperson or not (true or false selector or switch) location text input
-// image input(empty) */}
-
-     
-    
-
+// image input(empty) */
+}
