@@ -12,7 +12,7 @@ function Dashboard(props) {
             <div className="app-content-container">
                 <Sidebar/>
                 <ThreadDisplay/>
-                <RightShelf/>
+                {/* <RightShelf/> */}
             </div>
             <Footer/>
         </React.Fragment>

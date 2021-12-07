@@ -12,8 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = ['Login', 'Home', 'Threads'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Logout', 'Home', 'Threads', "DM's"];
+const settings = ['Logout', 'Home', 'Threads', "DM's"];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

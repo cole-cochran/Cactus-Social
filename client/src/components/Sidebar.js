@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const toggleSidebar = () => {
 
@@ -23,10 +24,10 @@ function Sidebar(props) {
         <aside className="aside" id="aside">
             <div className="sticky-dash">
                 <ul>
-                    <li><img onClick={toggleSidebar}src="/assets/img/thread.svg" id="menu" alt="click to open sidebar"/></li>
-                    <li><img src="/assets/img/msg.svg" alt="click to open profile"/></li>
-                    <li><img src="/assets/img/profile.svg" alt="click to open profile"/></li>
-                    <li><img src="/assets/img/friends.svg" /></li>
+                    <li><Link to=""><img onClick={toggleSidebar} src="/assets/img/thread.svg" id="menu" alt="click to open sidebar"/></Link></li>
+                    <li><Link to="/sendbird"><img src="/assets/img/msg.svg" alt="click to open profile"/></Link></li>
+                    <li><Link to="/profile"><img src="/assets/img/profile.svg" alt="click to open profile"/></Link></li>
+                    {/* <li><img src="/assets/img/subthread.svg" alt="friends icon"/></li> */}
                 </ul>
              </div>
              <div className="sidebar" id="sidebar" data-sidebardisplay="hidden">
