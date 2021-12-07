@@ -193,7 +193,26 @@ export const LOGIN_USER = gql`
 mutation loginUser($username: String!, $password: String!) {
     loginUser(username: $username, password: $password) {
         token
-        ${userResponse}
+        user {
+            _id
+            first_name
+            last_name
+            username
+            email
+            picture
+            bio
+            threads {
+                _id
+            }
+            events {
+                _id
+            }
+            tech_stack
+            date_joined
+            friends {
+                _id
+            }
+        }
     }
 }
 `;
@@ -226,16 +245,74 @@ export const CREATE_USER = gql`
 
 export const ADD_TECH = gql`
 mutation addTechnology($userId: ID!, $technology: String!) {
-    addTechnology( userId: $userId, technology: $technology) {
-        ${userResponse}
+    addTechnology(userId: $userId, technology: $technology) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
 
 export const REMOVE_TECH = gql`
 mutation removeTechnology($userId: ID!, $technology: String!) {
-    removeTechnology( userId: $userId, technology: $technology) {
-        ${userResponse}
+    removeTechnology(userId: $userId, technology: $technology) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
@@ -243,15 +320,73 @@ mutation removeTechnology($userId: ID!, $technology: String!) {
 export const ADD_FRIEND = gql`
 mutation addFriend($userId: ID!, $friend: ID!) {
     addFriend( userId: $userId, friend: $friend) {
-        ${userResponse}
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
 
 export const REMOVE_FRIEND = gql`
 mutation removeFriend($userId: ID!, $friend: ID!) {
-    removeFriend( userId: $userId, friend: $friend) {
-        ${userResponse}
+    removeFriend(userId: $userId, friend: $friend) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
@@ -259,7 +394,36 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
 export const UPDATE_PHOTO = gql`
 mutation updatePhoto($userId: ID!, $picture: String!) {
     updatePhoto( userId: $userId, picture: $picture) {
-        ${userResponse}
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
@@ -267,7 +431,36 @@ mutation updatePhoto($userId: ID!, $picture: String!) {
 export const UPDATE_BIO = gql`
 mutation updateBio($userId: ID!, $bio: String!) {
     updateBio( userId: $userId, bio: $bio) {
-        ${userResponse}
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
@@ -276,19 +469,16 @@ mutation updateBio($userId: ID!, $bio: String!) {
 
 export const CREATE_THREAD = gql`
 mutation createThread($moderator: ID!, $title: String!) {
-    createThread( moderator: $moderator, title: $title) {
-        thread {
+    createThread(moderator: $moderator, title: $title) {
+        _id
+        title
+        moderator {
             _id
-            title
-            moderator {
-                _id
-            }
-            members {
-                _id
-            }
-            date_created
-            }
         }
+        members {
+            _id
+        }
+        date_created
     }
 }
 `;
@@ -297,7 +487,36 @@ mutation createThread($moderator: ID!, $title: String!) {
 export const REMOVE_THREAD = gql`
 mutation removeThread($threadId: ID!) {
     removeThread(threadId: $threadId) {
-        ${userResponse}
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        threads {
+            _id
+            title
+            posts {
+                _id
+            }
+            date_created
+        }
+        events {
+            _id
+            title
+            owner {
+                _id
+            }
+            category
+            in_person
+        }
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
     }
 }
 `;
@@ -307,7 +526,59 @@ mutation removeThread($threadId: ID!) {
 export const CREATE_POST = gql`
 mutation createPost($threadId: ID!, $post_text: String!) {
     createPost( threadId: $threadId, post_text: $post_text) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
@@ -315,7 +586,59 @@ mutation createPost($threadId: ID!, $post_text: String!) {
 export const REMOVE_POST = gql`
 mutation removePost($threadId: ID!, $postId: ID!) {
     removePost( threadId: $threadId, postId: $postId) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
@@ -323,7 +646,59 @@ mutation removePost($threadId: ID!, $postId: ID!) {
 export const UPDATE_POST = gql`
 mutation removePost($threadId: ID!, $postId: ID! $post_text: String!) {
     removePost( threadId: $threadId, postId: $postId, post_text: $post_text ) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
@@ -331,7 +706,59 @@ mutation removePost($threadId: ID!, $postId: ID! $post_text: String!) {
 export const PIN_POST = gql`
 mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: String!) {
     pinPost(threadId: $threadId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
@@ -339,7 +766,59 @@ mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: Str
 export const UNPIN_POST = gql`
 mutation unpinPost($threadId: ID!, $postId: ID!) {
     unpinPost(threadId: $threadId, postId: $postId) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
@@ -347,15 +826,94 @@ mutation unpinPost($threadId: ID!, $postId: ID!) {
 export const ADD_POST_REACTION = gql`
 mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
     addPostReaction(threadId: $threadId, postId: $postId) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
 
 export const CREATE_POST_COMMENT = gql`
-mutation createPostComment($postId: ID!, $comment_text: String!, author: ID!) {
+mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
     createPostComment(postId: $postId, comment_text: $comment_text, author: $author) {
-        ${postResponse}
+        _id
+        post_text
+        date_created
+        author {
+            _id
+            username
+            picture
+        }
+        reactions
+        edited
+        pinned
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            post {
+                _id
+            }
+        }
     }        
 }
 `;
@@ -363,7 +921,34 @@ mutation createPostComment($postId: ID!, $comment_text: String!, author: ID!) {
 export const REMOVE_POST_COMMENT = gql`
 mutation removePostComment($postId: ID!, $commentId: ID!) {
     removePostComment(postId: $postId, commentId: $commentId) {
-        ${postResponse}
+        _id
+        post_text
+        date_created
+        author {
+            _id
+            username
+            picture
+        }
+        reactions
+        edited
+        pinned
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            post {
+                _id
+            }
+        }
     }
 }
 `;
@@ -371,7 +956,34 @@ mutation removePostComment($postId: ID!, $commentId: ID!) {
 export const UPDATE_POST_COMMENT = gql`
 mutation updatePostComment($postId: ID!, $commentId: ID!, $comment_text: String!) {
     updatePostComment(postId: $postId, commentId: $commentId, comment_text: $comment_text) {
-        ${postResponse}
+        _id
+        post_text
+        date_created
+        author {
+            _id
+            username
+            picture
+        }
+        reactions
+        edited
+        pinned
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            post {
+                _id
+            }
+        }
     }
 }
 `;
@@ -379,7 +991,34 @@ mutation updatePostComment($postId: ID!, $commentId: ID!, $comment_text: String!
 export const ADD_POST_COMMENT_REACTION = gql`
 mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String!) {
     addPostCommentReaction(commentId: $commentId, postId: $postId, reaction: $reaction) {
-        ${postResponse}
+        _id
+        post_text
+        date_created
+        author {
+            _id
+            username
+            picture
+        }
+        reactions
+        edited
+        pinned
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            post {
+                _id
+            }
+        }
     }
 }
 `;
@@ -389,7 +1028,46 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
 export const CREATE_EVENT = gql`
 mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String, $owner: ID!) {
     createEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
-        ${eventResponse}
+        _id
+        title
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
+        date_created
+        edited
     }
 }
 `;
@@ -397,7 +1075,59 @@ mutation createEvent($threadId: ID!, $title: String!, $description: String!, $st
 export const REMOVE_EVENT = gql`
 mutation removeEvent($threadId: ID!, $eventId: ID!, $userId: ID!) {
     removeEvent(threadId: $threadId, eventId: $eventId, userId: $userId) {
-        ${threadResponse}
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            pinned
+            comments {
+                _id
+            }
+        }
+        events {
+            _id
+            title
+            start_date
+            end_date
+            start_time
+            end_time
+            owner {
+                _id
+            }
+            attendees {
+                _id
+            }
+            category
+            in_person
+            location
+            image
+            thread {
+                _id
+            }
+            date_created
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
     }
 }
 `;
@@ -405,7 +1135,46 @@ mutation removeEvent($threadId: ID!, $eventId: ID!, $userId: ID!) {
 export const UPDATE_EVENT = gql`
 mutation updateEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
     updateEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
-        ${eventResponse}
+        _id
+        title
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
+        date_created
+        edited
     }
 }
 `;
@@ -413,7 +1182,46 @@ mutation updateEvent($title: String!, $description: String!, $start_date: String
 export const ATTEND_EVENT = gql`
 mutation attendEvent($eventId: ID!, $attendee: ID!) {
     attendEvent(eventId: $eventId, attendee: $attendee) {
-        ${eventResponse}
+        _id
+    title
+    description
+    start_date
+    end_date
+    start_time
+    end_time
+    owner {
+        _id
+        username
+        picture
+    }
+    attendees {
+        _id
+        username
+        picture
+    }
+    category
+    in_person
+    location
+    image
+    thread {
+        _id
+        title
+    }
+    comments {
+        _id
+        comment_text
+        date_created
+        author {
+            _id
+        }
+        reactions
+        edited
+        event {
+            _id
+        }
+    }
+    date_created
+    edited
     }
 }
 `;
@@ -421,7 +1229,46 @@ mutation attendEvent($eventId: ID!, $attendee: ID!) {
 export const LEAVE_EVENT = gql`
 mutation leaveEvent($eventId: ID!, $attendee: ID!) {
     leaveEvent(eventId: $eventId, attendee: $attendee) {
-        ${eventResponse}
+        _id
+    title
+    description
+    start_date
+    end_date
+    start_time
+    end_time
+    owner {
+        _id
+        username
+        picture
+    }
+    attendees {
+        _id
+        username
+        picture
+    }
+    category
+    in_person
+    location
+    image
+    thread {
+        _id
+        title
+    }
+    comments {
+        _id
+        comment_text
+        date_created
+        author {
+            _id
+        }
+        reactions
+        edited
+        event {
+            _id
+        }
+    }
+    date_created
+    edited
     }
 }
 `;
@@ -429,7 +1276,46 @@ mutation leaveEvent($eventId: ID!, $attendee: ID!) {
 export const CREATE_EVENT_COMMENT = gql`
 mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!) {
     createEventComment(eventId: $eventId, comment_text: $comment_text, author: $author) {
-        ${eventResponse}
+        _id
+    title
+    description
+    start_date
+    end_date
+    start_time
+    end_time
+    owner {
+        _id
+        username
+        picture
+    }
+    attendees {
+        _id
+        username
+        picture
+    }
+    category
+    in_person
+    location
+    image
+    thread {
+        _id
+        title
+    }
+    comments {
+        _id
+        comment_text
+        date_created
+        author {
+            _id
+        }
+        reactions
+        edited
+        event {
+            _id
+        }
+    }
+    date_created
+    edited
     }
 }
 `;
@@ -437,7 +1323,46 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
 export const REMOVE_EVENT_COMMENT = gql`
 mutation removeEventComment($eventId: ID!, $commentId: String!) {
     removeEventComment(eventId: $eventId, commentId: $commentId) {
-        ${eventResponse}
+        _id
+    title
+    description
+    start_date
+    end_date
+    start_time
+    end_time
+    owner {
+        _id
+        username
+        picture
+    }
+    attendees {
+        _id
+        username
+        picture
+    }
+    category
+    in_person
+    location
+    image
+    thread {
+        _id
+        title
+    }
+    comments {
+        _id
+        comment_text
+        date_created
+        author {
+            _id
+        }
+        reactions
+        edited
+        event {
+            _id
+        }
+    }
+    date_created
+    edited
     }
 }
 `;
@@ -445,7 +1370,46 @@ mutation removeEventComment($eventId: ID!, $commentId: String!) {
 export const UPDATE_EVENT_COMMENT = gql`
 mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: String!) {
     updateEventComment(eventId: $eventId, commentId: $commentId, comment_text: $comment_text) {
-        ${eventResponse}
+        _id
+    title
+    description
+    start_date
+    end_date
+    start_time
+    end_time
+    owner {
+        _id
+        username
+        picture
+    }
+    attendees {
+        _id
+        username
+        picture
+    }
+    category
+    in_person
+    location
+    image
+    thread {
+        _id
+        title
+    }
+    comments {
+        _id
+        comment_text
+        date_created
+        author {
+            _id
+        }
+        reactions
+        edited
+        event {
+            _id
+        }
+    }
+    date_created
+    edited
     }
 }
 `;
@@ -453,7 +1417,46 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
 export const ADD_EVENT_COMMENT_REACTION = gql`
 mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: String!) {
     addEventCommentReaction(commentId: $commentId, eventId: $eventId, reaction: $reaction) {
-        ${eventResponse}
+        _id
+    title
+    description
+    start_date
+    end_date
+    start_time
+    end_time
+    owner {
+        _id
+        username
+        picture
+    }
+    attendees {
+        _id
+        username
+        picture
+    }
+    category
+    in_person
+    location
+    image
+    thread {
+        _id
+        title
+    }
+    comments {
+        _id
+        comment_text
+        date_created
+        author {
+            _id
+        }
+        reactions
+        edited
+        event {
+            _id
+        }
+    }
+    date_created
+    edited
     }
 }
 `;
