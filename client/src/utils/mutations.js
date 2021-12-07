@@ -274,24 +274,24 @@ mutation updateBio($userId: ID!, $bio: String!) {
 
 //*  THREAD STUFF
 
-export const CREATE_THREAD = gql`
-mutation createThread($moderator: ID!, $title: String!) {
-    createThread( moderator: $moderator, title: $title) {
-        thread {
-            _id
-            title
-            moderator {
-                _id
-            }
-            members {
-                _id
-            }
-            date_created
-            }
-        }
-    }
-}
-`;
+// export const CREATE_THREAD = gql`
+// mutation createThread($moderator: ID!, $title: String!) {
+//     createThread( moderator: $moderator, title: $title) {
+//         thread {
+//             _id
+//             title
+//             moderator {
+//                 _id
+//             }
+//             members {
+//                 _id
+//             }
+//             date_created
+//             }
+//         }
+//     }
+// }
+// `;
 
 //! create mini modal to all owner to delete event
 export const REMOVE_THREAD = gql`
@@ -353,7 +353,7 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
 `;
 
 export const CREATE_POST_COMMENT = gql`
-mutation createPostComment($postId: ID!, $comment_text: String!, author: ID!) {
+mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
     createPostComment(postId: $postId, comment_text: $comment_text, author: $author) {
         ${postResponse}
     }        

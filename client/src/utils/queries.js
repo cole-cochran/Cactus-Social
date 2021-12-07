@@ -76,26 +76,26 @@ export const ALL_THREADS = gql`
 	}
 `;
 //* This is for internal use only
-export const ALL_COMMENTS = gql`
-	query allComments() {
-		allComments {
-			_id
-			comment_text
-			date_created
-			author {
-				_id
-			}
-			reactions
-			edited
-			post {
-				_id
-			}
-			event {
-				_id
-			}
-		}
-	}
-`;
+// export const ALL_COMMENTS = gql`
+// 	query allComments() {
+// 		allComments {
+// 			_id
+// 			comment_text
+// 			date_created
+// 			author {
+// 				_id
+// 			}
+// 			reactions
+// 			edited
+// 			post {
+// 				_id
+// 			}
+// 			event {
+// 				_id
+// 			}
+// 		}
+// 	}
+// `;
 //* This is for internal use only
 export const ALL_EVENTS = gql`
 	query allEvents {
