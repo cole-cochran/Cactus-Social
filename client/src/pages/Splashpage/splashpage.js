@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import CACTUSVIDEO from './CACTUSVIDEO.mp4';
 
+
 function SplashPage() {
 	return (
 		<div class="splash-page-content-overflow-wrapper">
@@ -13,10 +14,9 @@ function SplashPage() {
 					</Link>
 				</header>
 				<div className="splash-page-content">
-					<h1>Social Cactus</h1>
+					<h1>Cactus Social</h1>
 					<p>
-						I'm baby polaroid helvetica fam meggings, yr live-edge ugh cloud bread vexillologist celiac blue bottle woke.
-						Yr live-edge ugh cloud bread vexillologist celiac blue bottle woke.
+					A sleek, secure, and transparent social media platform for software developers.
 					</p>
 					<div>
 						<Link to="/sign-up">

@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Error from './pages/Error';
-
+import EventCreation from './components/EventCreation';
 //*import browser router 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -47,35 +47,35 @@ function App() {
 
   return (
     // <SplashPage/>
-    // <EventCreation/>
+    <EventCreation/>
     // <ApolloProvider client={client}>
-    <Router>
-      <div className="App">
-        <Switch>
-          <Route exact path="/">
-            <SplashPage/>
-          </Route>
-          <Route exact path="/sign-up">
-            <SignUp/>
-          </Route>
-          <Route exact path="/login">
-            <Login/>
-          </Route>
-          <Route exact path="/home">
-            <Dashboard/>
-          </Route>
-          <Route exact path="/profile">
-            <Profile/>
-          </Route>
-          <Route exact path="/sendbird">
-            <Sendbird/>
-          </Route>
-          <Route exact path="/404">
-            <Error/>
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+    // <Router>
+    //   <div className="App">
+    //     <Switch>
+    //       <Route exact path="/">
+    //         <SplashPage/>
+    //       </Route>
+    //       <Route exact path="/sign-up">
+    //         <SignUp/>
+    //       </Route>
+    //       <Route exact path="/login">
+    //         <Login/>
+    //       </Route>
+    //       <Route exact path="/home">
+    //         <Dashboard/>
+    //       </Route>
+    //       <Route exact path="/profile">
+    //         <Profile/>
+    //       </Route>
+    //       <Route exact path="/sendbird">
+    //         <Sendbird/>
+    //       </Route>
+    //       <Route exact path="/404">
+    //         <Error/>
+    //       </Route>
+    //     </Switch>
+    //   </div>
+    // </Router>
     // </ApolloProvider>
   );
 }
