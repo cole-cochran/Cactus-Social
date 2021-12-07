@@ -31,7 +31,7 @@ html, body {
 
 .app-content-container, .thread-wrapper, .aside {
     display: flex; 
-    height: calc(100vh - 6.281rem);
+    height: calc(100vh - 6rem);
 }
 
 /*************GLOBAL:STYLES************/
@@ -44,6 +44,8 @@ html, body {
 }
 
 .splash-page-header button {
+    position: relative;
+    z-index: 2;
     background-color: #80deea;
     color: black;
     font-size: .75rem;
@@ -82,6 +84,8 @@ html, body {
 
 
 .splash-page-sign-up-button {
+    position: relative;
+    z-index: 2;
     background-color: white;
     font-size: .75rem;
     height: 3rem;
@@ -94,6 +98,7 @@ html, body {
 }
 
 .splash-page-download-button {
+    z-index: 100;
     background-color: var(--primary-green);
     font-size: .875rem;
     font-weight: 700;
@@ -554,6 +559,15 @@ header {
   text-decoration: none;
 }
 
+.thread-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.thread-sidebar-header img {
+    margin-right: .5rem;
+}
+
 .add-thread-row {
     display: flex;
     align-items: center;
@@ -756,12 +770,21 @@ footer {
     font-size: 1rem;
 }
 
+.join-date {
+
+    font-size: .75rem;
+}
+
 .profile-wrapper {
-    z-index: 1;
-    position: absolute;
     display: flex;
     justify-content: center;
     width: 100%;
+    padding-left: 1rem;
+}
+
+.user-bio {
+    margin-top: .75rem;
+    font-size: .875rem;
 }
 .profile-content-container {
     padding-left: 1.5rem;

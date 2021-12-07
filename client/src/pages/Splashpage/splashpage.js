@@ -19,10 +19,11 @@ function SplashPage() {
 					A sleek, secure, and transparent social media platform for software developers.
 					</p>
 					<div>
-						<Link to="/sign-up">
-							<button className="splash-page-sign-up-button">Sign Up</button>
+						<Link to="/sendbird">
+							<button className="splash-page-sign-up-button">
+								Sign Up
+							</button>
 						</Link>
-						<button className="splash-page-download-button">Download</button>
 					</div>
 				</div>
 			</div>
@@ -31,7 +32,8 @@ function SplashPage() {
 				autoPlay
 				loop
 				muted
-				>
+
+			>
 				<source src={CACTUSVIDEO} type="video/mp4" />
 			</video>
 		</div>
