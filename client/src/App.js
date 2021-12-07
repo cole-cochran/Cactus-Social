@@ -43,6 +43,7 @@ const client = new ApolloClient({
 
 function App() {
 	return (
+		// <ThreadCreation/>
 		// <SplashPage/>
 		// <EventCreation/>
 		<ApolloProvider client={client}>
