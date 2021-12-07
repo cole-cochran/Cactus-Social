@@ -99,9 +99,10 @@ export default function FullWidthTextField() {
           m: 2
         }}
       >
+         <TextField fullWidth label="Category" id="fullWidth" />
         <TextField fullWidth label="Description" id="fullWidth" />
       </Box>
-      {/* checkbox in person */}
+     
 
       {/* date and time */}
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -113,18 +114,27 @@ export default function FullWidthTextField() {
           }}>
 
           <MobileDatePicker
-            label="Date mobile"
+            label="Start Date"
+            inputFormat="MM/dd/yyyy"
+            // value={value}
+            // onChange={handleChange}
+            renderInput={(params) => <TextField {...params} />}
+          />
+           <MobileDatePicker
+            label="End Date"
             inputFormat="MM/dd/yyyy"
             // value={value}
             // onChange={handleChange}
             renderInput={(params) => <TextField {...params} />}
           />
           <MobileTimePicker
-            label="For mobile"
-            // value={value}
-            // onChange={(newValue) => {
-            //   setValue(newValue);
-            // }}
+            label="Start Time"
+           
+            renderInput={(params) => <TextField {...params} />}
+          />
+           <MobileTimePicker
+            label="End Time"
+            
             renderInput={(params) => <TextField {...params} />}
           />
 
@@ -135,6 +145,7 @@ export default function FullWidthTextField() {
     maxWidth: '100%',
     m: 2
   }}>
+     {/* checkbox in person */}
           <FormControlLabel control={<Checkbox defaultChecked />} label="In Person" />
         </FormGroup>
       </LocalizationProvider>
