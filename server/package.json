@@ -30,7 +30,6 @@
     "graphql": "^14.6.0",
     "graphql-type-json": "^0.3.2",
     "mongoose": "^6.0.13",
-    "sendbird": "^3.0.137",
     "morgan": "^1.10.0",
     "apollo-server-express": "^2.15.0",
     "axios": "^0.24.0",
