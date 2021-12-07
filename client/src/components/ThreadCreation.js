@@ -16,3 +16,5 @@ export default function FullWidthTextField() {
       </div>
     )
   };
+
+  export default ThreadCreation;
