@@ -1,7 +1,6 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-// import Parallax from "/js/parallax"
-
+import {Helmet} from "react-helmet";
 
 
 export default function Error() {
@@ -10,9 +9,10 @@ export default function Error() {
 <main class="error-page-body">
     <div>
         <NavBar/>
+     </div>   
+    <div>   
     <div id="parallax_illustration">
-            <img src="../assets/img/error.png" alt="Error page with a bird and text" class="js-plaxify" data-invert="true" data-xrange="50" data-yrange="50" 
-                 id="parallax_sign" />
+            <img src="../assets/img/error.png" alt="Error page with a bird and text" class="js-plaxify" data-invert="true" data-xrange="50" data-yrange="50" width="100%" ></img>
         </div>
     </div>     
     <section class="error-banner">
@@ -22,12 +22,12 @@ export default function Error() {
             and transparent platform...
         </h1>
     </section>
-
-<footer class="mobile-dashboard-footer">
-</footer>
-    <script src="../js/parallax.js"></script>
-    
+    <Helmet>
+    <script src="../components/Parallax" 
+    type="text/javascript" />
+    </Helmet>
 </main>
+
     )
 }
 
