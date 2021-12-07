@@ -1,17 +1,24 @@
-// import React, { useState } from 'react';
-// import { useParams } from 'react-router-dom';
-// import { useQuery } from '@apollo/client';
-// import { USER_EVENTS_AND_THREADS } from '../utils/queries';
+import React, { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-// import CardMedia from '@mui/material/CardMedia';
-// import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+// import CardMedia from '@mui/material/CardMedia';
+// import Typography from '@mui/material/Typography';
 // import Box from '@mui/material/Box';
 // import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Avatar from '@mui/material/Avatar';
+
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import Auth from '../utils/auth';
+
+import { USER_THREADS, USER_EVENTS } from '../utils/queries';
+//* USER_THREADS requires a userId and gives us access to the tread's _id, title, posts {_id}, events {_id}, moderator {_id,username,picture}, members {_id,username,picture}, and date_created
+//* USER_EVENTS requires a userId and gives us access to the event's _id, title, start_date, end_date, start_time, end_time, owner {_id,username}, attendees {_id,username}, category, in_person, location, image, and date_created
+import { CREATE_THREAD, CREATE_EVENT } from '../utils/mutations';
+//! Add explainer for mutations imported above
 
 export default function ProfilePopout() {
 	// const { userId } = useParams();

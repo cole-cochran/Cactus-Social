@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+//! In the future, this is for internal use only, but we will use this to let users create friend requests with other users in the application
 export const ALL_USERS = gql`
 	query allUsers {
 		allUsers {
@@ -35,24 +36,7 @@ export const ALL_USERS = gql`
 		}
 	}
 `;
-
-export const USER_PROFILE = gql`
-	query userProfile($id: ID!) {
-		userProfile(userId: $id) {
-			_id
-			first_name
-			last_name
-			username
-			email
-			password
-			picture
-			bio
-			tech_stack
-			date_joined
-		}
-	}
-`;
-
+//* This is for internal use only
 export const ALL_THREADS = gql`
 	query allThreads {
 		allThreads {
@@ -88,6 +72,187 @@ export const ALL_THREADS = gql`
 				username
 			}
 			date_created
+		}
+	}
+`;
+//* This is for internal use only
+export const ALL_COMMENTS = gql`
+	query allComments() {
+		allComments {
+			_id
+			comment_text
+			date_created
+			author {
+				_id
+			}
+			reactions
+			edited
+			post {
+				_id
+			}
+			event {
+				_id
+			}
+		}
+	}
+`;
+//* This is for internal use only
+export const ALL_EVENTS = gql`
+	query allEvents {
+		allEvents {
+			_id
+			title
+			start_date
+			end_date
+			start_time
+			end_time
+			owner {
+				_id
+				username
+			}
+			attendees {
+				_id
+				username
+			}
+			category
+			in_person
+			location
+			image
+			thread {
+				_id
+				title
+			}
+			date_created
+			edited
+			comments {
+				_id
+				comment_text
+				date_created
+				author {
+					_id
+				}
+				reactions
+				edited
+				event {
+					_id
+				}
+			}
+		}
+	}
+`;
+//* This is for internal use only
+export const ALL_POSTS = gql`
+	query allPosts {
+		allPosts {
+			_id
+			post_text
+			date_created
+			author {
+				_id
+				username
+			}
+			reactions
+			edited
+			pinned
+			thread {
+				_id
+				title
+			}
+			comments {
+				_id
+				comment_text
+				date_created
+				author {
+					_id
+				}
+				reactions
+				edited
+				post {
+					_id
+				}
+			}
+		}
+	}
+`;
+
+
+export const USER_PROFILE = gql`
+	query userProfile($userId: ID!) {
+		userProfile(userId: $userId) {
+			_id
+			first_name
+			last_name
+			username
+			email
+			picture
+			bio
+			tech_stack
+			date_joined
+		}
+	}
+`;
+
+export const USER_THREADS = gql`
+query userThreads($userId: ID!) {
+	userThreads(userId: $userId) {
+		_id
+		title
+		posts {
+			_id
+		}
+		events {
+			_id
+		}
+		moderator {
+			_id
+			username
+			picture
+		}
+		members {
+			_id
+			username
+			picture
+		}
+		date_created
+	}
+}
+`;
+
+export const USER_EVENTS = gql`
+	query userEvents($userId: ID!) {
+		userEvents(userId: $userId) {
+			_id
+			title
+			start_date
+			end_date
+			start_time
+			end_time
+			owner {
+				_id
+				username
+			}
+			attendees {
+				_id
+				username
+			}
+			category
+			in_person
+			location
+			image
+			date_created
+		}
+	}
+`;
+
+export const USER_FRIENDS = gql`
+	query userFriends($userId: ID!) {
+		userFriends(userId: $userId) {
+			_id
+			friends {
+				_id
+				username
+				picture
+			}
 		}
 	}
 `;
@@ -152,92 +317,24 @@ export const THREAD_DETAILS = gql`
 	}
 `;
 
-export const USER_FRIENDS = gql`
-	query userFriends($userId: ID!) {
-		userFriends(userId: $userId) {
-			_id
-			username
-			friends {
-				_id
-				username
-			}
-		}
-	}
-`;
-
-export const ALL_POSTS = gql`
-	query allPosts {
-		allPosts {
-			_id
-			post_text
-			date_created
-			author {
-				_id
-				username
-			}
-			reactions
-			edited
-			pinned
-			thread {
-				_id
-				title
-			}
-			comments {
-				_id
-				comment_text
-				date_created
-				author {
-					_id
-				}
-				reactions
-				edited
-				post {
-					_id
-				}
-			}
-		}
-	}
-`;
-
 export const PINNED_POSTS = gql`
 query pinnedPosts($threadId: ID!) {
 	pinnedPosts(threadId: $threadId) {
-		pinnedPosts{
+		_id
+		author {
 			_id
-			author {
-				_id
-			}
-			pinTitle
-			pinHash
+			username
+			picture
 		}
+		pinTitle
+		pinHash
 	}
 }
 `;
 
-// export const ALL_COMMENTS = gql`
-// 	query allComments() {
-// 		allComments {
-// 			_id
-// 			comment_text
-// 			date_created
-// 			author {
-// 				_id
-// 			}
-// 			reactions
-// 			edited
-// 			post {
-// 				_id
-// 			}
-// 			event {
-// 				_id
-// 			}
-// 		}
-// 	}
-// `;
-
-export const ALL_EVENTS = gql`
-	query allEvents {
-		allEvents {
+export const THREAD_EVENTS = gql`
+	query threadEvents($threadId: ID!) {
+		threadEvents(threadId: $threadID) {
 			_id
 			title
 			start_date
@@ -247,81 +344,19 @@ export const ALL_EVENTS = gql`
 			owner {
 				_id
 				username
+				picture
 			}
 			attendees {
 				_id
 				username
+				picture
 			}
 			category
-			in_person
-			location
 			image
-			thread {
-				_id
-				title
-			}
 			date_created
 			edited
 			comments {
 				_id
-				comment_text
-				date_created
-				author {
-					_id
-				}
-				reactions
-				edited
-				event {
-					_id
-				}
-			}
-		}
-	}
-`;
-
-//! FILTER ON THE FRONTEND TO SEE IF THE LOGGED IN USER IS THE MODERATOR OR A MEMBER
-export const USER_EVENTS_AND_THREADS = gql`
-	query userEventsAndThreads($userId: ID!) {
-		userEventsAndThreads(userId: $userId) {
-			threads {
-				_id
-				title
-				moderator {
-					_id
-				}
-				members {
-					_id
-				}
-				date_created
-				comments {
-					_id
-				}
-			}
-			events {
-				_id
-				title
-				start_date
-				end_date
-				start_time
-				end_time
-				owner {
-					_id
-				}
-				attendees {
-					_id
-				}
-				category
-				in_person
-				location
-				image
-				thread {
-					_id
-				}
-				date_created
-				edited
-				comments {
-					_id
-				}
 			}
 		}
 	}

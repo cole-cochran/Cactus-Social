@@ -293,6 +293,7 @@ mutation createThread($moderator: ID!, $title: String!) {
 }
 `;
 
+//! create mini modal to all owner to delete event
 export const REMOVE_THREAD = gql`
 mutation removeThread($threadId: ID!) {
     removeThread(threadId: $threadId) {
