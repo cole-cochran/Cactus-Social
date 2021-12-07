@@ -19,7 +19,7 @@ import Sendbird from './pages/Sendbird/Sendbird';
 
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({
-	uri: window.location.hostname === '<OUR WEBSITE>' ? '/graphql' : 'http://localhost:3000/graphql'
+	uri: '/graphql'
 });
 
 //* Construct middleware for every authorization request
@@ -43,38 +43,38 @@ const client = new ApolloClient({
 
 function App() {
 	return (
-		<ThreadCreation/>
+		// <ThreadCreation/>
 		// <SplashPage/>
 		// <EventCreation/>
-		// <ApolloProvider client={client}>
-		// 	<Router>
-		// 		<div className="App">
-		// 			<Switch>
-		// 				<Route exact path="/">
-		// 					<SplashPage />
-		// 				</Route>
-		// 				<Route exact path="/sign-up">
-		// 					<SignUp />
-		// 				</Route>
-		// 				<Route exact path="/login">
-		// 					<Login />
-		// 				</Route>
-		// 				<Route exact path="/home">
-		// 					<Dashboard />
-		// 				</Route>
-		// 				<Route exact path="/profile">
-		// 					<Profile />
-		// 				</Route>
-		// 				<Route exact path="/sendbird">
-		// 					<Sendbird />
-		// 				</Route>
-		// 				<Route exact path="/404">
-		// 					<Error />
-		// 				</Route>
-		// 			</Switch>
-		// 		</div>
-		// 	</Router>
-		// </ApolloProvider>
+		<ApolloProvider client={client}>
+			<Router>
+				<div className="App">
+					<Switch>
+						<Route exact path="/">
+							<SplashPage />
+						</Route>
+						<Route exact path="/sign-up">
+							<SignUp />
+						</Route>
+						<Route exact path="/login">
+							<Login />
+						</Route>
+						<Route exact path="/home">
+							<Dashboard />
+						</Route>
+						<Route exact path="/profile">
+							<Profile />
+						</Route>
+						<Route exact path="/chat">
+							<Sendbird />
+						</Route>
+						<Route exact path="/404">
+							<Error />
+						</Route>
+					</Switch>
+				</div>
+			</Router>
+		</ApolloProvider>
 	);
 }
 
