@@ -175,7 +175,6 @@ export const ALL_POSTS = gql`
 	}
 `;
 
-
 export const USER_PROFILE = gql`
 	query userProfile($userId: ID!) {
 		userProfile(userId: $userId) {
