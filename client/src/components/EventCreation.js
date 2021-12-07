@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -19,67 +20,125 @@ import TimePicker from '@mui/lab/TimePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import Stack from '@mui/material/Stack';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
+
+console.log(`                              ...----....
+                         ..-:"''         ''"-..
+                      .-'                      '-.
+                    .'              .     .       '.
+                  .'   .          .    .      .    .''.
+                .'  .    .       .   .   .     .   . ..:.
+              .' .   . .  .       .   .   ..  .   . ....::.
+             ..   .   .      .  .    .     .  ..  . ....:IA.
+            .:  .   .    .    .  .  .    .. .  .. .. ....:IA.
+           .: .   .   ..   .    .     . . .. . ... ....:.:VHA.
+           '..  .  .. .   .       .  . .. . .. . .....:.::IHHB.
+          .:. .  . .  . .   .  .  . . . ...:.:... .......:HIHMM.
+         .:.... .   . ."::"'.. .   .  . .:.:.:II;,. .. ..:IHIMMA
+         ':.:..  ..::IHHHHHI::. . .  ...:.::::.,,,. . ....VIMMHM
+        .:::I. .AHHHHHHHHHHAI::. .:...,:IIHHHHHHMMMHHL:. . VMMMM
+       .:.:V.:IVHHHHHHHMHMHHH::..:" .:HIHHHHHHHHHHHHHMHHA. .VMMM.
+       :..V.:IVHHHHHMMHHHHHHHB... . .:VPHHMHHHMMHHHHHHHHHAI.:VMMI
+       ::V..:VIHHHHHHMMMHHHHHH. .   .I":IIMHHMMHHHHHHHHHHHAPI:WMM
+       ::". .:.HHHHHHHHMMHHHHHI.  . .:..I:MHMMHHHHHHHHHMHV:':H:WM
+       :: . :.::IIHHHHHHMMHHHHV  .ABA.:.:IMHMHMMMHMHHHHV:'. .IHWW
+       '.  ..:..:.:IHHHHHMMHV" .AVMHMA.:.'VHMMMMHHHHHV:' .  :IHWV
+        :.  .:...:".:.:TPP"   .AVMMHMMA.:. "VMMHHHP.:... .. :IVAI
+       .:.   '... .:"'   .   ..HMMMHMMMA::. ."VHHI:::....  .:IHW'
+       ...  .  . ..:IIPPIH: ..HMMMI.MMMV:I:.  .:ILLH:.. ...:I:IM
+     : .   .'"' .:.V". .. .  :HMMM:IMMMI::I. ..:HHIIPPHI::'.P:HM.
+     :.  .  .  .. ..:.. .    :AMMM IMMMM..:...:IV":T::I::.".:IHIMA
+     'V:.. .. . .. .  .  .   'VMMV..VMMV :....:V:.:..:....::IHHHMH
+       "IHH:.II:.. .:. .  . . . " :HB"" . . ..PI:.::.:::..:IHHMMV"
+        :IP""HHII:.  .  .    . . .'V:. . . ..:IH:.:.::IHIHHMMMMM"
+        :V:. VIMA:I..  .     .  . .. . .  .:.I:I:..:IHHHHMMHHMMM
+        :"VI:.VWMA::. .:      .   .. .:. ..:.I::.:IVHHHMMMHMMMMI
+        :."VIIHHMMA:.  .   .   .:  .:.. . .:.II:I:AMMMMMMHMMMMMI
+        :..VIHIHMMMI...::.,:.,:!"I:!"I!"I!"V:AI:VAMMMMMMHMMMMMM'
+        ':.:HIHIMHHA:"!!"I.:AXXXVVXXXXXXXA:."HPHIMMMMHHMHMMMMMV
+          V:H:I:MA:W'I :AXXXIXII:IIIISSSSSSXXA.I.VMMMHMHMMMMMM
+            'I::IVA ASSSSXSSSSBBSBMBSSSSSSBBMMMBS.VVMMHIMM'"'
+             I:: VPAIMSSSSSSSSSBSSSMMBSSSBBMMMMXXI:MMHIMMI
+            .I::. "H:XIIXBBMMMMMMMMMMMMMMMMMBXIXXMMPHIIMM'
+            :::I.  ':XSSXXIIIIXSSBMBSSXXXIIIXXSMMAMI:.IMM
+            :::I:.  .VSSSSSISISISSSBII:ISSSSBMMB:MI:..:MM
+            ::.I:.  ':"SSSSSSSISISSXIIXSSSSBMMB:AHI:..MMM.
+            ::.I:. . ..:"BBSSSSSSSSSSSSBBBMMMB:AHHI::.HMMI
+            :..::.  . ..::":BBBBBSSBBBMMMB:MMMMHHII::IHHMI
+            ':.I:... ....:IHHHHHMMMMMMMMMMMMMMMHHIIIIHMMV"
+              "V:. ..:...:.IHHHMMMMMMMMMMMMMMMMHHHMHHMHP'
+               ':. .:::.:.::III::IHHHHMMMMMHMHMMHHHHM"
+                 "::....::.:::..:..::IIIIIHHHHMMMHHMV"
+                   "::.::.. .. .  ...:::IIHHMMMMHMV"
+                     "V::... . .I::IHHMMV"'
+                       '"VHVHHHAHHHHMMV:"'
+`)
+console.log("BEWARE, I LIVE!")
+console.log("super secret dev link")
+console.log("https://www.youtube.com/watch?v=Qi1KebO4bzc")
+
 
 
 
 
 
 export default function FullWidthTextField() {
-  
+
   return (
     <div>
-    <Box
-      sx={{
-        width: 500,
-        maxWidth: '100%',
-      }}
-    >
-      <TextField fullWidth label="Title" id="fullWidth" />
-    </Box>
-  <Box
-  sx={{
+      <Box
+        sx={{ width: 500, maxWidth: '100%', m: 2 }}
+      >
+        <TextField fullWidth label="Title" id="fullWidth" />
+      </Box>
+      <Box
+        sx={{
+          width: 500,
+          maxWidth: '100%',
+          m: 2
+        }}
+      >
+        <TextField fullWidth label="Description" id="fullWidth" />
+      </Box>
+      {/* checkbox in person */}
+
+      {/* date and time */}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Stack spacing={3}
+          sx={{
+            width: 500,
+            maxWidth: '100%',
+            m: 2
+          }}>
+
+          <MobileDatePicker
+            label="Date mobile"
+            inputFormat="MM/dd/yyyy"
+            // value={value}
+            // onChange={handleChange}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <MobileTimePicker
+            label="For mobile"
+            // value={value}
+            // onChange={(newValue) => {
+            //   setValue(newValue);
+            // }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+
+        </Stack>
+        <FormGroup 
+        sx={{
     width: 500,
     maxWidth: '100%',
-  }}
->
-  <TextField fullWidth label="Description" id="fullWidth" />
-</Box>
-{/* checkbox in person */}
-<FormGroup>
-      <FormControlLabel control={<Checkbox defaultChecked />} label="In Person" />
-    </FormGroup>
-{/* date and time */}
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack spacing={3}>
-        <DesktopDatePicker
-          label="Date desktop"
-          inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <MobileDatePicker
-          label="Date mobile"
-          inputFormat="MM/dd/yyyy"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <TimePicker
-          label="Time"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <DateTimePicker
-          label="Date&Time picker"
-          value={value}
-          onChange={handleChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </Stack>
-    </LocalizationProvider>
-</div>
+    m: 2
+  }}>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="In Person" />
+        </FormGroup>
+      </LocalizationProvider>
+    </div>
   );
 }
 // title, tex input description text input, start date and end date modal, start time end time modal, category text input
@@ -87,7 +146,7 @@ export default function FullWidthTextField() {
 // image input(empty)
 
 
- 
+
 
 
 
@@ -101,24 +160,24 @@ export default function FullWidthTextField() {
 //         password: '',
 //         showPassword: false,
 //       });
-    
+
 //       const handleChange = (prop) => (event) => {
 //         setValues({ ...values, [prop]: event.target.value });
 //       };
-    
+
 //       const handleClickShowPassword = () => {
 //         setValues({
 //           ...values,
 //           showPassword: !values.showPassword,
 //         });
 //       };
-    
+
 //       const handleMouseDownPassword = (event) => {
 //         event.preventDefault();
 //     }
 //   return (
 
-    
+
 //     <Box
 //       component="form"
 //       sx={{
@@ -195,13 +254,13 @@ export default function FullWidthTextField() {
 //       </div>
 
 
-    
 
-     
-      {/* // title, tex input description text input, start date and end date modal, start time end time modal, category text input
+
+
+{/* // title, tex input description text input, start date and end date modal, start time end time modal, category text input
 // inperson or not (true or false selector or switch) location text input
 // image input(empty) */}
 
-     
-    
+
+
 
