@@ -100,7 +100,7 @@ const resolvers = {
 			const userThreads = [];
 
 			for (let thread of userData.threads) {
-				let threadId = await Thread.findOne({ _id: thread });
+				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('events').populate('moderator').populate('members');
 				userThreads.push(threadId);
 			}
 
@@ -118,7 +118,7 @@ const resolvers = {
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventId = await Event.findOne({ _id: event });
+				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
 				userEvents.push(eventId);
 			}
 
@@ -145,16 +145,6 @@ const resolvers = {
 				.populate('thread')
 				.populate('comments');
 		}
-
-		// // find user events
-		// // add user context to ensure they are logged in
-		// userEvents: async (parent, args, context) => {
-		// 	// if (context.user) {
-		// 	const { userId } = args;
-		// 	return await User.findOne({ _id: userId }).populate('events')
-		// 	// }
-		// 	// throw new AuthenticationError('You need to be logged in to do that!');
-		// },
 	},
 	Mutation: {
 		//* log the user in
@@ -207,6 +197,8 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
+		//! FIX THIS MO FO ASAP
+
 		//* remove technology from user tech stack
 		removeTechnology: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
@@ -243,7 +235,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('friends');
 			return user;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
@@ -263,7 +255,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('friends');
 			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -302,7 +294,7 @@ const resolvers = {
 			const newThread = await Thread.create({
 				title: title,
 				moderator: moderator
-			});
+			}).populate('moderator');
 			await User.findOneAndUpdate(
 				{ _id: moderator },
 				{
@@ -317,6 +309,8 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
+		//! CANT TEST UNTIL CONTEXT IS READY BECAUSE IT RETURNS THE USER WHO REMOVED THE THREAD
+
 		//* remove thread
 		removeThread: async (parent, args, context) => {
 			const { threadId } = args;
@@ -324,9 +318,9 @@ const resolvers = {
 			// if (context.user) {
 			const thread = await Thread.findOneAndDelete({ _id: threadId }, { new: true });
 
-			for (let attendee of thread.attendees) {
+			for (let member of thread.members) {
 				await User.findOneAndUpdate(
-					{_id: attendee},
+					{_id: member},
 					{
 						$pull: {
 							threads: threadId
@@ -356,7 +350,7 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			const { threadId, post_text } = args;
-			const newPost = await Post.create(
+			const { _id } = await Post.create(
 				{
 					thread: threadId,
 					post_text: post_text
@@ -366,13 +360,11 @@ const resolvers = {
 				{ _id: threadId },
 				{
 					$addToSet: {
-						posts: {
-							postId: newPost._id
-						}
+						posts: _id
 					}
 				},
 				{ new: true }
-			);
+			).populate('posts').populate('moderator').populate('members');
 			return thread;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
@@ -392,7 +384,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('posts').populate('moderator').populate('members');
 			return thread
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -413,16 +405,8 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const thread =  await Thread.findOneAndUpdate(
-				{
-					_id: threadId,
-					'posts._id': postId
-				},
-				{
-					'posts.post_text': post_text,
-					'posts.edited': true
-				}
-			);
+			const thread =  await Thread.findOne({ _id: threadId }).populate('posts').populate('moderator').populate('members');
+
 			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -452,7 +436,7 @@ const resolvers = {
 						} 
 				},
 				{ new: true }
-			);
+			).populate('posts').populate('moderator').populate('members');
 
 			return thread;
 			// }
@@ -482,7 +466,7 @@ const resolvers = {
 						} 
 				},
 				{ new: true }
-			);
+			).populate('posts').populate('moderator').populate('members');
 
 			return thread;
 			// }
@@ -512,7 +496,8 @@ const resolvers = {
 			// 		}
 			// 	}
 			// );
-			const thread = await Thread.findOne({ _id: threadId })
+			const thread = await Thread.findOne({ _id: threadId }).populate('posts').populate('moderator').populate('members');
+
 			return thread;
 		},
 
@@ -534,7 +519,8 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('author').populate('thread').populate('comments');
+
 			return post;
 		},
 
@@ -552,7 +538,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('author').populate('thread').populate('comments');
 			return post;
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -571,7 +557,7 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const post = await Post.findOne({ _id: postId });
+			const post = await Post.findOne({ _id: postId }).populate('author').populate('thread').populate('comments');
 			return post;
 		},
 
@@ -598,7 +584,8 @@ const resolvers = {
 			// 		}
 			// 	}
 			// );
-			const post = await Post.findOne({ _id: postId });
+			const post = await Post.findOne({ _id: postId }).populate('author').populate('thread').populate('comments');
+
 			return post;
 		},
 
@@ -635,7 +622,7 @@ const resolvers = {
 				thread: threadId,
 				owner: owner
 				// owner: context.userId
-			});
+			}).populate('owner').populate('attendees').populate('thread').populate('comments');
 			//! use context to get userId and complete this
 			// await User.findOneAndUpdate(
 			// 	{ _id: context.userId },
@@ -741,7 +728,7 @@ const resolvers = {
 					edited: true
 				},
 				{ new: true }
-			);
+			).populate('owner').populate('attendees').populate('thread').populate('comments');
 
 			return updatedEvent;
 			// }
@@ -774,7 +761,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			)
+			).populate('owner').populate('attendees').populate('thread').populate('comments');
 
 			return event;
 			// }
@@ -786,16 +773,7 @@ const resolvers = {
 			const { eventId, attendee } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			await Event.findOneAndUpdate(
-				{ _id: eventId },
-				{
-					$pull: {
-						attendees: attendee
-					}
-				},
-				{ new: true }
-			);
-			const user = await User.findOneAndUpdate(
+			await User.findOneAndUpdate(
 				// { _id: context.userId },
 				{ _id: attendee },
 				{
@@ -805,7 +783,18 @@ const resolvers = {
 				},
 				{ new: true }
 			)
-			return user;
+			
+			const event = await Event.findOneAndUpdate(
+				{ _id: eventId },
+				{
+					$pull: {
+						attendees: attendee
+					}
+				},
+				{ new: true }
+			).populate('owner').populate('attendees').populate('thread').populate('comments');
+
+			return event;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 			
@@ -815,10 +804,11 @@ const resolvers = {
 		createEventComment: async (parent, args, context) => {
 			//! add user context here as well to make sure they have permission
 			// if (context.user) {
-			const { eventId, comment_text } = args;
+			const { eventId, comment_text, author } = args;
 			const newComment = await Comment.create({
 				event: eventId,
 				comment_text: comment_text,
+				author: author
 				// author: context.user._id
 			});
 			const commentedEvent = await Event.findOneAndUpdate(
@@ -829,7 +819,8 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('owner').populate('attendees').populate('thread').populate('comments');
+
 			return commentedEvent;
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -841,6 +832,7 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			await Comment.findOneAndDelete({ _id: commentId }, { new: true });
+			
 			const event = await Event.findOneAndUpdate(
 				{ _id: eventId },
 				{
@@ -849,7 +841,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			);
+			).populate('owner').populate('attendees').populate('thread').populate('comments');
 
 			return event;
 			// }
@@ -870,7 +862,7 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const event = await Event.findOne({ _id: eventId });
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
 
 			return event;
 			// }
@@ -891,7 +883,8 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			const event = await Event.findOne({ _id: eventId });
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+
 			return event;
 			// }
 			// throw new AuthenticationError('Could not find User!');
