@@ -19,7 +19,7 @@ import Sendbird from './pages/Sendbird/Sendbird';
 
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({
-	uri: window.location.hostname === '<OUR WEBSITE>' ? '/graphql' : 'http://localhost:3000/graphql'
+	uri: '/graphql'
 });
 
 //* Construct middleware for every authorization request
@@ -64,7 +64,7 @@ function App() {
 						<Route exact path="/profile">
 							<Profile />
 						</Route>
-						<Route exact path="/sendbird">
+						<Route exact path="/chat">
 							<Sendbird />
 						</Route>
 						<Route exact path="/404">
