@@ -100,6 +100,7 @@ export default function FullWidthTextField() {
         }}
       >
          <TextField fullWidth label="Category" id="fullWidth" />
+         <TextField fullWidth label="Location" id="fullWidth" />
         <TextField fullWidth label="Description" id="fullWidth" />
       </Box>
      
