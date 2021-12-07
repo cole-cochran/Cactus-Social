@@ -34,17 +34,6 @@ html, body {
     height: calc(100vh - 6.281rem);
 }
 
-.input {
-    width: 300px;
-    min-height: 17px;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  
-
 /*************GLOBAL:STYLES************/
 /*************SPLASHPAGE:STYLES************/ 
 .splash-page-header {
