@@ -23,8 +23,10 @@ function Sidebar(props) {
         <aside className="aside" id="aside">
             <div className="sticky-dash">
                 <ul>
-                    <li><img onClick={toggleSidebar}src="/assets/img/menu.svg" id="menu" alt="click to open sidebar"/></li>
-                    <li><img src="/assets/img/profile.svg" id="menu" alt="click to open profile"/></li>
+                    <li><img onClick={toggleSidebar}src="/assets/img/thread.svg" id="menu" alt="click to open sidebar"/></li>
+                    <li><img src="/assets/img/msg.svg" alt="click to open profile"/></li>
+                    <li><img src="/assets/img/profile.svg" alt="click to open profile"/></li>
+                    <li><img src="/assets/img/friends.svg" alt="click to open profile"/></li>
                 </ul>
              </div>
              <div className="sidebar" id="sidebar" data-sidebardisplay="hidden">

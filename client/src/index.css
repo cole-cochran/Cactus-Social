@@ -17,8 +17,8 @@
     box-sizing: border-box;
 
 }
-html {
-    height: 100%
+html, body {
+    height: 100vh
 }
 
 #root {
@@ -29,9 +29,9 @@ html {
     height: 100%;
 }
 
-.app-content-container, .aside {
-    display: flex;
-    min-height: calc(100% - 6.24rem);
+.app-content-container, .thread-wrapper, .aside {
+    display: flex; 
+    height: calc(100vh - 6.281rem);
 }
 
 .input {
@@ -516,16 +516,19 @@ header {
     padding-left: 0;
 }
 
+.sticky-dash ul li {
+    margin-top: .5rem;
+}
+
 .sidebar {
-    /* position: absolute; */
-    /* left: -100%; */
-    z-index: 2;
+    position: absolute;
+    left: -100%;
     background-color: var(--grey1);
     transition: .5s;
     padding-top: 2rem;
-    height: 100%;
+    height: calc(100vh - 6.281rem);
     width: calc(100% - 2.5rem);
-    /* max-width: 20rem; */
+    overflow: auto;
 }
 
 .sidebar h3 {
@@ -595,11 +598,10 @@ footer {
     display: flex;
     justify-content: center;
     width: 100%;
-    background-color:  green;
-    min-height: calc(100% - 6.24rem);
+    /* background-color:  green; */
 }
 .thread-content-container {
-  background-color: red;
+  /* background-color: red; */
   padding-left: 3rem;
   /* margin-right: 1rem; */
   width: 100%;
@@ -608,6 +610,7 @@ footer {
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  margin-right: 1rem;
 }
 
 .thread-header h3 {
@@ -621,7 +624,7 @@ footer {
   font-size: .75rem;
 }
 .chats-container {
-    height: 80vh;
+    height: 60vh;
     overflow: auto;
 }
 
@@ -665,7 +668,7 @@ footer {
     margin-bottom: 1rem;
     position: sticky;
     bottom: 20px;
-    background-color: green;
+    background-color: lightblue;
 }
 
 .chat-input span {
