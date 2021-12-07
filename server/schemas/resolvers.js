@@ -56,7 +56,18 @@ const resolvers = {
 		},
 
 		pinnedPosts: async (parent, args, context) => {
-			return await Thread.findOne({ _id: args.threadId }).populate('pinnedPosts');
+			const { threadId } = args;
+			const thread = await Thread.findOne({ _id: threadId }).populate('pinnedPosts');
+
+			const allPins = [];
+
+			for (let pinnedPost of thread.pinnedPosts) {
+				let post = await Post.findOne({ _id: pinnedPost }).populate('author');
+				
+				allPins.push(post);
+			}
+
+			return allPins;
 		},
 
 		// allComments: async (parent, args, context) => {
@@ -67,11 +78,51 @@ const resolvers = {
 			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
 		},
 
-		//* get all user events and threads
-		userEventsAndThreads: async (parent, args, context) => {
+		threadEvents: async (parent, args, context) => {
+			const { threadId } = args;
+			const allEvents = await Event.find(
+				{
+					where: {
+						thread: threadId
+					}
+				}
+			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			
+			return allEvents;
+		},
+
+		//* get all user threads
+		userThreads: async (parent, args, context) => {
 			//! add user context to filter results and then go back and change query in typeDefs
 			// if (context.user) {
-			return await User.findOne({ _id: args.userId }).populate('threads').populate('events');
+			const userData = await User.findOne({ _id: args.userId }).populate('threads');
+
+			const userThreads = [];
+
+			for (let thread of userData.threads) {
+				let threadId = await Thread.findOne({ _id: thread });
+				userThreads.push(threadId);
+			}
+
+			return userThreads;
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!')
+		},
+
+		//* get all user events
+		userEvents: async (parent, args, context) => {
+			//! add user context to filter results and then go back and change query in typeDefs
+			// if (context.user) {
+			const userData = await User.findOne({ _id: args.userId }).populate('events');
+
+			const userEvents = [];
+
+			for (let event of userData.events) {
+				let eventId = await Event.findOne({ _id: event });
+				userEvents.push(eventId);
+			}
+
+			return userEvents;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!')
 		},
@@ -273,6 +324,17 @@ const resolvers = {
 			// if (context.user) {
 			const thread = await Thread.findOneAndDelete({ _id: threadId }, { new: true });
 
+			for (let attendee of thread.attendees) {
+				await User.findOneAndUpdate(
+					{_id: attendee},
+					{
+						$pull: {
+							threads: threadId
+						}
+					}
+				)
+			}
+
 			//! uncomment when done connecting frontend login and signup pages
 			// const updatedUser = await User.findOneAndUpdate(
 			// 	{ _id: context.user._id },
@@ -284,6 +346,7 @@ const resolvers = {
 			//	{ new: true }
 			// )
 			return thread;
+			// return updatedUser
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},

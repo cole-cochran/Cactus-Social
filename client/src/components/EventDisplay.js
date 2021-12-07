@@ -1,10 +1,5 @@
+import React, { useState } from 'react';
 
-
-
-// import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { EVENT_DETAILS } from '../utils/queries';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -16,7 +11,14 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { EVENT_DETAILS } from '../utils/queries';
+import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
 
+//! ADD  DESCRIPTION OF EVENT_DETAILS
+
+import Auth from '../utils/auth';
 
 export default function EventDisplay() {
 	// for when we get the routes going

@@ -23,6 +23,15 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import Stack from '@mui/material/Stack';
 import MobileTimePicker from '@mui/lab/MobileTimePicker';
 
+import { useParams } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import Auth from '../utils/auth';
+
+// import { CREATE_EVENT } from '../utils/mutations';
+//* CREATE_EVENT requires: threadId, title, description, start_date, end_date, start_time, end_time, category, in_person, location, image, and owner and it returns the Event
+
+//! REDIRECT (AFTER SUBMISSION) TO THE EVENT DISPLAY
+
 console.log(`                              ...----....
                          ..-:"''         ''"-..
                       .-'                      '-.
@@ -77,11 +86,6 @@ console.log(`                              ...----....
 console.log("BEWARE, I LIVE!")
 console.log("super secret dev link")
 console.log("https://www.youtube.com/watch?v=Qi1KebO4bzc")
-
-
-
-
-
 
 export default function FullWidthTextField() {
 
@@ -188,7 +192,6 @@ export default function FullWidthTextField() {
 //         event.preventDefault();
 //     }
 //   return (
-
 
 //     <Box
 //       component="form"
