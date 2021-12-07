@@ -26,7 +26,7 @@ function Sidebar(props) {
                     <li><img onClick={toggleSidebar}src="/assets/img/thread.svg" id="menu" alt="click to open sidebar"/></li>
                     <li><img src="/assets/img/msg.svg" alt="click to open profile"/></li>
                     <li><img src="/assets/img/profile.svg" alt="click to open profile"/></li>
-                    <li><img src="/assets/img/friends.svg" ></li>
+                    <li><img src="/assets/img/friends.svg" /></li>
                 </ul>
              </div>
              <div className="sidebar" id="sidebar" data-sidebardisplay="hidden">
