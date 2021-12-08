@@ -69,7 +69,7 @@ honorable mentions:
 Nathan Delman: [Nathan's GitHub](https://www.example.com)<br>
 Ethan Cho: [Ethan's GitHub](https://github.com/echo1826)<br>
 Stephanie Cortez:
---
+
 
 
 # Original Idea
