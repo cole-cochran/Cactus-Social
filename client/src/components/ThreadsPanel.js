@@ -53,10 +53,10 @@ function ThreadsPanel(props) {
     
         try {
             const res = await createThread({
-            variables: {
-                title: threadData.threadTitle,
-                moderator: 
-            },
+                variables: {
+                    title: threadData.threadTitle,
+                    moderator: AuthService.getProfile().data._id
+                },
             });
 
             console.log(res.data);
