@@ -86,6 +86,7 @@ const typeDefs = gql`
         allComments: [Comment]
 
         allThreadPosts(threadId: ID!): [Post]
+        allPostComments(postId: ID!): [Comment]
         
         userProfile(userId: ID!): User
         userThreads(userId: ID!): [Thread]
