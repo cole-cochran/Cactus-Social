@@ -48,7 +48,12 @@ function SignUp(props) {
 
 	return (
 		<div className="signup-page">
+			<div className="sign-up-header"></div>
 			<div className="signup-form-section">
+				<div className="center-signup-form">
+					<div>
+						<img className="one-cacti-illustration" src="/assets/img/one-cacti-illustration.svg"/>
+					</div>
 				{data ? (
 					<p>
 						Success! You may now head <Link to="/">back to the homepage.</Link>
@@ -129,21 +134,16 @@ function SignUp(props) {
 					</form>
 				)}
 				{error && <div className="my-3 p-3 bg-danger text-white">{error.message}</div>}
+					<div>
+						<img className="two-cacti-illustration" src="/assets/img/two-cacti-illustration.svg"/>
+					</div>
+				</div>
 			</div>
-			<div className="signup-banner-mobile">
+			<div className="signup-footer">
 				<img src="#" alt="" />
 			</div>
 			<div className="signup-banner">
-				<h1>
-					A sleek, secure,<br />
-					and transparent platform...
-				</h1>
-				<p>
-					At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-					deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecat
-				</p>
-				<img src="" alt="" />
-			</div>
+			</div>  
 		</div>
 	);
 }
