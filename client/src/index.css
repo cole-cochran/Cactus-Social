@@ -115,6 +115,7 @@ html, body {
     /* width: 100%; */
 }
 
+
 /*************SPLASHPAGE:STYLES************/ 
 /*************SPLASHPAGE:MEDIA-QUERIES************/
 
@@ -727,6 +728,10 @@ footer {
     background-color: var(--hero-green);
 }
 
+.sub-thread-form-header {
+    border-bottom: 1px grey solid;
+}
+
 /*************THREEDDISPLAY:END****************/
 /*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
 
@@ -928,3 +933,47 @@ footer {
     z-index: 1;
   }
 /*************404.HTML:STYLES************/
+/*************MODAL:STYLES************/
+
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid grey;
+}
+.modal-form {
+    padding-bottom: 2rem;
+}
+.modal-header h4 {
+    margin-top: .5rem;
+    font-size: 1rem;
+}
+.modal-form label {
+    margin-top: 1.5rem;
+    font-size: .875rem;
+    font-weight: 500;
+    display: block;
+    margin-left: 1rem;
+}
+.modal-form input {
+    margin-top: .75rem;
+    margin-left: 1rem;
+    height: 2rem;
+    width: calc(100% - 2rem);
+}
+.modal-form input::placeholder {
+    font-size: .75rem;
+}
+
+.modal-button {
+    margin-top: 2rem;
+    font-size: .75rem;
+    color: white;
+    background-color: #FF7600;
+    padding-top: .75rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    padding-bottom: .75rem;
+    border: none;
+    border-radius: .25rem;
+    margin-left: 1rem;
+}
+/*************MODAL:STYLES************/
