@@ -55,7 +55,8 @@ function ThreadsPanel(props) {
             const res = await createThread({
                 variables: {
                     title: threadData.threadTitle,
-                    moderator: AuthService.getProfile().data._id
+                    // moderator: AuthService.getProfile().data._id
+                    moderator: "61a9e10f267d96b8a446f9bc"
                 },
             });
 
