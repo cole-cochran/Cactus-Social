@@ -1,172 +1,173 @@
 import { gql } from '@apollo/client';
 
-//* create variables to save lines of code in the long run
-const threadResponse = `
-thread {
-    _id
-    title
-    posts {
-        _id
-        post_text
-        date_created
-        author {
-            _id
-        }
-        reactions
-        edited
-        pinned
-        comments {
-            _id
-        }
-    }
-    events {
-        _id
-        title
-        start_date
-        end_date
-        start_time
-        end_time
-        owner {
-            _id
-        }
-        attendees {
-            _id
-        }
-        category
-        in_person
-        location
-        image
-        thread {
-            _id
-        }
-        date_created
-        edited
-        comments {
-            _id
-        }
-    }
-    moderator {
-        _id
-        username
-        picture
-    }
-    members {
-        _id
-        username
-        picture
-    }
-    date_created
-}`;
+// create variables to save lines of code in the long run
 
-const userResponse = `
-user {
-    _id
-    first_name
-    last_name
-    username
-    email
-    picture
-    bio
-    threads {
-        _id
-        title
-        posts {
-            _id
-        }
-        date_created
-    }
-    events {
-        _id
-        title
-        owner {
-            _id
-        }
-        category
-        in_person
-    }
-    tech_stack
-    date_joined
-    friends {
-        _id
-        username
-    }
-}`;
+// const threadResponse = `
+// thread {
+//     _id
+//     title
+//     posts {
+//         _id
+//         post_text
+//         date_created
+//         author {
+//             _id
+//         }
+//         reactions
+//         edited
+//         pinned
+//         comments {
+//             _id
+//         }
+//     }
+//     events {
+//         _id
+//         title
+//         start_date
+//         end_date
+//         start_time
+//         end_time
+//         owner {
+//             _id
+//         }
+//         attendees {
+//             _id
+//         }
+//         category
+//         in_person
+//         location
+//         image
+//         thread {
+//             _id
+//         }
+//         date_created
+//         edited
+//         comments {
+//             _id
+//         }
+//     }
+//     moderator {
+//         _id
+//         username
+//         picture
+//     }
+//     members {
+//         _id
+//         username
+//         picture
+//     }
+//     date_created
+// }`;
 
-const postResponse = `
-post {
-    _id
-    post_text
-    date_created
-    author {
-        _id
-        username
-        picture
-    }
-    reactions
-    edited
-    pinned
-    thread {
-        _id
-        title
-    }
-    comments {
-        _id
-        comment_text
-        date_created
-        author {
-            _id
-        }
-        reactions
-        edited
-        post {
-            _id
-        }
-    }
-}`;
+// const userResponse = `
+// user {
+//     _id
+//     first_name
+//     last_name
+//     username
+//     email
+//     picture
+//     bio
+//     threads {
+//         _id
+//         title
+//         posts {
+//             _id
+//         }
+//         date_created
+//     }
+//     events {
+//         _id
+//         title
+//         owner {
+//             _id
+//         }
+//         category
+//         in_person
+//     }
+//     tech_stack
+//     date_joined
+//     friends {
+//         _id
+//         username
+//     }
+// }`;
 
-const eventResponse = `
-event {
-    _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
-        title
-    }
-    comments {
-        _id
-        comment_text
-        date_created
-        author {
-            _id
-        }
-        reactions
-        edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
-}`;
+// const postResponse = `
+// post {
+//     _id
+//     post_text
+//     date_created
+//     author {
+//         _id
+//         username
+//         picture
+//     }
+//     reactions
+//     edited
+//     pinned
+//     thread {
+//         _id
+//         title
+//     }
+//     comments {
+//         _id
+//         comment_text
+//         date_created
+//         author {
+//             _id
+//         }
+//         reactions
+//         edited
+//         post {
+//             _id
+//         }
+//     }
+// }`;
+
+// const eventResponse = `
+// event {
+//     _id
+//     title
+//     description
+//     start_date
+//     end_date
+//     start_time
+//     end_time
+//     owner {
+//         _id
+//         username
+//         picture
+//     }
+//     attendees {
+//         _id
+//         username
+//         picture
+//     }
+//     category
+//     in_person
+//     location
+//     image
+//     thread {
+//         _id
+//         title
+//     }
+//     comments {
+//         _id
+//         comment_text
+//         date_created
+//         author {
+//             _id
+//         }
+//         reactions
+//         edited
+//         event {
+//             _id
+//         }
+//     }
+//     date_created
+//     edited
+// }`;
 
 // const commentResponse = `
 // comment {
@@ -253,29 +254,8 @@ mutation addTechnology($userId: ID!, $technology: String!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
-        friends {
-            _id
-            username
-        }
     }
 }
 `;
@@ -290,29 +270,8 @@ mutation removeTechnology($userId: ID!, $technology: String!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
-        friends {
-            _id
-            username
-        }
     }
 }
 `;
@@ -327,23 +286,6 @@ mutation addFriend($userId: ID!, $friend: ID!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
         friends {
@@ -364,23 +306,6 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
         friends {
@@ -401,29 +326,8 @@ mutation updatePhoto($userId: ID!, $picture: String!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
-        friends {
-            _id
-            username
-        }
     }
 }
 `;
@@ -438,29 +342,8 @@ mutation updateBio($userId: ID!, $bio: String!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
-        friends {
-            _id
-            username
-        }
     }
 }
 `;
@@ -475,15 +358,14 @@ mutation createThread($moderator: ID!, $title: String!) {
         moderator {
             _id
         }
-        members {
-            _id
-        }
         date_created
     }
 }
 `;
 
 //! create mini modal to all owner to delete event
+// ! THIS WORKS BUT RETURNS THE WRONG THANG AT THE MOMENT. NEED CONTEXT TO RETURN PROPER USER
+
 export const REMOVE_THREAD = gql`
 mutation removeThread($threadId: ID!) {
     removeThread(threadId: $threadId) {
@@ -494,29 +376,8 @@ mutation removeThread($threadId: ID!) {
         email
         picture
         bio
-        threads {
-            _id
-            title
-            posts {
-                _id
-            }
-            date_created
-        }
-        events {
-            _id
-            title
-            owner {
-                _id
-            }
-            category
-            in_person
-        }
         tech_stack
         date_joined
-        friends {
-            _id
-            username
-        }
     }
 }
 `;
@@ -538,32 +399,6 @@ mutation createPost($threadId: ID!, $post_text: String!) {
             reactions
             edited
             pinned
-            comments {
-                _id
-            }
-        }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
             comments {
                 _id
             }
@@ -602,32 +437,6 @@ mutation removePost($threadId: ID!, $postId: ID!) {
                 _id
             }
         }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
-            comments {
-                _id
-            }
-        }
         moderator {
             _id
             username
@@ -644,8 +453,8 @@ mutation removePost($threadId: ID!, $postId: ID!) {
 `;
 
 export const UPDATE_POST = gql`
-mutation removePost($threadId: ID!, $postId: ID! $post_text: String!) {
-    removePost( threadId: $threadId, postId: $postId, post_text: $post_text ) {
+mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
+    updatePost(threadId: $threadId, postId: $postId, post_text: $post_text) {
         _id
         title
         posts {
@@ -658,32 +467,6 @@ mutation removePost($threadId: ID!, $postId: ID! $post_text: String!) {
             reactions
             edited
             pinned
-            comments {
-                _id
-            }
-        }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
             comments {
                 _id
             }
@@ -718,32 +501,8 @@ mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: Str
             reactions
             edited
             pinned
-            comments {
-                _id
-            }
-        }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
+            pinHash
+            pinTitle
             comments {
                 _id
             }
@@ -778,32 +537,8 @@ mutation unpinPost($threadId: ID!, $postId: ID!) {
             reactions
             edited
             pinned
-            comments {
-                _id
-            }
-        }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
+            pinHash
+            pinTitle
             comments {
                 _id
             }
@@ -823,9 +558,10 @@ mutation unpinPost($threadId: ID!, $postId: ID!) {
 }
 `;
 
+//! IF THE TIME PERMITS, MAKE THIS INCLUDE USERNAME IN THE RESOLVERS AND MODELS
 export const ADD_POST_REACTION = gql`
 mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
-    addPostReaction(threadId: $threadId, postId: $postId) {
+    addPostReaction(threadId: $threadId, postId: $postId, reaction: $reaction) {
         _id
         title
         posts {
@@ -838,32 +574,6 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
             reactions
             edited
             pinned
-            comments {
-                _id
-            }
-        }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
             comments {
                 _id
             }
@@ -914,7 +624,7 @@ mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
                 _id
             }
         }
-    }        
+    }
 }
 `;
 
@@ -1026,7 +736,7 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
 //*  EVENT STUFF
 
 export const CREATE_EVENT = gql`
-mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String, $owner: ID!) {
+mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $owner: ID!) {
     createEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
         _id
         title
@@ -1040,11 +750,6 @@ mutation createEvent($threadId: ID!, $title: String!, $description: String!, $st
             username
             picture
         }
-        attendees {
-            _id
-            username
-            picture
-        }
         category
         in_person
         location
@@ -1052,19 +757,6 @@ mutation createEvent($threadId: ID!, $title: String!, $description: String!, $st
         thread {
             _id
             title
-        }
-        comments {
-            _id
-            comment_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            event {
-                _id
-            }
         }
         date_created
         edited
@@ -1183,45 +875,45 @@ export const ATTEND_EVENT = gql`
 mutation attendEvent($eventId: ID!, $attendee: ID!) {
     attendEvent(eventId: $eventId, attendee: $attendee) {
         _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
         title
-    }
-    comments {
-        _id
-        comment_text
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
         date_created
-        author {
-            _id
-        }
-        reactions
         edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
     }
 }
 `;
@@ -1230,45 +922,45 @@ export const LEAVE_EVENT = gql`
 mutation leaveEvent($eventId: ID!, $attendee: ID!) {
     leaveEvent(eventId: $eventId, attendee: $attendee) {
         _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
         title
-    }
-    comments {
-        _id
-        comment_text
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
         date_created
-        author {
-            _id
-        }
-        reactions
         edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
     }
 }
 `;
@@ -1277,45 +969,45 @@ export const CREATE_EVENT_COMMENT = gql`
 mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!) {
     createEventComment(eventId: $eventId, comment_text: $comment_text, author: $author) {
         _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
         title
-    }
-    comments {
-        _id
-        comment_text
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
         date_created
-        author {
-            _id
-        }
-        reactions
         edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
     }
 }
 `;
@@ -1324,45 +1016,45 @@ export const REMOVE_EVENT_COMMENT = gql`
 mutation removeEventComment($eventId: ID!, $commentId: String!) {
     removeEventComment(eventId: $eventId, commentId: $commentId) {
         _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
         title
-    }
-    comments {
-        _id
-        comment_text
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
         date_created
-        author {
-            _id
-        }
-        reactions
         edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
     }
 }
 `;
@@ -1371,45 +1063,45 @@ export const UPDATE_EVENT_COMMENT = gql`
 mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: String!) {
     updateEventComment(eventId: $eventId, commentId: $commentId, comment_text: $comment_text) {
         _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
         title
-    }
-    comments {
-        _id
-        comment_text
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
         date_created
-        author {
-            _id
-        }
-        reactions
         edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
     }
 }
 `;
@@ -1418,45 +1110,45 @@ export const ADD_EVENT_COMMENT_REACTION = gql`
 mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: String!) {
     addEventCommentReaction(commentId: $commentId, eventId: $eventId, reaction: $reaction) {
         _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
         title
-    }
-    comments {
-        _id
-        comment_text
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
         date_created
-        author {
-            _id
-        }
-        reactions
         edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
     }
 }
 `;
