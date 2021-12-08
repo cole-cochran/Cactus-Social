@@ -27,16 +27,8 @@ export default function Error() {
             and transparent platform...
         </h1>
     </section>
-    <div>
-    <ScriptTag isHydrating={true} type="text/javascript" src="../components/Parallax" />
-    </div>
-    <Helmet>
-    <script src=
-        "../components/Parallax" 
-    type="text/javascript" />
-    </Helmet>
+    
 </main>
-
     )
 }
 
