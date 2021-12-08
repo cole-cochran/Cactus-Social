@@ -56,7 +56,7 @@ That is all there is to it. Enjoy messaging on Cactus Social!
 
 ---
 # Contributors
---
+---
 
 Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer) <br>
 Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)<br>
@@ -65,6 +65,7 @@ Fox Rigney: [Fox's GitHub](https://github.com/foxrigney)<br>
 
 honorable mentions:
 <br>
+
 Nathan Delman: [Nathan's GitHub](https://www.example.com)<br>
 Ethan Cho: [Ethan's GitHub](https://github.com/echo1826)<br>
 Stephanie Cortez:
