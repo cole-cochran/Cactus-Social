@@ -2,12 +2,14 @@
 ---
 
 <!-- link to deployed app -->
-Version 1
-Deployment Date : December 8, 2021
+Version 1  
+<br>
+Deployment Date : December 8, 2021  
+<br>
 Contributors: Jack Manzer, Damien Luzzo, Cole Cochran, Fox Rigney, Nathan Delman, Ethan Cho & Stephanie Cortez
 
 
-#Purpose
+#Mission Statement
 
 A sleek, secure, and transparent social media platform for web developers.
 
@@ -30,7 +32,7 @@ Now you have access to our sleek messaging and editing features
 
 <!-- gif of sending or editing a message -->
 
-that is all there is to it. Enjoy messaging on Cactus Social!
+That is all there is to it. Enjoy messaging on Cactus Social!
 
 # Built Using
 ---
@@ -49,11 +51,14 @@ that is all there is to it. Enjoy messaging on Cactus Social!
 # Original Contriubtors
 ---
 
-Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer)
-Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)
-Cole Cochran: [Cole's GitHub](https://github.com/cole-cochran)
-Fox Rigney: [Fox's GitHub](https://www.example.com)
-Nathan Delman: [Nathan's GitHub](https://www.example.com)
+Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer) <br>
+Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)<br>
+Cole Cochran: [Cole's GitHub](https://github.com/cole-cochran)<br>
+Fox Rigney: [Fox's GitHub](https://github.com/foxrigney)<br>
+Nathan Delman: [Nathan's GitHub](https://www.example.com)<br>
+
+
+# Original Idea
 
 
 
