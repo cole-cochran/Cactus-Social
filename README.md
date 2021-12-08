@@ -56,6 +56,7 @@ Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)<br>
 Cole Cochran: [Cole's GitHub](https://github.com/cole-cochran)<br>
 Fox Rigney: [Fox's GitHub](https://github.com/foxrigney)<br>
 Nathan Delman: [Nathan's GitHub](https://www.example.com)<br>
+Ethan Cho: [Ethan's GitHub](https://github.com/echo1826)<br>
 
 
 # Original Idea
