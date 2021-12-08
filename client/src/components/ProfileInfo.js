@@ -2,6 +2,9 @@ import React from "react";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import FaceIcon from '@mui/icons-material/Face';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 import { USER_PROFILE } from '../utils/queries';
 //* USER_PROFILE accepts a userId and has access to _id, first_name, last_name, username, email, picture, bio, tech_stack, and date_joined
@@ -15,6 +18,17 @@ import {ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO } from '../utils/mutatio
 import { useQuery, useMutation} from '@apollo/client';
 import AuthService from '../utils/auth';
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+};
+
 function ProfileInfo(props) {
 
     const { userId } = props;
@@ -24,6 +38,10 @@ function ProfileInfo(props) {
     });
 
     const specificUser = data?.userProfile || {};
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     if (loading) {
         return <p>loading...</p>;
@@ -35,7 +53,10 @@ function ProfileInfo(props) {
             <div className="profile-header">
                     <h3>{specificUser.first_name} {specificUser.last_name}</h3>
                 </div>
-                <span className="join-date">Member Since: {specificUser.date_joined}</span>
+                <div className="profile-edit-container">
+                    <span className="join-date">Member Since: {specificUser.date_joined}</span>
+                    <img src="/assets/img/edit.svg" alt="edit button" onClick={handleOpen}/>
+                </div>
                 <div className="user-bio">
                     {specificUser.bio}
                 </div>
@@ -53,8 +74,11 @@ function ProfileInfo(props) {
                 </div>
                 {/* <div className="profile-header">
                     <h3>Cole Cochran</h3>
+                    <div className="profile-edit-container">
+                        <span className="join-date">Member since 2021</span>
+                        <img src="/assets/img/edit.svg" alt="edit button" onClick={handleOpen}/>
+                    </div>
                 </div>
-                <span className="join-date">Member since 2021</span>
                 <div className="user-bio">
                     Cole appreciates neature walk and biking. He also likes hats and computer hardware. He used to work at the apple store.
                 </div>
@@ -68,6 +92,27 @@ function ProfileInfo(props) {
                     </div>
                 </div> */}
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <form className="modal-form">
+                        <div className="modal-header">
+                             <h4>Add Subthread</h4>
+                         </div>
+                        <label>Bio</label>
+                        <textarea className="modal-textarea"></textarea>
+                        <label>Your Tech Stack</label>
+                        <input placeholder="e.g. Javascript" />
+                        <input placeholder="e.g. PHP" />
+                        <input placeholder="e.g. Ruby" />
+                        <button className="modal-button" type="submit">Add</button>
+                    </form>
+                </Box>
+            </Modal>
         </div>
     )
 }
