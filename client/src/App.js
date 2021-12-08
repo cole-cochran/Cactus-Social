@@ -62,7 +62,7 @@ function App() {
 						<Route exact path="/home">
 							<Dashboard />
 						</Route>
-						<Route exact path="/profile">
+						<Route exact path="/profile/:userId">
 							<Profile />
 						</Route>
 						<Route exact path="/chat">

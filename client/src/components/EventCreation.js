@@ -27,7 +27,7 @@ import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 
-// import { CREATE_EVENT } from '../utils/mutations';
+import { CREATE_EVENT } from '../utils/mutations';
 //* CREATE_EVENT requires: threadId, title, description, start_date, end_date, start_time, end_time, category, in_person, location, image, and owner and it returns the Event
 
 //! REDIRECT (AFTER SUBMISSION) TO THE EVENT DISPLAY
