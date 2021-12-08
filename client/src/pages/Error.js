@@ -13,11 +13,6 @@ export default function Error() {
     <div>   
     <div id="parallax_illustration">
             <img src="../assets/img/error.png" alt="Error page with a bird and text" class="js-plaxify" data-invert="true" data-xrange="50" data-yrange="50" width="100%" ></img>
-            <Helmet>
-    <script src=
-        "../components/Parallax" 
-    type="text/javascript" />
-    </Helmet>
         </div>
     </div>     
     <section class="error-banner">
@@ -27,7 +22,11 @@ export default function Error() {
             and transparent platform...
         </h1>
     </section>
-    
+    <Helmet>
+    <script src=
+        "../components/Parallax" 
+    type="text/javascript" />
+    </Helmet>
 </main>
     )
 }
