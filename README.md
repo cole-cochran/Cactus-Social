@@ -45,7 +45,15 @@ that is all there is to it. Enjoy messaging on Cactus Social!
 - apollo client/server
 - bcrypt
 
+---
+# Original Contriubtors
+---
 
+Jack Manzer: [Jack's GitHub](https://www.example.com)
+Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)
+Cole Cochran: [Cole's GitHub](https://github.com/cole-cochran)
+Fox Rigney: [Fox's GitHub](https://www.example.com)
+Nathan Delman: [Nathan's GitHub](https://www.example.com)
 
 
 
