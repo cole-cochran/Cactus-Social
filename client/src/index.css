@@ -585,6 +585,17 @@ header {
 }
 
 /*************SIDEBAR.JS:END************/
+/*************PANELS.JS:START************/
+
+/* #sidebar-thread-panel {
+    display: none;
+}
+
+#sidebar-events-panel {
+    display: none;
+} */
+
+/*************PANELS.JS:END************/
 /*************FOOTER:START************/
 
 footer {
@@ -614,6 +625,16 @@ footer {
   justify-content: space-between;
   height: 100%;
   margin-right: 1rem;
+}
+
+.thread-title-container {
+    display: flex;
+    align-items: center;
+}
+
+.thread-title-container img {
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .thread-header h3 {
@@ -656,6 +677,14 @@ footer {
     font-size: .55rem;
     color: #FFE3A1;
     margin-left: 1rem;
+}
+.subthread-title {
+    font-size: .65rem;
+    margin-left: 1rem;
+    color: #FFF1D1;
+}
+.subthread {
+    background-color: #FF7600; 
 }
 
 
