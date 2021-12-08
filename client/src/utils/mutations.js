@@ -219,14 +219,14 @@ mutation loginUser($username: String!, $password: String!) {
 `;
 
 export const CREATE_USER = gql`
-	mutation addUser(
+	mutation createUser(
 		$first_name: String!
 		$last_name: String!
 		$username: String!
 		$email: String!
 		$password: String!
 	) {
-		addUser(
+		createUser(
 			first_name: $first_name
 			last_name: $last_name
 			username: $username
