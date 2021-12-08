@@ -940,19 +940,14 @@ footer {
   }
   #parallax_illustration {
     display: block;
-    margin: 0 auto;
-    width: 940px;
-    height: 380px;
+    margin: auto;
+    width: 100%;
+    height: 750px;
     position: relative;
     overflow: hidden;
-  }
-  #parallax_illustration #parallax_sign {
-    position: absolute;
     object-fit: cover;
-    top: 25px;
-    left: 582px;
-    z-index: 10;
   }
+  
 
   #parallax_field  {
     overflow: hidden;
