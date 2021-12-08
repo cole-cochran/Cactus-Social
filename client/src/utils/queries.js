@@ -38,42 +38,42 @@ export const ALL_USERS = gql`
 `;
 //* This is for internal use only
 export const ALL_THREADS = gql`
-	query allThreads {
-		allThreads {
+query allThreads {
+	allThreads {
+		_id
+		title
+		posts {
 			_id
-			title
-			posts {
+			author {
 				_id
-				author {
-					_id
-				}
-				post_text
 			}
-			pinned_posts {
-				_id
-				author {
-					_id
-				}
-				pinTitle
-				pinHash
-			}
-			events {
-				title
-				owner {
-					_id
-				}
-				category
-				in_person
-			}
-			moderator {
-				username
-			}
-			members {
-				username
-			}
-			date_created
+			post_text
 		}
+		pinned_posts {
+			_id
+			author {
+				_id
+			}
+			pinTitle
+			pinHash
+		}
+		events {
+			title
+			owner {
+				_id
+			}
+			category
+			in_person
+		}
+		moderator {
+			username
+		}
+		members {
+			username
+		}
+		date_created
 	}
+}
 `;
 //* This is for internal use only
 // export const ALL_COMMENTS = gql`
@@ -174,6 +174,28 @@ export const ALL_POSTS = gql`
 		}
 	}
 `;
+//* This is for internal use only
+export const ALL_COMMENTS = gql`
+query allComments {
+	allComments {
+		_id
+        comment_text
+        date_created
+        author {
+			_id
+			username
+		}
+        reactions
+        edited
+        post {
+			_id
+		}
+        event {
+			_id
+		}
+	}
+}
+`;
 
 export const USER_PROFILE = gql`
 	query userProfile($userId: ID!) {
@@ -238,6 +260,7 @@ export const USER_EVENTS = gql`
 			in_person
 			location
 			image
+			thread
 			date_created
 		}
 	}
@@ -333,7 +356,7 @@ query pinnedPosts($threadId: ID!) {
 
 export const THREAD_EVENTS = gql`
 	query threadEvents($threadId: ID!) {
-		threadEvents(threadId: $threadID) {
+		threadEvents(threadId: $threadId) {
 			_id
 			title
 			start_date

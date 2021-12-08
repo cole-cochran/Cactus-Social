@@ -26,7 +26,7 @@ const resolvers = {
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
+			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator').populate('pinned_posts');
 		},
 
 		//* get specific thread
@@ -57,11 +57,11 @@ const resolvers = {
 
 		pinnedPosts: async (parent, args, context) => {
 			const { threadId } = args;
-			const thread = await Thread.findOne({ _id: threadId }).populate('pinnedPosts');
+			const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
 
 			const allPins = [];
 
-			for (let pinnedPost of thread.pinnedPosts) {
+			for (let pinnedPost of thread.pinned_posts) {
 				let post = await Post.findOne({ _id: pinnedPost }).populate('author');
 				
 				allPins.push(post);
@@ -70,9 +70,10 @@ const resolvers = {
 			return allPins;
 		},
 
-		// allComments: async (parent, args, context) => {
-		// 	return await Comment.find({}).populate('author').populate('post').populate('event');
-		// },
+		allComments: async (parent, args, context) => {
+			const comments = await Comment.find({}).populate('author').populate('post').populate('event');
+			return comments;
+		},
 
 		allEvents: async (parent, args, context) => {
 			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
@@ -118,7 +119,7 @@ const resolvers = {
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
+				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees').populate('thread');
 				userEvents.push(eventId);
 			}
 
@@ -349,11 +350,12 @@ const resolvers = {
 		createPost: async (parent, args, context) => {
 			//! add user context to authenticate
 			// if (context.user) {
-			const { threadId, post_text } = args;
+			const { threadId, post_text, author } = args;
 			const { _id } = await Post.create(
 				{
 					thread: threadId,
-					post_text: post_text
+					post_text: post_text,
+					author: context.user._id
 				}
 			);
 			const thread = await Thread.findOneAndUpdate(
