@@ -31,7 +31,7 @@ Install through our splashpage clicking the download button
 ---
 #Signup
 
-Create a user account with us 
+Create a user account with us filling out the necessary fields
 
 <!-- image of usercreation button and usercreation page -->
 
