@@ -1,5 +1,7 @@
 import React from "react";
 import {Link} from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 
 import { USER_FRIENDS, ALL_USERS } from '../utils/queries';
 //* USER_FRIENDS accepts userId and returns the user's _id and friends which contains the friend's _id, username, and picture

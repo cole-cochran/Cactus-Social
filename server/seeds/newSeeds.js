@@ -21,7 +21,7 @@ const userSeeds = [
 		email: 'colecochran405@gmail.com',
 		password: 'sirbikesalot',
 		picture: '',
-		bio: 'I like to bike. How neat is that?',
+		bio: 'Cole appreciates neature walk and biking. He also likes hats and computer hardware. He used to work at the apple store.',
 		tech_stack: [ 'JavaScript', 'React.js', 'Express.js', 'MongoDB', 'MySQL', 'CSS' ]
 	},
 	{

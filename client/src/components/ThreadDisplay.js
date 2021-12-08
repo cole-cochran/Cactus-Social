@@ -45,14 +45,13 @@ function ThreadDisplay(props) {
     const errors = singleThread.error || threadPosts.error;
     const loading = singleThread.loading || threadPosts.loading;
 
+    const [newPost, setNewPost] = React.useState('');
+    // const [editPost, setEditPost] = React.useState('');
+    const [pinning, setPinning] = React.useState(false);
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const [newPost, setNewPost] = React.useState('');
-    // const [editPost, setEditPost] = React.useState('');
-    const [pinning, setPinning] = React.useState(false);
 
     if (loading) {
         return <p>loading...</p>;
@@ -76,34 +75,32 @@ function ThreadDisplay(props) {
                             {/* {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
                             {threadPosts.map((post) => (
                                 post.pinned ? (
-                                    <React.Fragment>
-                                        <div className="chat subthread" onClick={handleOpen}>
-                                        <span className="chat-name">{post.author}</span>
-                                        <span className="chat-date">{post.date_created}</span>
-                                        { post.pinHash && 
-                                        <Link to={`/subthread/${post._id}`}>
-                                            <span className="subthread-title">{post.pinHash}</span>
-                                        </Link>
-                                        }
+                                    <div className="chat subthread" onClick={handleOpen}>
+                                        <div>
+                                            <span className="chat-name">{post.author}</span>
+                                            <span className="chat-date">{post.date_created}</span>
+                                            { post.pinHash && 
+                                            <Link to={`/subthread/${post._id}`}>
+                                                <span className="subthread-title">{post.pinHash}</span>
+                                            </Link>
+                                            }
                                         </div>
                                         <p>{post.post_text}</p>
                                         <Link to={`/profile/${post._id}`}>
                                             <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
                                         </Link>
-                                    </React.Fragment>
+                                    </div>
                                 ) : (
-                                    <React.Fragment>
-                                        <div className="chat" onClick={handleOpen}>
-                                            <div>
-                                                <span className="chat-name">{post.author}</span>
-                                                <span className="chat-date">{post.date_created}</span>
-                                            </div>
-                                            <p>{post.post_text}</p>
-                                            <Link to={`/profile/${post._id}`}>
-                                                <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
-                                            </Link>
+                                    <div className="chat" onClick={handleOpen}>
+                                        <div>
+                                            <span className="chat-name">{post.author}</span>
+                                            <span className="chat-date">{post.date_created}</span>
                                         </div>
-                                    </React.Fragment>
+                                        <p>{post.post_text}</p>
+                                        <Link to={`/profile/${post._id}`}>
+                                            <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
+                                        </Link>
+                                    </div>
                                 )
                             ))} */}
                             <div className="chat subthread" onClick={handleOpen}>
