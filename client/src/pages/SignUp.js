@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { CREATE_USER } from '../utils/mutations';
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
 function SignUp(props) {
 	// set initial form state
@@ -15,7 +15,7 @@ function SignUp(props) {
 		password: ''
 	});
 
-	const [ addUser, { error, data } ] = useMutation(CREATE_USER);
+	const [ createUser, { error, data } ] = useMutation(CREATE_USER);
 
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
@@ -28,11 +28,17 @@ function SignUp(props) {
 		// check if form has everything (as per react-bootstrap docs)
 
 		try {
-			const { data } = await addUser({
-				variables: { ...signupData }
+			const { data } = await createUser({
+				variables: { 
+					first_name: signupData.firstName,
+					last_name: signupData.lastName,
+					username: signupData.username,
+					email: signupData.email,
+					password: signupData.password
+				}
 			});
 
-			Auth.login(data.addUser.token);
+			AuthService.login(data.createUser.token);
 		} catch (err) {
 			console.error(err);
 		}
