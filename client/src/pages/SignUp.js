@@ -15,7 +15,7 @@ function SignUp(props) {
 		password: ''
 	});
 
-	const [ addUser, { error, data } ] = useMutation(CREATE_USER);
+	const [ createUser, { error, data } ] = useMutation(CREATE_USER);
 
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
@@ -28,11 +28,11 @@ function SignUp(props) {
 		// check if form has everything (as per react-bootstrap docs)
 
 		try {
-			const { data } = await addUser({
+			const { data } = await createUser({
 				variables: { ...signupData }
 			});
 
-			Auth.login(data.addUser.token);
+			Auth.login(data.createUser.token);
 		} catch (err) {
 			console.error(err);
 		}
