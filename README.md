@@ -75,9 +75,22 @@ Stephanie Cortez:
 # Original Idea
 <!-- figma 1 -->
 ![figma model large](figma_1.PNG)
-The idea was to build out the pages and components in figma as well as work on logo and front end design
+*The idea was to build out the pages and components in figma as well as work on logo and front end design*
 <!-- figma 2 -->
 ![figma model pages](figma_2.PNG)
-Examples of sign up, login, error pages, and dashboard
+*Examples of sign up, login, error pages, and dashboard*
+
+# Ideas for future development:
+- friend requests
+- allow users to only see threads they are a part of 
+- privatized thread creation
+- add event functionality
+
+
+
+
+# Feedback
+Have additional ideas for improving this site? Please first discuss the change you wish to make via email with the owners of this repository. Email addresses can be found on the contributor's gitHub pages (links above).
+
 
 
