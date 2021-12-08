@@ -877,6 +877,15 @@ footer {
     display: inline-block;
 }
 
+.profile-edit-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-edit-container img {
+    width: 1rem;
+    margin-right: 2rem;
+}
 /*************PROFILE.JS:END****************/
 /*************PROFILE.JS:MEDIA-QUERIES-START***************/
 
@@ -982,6 +991,13 @@ footer {
 }
 .modal-form input::placeholder {
     font-size: .75rem;
+}
+
+.modal-textarea {
+    font-size: .75rem;
+    margin-left: 1rem;
+    height: 3rem;
+    width: calc(100% - 2rem);
 }
 
 .modal-button {
