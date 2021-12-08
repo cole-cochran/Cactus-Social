@@ -4,6 +4,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
+import { useQuery, useMutation } from '@apollo/client';
+import Auth from '../utils/auth';
+
+import { ALL_EVENTS, USER_EVENTS, THREAD_EVENTS } from '../utils/queries';
+import { CREATE_EVENT } from '../utils/mutations';
+
 const style = {
   position: 'absolute',
   top: '50%',

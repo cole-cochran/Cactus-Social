@@ -84,6 +84,8 @@ const typeDefs = gql`
         allPosts: [Post]
         allEvents: [Event]
         allComments: [Comment]
+
+        allThreadPosts(threadId: ID!): [Post]
         
         userProfile(userId: ID!): User
         userThreads(userId: ID!): [Thread]

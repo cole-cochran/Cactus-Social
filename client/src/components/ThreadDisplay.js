@@ -6,32 +6,57 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 
-import { THREAD_DETAILS } from '../utils/queries';
-//* THREAD_RETAILS requires threadId and gives us access to  
-import { CREATE_POST, REMOVE_POST, UPDATE_POST, PIN_POST, UNPIN_POST, ADD_POST_REACTION } from '../utils/mutations';
+import { ALL_THREAD_POSTS, THREAD_DETAILS, PINNED_POSTS } from '../utils/queries';
+//* THREAD_DETAILS requires threadId and gives us access to
+
+import { CREATE_POST, REMOVE_POST, UPDATE_POST, PIN_POST, UNPIN_POST, ADD_POST_REACTION, REMOVE_THREAD } from '../utils/mutations';
 //! Give description of imported mutations
 
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
 };
 
 
 function ThreadDisplay(props) {
+
+    const { threadId } = useParams();
+
+    const singleThread = useQuery(THREAD_DETAILS, {
+        variables: { threadId: threadId },
+    });
+
+    const threadPosts = useQuery(ALL_THREAD_POSTS, {
+        variables: { threadId: threadId },
+    });
+    
+    const errors = singleThread.error || threadPosts.error;
+    const loading = singleThread.loading || threadPosts.loading;
+
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [newPost, setNewPost] = React.useState('');
+    // const [editPost, setEditPost] = React.useState('');
+    const [pinning, setPinning] = React.useState(false);
+
+    if (loading) {
+        return <p>loading...</p>;
+    }
 
     return (
         <main className="thread-wrapper">
@@ -39,11 +64,48 @@ function ThreadDisplay(props) {
                     {/* <div className="top-panel"> */}
                         <div className="thread-header">
                             <h3>Austin Code Bootcamp Students</h3>
+                            {/* <h3>
+                                {singleThread.title}
+                            </h3> */}
                             <div>
                                 <p>M: Damien</p>
+                                {/* <p>{singleThread.moderator}</p> */}
                             </div>
                         </div>
                         <div className="chats-container">
+                            {/* {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
+                            {threadPosts.posts.map((post) => (
+                                post.pinned ? (
+                                    <React.Fragment>
+                                        <div className="chat subthread" onClick={handleOpen}>
+                                        <span className="chat-name">{post.author}</span>
+                                        <span className="chat-date">{post.date_created}</span>
+                                        { post.pinHash && 
+                                        <Link to={`/subthread/${post._id}`}>
+                                            <span className="subthread-title">{post.pinHash}</span>
+                                        </Link>
+                                        }
+                                        </div>
+                                        <p>{post.post_text}</p>
+                                        <Link to={`/profile/${post._id}`}>
+                                            <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
+                                        </Link>
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <div className="chat" onClick={handleOpen}>
+                                            <div>
+                                                <span className="chat-name">{post.author}</span>
+                                                <span className="chat-date">{post.date_created}</span>
+                                            </div>
+                                            <p>{post.post_text}</p>
+                                            <Link to={`/profile/${post._id}`}>
+                                                <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
+                                            </Link>
+                                        </div>
+                                    </React.Fragment>
+                                )
+                            ))} */}
                             <div className="chat subthread" onClick={handleOpen}>
                                 <div>
                                     <span className="chat-name">Jack</span>

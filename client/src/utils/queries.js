@@ -150,6 +150,7 @@ export const ALL_POSTS = gql`
 			author {
 				_id
 				username
+				picture
 			}
 			reactions
 			edited
@@ -174,6 +175,44 @@ export const ALL_POSTS = gql`
 		}
 	}
 `;
+
+export const ALL_THREAD_POSTS = gql`
+	query allThreadPosts($threadId: ID!) {
+		allThreadPosts(threadId: $ThreadId) {
+			_id
+			post_text
+			date_created
+			author {
+				_id
+				username
+				picture
+			}
+			reactions
+			edited
+			pinned
+			pinHash
+			pinTitle
+			thread {
+				_id
+				title
+			}
+			comments {
+				_id
+				comment_text
+				date_created
+				author {
+					_id
+				}
+				reactions
+				edited
+				post {
+					_id
+				}
+			}
+		}
+	}
+`;
+
 //* This is for internal use only
 export const ALL_COMMENTS = gql`
 query allComments {

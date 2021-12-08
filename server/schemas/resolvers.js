@@ -29,6 +29,15 @@ const resolvers = {
 			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator').populate('pinned_posts');
 		},
 
+		allThreadPosts: async (parent, args, context) => {
+			const { threadId } = args;
+			return await Post.find({
+				where: {
+					thread: threadId
+				}
+			}).populate("author").populate("thread").populate("comments")
+		},
+
 		//* get specific thread
 		threadDetails: async (parent, args, context) => {
 			//! add user context to ensure they are logged in
