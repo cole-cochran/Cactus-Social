@@ -35,6 +35,7 @@ html, body {
 }
 
 /*************GLOBAL:STYLES************/
+
 /*************SPLASHPAGE:STYLES************/ 
 .splash-page-header {
     padding-top: 1rem;
@@ -170,6 +171,14 @@ html, body {
     }
 
 /*************SPLASHPAGE:MEDIA-QUERIES************/ 
+/******************NAVBAR*******************/
+
+.logo {
+    margin-left: -3rem;
+    width: 12rem;
+}
+
+/******************NABBAR*******************/
 /*************LOGIN.HTML:STYLES************/
 
 .logo-container {
@@ -178,10 +187,6 @@ html, body {
     justify-content: flex-start;
 }
 
-.logo {
-    margin-top: 1rem;
-    width: 7rem;
-}
 .login-form-section {
     width: calc(100% - 1rem);
     margin-left: 1rem;
@@ -296,25 +301,29 @@ html, body {
 /*************LOGIN.HTML:MEDIA-QUERIES************/
 
 /*************SIGNUP.HTML:STYLES************/
+.sign-up-header {
+    background-color: var(--hero-green);
+    height: 4rem;
+}
 .signup-form-section {
-    padding-top: 3rem;
+    padding-top: 5rem;
     width: calc(100% - 1rem);
     margin-left: 1rem;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    padding-bottom: 5rem;
 }
 
 .signup-form-section h3 {
     font-size: 1.5rem;
 }
-.signup-banner-mobile {
+.signup-footer {
     height: 4rem;
     background-color: #B945FF;
 }
 
 .signup-form {
-    max-width: 30rem;
+    width: 25rem;
 }
 .signup-form label {
     margin-left: 0;
@@ -358,7 +367,6 @@ html, body {
 
 .signup-banner {
    background-color: #501069;
-    color: white;
     height: 100vh;
     padding: 3rem;
 }
@@ -367,6 +375,19 @@ html, body {
 }
 .signup-banner p {
     font-size: 1rem;
+}
+.two-cacti-illustration {
+    width: 20rem;
+    margin-left: 2rem;
+}
+
+.one-cacti-illustration {
+    width: 10rem;
+    margin-right: 4rem;
+}
+.center-signup-form {
+    display: flex;
+    align-items: end;
 }
 /*************SIGNUP.HTML:STYLES************/
 
@@ -856,6 +877,15 @@ footer {
     display: inline-block;
 }
 
+.profile-edit-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-edit-container img {
+    width: 1rem;
+    margin-right: 2rem;
+}
 /*************PROFILE.JS:END****************/
 /*************PROFILE.JS:MEDIA-QUERIES-START***************/
 
@@ -910,19 +940,14 @@ footer {
   }
   #parallax_illustration {
     display: block;
-    margin: 0 auto;
-    width: 940px;
-    height: 380px;
+    margin: auto;
+    width: 100%;
+    height: 750px;
     position: relative;
     overflow: hidden;
-  }
-  #parallax_illustration #parallax_sign {
-    position: absolute;
     object-fit: cover;
-    top: 25px;
-    left: 582px;
-    z-index: 10;
   }
+  
 
   #parallax_field  {
     overflow: hidden;
@@ -961,6 +986,13 @@ footer {
 }
 .modal-form input::placeholder {
     font-size: .75rem;
+}
+
+.modal-textarea {
+    font-size: .75rem;
+    margin-left: 1rem;
+    height: 3rem;
+    width: calc(100% - 2rem);
 }
 
 .modal-button {

@@ -45,7 +45,7 @@ function Login(props) {
 		<div className="login-page-body">
 			<div className="login-form-section">
 				<div className="logo-container">
-					<img className="logo" src="./assets/img/logo.png" alt="cactus logo" />
+					<img className="logo" src="/assets/img/logo.svg" alt="cactus logo" />
 				</div>
 				{data ? (
 					<p>
