@@ -5,7 +5,7 @@ const path = require('path');
 const { ApolloServer } = require('apollo-server-express');
 
 //* set up port and express app
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 //* get authentication middleware and db connection
