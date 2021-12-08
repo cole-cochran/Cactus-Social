@@ -6,7 +6,14 @@ Version 1
 <br>
 Deployment Date : December 8, 2021  
 <br>
-Contributors: Jack Manzer, Damien Luzzo, Cole Cochran, Fox Rigney, Nathan Delman, Ethan Cho & Stephanie Cortez
+
+## Original Contributors:
+<br> 
+
+- Jack Manzer
+- Damien Luzzo
+- Cole Cochran
+- Fox Rigney
 
 
 #Mission Statement
@@ -48,19 +55,24 @@ That is all there is to it. Enjoy messaging on Cactus Social!
 - bcrypt
 
 ---
-# Original Contributorz
----
+# Contributors
+--
 
 Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer) <br>
 Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)<br>
 Cole Cochran: [Cole's GitHub](https://github.com/cole-cochran)<br>
 Fox Rigney: [Fox's GitHub](https://github.com/foxrigney)<br>
+
+honorable mentions:
+<br>
 Nathan Delman: [Nathan's GitHub](https://www.example.com)<br>
 Ethan Cho: [Ethan's GitHub](https://github.com/echo1826)<br>
+Stephanie Cortez:
+--
 
 
 # Original Idea
-
-
+<!-- figma 1 -->
+<!-- figma 2 -->
 
 
