@@ -475,6 +475,7 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
+		//! PROBABLY HOLD THIS OFF UNTIL LAST BECAUSE REACTIONS NEED TO BE AN OBJECT WITH USERNAME INCLUDED OR THEY COULD JUST BE ANONYMOUS
 		//* let users react to a post
 		addPostReaction: async (parent, args, context) => {
 			const { threadId, postId, reaction } = args;
@@ -487,17 +488,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			// const thread = await Thread.findOneAndUpdate(
-			// 	{
-			// 		_id: threadId,
-			// 		'posts._id': postId
-			// 	},
-			// 	{
-			// 		$addToSet: {
-			// 			'posts.reactions': reaction
-			// 		}
-			// 	}
-			// );
+			
 			const thread = await Thread.findOne({ _id: threadId }).populate('posts').populate('moderator').populate('members');
 
 			return thread;
@@ -507,23 +498,23 @@ const resolvers = {
 		createPostComment: async (parent, args, context) => {
 			//! probably need to add user context here as well to make sure they have permission
 			const { postId, comment_text, author } = args;
-			const newComment = await Comment.create({
-				post: postId,
+			const { _id } = await Comment.create({
 				comment_text: comment_text,
-				author: author
+				author: author,
+				post: postId
 			});
 
-			const post = await Post.findOneAndUpdate(
+			const thePost = await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
 					$addToSet: {
-						comments: newComment._id
+						comments: _id
 					}
 				},
 				{ new: true }
 			).populate('author').populate('thread').populate('comments');
 
-			return post;
+			return thePost;
 		},
 
 		//* remove post comment
@@ -575,23 +566,14 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			// const post = await Post.findOneAndUpdate(
-			// 	{
-			// 		_id: postId,
-			// 		'comments._id': commentId
-			// 	},
-			// 	{
-			// 		$addToSet: {
-			// 			'comments.reactions': reaction
-			// 		}
-			// 	}
-			// );
+			
 			const post = await Post.findOne({ _id: postId }).populate('author').populate('thread').populate('comments');
 
 			return post;
 		},
 
 		//* create new event
+		//* temporary owner until context set and mutations tested
 		createEvent: async (parent, args, context) => {
 			const {
 				threadId,
@@ -605,11 +587,11 @@ const resolvers = {
 				in_person,
 				location,
 				image,
-				//* temporary owner until context set and mutations tested
 				owner
 			} = args;
 			//! add user context to authenticate
 			// if (context.user) {
+			// owner: context.userId
 			const newEvent = await Event.create({
 				title: title,
 				description: description,
@@ -617,14 +599,16 @@ const resolvers = {
 				end_date: end_date,
 				start_time: start_time,
 				end_time: end_time,
+				owner: owner,
 				category: category,
 				in_person: in_person,
 				location: location,
 				image: image,
-				thread: threadId,
-				owner: owner
-				// owner: context.userId
-			}).populate('owner').populate('attendees').populate('thread').populate('comments');
+				thread: threadId
+			});
+
+			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner').populate('thread');
+
 			//! use context to get userId and complete this
 			// await User.findOneAndUpdate(
 			// 	{ _id: context.userId },
@@ -645,7 +629,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			return newEvent;
+			return returnedEvent;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},

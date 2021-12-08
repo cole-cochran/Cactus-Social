@@ -123,7 +123,7 @@ const typeDefs = gql`
 
         createPostComment(postId: ID!, comment_text: String!, author: ID!): Post
         removePostComment(postId: ID!, commentId: ID!): Post
-        updatePostComment(postId: ID!, commentId: ID!, comment_text: String!): Post
+        updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
         createEvent(threadId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event

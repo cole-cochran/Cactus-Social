@@ -1,172 +1,173 @@
 import { gql } from '@apollo/client';
 
-//* create variables to save lines of code in the long run
-const threadResponse = `
-thread {
-    _id
-    title
-    posts {
-        _id
-        post_text
-        date_created
-        author {
-            _id
-        }
-        reactions
-        edited
-        pinned
-        comments {
-            _id
-        }
-    }
-    events {
-        _id
-        title
-        start_date
-        end_date
-        start_time
-        end_time
-        owner {
-            _id
-        }
-        attendees {
-            _id
-        }
-        category
-        in_person
-        location
-        image
-        thread {
-            _id
-        }
-        date_created
-        edited
-        comments {
-            _id
-        }
-    }
-    moderator {
-        _id
-        username
-        picture
-    }
-    members {
-        _id
-        username
-        picture
-    }
-    date_created
-}`;
+// create variables to save lines of code in the long run
 
-const userResponse = `
-user {
-    _id
-    first_name
-    last_name
-    username
-    email
-    picture
-    bio
-    threads {
-        _id
-        title
-        posts {
-            _id
-        }
-        date_created
-    }
-    events {
-        _id
-        title
-        owner {
-            _id
-        }
-        category
-        in_person
-    }
-    tech_stack
-    date_joined
-    friends {
-        _id
-        username
-    }
-}`;
+// const threadResponse = `
+// thread {
+//     _id
+//     title
+//     posts {
+//         _id
+//         post_text
+//         date_created
+//         author {
+//             _id
+//         }
+//         reactions
+//         edited
+//         pinned
+//         comments {
+//             _id
+//         }
+//     }
+//     events {
+//         _id
+//         title
+//         start_date
+//         end_date
+//         start_time
+//         end_time
+//         owner {
+//             _id
+//         }
+//         attendees {
+//             _id
+//         }
+//         category
+//         in_person
+//         location
+//         image
+//         thread {
+//             _id
+//         }
+//         date_created
+//         edited
+//         comments {
+//             _id
+//         }
+//     }
+//     moderator {
+//         _id
+//         username
+//         picture
+//     }
+//     members {
+//         _id
+//         username
+//         picture
+//     }
+//     date_created
+// }`;
 
-const postResponse = `
-post {
-    _id
-    post_text
-    date_created
-    author {
-        _id
-        username
-        picture
-    }
-    reactions
-    edited
-    pinned
-    thread {
-        _id
-        title
-    }
-    comments {
-        _id
-        comment_text
-        date_created
-        author {
-            _id
-        }
-        reactions
-        edited
-        post {
-            _id
-        }
-    }
-}`;
+// const userResponse = `
+// user {
+//     _id
+//     first_name
+//     last_name
+//     username
+//     email
+//     picture
+//     bio
+//     threads {
+//         _id
+//         title
+//         posts {
+//             _id
+//         }
+//         date_created
+//     }
+//     events {
+//         _id
+//         title
+//         owner {
+//             _id
+//         }
+//         category
+//         in_person
+//     }
+//     tech_stack
+//     date_joined
+//     friends {
+//         _id
+//         username
+//     }
+// }`;
 
-const eventResponse = `
-event {
-    _id
-    title
-    description
-    start_date
-    end_date
-    start_time
-    end_time
-    owner {
-        _id
-        username
-        picture
-    }
-    attendees {
-        _id
-        username
-        picture
-    }
-    category
-    in_person
-    location
-    image
-    thread {
-        _id
-        title
-    }
-    comments {
-        _id
-        comment_text
-        date_created
-        author {
-            _id
-        }
-        reactions
-        edited
-        event {
-            _id
-        }
-    }
-    date_created
-    edited
-}`;
+// const postResponse = `
+// post {
+//     _id
+//     post_text
+//     date_created
+//     author {
+//         _id
+//         username
+//         picture
+//     }
+//     reactions
+//     edited
+//     pinned
+//     thread {
+//         _id
+//         title
+//     }
+//     comments {
+//         _id
+//         comment_text
+//         date_created
+//         author {
+//             _id
+//         }
+//         reactions
+//         edited
+//         post {
+//             _id
+//         }
+//     }
+// }`;
+
+// const eventResponse = `
+// event {
+//     _id
+//     title
+//     description
+//     start_date
+//     end_date
+//     start_time
+//     end_time
+//     owner {
+//         _id
+//         username
+//         picture
+//     }
+//     attendees {
+//         _id
+//         username
+//         picture
+//     }
+//     category
+//     in_person
+//     location
+//     image
+//     thread {
+//         _id
+//         title
+//     }
+//     comments {
+//         _id
+//         comment_text
+//         date_created
+//         author {
+//             _id
+//         }
+//         reactions
+//         edited
+//         event {
+//             _id
+//         }
+//     }
+//     date_created
+//     edited
+// }`;
 
 // const commentResponse = `
 // comment {
@@ -258,8 +259,6 @@ mutation addTechnology($userId: ID!, $technology: String!) {
     }
 }
 `;
-
-//!  FIX THIS MO FO NOW!
 
 export const REMOVE_TECH = gql`
 mutation removeTechnology($userId: ID!, $technology: String!) {
@@ -559,7 +558,7 @@ mutation unpinPost($threadId: ID!, $postId: ID!) {
 }
 `;
 
-//! IF THE TIME PERMITS 
+//! IF THE TIME PERMITS, MAKE THIS INCLUDE USERNAME IN THE RESOLVERS AND MODELS
 export const ADD_POST_REACTION = gql`
 mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
     addPostReaction(threadId: $threadId, postId: $postId, reaction: $reaction) {
@@ -625,7 +624,7 @@ mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
                 _id
             }
         }
-    }        
+    }
 }
 `;
 
@@ -737,7 +736,7 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
 //*  EVENT STUFF
 
 export const CREATE_EVENT = gql`
-mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String, $owner: ID!) {
+mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $owner: ID!) {
     createEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
         _id
         title
@@ -751,11 +750,6 @@ mutation createEvent($threadId: ID!, $title: String!, $description: String!, $st
             username
             picture
         }
-        attendees {
-            _id
-            username
-            picture
-        }
         category
         in_person
         location
@@ -763,19 +757,6 @@ mutation createEvent($threadId: ID!, $title: String!, $description: String!, $st
         thread {
             _id
             title
-        }
-        comments {
-            _id
-            comment_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            event {
-                _id
-            }
         }
         date_created
         edited
