@@ -29,7 +29,13 @@ function SignUp(props) {
 
 		try {
 			const { data } = await createUser({
-				variables: { ...signupData }
+				variables: { 
+					first_name: signupData.firstName,
+					last_name: signupData.lastName,
+					username: signupData.username,
+					email: signupData.email,
+					password: signupData.password
+				}
 			});
 
 			AuthService.login(data.createUser.token);
