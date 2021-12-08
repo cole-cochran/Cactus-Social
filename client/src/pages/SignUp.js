@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { CREATE_USER } from '../utils/mutations';
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
 function SignUp(props) {
 	// set initial form state
@@ -32,7 +32,7 @@ function SignUp(props) {
 				variables: { ...signupData }
 			});
 
-			Auth.login(data.createUser.token);
+			AuthService.login(data.createUser.token);
 		} catch (err) {
 			console.error(err);
 		}
