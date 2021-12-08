@@ -4,6 +4,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
+import { useQuery, useMutation } from '@apollo/client';
+import Auth from '../utils/auth';
+
+import { ALL_THREADS } from '../utils/queries';
+import { CREATE_THREAD } from '../utils/mutations';
 
 const style = {
   position: 'absolute',
