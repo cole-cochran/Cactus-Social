@@ -75,6 +75,9 @@ Stephanie Cortez:
 # Original Idea
 <!-- figma 1 -->
 ![figma model large](figma_1.PNG)
+The idea was to build out the pages and components in figma as well as work on logo and front end design
 <!-- figma 2 -->
+![figma model pages](figma_2.PNG)
+Examples of sign up, login, error pages, and dashboard
 
 
