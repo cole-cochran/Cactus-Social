@@ -12,14 +12,12 @@ function Profile(props) {
 
     const { userId } = useParams();
 
-    
-
     return (
         <React.Fragment>
             <NavBar/>
             <div className="app-content-container">
                 <Sidebar/>
-                <ProfileInfo/>
+                <ProfileInfo userId={userId} />
                 <ProfileFriends/>
             </div>
             <Footer/>

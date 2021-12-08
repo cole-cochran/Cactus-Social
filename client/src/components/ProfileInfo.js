@@ -27,17 +27,52 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-  };
+};
 
 function ProfileInfo(props) {
+
+    const { userId } = props;
+
+    const { loading, data } = useQuery(USER_PROFILE, {
+        variables: { userId: userId }
+    });
+
+    const specificUser = data?.userProfile || {};
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    if (loading) {
+        return <p>loading...</p>;
+    }
+
     return (
         <div className="profile-wrapper">
             <div className="profile-content-container">
-                <div className="profile-header">
+            <div className="profile-header">
+                    <h3>{specificUser.first_name} {specificUser.last_name}</h3>
+                </div>
+                <div className="profile-edit-container">
+                    <span className="join-date">Member Since: {specificUser.date_joined}</span>
+                    <img src="/assets/img/edit.svg" alt="edit button" onClick={handleOpen}/>
+                </div>
+                <div className="user-bio">
+                    {specificUser.bio}
+                </div>
+                <div className="user-info">
+                    <div className="tech-stack">
+                        <ul>
+                            {specificUser.tech_stack.map((tech) => (
+                                <li><Chip label={`${tech}`} variant="outlined" /></li>
+                            ))}
+                            {/* <li><Chip label="javascript" variant="outlined" /></li>
+                            <li><Chip label="html" variant="outlined" /></li>
+                            <li><Chip  label="css" variant="outlined" /></li> */}
+                        </ul>
+                    </div>
+                </div>
+                {/* <div className="profile-header">
                     <h3>Cole Cochran</h3>
                     <div className="profile-edit-container">
                         <span className="join-date">Member since 2021</span>
@@ -55,7 +90,7 @@ function ProfileInfo(props) {
                             <li><Chip  label="css" variant="outlined" /></li>
                         </ul>
                     </div>
-                </div>
+                </div> */}
             </div>
             <Modal
                 open={open}

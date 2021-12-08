@@ -38,6 +38,16 @@ const resolvers = {
 			}).populate("author").populate("thread").populate("comments")
 		},
 
+		allPostComments: async (parent, args, context) => {
+			const { postId } = args;
+			const postComments = await Comment.find({
+				where: {
+					post: postId
+				}
+			}).populate('author').populate('post').populate('event');
+			return postComments;
+		},
+
 		//* get specific thread
 		threadDetails: async (parent, args, context) => {
 			//! add user context to ensure they are logged in

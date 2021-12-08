@@ -236,6 +236,26 @@ query allComments {
 }
 `;
 
+export const ALL_POST_COMMENTS = gql`
+query allPostComments($postId: ID!) {
+	allPostComments(postId: $postId) {
+		_id
+        comment_text
+        date_created
+        author {
+			_id
+			username
+			picture
+		}
+        reactions
+        edited
+        post {
+			_id
+		}
+	}
+}
+`;
+
 export const USER_PROFILE = gql`
 	query userProfile($userId: ID!) {
 		userProfile(userId: $userId) {

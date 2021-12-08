@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const pages = [];
 const settings = [
 {name: 'Logout', url: '/'},
-{name: "DM's", url: "/sendbird"},
+{name: "DM's", url: "/chat"},
 {name: 'Profile', url: "/profile"}
 ];
 const ResponsiveAppBar = () => {
