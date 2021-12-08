@@ -48,7 +48,7 @@ That is all there is to it. Enjoy messaging on Cactus Social!
 - bcrypt
 
 ---
-# Original Contriubtors
+# Original Contributorz
 ---
 
 Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer) <br>
