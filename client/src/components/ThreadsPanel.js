@@ -36,7 +36,7 @@ function ThreadsPanel(props) {
                 <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul>
-                <li><Link to="/home">Austin Code Bootcamp Students</Link><img src="" alt="" /></li>
+                <li><Link to="/home">Austin Code Bootcamp Students</Link></li>
             </ul>
             <Modal
                 open={open}
