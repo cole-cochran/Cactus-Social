@@ -43,6 +43,7 @@ const client = new ApolloClient({
 
 function App() {
 	return (
+		// <ThreadCreation/>
 		// <SplashPage/>
 		// <EventCreation/>
 		<ApolloProvider client={client}>
@@ -64,7 +65,7 @@ function App() {
 						<Route exact path="/profile">
 							<Profile />
 						</Route>
-						<Route exact path="/sendbird">
+						<Route exact path="/chat">
 							<Sendbird />
 						</Route>
 						<Route exact path="/404">

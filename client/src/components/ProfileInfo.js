@@ -20,25 +20,18 @@ function ProfileInfo(props) {
         <div className="profile-wrapper">
             <div className="profile-content-container">
                 <div className="profile-header">
-                    <h3>Profile</h3>
+                    <h3>Cole Cochran</h3>
                 </div>
-                <div className="profile-img">
-                    <div className="placeholder-img"/>
-                </div>
-                <span className="user-name">Cole Cochran</span>
-                <br/>
-                <span>Member since 2021</span>
-                <div className="Bio">
-                        sadasdsad asd asd asd asd asd asd asd as dsad asd asd asd sad 
-                        asd asd asd asd asd asd as dasd sad asd as asdad asd asd asd asdasd
+                <span className="join-date">Member since 2021</span>
+                <div className="user-bio">
+                    Cole appreciates neature walk and biking. He also likes hats and computer hardware. He used to work at the apple store.
                 </div>
                 <div className="user-info">
                     <div className="tech-stack">
                         <ul>
-                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
-                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
-                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
-                        <li><Chip icon={<FaceIcon />} label="With Icon" variant="outlined" /></li>
+                            <li><Chip label="javascript" variant="outlined" /></li>
+                            <li><Chip label="html" variant="outlined" /></li>
+                            <li><Chip  label="css" variant="outlined" /></li>
                         </ul>
                     </div>
                 </div>

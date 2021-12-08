@@ -31,7 +31,7 @@ html, body {
 
 .app-content-container, .thread-wrapper, .aside {
     display: flex; 
-    height: calc(100vh - 6.281rem);
+    height: calc(100vh - 6rem);
 }
 
 /*************GLOBAL:STYLES************/
@@ -44,6 +44,8 @@ html, body {
 }
 
 .splash-page-header button {
+    position: relative;
+    z-index: 2;
     background-color: #80deea;
     color: black;
     font-size: .75rem;
@@ -82,6 +84,8 @@ html, body {
 
 
 .splash-page-sign-up-button {
+    position: relative;
+    z-index: 2;
     background-color: white;
     font-size: .75rem;
     height: 3rem;
@@ -94,6 +98,7 @@ html, body {
 }
 
 .splash-page-download-button {
+    z-index: 100;
     background-color: var(--primary-green);
     font-size: .875rem;
     font-weight: 700;
@@ -109,6 +114,7 @@ html, body {
     height: 30rem;
     /* width: 100%; */
 }
+
 
 /*************SPLASHPAGE:STYLES************/ 
 /*************SPLASHPAGE:MEDIA-QUERIES************/
@@ -554,6 +560,15 @@ header {
   text-decoration: none;
 }
 
+.thread-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.thread-sidebar-header img {
+    margin-right: .5rem;
+}
+
 .add-thread-row {
     display: flex;
     align-items: center;
@@ -571,6 +586,17 @@ header {
 }
 
 /*************SIDEBAR.JS:END************/
+/*************PANELS.JS:START************/
+
+/* #sidebar-thread-panel {
+    display: none;
+}
+
+#sidebar-events-panel {
+    display: none;
+} */
+
+/*************PANELS.JS:END************/
 /*************FOOTER:START************/
 
 footer {
@@ -600,6 +626,16 @@ footer {
   justify-content: space-between;
   height: 100%;
   margin-right: 1rem;
+}
+
+.thread-title-container {
+    display: flex;
+    align-items: center;
+}
+
+.thread-title-container img {
+    margin-left: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .thread-header h3 {
@@ -643,6 +679,14 @@ footer {
     color: #FFE3A1;
     margin-left: 1rem;
 }
+.subthread-title {
+    font-size: .65rem;
+    margin-left: 1rem;
+    color: #FFF1D1;
+}
+.subthread {
+    background-color: #FF7600; 
+}
 
 
 .chat-input {
@@ -682,6 +726,10 @@ footer {
     padding-left: .28rem;
     border-radius: .25rem;
     background-color: var(--hero-green);
+}
+
+.sub-thread-form-header {
+    border-bottom: 1px grey solid;
 }
 
 /*************THREEDDISPLAY:END****************/
@@ -756,12 +804,21 @@ footer {
     font-size: 1rem;
 }
 
+.join-date {
+
+    font-size: .75rem;
+}
+
 .profile-wrapper {
-    z-index: 1;
-    position: absolute;
     display: flex;
     justify-content: center;
     width: 100%;
+    padding-left: 1rem;
+}
+
+.user-bio {
+    margin-top: .75rem;
+    font-size: .875rem;
 }
 .profile-content-container {
     padding-left: 1.5rem;
@@ -834,13 +891,16 @@ footer {
 }
 #img {
     width: 100%;
+    object-fit: cover;
     height: auto;
   }
 #parallax_wrapper {
     position: relative;
     z-index: 0;
+    object-fit: cover;
   }
   #parallax_field {
+    object-fit: cover;
     overflow: hidden;
     position: absolute;
     left: 0;
@@ -858,35 +918,13 @@ footer {
   }
   #parallax_illustration #parallax_sign {
     position: absolute;
+    object-fit: cover;
     top: 25px;
     left: 582px;
     z-index: 10;
   }
-  #parallax_illustration #parallax_octocat {
-    position: absolute;
-    top: 66px;
-    left: 431px;
-    z-index: 8;
-  }
-  #parallax_illustration #parallax_error_text {
-    display: block;
-    width: 400px;
-    height: 144px;
-    position: absolute;
-    top: 165px;
-    left: 152px;
-    font-family:Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 18px;
-    background-image: "";
-    background-repeat: no-repeat;
-    padding: 64px 0 0 106px;
-    color: #183913;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.30);
-    z-index: 5;
-  }
-  #parallax_field #parallax_bg {
+
+  #parallax_field  {
     overflow: hidden;
     width: 105%;
     position: absolute;
@@ -894,8 +932,48 @@ footer {
     left: -20px;
     z-index: 1;
   }
-  #parallax_illustration #parallax_error_text span {
-    display: block;
-    margin-left: 12px;
-  }
 /*************404.HTML:STYLES************/
+/*************MODAL:STYLES************/
+
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid grey;
+}
+.modal-form {
+    padding-bottom: 2rem;
+}
+.modal-header h4 {
+    margin-top: .5rem;
+    font-size: 1rem;
+}
+.modal-form label {
+    margin-top: 1.5rem;
+    font-size: .875rem;
+    font-weight: 500;
+    display: block;
+    margin-left: 1rem;
+}
+.modal-form input {
+    margin-top: .75rem;
+    margin-left: 1rem;
+    height: 2rem;
+    width: calc(100% - 2rem);
+}
+.modal-form input::placeholder {
+    font-size: .75rem;
+}
+
+.modal-button {
+    margin-top: 2rem;
+    font-size: .75rem;
+    color: white;
+    background-color: #FF7600;
+    padding-top: .75rem;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    padding-bottom: .75rem;
+    border: none;
+    border-radius: .25rem;
+    margin-left: 1rem;
+}
+/*************MODAL:STYLES************/

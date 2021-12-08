@@ -1,65 +1,76 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ThreadsPanel from "./ThreadsPanel";
+import EventsPanel from "./EventsPanel";
 
-const toggleSidebar = () => {
+//DOM QUERIES
+//icons
+const threadIcon = document.querySelector('#thread-icon');
+const eventIcon = document.querySelector('#event-icon');
+//panels
 
-    console.log('toggleSidebar fired')
+const toggleSidebar = (e) => {
+
+
     const  sidebar = document.querySelector('#sidebar');
     const  aside = document.querySelector('#aside');
     let sidebarDisplay = sidebar.getAttribute("data-sidebardisplay");
 
     if(sidebarDisplay === "hidden"){
+        e.target.style.transform = "rotate(180deg)"
         sidebar.style.left = '2.5rem';
         sidebar.setAttribute("data-sidebardisplay", "visible");
         aside.style.width = "100%";
     } else {
+        e.target.style.transform = "";
         sidebar.style.left = '-100%';
         sidebar.setAttribute("data-sidebardisplay", "hidden");
         aside.style.width = "3rem";
     }
+    toggleSidebarPanelDisplay(e);
 }
 
+function toggleSidebarPanelDisplay(e){ 
+
+    console.log('toggle sidebar panel ran')
+
+    const threadPanel = document.querySelector('#sidebar-thread-panel');
+    const eventsPanel = document.querySelector('#sidebar-events-panel');
+
+    eventsPanel.style.display = 'none';
+    threadPanel.style.display = 'none';
+
+    let panelAttribute = e.target.getAttribute('data-panel')
+
+    if(panelAttribute === 'events-panel'){
+        eventsPanel.style.display = 'block';
+    } else if(panelAttribute === 'threads-panel'){
+        threadPanel.style.display = 'block';
+    }
+}
+
+
 function Sidebar(props) {
+
     return (
         <aside className="aside" id="aside">
             <div className="sticky-dash">
                 <ul>
-                    <li><Link to=""><img onClick={toggleSidebar} src="/assets/img/thread.svg" id="menu" alt="click to open sidebar"/></Link></li>
+                    <li><img onClick={toggleSidebar} src="/assets/img/arrow-right.svg" data-panel="threads-panel" alt="click to open sidebar"/></li>
+                    <li><img onClick={toggleSidebarPanelDisplay} src="/assets/img/thread.svg" data-panel="threads-panel" alt="click to open sidebar"/></li>
                     <li><Link to="/sendbird"><img src="/assets/img/msg.svg" alt="click to open profile"/></Link></li>
                     <li><Link to="/profile"><img src="/assets/img/profile.svg" alt="click to open profile"/></Link></li>
-                    {/* <li><img src="/assets/img/subthread.svg" alt="friends icon"/></li> */}
+                    <li><img onClick={toggleSidebarPanelDisplay} src="/assets/img/event.svg" data-panel="events-panel" alt="click to open profile"/></li>
+                    <li><Link to="/"><img src="/assets/img/logout.svg" alt="click to open profile"/></Link></li>
                 </ul>
              </div>
              <div className="sidebar" id="sidebar" data-sidebardisplay="hidden">
-                <div>
-                    <h3>Threads</h3>
-                    <ul>
-                        <li><a href="/">Austin Code Bootcamp Students</a></li>
-                        <li><a href="/">Cool People </a></li>
-                        <li><a href="/">Nathan</a></li>
-                        <li><a href="/">Megantron</a></li>
-                        <li className="add-thread-row">
-                            <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add thread" />
-                            <span>Thread</span>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>DM's</h3>
-                    <ul>
-                        <li><a href="/">Austin</a></li>
-                        <li><a href="/">Mike</a></li>
-                        <li><a href="/">Nikey</a></li>
-                        <li><a href="/">Toby Mack</a></li>
-                        <li className="add-dm-row">
-                            <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add dm" />
-                            <span>Message</span>
-                        </li>
-                    </ul>
-                </div>
+                  <ThreadsPanel/>
+                  <EventsPanel/>
             </div>
         </aside>
     )
 }
+    
 
 export default Sidebar;
