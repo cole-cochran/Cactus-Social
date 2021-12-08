@@ -74,7 +74,7 @@ function ThreadDisplay(props) {
                         </div>
                         <div className="chats-container">
                             {/* {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
-                            {threadPosts.posts.map((post) => (
+                            {threadPosts.map((post) => (
                                 post.pinned ? (
                                     <React.Fragment>
                                         <div className="chat subthread" onClick={handleOpen}>
