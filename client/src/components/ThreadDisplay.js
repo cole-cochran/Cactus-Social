@@ -45,6 +45,8 @@ function ThreadDisplay(props) {
     const errors = singleThread.error || threadPosts.error;
     const loading = singleThread.loading || threadPosts.loading;
 
+    
+
     const [newPost, setNewPost] = React.useState('');
     // const [editPost, setEditPost] = React.useState('');
     const [pinning, setPinning] = React.useState(false);
@@ -62,17 +64,17 @@ function ThreadDisplay(props) {
                 <div className="thread-content-container">
                     {/* <div className="top-panel"> */}
                         <div className="thread-header">
-                            <h3>Austin Code Bootcamp Students</h3>
-                            {/* <h3>
+                            {/* <h3>Austin Code Bootcamp Students</h3> */}
+                            <h3>
                                 {singleThread.title}
-                            </h3> */}
+                            </h3>
                             <div>
-                                <p>M: Damien</p>
-                                {/* <p>{singleThread.moderator}</p> */}
+                                {/* <p>M: Damien</p> */}
+                                <p>M: {singleThread.moderator}</p>
                             </div>
                         </div>
                         <div className="chats-container">
-                            {/* {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
+                            {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
                             {threadPosts.map((post) => (
                                 post.pinned ? (
                                     <div className="chat subthread" onClick={handleOpen}>
@@ -102,8 +104,8 @@ function ThreadDisplay(props) {
                                         </Link>
                                     </div>
                                 )
-                            ))} */}
-                            <div className="chat subthread" onClick={handleOpen}>
+                            ))}
+                            {/* <div className="chat subthread" onClick={handleOpen}>
                                 <div>
                                     <span className="chat-name">Jack</span>
                                     <span className="chat-date">November 21st at 8:40pm</span>
@@ -124,77 +126,7 @@ function ThreadDisplay(props) {
                                     <span className="chat-date">November 21st at 8:40pm</span>
                                 </div>
                                 <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
-                            <div className="chat" onClick={handleOpen}>
-                                <div>
-                                    <span className="chat-name">Jack</span>
-                                    <span className="chat-date">November 21st at 8:40pm</span>
-                                </div>
-                                <p>I'm baby seitan health goth wayfarers, succulents direct trade microdosing ethical drinking vinegar chia. Flannel chambray gluten-free sustainable letterpress echo </p>
-                            </div>
+                            </div> */}
                             <Modal
                                 open={open}
                                 onClose={handleClose}
@@ -213,7 +145,7 @@ function ThreadDisplay(props) {
                                         <button className="modal-button" type="submit">Add</button>
                                     </form>
                                 </Box>
-                             </Modal>
+                            </Modal>
                         </div>
                     {/* </div> */}
                     {/* <div> */}
