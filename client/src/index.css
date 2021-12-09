@@ -1025,3 +1025,10 @@ footer {
     margin-left: 1rem;
 }
 /*************MODAL:STYLES************/
+/*******************THREAD:INPUT*******************/
+
+.editable:empty:before {
+    content: attr(data-placeholder);
+}
+
+/*******************THREAD:INPUT*******************/
