@@ -177,7 +177,7 @@ const resolvers = {
 				throw new AuthenticationError('Incorrect credentials!');
 			}
 
-			const correctPassword = await foundUser.isCorrectPassword(password);
+			const correctPassword = await foundUser.comparePassword(password);
 
 			if (!correctPassword) {
 				throw new AuthenticationError('Incorrect credentials!');
@@ -192,7 +192,13 @@ const resolvers = {
 			const { first_name, last_name, username, email, password } = args;
 			const newUser = await User.create({ first_name, last_name, username, email, password });
 
-			const token = signToken(newUser);
+			const tokenData = {
+				username: newUser.username, 
+				email: newUser.email, 
+				_id: newUser._id
+			}
+
+			const token = signToken(tokenData);
 			return { token, newUser };
 		},
 

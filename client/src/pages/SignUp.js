@@ -5,11 +5,11 @@ import { useMutation } from '@apollo/client';
 import { CREATE_USER } from '../utils/mutations';
 import AuthService from '../utils/auth';
 
-function SignUp(props) {
+function SignUp() {
 	// set initial form state
 	const [ signupData, setSignupData ] = useState({
-		firstName: '',
-		lastName: '',
+		first_name: '',
+		last_name: '',
 		username: '',
 		email: '',
 		password: ''
@@ -25,17 +25,9 @@ function SignUp(props) {
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
 
-		// check if form has everything (as per react-bootstrap docs)
-
 		try {
 			const { data } = await createUser({
-				variables: { 
-					first_name: signupData.firstName,
-					last_name: signupData.lastName,
-					username: signupData.username,
-					email: signupData.email,
-					password: signupData.password
-				}
+				variables: { ...signupData }
 			});
 
 			AuthService.login(data.createUser.token);
@@ -44,8 +36,8 @@ function SignUp(props) {
 		}
 
 		setSignupData({
-			firstName: '',
-			lastName: '',
+			first_name: '',
+			last_name: '',
 			username: '',
 			email: '',
 			password: ''
@@ -68,25 +60,25 @@ function SignUp(props) {
 					<form class="signup-form" onSubmit={handleFormSubmit}>
 						<h3>Sign up for Cactus Social!</h3>
 
-						<label for="firstName">First Name</label>
+						<label for="first_name">First Name</label>
 						<input
 							type="text"
-							id="firstName"
+							id="first_name"
 							placeholder="First Name"
-							name="firstName"
+							name="first_name"
 							onChange={handleInputChange}
-							value={signupData.firstName}
+							value={signupData.first_name}
 							required
 						/>
 
-						<label for="lastName">Last Name</label>
+						<label for="last_name">Last Name</label>
 						<input
 							type="text"
-							id="lastName"
+							id="last_name"
 							placeholder="Last Name"
-							name="lastName"
+							name="last_name"
 							onChange={handleInputChange}
-							value={signupData.lastName}
+							value={signupData.last_name}
 							required
 						/>
 
@@ -130,8 +122,8 @@ function SignUp(props) {
 									signupData.username &&
 									signupData.email &&
 									signupData.password &&
-									signupData.firstName &&
-									signupData.lastName
+									signupData.first_name &&
+									signupData.last_name
 								)
 							}
 						>
