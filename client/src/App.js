@@ -60,13 +60,13 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/home">
-							{AuthService.isLoggedIn() ? <Dashboard /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard /> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
-							{AuthService.isLoggedIn() ? <Profile /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Profile /> : <SplashPage />}
 						</Route>
 						<Route exact path="/chat">
-							{AuthService.isLoggedIn() ? <Sendbird /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />
