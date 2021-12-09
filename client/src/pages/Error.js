@@ -1,8 +1,7 @@
 import React from "react";
-// import ScriptTag from 'react-script-tag';
 import NavBar from "../components/NavBar";
 import {Helmet} from "react-helmet";
-
+import parallax from '../parallax'
 export default function Error() {
     return(
        
@@ -23,8 +22,8 @@ export default function Error() {
         </h1>
     </section>
     <Helmet>
-    <script src=
-        "../components/Parallax" 
+    <script type="text/javascript" src=
+        "../parallax.js" 
     type="text/javascript" />
     </Helmet>
 </main>
