@@ -30,7 +30,7 @@ const authLink = setContext((_, { headers }) => {
 	return {
 		headers: {
 			...headers,
-			authorization: token ? `Bearer ${token}` : ''
+			authorization: token ? `Bearer ${token}` : '',
 		}
 	};
 });
@@ -60,13 +60,13 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/home">
-							<Dashboard />
+							{AuthService.isLoggedIn() ? <Dashboard /> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
-							<Profile />
+							{AuthService.isLoggedIn() ? <Profile /> : <SplashPage />}
 						</Route>
 						<Route exact path="/chat">
-							<Sendbird />
+							{AuthService.isLoggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />
