@@ -66,9 +66,9 @@ Fox Rigney: [Fox's GitHub](https://github.com/foxrigney)<br>
 **honorable mentions:**
 <br>
 
-Nathan Delman: [Nathan's GitHub](https://www.example.com)<br>
+Nathan Delman: [Nathan's GitHub](https://github.com/Delmanat3)<br>
 Ethan Cho: [Ethan's GitHub](https://github.com/echo1826)<br>
-Stephanie Cortez:
+Stephanie Cortez: [Stephanie's GitHub](https://github.com/CortezStephanie)<br>
 
 
 
