@@ -97,7 +97,7 @@ function Login(props) {
 						A sleek, secure,<br />
 						and transparent platform...
 					</h1>
-					<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+					<p>Login to see what your fellow developers are up to!</p>
 				</div>
 
 				{/* //! add the image of the cacti hanging out */}
