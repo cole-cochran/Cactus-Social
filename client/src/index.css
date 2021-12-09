@@ -710,11 +710,16 @@ footer {
     font-size: .75rem;
     margin-top: 1rem;
     font-weight: 500;
+    pointer-events: none;
 }
 .chat-date {
     font-size: .55rem;
     color: #FFE3A1;
     margin-left: 1rem;
+    pointer-events: none;
+}
+.pos {
+    pointer-events: none;
 }
 .subthread-title {
     font-size: .65rem;
