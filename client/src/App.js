@@ -14,7 +14,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { setContext } from '@apollo/client/link/context';
 
 //*import authService middleware
-// import AuthService from './utils/auth';
+import AuthService from './utils/auth';
 import Sendbird from './pages/Sendbird/Sendbird';
 
 //* Construct GraphQL endpoint
@@ -60,13 +60,13 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/home">
-							<Dashboard />
+							{AuthService.isLoggedIn() ? <Dashboard /> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
-							<Profile />
+							{AuthService.isLoggedIn() ? <Profile /> : <SplashPage />}
 						</Route>
 						<Route exact path="/chat">
-							<Sendbird />
+							{AuthService.isLoggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />
