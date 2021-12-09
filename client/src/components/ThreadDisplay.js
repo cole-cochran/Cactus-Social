@@ -60,6 +60,8 @@ function ThreadDisplay(props) {
         console.log(singleThread.data)
     }
 
+
+
     return (
         <main className="thread-wrapper">
                 <div className="thread-content-container">
@@ -153,7 +155,7 @@ function ThreadDisplay(props) {
                     {/* </div> */}
                     {/* <div> */}
                         <div className="chat-input">
-                            <span contenteditable="true">"what's on your mind?"</span>
+                            <span contentEditable>"what's on your mind?"</span>
                             <div className="chat-input-buttons">
                                 <button className="chat-input-send-button">send</button>
                             </div>
