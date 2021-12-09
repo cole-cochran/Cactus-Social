@@ -323,7 +323,7 @@ const resolvers = {
 			const newThread = await Thread.create({
 				title: title,
 				moderator: moderator
-			}).populate('moderator');
+			});
 			await User.findOneAndUpdate(
 				{ _id: moderator },
 				{
