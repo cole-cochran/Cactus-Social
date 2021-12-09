@@ -31,11 +31,7 @@ const resolvers = {
 
 		allThreadPosts: async (parent, args, context) => {
 			const { threadId } = args;
-			return await Post.find({
-				where: {
-					thread: threadId
-				}
-			}).populate("author").populate("thread").populate("comments")
+			return await Post.find({thread: threadId}).populate("author").populate("thread").populate("comments");
 		},
 
 		allPostComments: async (parent, args, context) => {
@@ -57,6 +53,13 @@ const resolvers = {
 				.populate('events')
 				.populate('members')
 				.populate('moderator');
+				// .populate({ 
+				// 	path: 'posts',
+				// 	populate: {
+				// 		path: 'author',
+				// 		model: 'User'
+				// 	} 
+				// })
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},

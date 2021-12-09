@@ -42,6 +42,7 @@ const client = new ApolloClient({
 });
 
 function App() {
+	// console.log(AuthService.getProfile())
 	return (
 		// <ThreadCreation/>
 		// <SplashPage/>
@@ -59,7 +60,7 @@ function App() {
 						<Route exact path="/login">
 							<Login />
 						</Route>
-						<Route exact path="/home">
+						<Route exact path="/threads/:threadId">
 							{AuthService.loggedIn() ? <Dashboard /> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
