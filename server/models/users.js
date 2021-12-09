@@ -19,16 +19,16 @@ const userSchema = new Schema({
 		trim: true,
 		lowercase: true,
 		required: 'First name is required',
-		minLength: [2, "First Name cant be less than 2 characters"],
-		maxLength: [40, "First name can't be longer than 40 character"]
+		minLength: [ 2, 'First Name cant be less than 2 characters' ],
+		maxLength: [ 40, 'First name cannot be longer than 40 character' ]
 	},
 	last_name: {
 		type: String,
 		trim: true,
 		lowercase: true,
 		required: 'Last name is required',
-		minLength: [2, "Last Name cant be less than 2 characters"],
-		maxLength: [40, "Last name can't be longer than 40 character"]
+		minLength: [ 2, 'Last Name cant be less than 2 characters' ],
+		maxLength: [ 40, 'Last name cannot be longer than 40 character' ]
 	},
 	username: {
 		type: String,
@@ -46,7 +46,10 @@ const userSchema = new Schema({
 		required: 'Email address is required',
 		unique: true,
 		validate: [ validateEmail, 'Please use a valid email address' ],
-		match: [/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, 'Please use a valid email address' ]
+		match: [
+			/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+			'Please use a valid email address'
+		]
 	},
 	password: {
 		type: String,
@@ -83,8 +86,8 @@ const userSchema = new Schema({
 		}
 	],
 	date_joined: {
-        type: Date,
-        default: Date.now,
+		type: Date,
+		default: Date.now,
 		get: (timestamp) => dateFormat(timestamp)
 	},
 	friends: [
@@ -95,28 +98,16 @@ const userSchema = new Schema({
 	]
 });
 
-userSchema.pre('save', function(next) {
-	var user = this;
-	// only hash the password if it has been modified (or is new)
-	if (!user.isModified('password')) return next();
-	// generate a salt
-	bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-		if (err) return next(err);
-		// hash the password using our new salt
-		bcrypt.hash(user.password, salt, function(err, hash) {
-			if (err) return next(err);
-			// override the cleartext password with the hashed one
-			user.password = hash;
-			next();
-		});
-	});
+userSchema.pre('save', async function(next) {
+	if (this.isNew || this.isModified('password')) {
+		const saltRounds = 10;
+		this.password = await bcrypt.hash(this.password, saltRounds);
+	}
+	next();
 });
 
-userSchema.methods.comparePassword = async function(candidatePassword, cb) {
-	await bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-		if (err) return cb(err);
-		cb(null, isMatch);
-	});
+userSchema.methods.comparePassword = async function(password) {
+	return bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model('User', userSchema);
