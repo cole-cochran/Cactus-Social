@@ -14,7 +14,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 import { setContext } from '@apollo/client/link/context';
 
 //*import authService middleware
-import AuthService from './utils/auth';
+// import AuthService from './utils/auth';
 import Sendbird from './pages/Sendbird/Sendbird';
 
 //* Construct GraphQL endpoint
@@ -30,7 +30,7 @@ const authLink = setContext((_, { headers }) => {
 	return {
 		headers: {
 			...headers,
-			authorization: token ? `Bearer ${token}` : ''
+			authorization: token ? `Bearer ${token}` : '',
 		}
 	};
 });
