@@ -1,5 +1,5 @@
 import React from "react";
-import ScriptTag from 'react-script-tag';
+// import ScriptTag from 'react-script-tag';
 import NavBar from "../components/NavBar";
 import {Helmet} from "react-helmet";
 
