@@ -1,0 +1,72 @@
+*, body{
+    margin: 0;
+    padding: 0;
+
+}
+/* font styling */
+body{
+    background-color: #ebebeb;
+    font-family: 'Fira Sans', sans-serif;
+
+}
+/* the menu will be rounded everywhere but the left, will stay fixed even when we scroll over the rest of the page, is styled */
+/* will transition smooth when hovered over */
+.main-menu{
+    transition: .3s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:  70px;
+    height: 100vh;
+    background-color: #fff;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden ;
+    white-space: nowrap;
+    box-shadow: 0px 0px 20px #d4d4d4
+    
+    
+
+}
+/* expands when hovered on */
+.main-menu:hover{
+    /* even though the menu is fixed we are adding a scroll */
+    overflow-y: scroll;
+    width: 270px;
+
+}
+/* spacing out items in a list so they arent cramped */
+.main-menu .menu-item{
+    padding: 10px;
+}
+/* green hover effect */
+.main-menu .menu-item:hover{
+    background-color: #65FD9F ;
+    cursor: pointer;
+}
+
+/* changing font size using fa class  */
+.main-menu .menu-item .fa{
+    font-size: 25px;
+    /* text needs to be lined up properly and this completely covers text and leaves icons */
+    width: 40px;
+    padding: 10px;
+
+
+
+}
+
+/* scrolling bar customization */
+::-webkit-scrollbar{
+    width: 5px;
+
+}
+
+::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #bbbbbb;
+    border-radius: 10px;
+}

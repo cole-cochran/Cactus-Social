@@ -1,0 +1,40 @@
+{
+  "name": "cactus-social",
+  "version": "1.0.0",
+  "description": "A sleek, secure, and transparent platform.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "watch": "nodemon",
+    "seed": "node seeds/newSeeds.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cole-cochran/Project-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cole-cochran/Project-3/issues"
+  },
+  "homepage": "https://github.com/cole-cochran/Project-3#readme",
+  "dependencies": {
+    "@google-cloud/dialogflow": "^3.3.0",
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "dialogflow": "^1.2.0",
+    "dotenv": "^10.0.0",
+    "google-auth-library": "^7.10.2",
+    "graphql": "^14.6.0",
+    "graphql-type-json": "^0.3.2",
+    "mongoose": "^6.0.13",
+    "morgan": "^1.10.0",
+    "apollo-server-express": "^2.19.0",
+    "axios": "^0.24.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "jsonwebtoken": "^8.5.1"
+  }
+}

@@ -1,0 +1,601 @@
+/*************GLOBAL:STYLES************/
+
+/* importing default font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --primary-green: #7ADA46;
+    --grey1: #F8F9FC;
+    --grey2: #E6E7EA;
+    --secondary-purple: #9200BB;
+}
+
+* {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+
+}
+
+.app-content-container {
+    display: flex;
+}
+
+/*************GLOBAL:STYLES************/
+/*************LOGIN.HTML:STYLES************/
+
+.logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.logo {
+    margin-top: 1rem;
+    width: 7rem;
+}
+.login-form-section {
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form-section h3 {
+    padding-top: 3rem;
+    font-size: 1.5rem;
+}
+.login-banner-mobile {
+    height: 4rem;
+    background-color: #B945FF;
+}
+
+.login-form {
+    max-width: 30rem;
+}
+.login-form label {
+    margin-left: 0;
+    font-size: .75rem;
+    display: block;
+}
+
+.login-form input {
+    display: block;
+    width: calc(100% - 1rem);
+    height: 2rem;
+}
+
+.login-form a {
+    display: inline;
+}
+
+.login-form button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.login-form p {
+    margin-top: 1rem;
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.login-form a {
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.login-banner {
+    background-color: #501069;
+    color: white;
+    height: 100vh;
+    padding: 3rem;
+}
+.login-banner h1 {
+    font-size: 2rem;
+}
+.login-banner p {
+    font-size: 1rem;
+}
+
+
+
+
+
+
+
+/*************LOGIN.HTML:STYLES************/
+
+
+@media only screen and (max-width: 776px) {
+
+    .login-banner {
+        display: none;
+    }
+}
+
+
+@media only screen and (min-width: 776px) {
+
+    .login-banner-mobile {
+        display: none;
+    }
+
+    .login-page-body {
+        display:flex;
+    }
+
+    .login-form-section {
+        /* padding-top: 2rem; */
+        width: 50%;
+        max-width: 22rem;
+    }
+    .login-banner {
+        width: 100%;
+    }
+    
+}
+
+/*************LOGIN.HTML:MEDIA-QUERIES************/
+
+/*************SIGNUP.HTML:STYLES************/
+.signup-form-section {
+    padding-top: 3rem;
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-form-section h3 {
+    font-size: 1.5rem;
+}
+.signup-banner-mobile {
+    height: 4rem;
+    background-color: #B945FF;
+}
+
+.signup-form {
+    max-width: 30rem;
+}
+.signup-form label {
+    margin-left: 0;
+    font-size: .75rem;
+    display: block;
+}
+
+.signup-form input {
+    display: block;
+    width: calc(100% - 1rem);
+    height: 2rem;
+}
+
+.signup-form a {
+    display: inline;
+}
+
+.signup-form button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.signup-form p {
+    margin-top: 1rem;
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.signup-form a {
+    font-size: .875rem;
+    display: inline-block;
+}
+
+.signup-banner {
+   background-color: #501069;
+    color: white;
+    height: 100vh;
+    padding: 3rem;
+}
+.signup-banner h1 {
+    font-size: 2rem;
+}
+.signup-banner p {
+    font-size: 1rem;
+}
+/*************SIGNUP.HTML:STYLES************/
+
+/*************LOGIN.HTML:STYLES************/
+
+
+@media only screen and (max-width: 776px) {
+
+    .login-banner {
+        display: none;
+    }
+}
+
+
+@media only screen and (min-width: 776px) {
+
+    .login-banner-mobile {
+        display: none;
+    }
+
+    .login-page-body {
+        display:flex;
+    }
+
+    .login-form-section {
+        /* padding-top: 2rem; */
+        width: 50%;
+        max-width: 22rem;
+    }
+    .login-banner {
+        width: 100%;
+    }
+    
+}
+
+/*************LOGIN.HTML:MEDIA-QUERIES************/
+
+/*************DASHBOARD.HTML:STYLING************/
+/* body {
+    margin: 10px 60px;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+h1, h4, ol {
+    margin: 0;
+}
+p {
+    margin: 5px 0;
+}
+textarea {
+    width: 80%;
+    height: 80px;
+}
+button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.main {
+    background-color: #DAF5CB;
+    padding: 10px 40px;
+}
+.comments {
+    margin: 40px 0;
+}
+.row {
+    padding: 5px 0;
+}
+.comment-ts {
+    padding-left: 10px;
+}
+
+.dashboard-form button {
+    display: block;
+    margin-top: 1.5rem;
+    background-color: #56B524;;
+    color: white;
+    border: none;
+    font-size: .875rem;
+    width: 6rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-radius: .25rem;
+}
+
+.dashboard-banner {
+   background-color: #56B524;
+    color: white;
+    height: 100vh;
+    padding: 3rem;
+}
+.dashboard-banner h1 {
+    font-size: 2rem;
+}
+.dashboard-banner p {
+    font-size: 1rem;
+} */
+
+
+/********HEADER:START************/
+
+/* header {
+  height: 2.25rem;
+  background-color: var(--primary-green);
+} */
+
+.mobile-nav img {
+  width: 2rem;
+  margin-right: .25rem;
+}
+
+/********HEADER:END************/
+
+/********SIDEBAR.JS:START************/
+.aside {
+  display: flex;
+  width: 2.5rem;
+}
+.sticky-dash {
+    height: calc(100vh - 4rem);
+    background-color: var(--grey2);
+    width: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    min-width: 2.5rem;
+}
+
+.sticky-dash ul {
+    margin-top: .5rem;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar {
+    position: absolute;
+    left: -100%;
+    top: 2.28rem;
+    z-index: 2;
+    background-color: var(--grey1);
+    transition: .5s;
+    padding-top: 2rem;
+    height: calc(100vh - 4rem);
+    width: calc(100% - 2.5rem);
+    /* max-width: 20rem; */
+}
+
+.sidebar h3 {
+    font-size: .875rem;
+    font-weight: 600;
+    margin-left: .5rem;
+}
+
+.sidebar-add-icon {
+    width: 1rem;
+    margin-right: .1rem;
+}
+
+.sidebar ul {
+  border-top: 1px solid var(--grey2);
+  list-style: none;
+  padding-left: 0;
+  background-color: var(--grey1);
+}
+
+.sidebar li a {
+  font-size: .875rem;
+  color: black;
+  text-decoration: none;
+}
+
+.sidebar li {
+  font-size: .875rem;
+  padding-left: .5rem;
+  padding-top: .65rem;
+  padding-bottom: .65rem;
+  border-bottom: 1px solid var(--grey2);
+  color: black;
+  text-decoration: none;
+}
+
+.add-thread-row {
+    display: flex;
+    align-items: center;
+}
+.add-thread-row span {
+    font-size: .875rem;
+}
+
+.add-dm-row {
+    display: flex;
+    align-items: center;
+}
+.add-dm-row span {
+    font-size: .875rem;
+}
+
+/*************SIDEBAR.JS:END************/
+/*************FOOTER:START************/
+
+footer {
+  height: 2rem;
+  background-color: var(--secondary-purple);
+}
+
+/*************FOOTER:END************/
+/*************THREEDDISPLAY:START****************/
+
+.thread-wrapper {
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.thread-content-container {
+  padding-left: 1.5rem;
+  width: calc(100% - 2.5rem);
+  max-width: 40rem;
+}
+
+.thread-header h3 {
+  margin-left: 1rem;
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+
+.thread-header p {
+  margin-left: 1rem;
+  font-size: .75rem;
+}
+
+.chat {
+    line-height: 1.1rem;
+    font-size: .75rem;
+    background-color: #FFA000;
+    color: white;
+    padding: .5rem;
+    border-radius: .25rem;
+    margin-top: .5rem;
+    margin-left: .875rem;
+}
+
+.chat p {
+    font-size: .65rem;
+    margin-bottom: 0;
+}
+
+.chat-name {
+    font-size: .75rem;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+.chat-date {
+    font-size: .55rem;
+    color: #FFE3A1;
+    margin-left: 1rem;
+}
+
+.add-chat {
+    width: 100%;
+}
+.add-chat input {
+    width: 100%;
+}
+/*************THREEDDISPLAY:END****************/
+/*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
+
+@media only screen and (min-width: 680px) {
+  
+    .aside {
+      max-width: 20rem;
+    }
+    .sidebar {
+        max-width: 20rem;
+    }
+    .thread-wrapper {
+      position: static;
+      width: 100%;
+    }
+}
+
+/*************THREEDDISPLAY-MEDIA-QUERIES:END****************/
+/*************RIGHTSHELF:START****************/
+
+.right-shelf {
+  display: none;
+  background-color: var(--grey1);
+  width: 14rem;
+  padding-left: 1rem;
+}
+
+.right-shelf h3 {
+  margin-top: 2rem;
+  font-weight: 500;
+  font-size: .75rem;
+}
+
+.right-shelf ul {
+  margin-top: 1rem;
+  list-style: none;
+  padding-left: 0;
+}
+.right-shelf li {
+  margin-top: .75rem;
+  font-size: .75rem;
+}
+
+/*************RIGHTSHELF:END****************/
+/*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
+
+@media only screen and (min-width: 925px) {
+  
+  .right-shelf {
+    display: block;
+  }
+}
+
+/*************THREEDDISPLAY-MEDIA-QUERIES:END****************/
+/*************404.HTML:STYLES************/
+.error-banner-mobile {
+    height: 8rem;
+    background-color: #B945FF;
+}
+.error-banner {
+   background-color: #501069;
+    color: white;
+    height: 200vh;
+    padding: 3rem;
+}
+.error-banner h1 {
+    font-size: 2rem;
+}
+
+.error-banner p {
+    font-size: 1rem;
+}
+/* #img {
+    width: 140%;
+    height: auto;
+    perspective: 1px;
+  } */
+  #parallax_field {
+    position: absolute;
+    width: 200%;
+  }
+  #parallax_illustration {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+
+  }
+  #parallax_illustration #parallax_sign {
+    width: 100%;
+    height: auto;
+    z-index: 0;
+
+
+  }
+  #parallax_field #parallax_bg {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+  }
+
+/*************404.HTML:STYLES************/
