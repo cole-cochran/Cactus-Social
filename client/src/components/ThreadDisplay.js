@@ -85,20 +85,23 @@ function ThreadDisplay(props) {
 
     const handlePinSubmit = async (event) => {
 		event.preventDefault();
-        // const postId = JSON.parse(localStorage.getItem('postId'))
-        console.log(event.target)
+        const postId = JSON.parse(localStorage.getItem('postId'))
+        console.log(threadId) 
+        console.log(pinnedPost.pinTitle) 
+        console.log(pinnedPost.pinHash) 
 		try {
 			const { data } = await pinPost({
 				variables: {
                     threadId: threadId,
-                    // postId: postId,
+                    postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash
 				}
 			});
 
 			setNewPostText('');
-            window.location.redirect(`/threads/${threadId}`);
+            handleClose();
+            // window.location.assign(`/threads/${threadId}`);
 		} catch (err) {
 			console.error(err);
 		}
@@ -123,18 +126,17 @@ function ThreadDisplay(props) {
     };
 
 	const [ open, setOpen ] = React.useState(false);
+
 	const handleOpen = (event) => {
+        console.log(event.target.getAttribute('data-id'))
         
-        // if (event.target.data === "pinning") {
-        //     localStorage.setItem('postId', JSON.stringify(event.target.id));
-        // }
+        localStorage.setItem('postId', JSON.stringify(event.target.getAttribute('data-id')));
+
         // event.stopPropagation();
         setOpen(true);
     }
 	const handleClose = (event) => {
-        // if (event.target.data.id === 'pinning') {
-        //     localStorage.removeItem('postId');
-        // }
+        localStorage.removeItem('postId');
         setOpen(false);
     }
 
@@ -163,8 +165,8 @@ function ThreadDisplay(props) {
 						{threadPosts.data.allThreadPosts.map(
 							(post) => (
 								post.pinned ? (
-									<div className="chat subthread" >
-										<div data-id="pinning" key={post._id} onClick={handleOpen}>
+									<div className="chat subthread" data-id={post._id} key={post._id} onClick={handleOpen} >
+										<div className="pos">
 											<span className="chat-name">{post.author.username}</span>
 											<span className="chat-date">{post.date_created}</span>
 											{post.pinHash && (
@@ -183,12 +185,12 @@ function ThreadDisplay(props) {
 										</Link>
 									</div>
 								) : (
-									<div data-id="pinning" key={post._id} className="chat" onClick={handleOpen}>
-										<div>
+									<div data-id={post._id} key={post._id} className="chat" onClick={handleOpen}>
+										<div className="pos">
 											<span className="chat-name">{post.author.username}</span>
 											<span className="chat-date">{post.date_created}</span>
 										</div>
-										<p>{post.post_text}</p>
+										<p className="pos">{post.post_text}</p>
 										<Link to={`/subthread/${post._id}`}>
 											<Chip
 												label="Comments"
