@@ -178,7 +178,7 @@ export const ALL_POSTS = gql`
 
 export const ALL_THREAD_POSTS = gql`
 	query allThreadPosts($threadId: ID!) {
-		allThreadPosts(threadId: $ThreadId) {
+		allThreadPosts(threadId: $threadId) {
 			_id
 			post_text
 			date_created
@@ -279,6 +279,9 @@ query userThreads($userId: ID!) {
 		title
 		posts {
 			_id
+			author {
+				_id
+			}
 		}
 		events {
 			_id

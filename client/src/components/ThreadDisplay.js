@@ -45,8 +45,6 @@ function ThreadDisplay(props) {
     const errors = singleThread.error || threadPosts.error;
     const loading = singleThread.loading || threadPosts.loading;
 
-    
-
     const [newPost, setNewPost] = React.useState('');
     // const [editPost, setEditPost] = React.useState('');
     const [pinning, setPinning] = React.useState(false);
@@ -57,6 +55,9 @@ function ThreadDisplay(props) {
 
     if (loading) {
         return <p>loading...</p>;
+    } else {
+        console.log(threadPosts.data)
+        console.log(singleThread.data)
     }
 
     return (
@@ -66,45 +67,47 @@ function ThreadDisplay(props) {
                         <div className="thread-header">
                             {/* <h3>Austin Code Bootcamp Students</h3> */}
                             <h3>
-                                {singleThread.title}
+                                {singleThread.data.threadDetails.title}
                             </h3>
                             <div>
                                 {/* <p>M: Damien</p> */}
-                                <p>M: {singleThread.moderator}</p>
+                                <p>M: {singleThread.data.threadDetails.moderator.username}</p>
                             </div>
                         </div>
                         <div className="chats-container">
                             {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
-                            {threadPosts.map((post) => (
-                                post.pinned ? (
-                                    <div className="chat subthread" onClick={handleOpen}>
-                                        <div>
-                                            <span className="chat-name">{post.author}</span>
-                                            <span className="chat-date">{post.date_created}</span>
-                                            { post.pinHash && 
-                                            <Link to={`/subthread/${post._id}`}>
-                                                <span className="subthread-title">{post.pinHash}</span>
+                                <div>
+                                {threadPosts.data.allThreadPosts.map((post) => (
+                                    post.pinned ? (
+                                        <div key={post._id} className="chat subthread" onClick={handleOpen}>
+                                            <div>
+                                                <span className="chat-name">{post.author.username}</span>
+                                                <span className="chat-date">{post.date_created}</span>
+                                                { post.pinHash && 
+                                                <Link to={`/subthread/${post._id}`}>
+                                                    <span className="subthread-title">{post.pinHash}</span>
+                                                </Link>
+                                                }
+                                            </div>
+                                            <p>{post.post_text}</p>
+                                            <Link to={`/profile/${post._id}`}>
+                                                <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
                                             </Link>
-                                            }
                                         </div>
-                                        <p>{post.post_text}</p>
-                                        <Link to={`/profile/${post._id}`}>
-                                            <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
-                                        </Link>
-                                    </div>
-                                ) : (
-                                    <div className="chat" onClick={handleOpen}>
-                                        <div>
-                                            <span className="chat-name">{post.author}</span>
-                                            <span className="chat-date">{post.date_created}</span>
+                                    ) : (
+                                        <div key={post._id} className="chat" onClick={handleOpen}>
+                                            <div>
+                                                <span className="chat-name">{post.author.username}</span>
+                                                <span className="chat-date">{post.date_created}</span>
+                                            </div>
+                                            <p>{post.post_text}</p>
+                                            <Link to={`/profile/${post._id}`}>
+                                                <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
+                                            </Link>
                                         </div>
-                                        <p>{post.post_text}</p>
-                                        <Link to={`/profile/${post._id}`}>
-                                            <Chip label="Comments" size="small" avatar={<Avatar>{post.comments.length}</Avatar>} />
-                                        </Link>
-                                    </div>
-                                )
-                            ))}
+                                    )
+                                ))}
+                            </div>
                             {/* <div className="chat subthread" onClick={handleOpen}>
                                 <div>
                                     <span className="chat-name">Jack</span>

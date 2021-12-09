@@ -5,13 +5,18 @@ import Footer from "../components/Footer";
 import ThreadDisplay from "../components/ThreadDisplay";
 import RightShelf from "../components/RightShelf";
 
+import { useParams } from 'react-router-dom';
+
 function Dashboard(props) {
+
+    const { threadId } = useParams();
+
     return (
         <React.Fragment>
             <NavBar/>
             <div className="app-content-container">
-                <Sidebar/>
-                <ThreadDisplay/>
+                <Sidebar threadId={threadId} />
+                <ThreadDisplay threadId={threadId} />
                 
             </div>
             <Footer/>

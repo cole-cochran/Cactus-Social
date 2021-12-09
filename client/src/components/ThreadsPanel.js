@@ -30,7 +30,7 @@ function ThreadsPanel(props) {
 
     const [threadData, setThreadData] = React.useState({
         threadTitle: '',
-        moderator: AuthService.getProfile().data.user._id
+        moderator: AuthService.getProfile().data._id
     });
 
     const [open, setOpen] = React.useState(false);
