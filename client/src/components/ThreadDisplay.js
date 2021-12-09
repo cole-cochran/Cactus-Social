@@ -1,6 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
+import ReactDOM from 'react-dom'
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
@@ -76,23 +77,28 @@ function ThreadDisplay(props) {
 			});
 
 			setNewPostText('');
+            window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 
-    const handlePinTitleSubmit = async (event) => {
+    const handlePinSubmit = async (event) => {
 		event.preventDefault();
-
+        // const postId = JSON.parse(localStorage.getItem('postId'))
+        console.log(event.target)
 		try {
 			const { data } = await pinPost({
 				variables: {
+                    threadId: threadId,
+                    // postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash
 				}
 			});
 
 			setNewPostText('');
+            window.location.redirect(`/threads/${threadId}`);
 		} catch (err) {
 			console.error(err);
 		}
@@ -106,19 +112,31 @@ function ThreadDisplay(props) {
         } else if (name === 'pinTitle') {
             setPinnedPost({
                 ...pinnedPost,
-                pinTitle: pinnedPost.pinTitle
+                pinTitle: value
             })
         } else if (name === 'pinHash') {
             setPinnedPost({
                 ...pinnedPost,
-                pinHash: pinnedPost.pinHash
+                pinHash: value
             })
         }
     };
 
 	const [ open, setOpen ] = React.useState(false);
-	const handleOpen = () => setOpen(true);
-	const handleClose = () => setOpen(false);
+	const handleOpen = (event) => {
+        
+        // if (event.target.data === "pinning") {
+        //     localStorage.setItem('postId', JSON.stringify(event.target.id));
+        // }
+        // event.stopPropagation();
+        setOpen(true);
+    }
+	const handleClose = (event) => {
+        // if (event.target.data.id === 'pinning') {
+        //     localStorage.removeItem('postId');
+        // }
+        setOpen(false);
+    }
 
 	if (loading) {
 		return <p>loading...</p>;
@@ -143,10 +161,10 @@ function ThreadDisplay(props) {
 					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
 					<div>
 						{threadPosts.data.allThreadPosts.map(
-							(post) =>
+							(post) => (
 								post.pinned ? (
-									<div key={post._id} className="chat subthread" onClick={handleOpen}>
-										<div>
+									<div className="chat subthread" >
+										<div data-id="pinning" key={post._id} onClick={handleOpen}>
 											<span className="chat-name">{post.author.username}</span>
 											<span className="chat-date">{post.date_created}</span>
 											{post.pinHash && (
@@ -156,7 +174,7 @@ function ThreadDisplay(props) {
 											)}
 										</div>
 										<p>{post.post_text}</p>
-										<Link to={`/profile/${post._id}`}>
+										<Link to={`/subthread/${post._id}`}>
 											<Chip
 												label="Comments"
 												size="small"
@@ -165,13 +183,13 @@ function ThreadDisplay(props) {
 										</Link>
 									</div>
 								) : (
-									<div key={post._id} className="chat" onClick={handleOpen}>
+									<div data-id="pinning" key={post._id} className="chat" onClick={handleOpen}>
 										<div>
 											<span className="chat-name">{post.author.username}</span>
 											<span className="chat-date">{post.date_created}</span>
 										</div>
 										<p>{post.post_text}</p>
-										<Link to={`/profile/${post._id}`}>
+										<Link to={`/subthread/${post._id}`}>
 											<Chip
 												label="Comments"
 												size="small"
@@ -180,23 +198,25 @@ function ThreadDisplay(props) {
 										</Link>
 									</div>
 								)
+                            )
 						)}
 					</div>
 					<Modal
+                        data-id="pinning"
 						open={open}
 						onClose={handleClose}
 						aria-labelledby="modal-modal-title"
 						aria-describedby="modal-modal-description"
 					>
 						<Box sx={style}>
-							<form className="modal-form">
+							<form className="modal-form" onSubmit={handlePinSubmit}>
 								<div className="modal-header">
 									<h4>Add Subthread</h4>
 								</div>
 								<label>Pin Title</label>
-								<input placeholder="e.g. Cactus Party" />
+								<input value={pinnedPost.pinTitle} name="pinTitle" onChange={handleChange} placeholder="e.g. Cactus Party" />
 								<label>Pin Hash</label>
-								<input placeholder="e.g. #cactus-party" />
+								<input value={pinnedPost.pinHash} name="pinHash" onChange={handleChange} placeholder="e.g. #cactus-party" />
 								<button className="modal-button" type="submit">
 									Add
 								</button>
@@ -208,9 +228,10 @@ function ThreadDisplay(props) {
 				{/* <div> */}
 				{/* <div className="chat-input"> */}
 				<form onSubmit={handlePostSubmit} className="chat-input">
-					<span onChange={handleChange} name="postText" value={newPostText} contentEditable></span>
+					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
+                    <input onChange={handleChange} name="postText" value={newPostText} contentEditable></input>
 					<div className="chat-input-buttons">
-						<button className="chat-input-send-button">send</button>
+						<button type="submit" className="chat-input-send-button">send</button>
 					</div>
 				</form>
 				{/* </div> */}

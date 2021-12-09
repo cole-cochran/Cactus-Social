@@ -29,9 +29,11 @@ const style = {
 };
 
 
-function ThreadDisplay(props) {
+function SubthreadDisplay(props) {
 
     const { postId } = useParams();
+
+    const [createPostComment] = useMutation(CREATE_POST_COMMENT)
 
     const singlePost = useQuery(POST_DETAILS, {
         variables: { postId: postId },
@@ -44,8 +46,26 @@ function ThreadDisplay(props) {
     const errors = singlePost.error || allComments.error;
     const loading = singlePost.loading || allComments.loading;
 
-    const [newComment, setNewComment] = React.useState('');
+    const [newCommentText, setNewCommentText] = React.useState('');
     // const [editComment, setEditComment] = React.useState('');
+    
+    const handleCommentSubmit = async (event) => {
+		event.preventDefault();
+
+		try {
+			const { data } = await createPostComment({
+				variables: {
+					postId: postId,
+                    post_text: newCommentText
+				}
+			});
+
+			setNewCommentText('');
+            window.location.reload(false);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
     if (loading) {
         return <p>loading...</p>;
@@ -57,23 +77,23 @@ function ThreadDisplay(props) {
                     <div className="top-panel">
                         <div className="thread-header">
                             <h3>
-                                {singlePost.pinTitle}
+                                {singlePost.data.postDetails.pinTitle}
                             </h3>
                         </div>
                         <div className="chats-container">
                             {errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
                             <div className="chat subthread">
                                 <div>
-                                    <span className="chat-name">{singlePost.author}</span>
-                                    <span className="chat-date">{singlePost.date_created}</span>
-                                    <Link to={`/threads/${singlePost.thread._id}`}>
+                                    <span className="chat-name">{singlePost.data.postDetails.author}</span>
+                                    <span className="chat-date">{singlePost.data.postDetails.date_created}</span>
+                                    <Link to={`/threads/${singlePost.data.postDetails.thread._id}`}>
                                     Back to Thread
                                     </Link>
                                 </div>
-                                <p>{singlePost.post_text}</p>
+                                <p>{singlePost.data.postDetails.post_text}</p>
                             </div>
-                            {allComments.map((comment) => (
-                                <div className="chat">
+                            {allComments.data.allPostComments.map((comment) => (
+                                <div key={comment._id} className="chat">
                                     <div>
                                         <span className="chat-name">{comment.author.username}</span>
                                         <span className="chat-date">{comment.date_created}</span>
@@ -83,7 +103,7 @@ function ThreadDisplay(props) {
                             ))}
                         </div>
                         <div className="chat-input">
-                            <span contenteditable="true">"what's on your mind?"</span>
+                            <span contenteditable>"what's on your mind?"</span>
                             <div className="chat-input-buttons">
                                 <button className="chat-input-send-button">send</button>
                             </div>
@@ -94,4 +114,4 @@ function ThreadDisplay(props) {
     )
 }
 
-export default ThreadDisplay;
+export default SubthreadDisplay;

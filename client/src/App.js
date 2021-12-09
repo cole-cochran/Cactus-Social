@@ -69,6 +69,9 @@ function App() {
 						<Route exact path="/chat">
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
+						<Route exact path="/subthread/:postId">
+							{AuthService.loggedIn() ? <Dashboard subThread={true} /> : <SplashPage />}
+						</Route>
 						<Route exact path="/404">
 							<Error />
 						</Route>
