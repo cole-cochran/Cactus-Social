@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import {Helmet} from "react-helmet";
-import parallax from '../parallax'
+
 export default function Error() {
     return(
        
