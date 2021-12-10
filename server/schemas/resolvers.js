@@ -290,6 +290,20 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
+		// updateProfile: async (parent, args, context) => {
+		// 	const {userId, picture, bio, techArray} = args;
+		// 	const updatedUser = await User.findOneAndUpdate(
+		// 		{ _id: userId },
+		// 		{
+		// 			bio: bio,
+		// 			picture: picture,
+		// 			tech_stack: techArray
+		// 		},
+		// 		{ new: true }
+		// 	);
+		// 	return updatedUser;
+		// },
+
 		//* update the user's profile photo
 		updatePhoto: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
