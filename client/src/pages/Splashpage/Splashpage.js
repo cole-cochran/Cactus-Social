@@ -19,7 +19,7 @@ function SplashPage() {
 					A sleek, secure, and transparent social media platform for software developers.
 					</p>
 					<div>
-						<Link to="/sendbird">
+						<Link to="/sign-up">
 							<button className="splash-page-sign-up-button">
 								Sign Up
 							</button>

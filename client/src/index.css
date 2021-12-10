@@ -2,7 +2,7 @@
 
 /* importing default font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url("https://use.typekit.net/voi5bdk.css");
 :root {
     --primary-green: #7ADA46;
     --grey1: #F8F9FC;
@@ -174,10 +174,14 @@ html, body {
 /******************NAVBAR*******************/
 
 .logo {
-    margin-left: -3rem;
-    width: 12rem;
+    /* margin-left: -3rem; */
+    /* width: 12rem; */
+    margin-top: 1rem;
+    /* font-family: aglet-slab, sans-serif; */
+    font-weight: 400;
+    font-style: normal;
+    color: var(--secondary-purple);
 }
-
 /******************NABBAR*******************/
 /*************LOGIN.HTML:STYLES************/
 
@@ -248,16 +252,28 @@ html, body {
 }
 
 .login-banner {
-    background-color: #501069;
+    background-color: var(--hero-green);
     color: white;
     height: 100vh;
     padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .login-banner h1 {
     font-size: 2rem;
 }
 .login-banner p {
     font-size: 1rem;
+}
+
+.login-banner-img-container {
+    display: flex;
+    justify-content: end;
+}
+
+.login-banner-illustration {
+    width:  16rem;
 }
 
 
@@ -694,11 +710,16 @@ footer {
     font-size: .75rem;
     margin-top: 1rem;
     font-weight: 500;
+    pointer-events: none;
 }
 .chat-date {
     font-size: .55rem;
     color: #FFE3A1;
     margin-left: 1rem;
+    pointer-events: none;
+}
+.pos {
+    pointer-events: none;
 }
 .subthread-title {
     font-size: .65rem;
@@ -1009,3 +1030,10 @@ footer {
     margin-left: 1rem;
 }
 /*************MODAL:STYLES************/
+/*******************THREAD:INPUT*******************/
+
+.editable:empty:before {
+    content: attr(data-placeholder);
+}
+
+/*******************THREAD:INPUT*******************/

@@ -30,7 +30,7 @@ function ThreadsPanel(props) {
 
     const [threadData, setThreadData] = React.useState({
         threadTitle: '',
-        moderator: AuthService.getProfile().data.user._id
+        moderator: AuthService.getProfile().data._id
     });
 
     const [open, setOpen] = React.useState(false);
@@ -56,11 +56,12 @@ function ThreadsPanel(props) {
                 variables: {
                     title: threadData.threadTitle,
                     // moderator: AuthService.getProfile().data._id
-                    moderator: "61a9e10f267d96b8a446f9bc"
+                    moderator: AuthService.getProfile().data._id
                 },
             });
 
             console.log(res.data);
+            window.location.replace(`/threads/${res.data.createThread._id}`);
         } catch (err) {
             console.error(err);
         }

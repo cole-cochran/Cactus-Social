@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
 import { LOGIN_USER } from '../utils/mutations';
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
 //*this is the new login
 function Login(props) {
 	const [ formState, setFormState ] = useState({ username: '', password: '' });
-	const [ login, { error, data } ] = useMutation(LOGIN_USER);
+	const [ loginUser, { error, data } ] = useMutation(LOGIN_USER);
 
 	// update state based on form input changes
 	const handleChange = (event) => {
@@ -25,11 +25,11 @@ function Login(props) {
 		event.preventDefault();
 		console.log(formState);
 		try {
-			const { data } = await login({
+			const { data } = await loginUser({
 				variables: { ...formState }
 			});
 
-			Auth.login(data.login.token);
+			AuthService.login(data.loginUser.token);
 		} catch (err) {
 			console.error(err);
 		}
@@ -92,14 +92,18 @@ function Login(props) {
 			</div>
 			<div className="login-banner-mobile" />
 			<div className="login-banner">
-				<h1>
-					A sleek, secure,<br />
-					and transparent platform...
-				</h1>
-				<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+				<div>
+					<h1>
+						A sleek, secure,<br />
+						and transparent platform...
+					</h1>
+					<p>Login to see what your fellow developers are up to!</p>
+				</div>
 
 				{/* //! add the image of the cacti hanging out */}
-				<img src="" alt="" />
+				<div className="login-banner-img-container">
+					<img className="login-banner-illustration" src="/assets/img/one-cacti-illustration.svg" alt="one cactus hanging out" />
+				</div>
 
 			</div>
 		</div>
