@@ -28,7 +28,7 @@ function ProfileFriends(props) {
                 <h3>Friends</h3>
                 <ul>
                     {allUsers.map((user, index) => (
-                        <li>
+                        <li key={`${user}-${index}`}>
                             <Link to={`/profile/${user._id}`}>
                                 <Chip color="success" avatar={<Avatar src="../../public/assets/img/profile.svg" />}
                                 label={user.username} />
