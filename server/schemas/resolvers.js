@@ -36,11 +36,7 @@ const resolvers = {
 
 		allPostComments: async (parent, args, context) => {
 			const { postId } = args;
-			const postComments = await Comment.find({
-				where: {
-					post: postId
-				}
-			}).populate('author').populate('post').populate('event');
+			const postComments = await Comment.find({post: postId}).populate('author').populate('post').populate('event');
 			return postComments;
 		},
 
@@ -289,6 +285,20 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
+
+		// updateProfile: async (parent, args, context) => {
+		// 	const {userId, picture, bio, techArray} = args;
+		// 	const updatedUser = await User.findOneAndUpdate(
+		// 		{ _id: userId },
+		// 		{
+		// 			bio: bio,
+		// 			picture: picture,
+		// 			tech_stack: techArray
+		// 		},
+		// 		{ new: true }
+		// 	);
+		// 	return updatedUser;
+		// },
 
 		//* update the user's profile photo
 		updatePhoto: async (parent, args, context) => {

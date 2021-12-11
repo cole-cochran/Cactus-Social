@@ -83,7 +83,7 @@ function ThreadsPanel(props) {
             </div>
             <ul>
                 {allThreads.map((individualThread) => (
-                    <li>
+                    <li key={individualThread._id}>
                         <Link
                             to={`/threads/${individualThread._id}`}
                         >
