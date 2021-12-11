@@ -36,11 +36,7 @@ const resolvers = {
 
 		allPostComments: async (parent, args, context) => {
 			const { postId } = args;
-			const postComments = await Comment.find({
-				where: {
-					post: postId
-				}
-			}).populate('author').populate('post').populate('event');
+			const postComments = await Comment.find({post: postId}).populate('author').populate('post').populate('event');
 			return postComments;
 		},
 

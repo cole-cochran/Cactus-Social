@@ -12,14 +12,18 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from "react-router-dom";
+import AuthService from '../utils/auth';
 
-const pages = [];
-const settings = [
-{name: 'Logout', url: '/'},
-{name: "DM's", url: "/chat"},
-{name: 'Profile', url: "/profile"}
-];
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = (props) => {
+
+  const { userId } = props;
+
+  const pages = [];
+  const settings = [
+    {name: "DM's", url: "/chat"},
+    {name: 'Profile', url: `/profile/${userId}`}
+  ];
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -122,6 +126,9 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem key="logout" onClick={handleCloseNavMenu}>
+                <Typography textAlign="center"><Link onClick={AuthService.logout}>Logout</Link></Typography>
+              </MenuItem>
               {settings.map((setting) => (
                 <MenuItem key={setting.name} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link to={setting.url}>{setting.name}</Link></Typography>

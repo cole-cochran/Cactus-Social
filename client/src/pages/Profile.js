@@ -22,18 +22,18 @@ function Profile(props) {
 
     const specificUser = data?.userProfile || {};
 
-    const [profileInfo, setProfileInfo] = React.useState(specificUser);
-
     if (loading) {
         return <p>loading...</p>;
+    } else {
+        console.log(specificUser.data)
     }
 
     return (
         <React.Fragment>
-            <NavBar/>
+            <NavBar userId={userId} />
             <div className="app-content-container">
                 <Sidebar />
-                <ProfileInfo specificUser={profileInfo} setProfile={setProfileInfo} />
+                <ProfileInfo specificUser={specificUser} />
                 <ProfileFriends />
             </div>
             <Footer/>
