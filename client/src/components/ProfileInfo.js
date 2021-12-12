@@ -30,6 +30,11 @@ const style = {
 };
 
 function ProfileInfo(props) {
+
+	// TODO (profileInfo) Allow user quick access to create a new event or start a new thread without the sidebar
+
+	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
+
 	const { specificUser } = props;
 	console.log(specificUser);
 

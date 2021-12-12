@@ -21,6 +21,16 @@ import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COM
 import Auth from '../utils/auth';
 
 export default function EventDisplay() {
+
+	// TODO (eventDisplay) make this beautiful
+
+	// TODO (eventDisplay) add functionality for event owner to update, remove, or invite others to the event
+
+	// TODO (eventDisplay) allow others to attend, leave, comment on events as they please
+
+	// TODO (eventDisplay) create modal for users to update, delete their own comments
+
+
 	// for when we get the routes going
 	const { eventId } = useParams();
 

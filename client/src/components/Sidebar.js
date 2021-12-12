@@ -50,6 +50,10 @@ function toggleSidebarPanelDisplay(e) {
 
 function Sidebar(props) {
 
+	// TODO (sidebar) Color coordinate active toggled sidebar
+
+	// TODO (sidebar) add functionality for 
+
     const userId = AuthService.getProfile().data._id;
 
 	return (

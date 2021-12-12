@@ -363,7 +363,7 @@ mutation createThread($moderator: ID!, $title: String!) {
 }
 `;
 
-//! create mini modal to all owner to delete event
+//! create mini modal to allow owner to delete event
 // ! THIS WORKS BUT RETURNS THE WRONG THANG AT THE MOMENT. NEED CONTEXT TO RETURN PROPER USER
 
 export const REMOVE_THREAD = gql`

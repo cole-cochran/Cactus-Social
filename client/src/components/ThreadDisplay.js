@@ -38,6 +38,20 @@ const style = {
 };
 
 function ThreadDisplay(props) {
+
+
+	// TODO (threadDisplay) Make pin modal dynamic to show pin form when unpinned and otherwise the option to remove the thread. 
+	
+	// TODO (threadDisplay) Make pinning respond to click on "pin icon" from MUI instead of div body. 
+	
+	// TODO (threadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting, pinning, 
+
+	// TODO (threadDisplay) Option for flagging a post as inappropriate ? 
+
+	// TODO (threadDisplay) Allow only thread owners to delete thread
+
+	// TODO (threadDisplay) Allow only pin or thread owners to unpin posts
+
 	const { threadId } = useParams();
 
 	const [ createPost ] = useMutation(CREATE_POST);
