@@ -693,8 +693,8 @@ footer {
 .chat {
     line-height: 1.1rem;
     font-size: .75rem;
-    background-color: #FFA000;
-    color: white;
+    background-color: #9200bb74;
+    color: black;
     padding: .5rem;
     border-radius: .25rem;
     margin-top: .5rem;
@@ -702,7 +702,7 @@ footer {
 }
 
 .chat p {
-    font-size: .65rem;
+    font-size: 1rem;
     margin-bottom: 0;
 }
 
@@ -713,8 +713,8 @@ footer {
     pointer-events: none;
 }
 .chat-date {
-    font-size: .55rem;
-    color: #FFE3A1;
+    font-size: .75rem;
+    color: white;
     margin-left: 1rem;
     pointer-events: none;
 }
@@ -724,10 +724,11 @@ footer {
 .subthread-title {
     font-size: .65rem;
     margin-left: 1rem;
-    color: #FFF1D1;
+    color: white;
 }
 .subthread {
-    background-color: #FF7600; 
+    background-color: var(--secondary-purple); 
+    color: white;
 }
 
 
@@ -735,8 +736,9 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-top: 1rem;
-    margin-left: 1rem;
+    /* margin-top: 1rem; */
+    margin-top: .5rem;
+    /* margin-left: .875rem; */
     font-size: .75rem !important;
     border: 1px solid slategray;
     border-radius: .25rem;
