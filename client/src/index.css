@@ -746,12 +746,12 @@ footer {
     background-color: lightblue;
 }
 
-.chat-input span {
+.chat-input input {
     padding: .5rem;
     font-size: .75rem;
 }
 
-.chat-input span:focus {
+.chat-input input:focus {
     outline:none;
 }
 .chat-input-buttons {
