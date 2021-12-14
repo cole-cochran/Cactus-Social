@@ -64,3 +64,8 @@
 
 //* DONE (eventsPanel) use mutation to allow user to create event in pop-out modal with the event form in it.
 
+//* DONE (eventCreation) fix up event creation form and connect functionality
+
+//* DONE (sidebar) enable user to see all the events at their disposal by clicking on the event icon in the sidebar
+
+//* DONE (app) set up a route so that users can view events based on the event id that is identified in the params
