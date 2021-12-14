@@ -60,3 +60,7 @@
 
 //! ----------------------------------------------------------------------------------------------- 
 
+//* DONE (eventsPanel) Query the database to get ALL_EVENTS so they can displayed in rows
+
+//* DONE (eventsPanel) use mutation to allow user to create event in pop-out modal with the event form in it.
+

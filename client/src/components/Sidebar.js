@@ -77,6 +77,14 @@ function Sidebar(props) {
 						/>
 					</li>
 					<li>
+						<img
+							onClick={toggleSidebarPanelDisplay}
+							src="/assets/img/event.svg"
+							data-panel="events-panel"
+							alt="click to open profile"
+						/>
+					</li>
+					<li>
 						<Link to="/chat">
 							<img src="/assets/img/msg.svg" alt="click to open profile" />
 						</Link>
@@ -86,14 +94,6 @@ function Sidebar(props) {
 							<img src="/assets/img/profile.svg" alt="click to open profile" />
 						</Link>
 					</li>
-					{/* <li>
-						<img
-							onClick={toggleSidebarPanelDisplay}
-							src="/assets/img/event.svg"
-							data-panel="events-panel"
-							alt="click to open profile"
-						/>
-					</li> */}
 					<li>
 						<div onClick={AuthService.logout}>
 							<img src="/assets/img/logout.svg" alt="click to open profile" />

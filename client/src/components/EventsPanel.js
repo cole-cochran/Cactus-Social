@@ -3,37 +3,38 @@ import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import EventCreation from "./EventCreation";
 
-import { useQuery, useMutation } from '@apollo/client';
-import Auth from '../utils/auth';
+import { useQuery } from '@apollo/client';
+import AuthService from '../utils/auth';
 
-import { ALL_EVENTS, USER_EVENTS, THREAD_EVENTS } from '../utils/queries';
-import { CREATE_EVENT } from '../utils/mutations';
+import { ALL_EVENTS } from '../utils/queries';
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
 };
 
+function EventsPanel() {
 
+    const {loading, data} = useQuery(ALL_EVENTS);
 
-function EventsPanel(props) {
-
-    // TODO (eventsPanel) Query the database to get ALL_EVENTS so they can displayed in rows
-
-    // TODO (eventsPanel) use mutation to allow user to create event in pop-out modal with the event form in it. 
-
+    const allEvents = data?.allEvents || [];
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    if (loading) {
+        <h2>Loading...</h2>
+    }
     
     return (
         <div id="sidebar-events-panel">
@@ -42,7 +43,13 @@ function EventsPanel(props) {
                 <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul>
-                <li><Link>Austin Code Bootcamp Students</Link></li>
+                {allEvents.map((event) => (
+                    <li key={event._id}>
+                        <Link to={`/events/${event._id}`}>
+                            {event.title}
+                        </Link>
+                    </li>
+                ))}
             </ul>
             <Modal
                 open={open}
@@ -51,12 +58,7 @@ function EventsPanel(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
+                    <EventCreation />
                 </Box>
             </Modal>
         </div>

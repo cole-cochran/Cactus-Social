@@ -30,7 +30,6 @@ export default function EventDisplay() {
 
 	// TODO (eventDisplay) create modal for users to update, delete their own comments
 
-
 	// for when we get the routes going
 	const { eventId } = useParams();
 
@@ -41,34 +40,6 @@ export default function EventDisplay() {
 	});
 
 	const singleEvent = data?.event || {};
-
-	if (!singleEvent) {
-		return <h3>This event no longer exists!</h3>;
-	}
-
-	if (loading) {
-		return <div>Loading...</div>;
-	}
-
-	const event = {
-		title: 'Post-Bootcamp Party',
-		description:
-			"Come party at Chuck's house to celebrate the end of bootcamp. Damien is making pizza for everyone!",
-		start_date: 'December 10th, 2021',
-		end_date: 'December 10th, 2021',
-		start_time: '5:00 PM',
-		end_time: '9:00 PM',
-		owner: 'Damien',
-		attendees: [ 'Chuck', 'Cole', 'Fox', 'Sue', 'Ethan', 'Jayla' ],
-		category: 'Party',
-		in_person: true,
-		location: 'Austin, Texas',
-		image:
-			'https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-		thread: 'UTA Bootcamp',
-		// comments: [],
-		date_created: '11/30/2021'
-	};
 
 	const styles = {
 		card: {
@@ -93,50 +64,58 @@ export default function EventDisplay() {
 		}
 	};
 
+	if (!singleEvent) {
+		return <h3>This event no longer exists!</h3>;
+	}
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
+
 	return (
 		<div>
 			<Card style={styles.card} sx={{ maxWidth: 750 }}>
-				<CardMedia component="img" height="345" image={event.image} alt={event.title} />
+				<CardMedia component="img" height="345" image={singleEvent.image} alt={singleEvent.title} />
 				<CardContent>
 					<Typography gutterBottom variant="h5" component="div">
-						{event.title}
+						{singleEvent.title}
 					</Typography>
 					<Typography variant="body2" color="text.secondary">
-						{event.description}
+						{singleEvent.description}
 					</Typography>
-					{event.start_date === event.end_date ? (
+					{singleEvent.start_date === singleEvent.end_date ? (
 						<Typography variant="body2" color="text.secondary">
-							Event Date: {event.start_date}
-							Event Time: {event.start_time} to {event.end_time}
+							Event Date: {singleEvent.start_date}
+							Event Time: {singleEvent.start_time} to {singleEvent.end_time}
 						</Typography>
 					) : (
 						<div>
 							<Typography variant="body2" color="text.secondary">
-								Begins: {event.start_date} @ {event.start_time}
+								Begins: {singleEvent.start_date} @ {singleEvent.start_time}
 							</Typography>
 							<Typography variant="body2" color="text.secondary">
-								Ends: {event.end_date} @ {event.end_time}
+								Ends: {singleEvent.end_date} @ {singleEvent.end_time}
 							</Typography>
 						</div>
 					)}
-					{event.in_person ? (
+					{singleEvent.in_person ? (
 						<Stack style={styles.chips} direction="row" spacing={1}>
 							<Chip label="In Person Event" variant="outlined" />
-							<Chip label={event.category} variant="outlined" />
+							<Chip label={singleEvent.category} variant="outlined" />
 						</Stack>
 					) : (
 						<Stack style={styles.chips} direction="row" spacing={1}>
 							<Chip label="Virtual Event" variant="outlined" />
-							<Chip label={event.category} variant="outlined" />
+							<Chip label={singleEvent.category} variant="outlined" />
 						</Stack>
 					)}
-					{event.in_person ? (
+					{singleEvent.in_person ? (
 						<Typography variant="body2" color="text.secondary">
-							{event.location}
+							{singleEvent.location}
 						</Typography>
 					) : (
 						<Typography variant="body2" color="text.secondary">
-							<a href={event.location}>Line to virtual event</a>
+							<a href={singleEvent.location}>Line to virtual event</a>
 						</Typography>
 					)}
 					{/* <AvatarGroup max={4}> */}
@@ -153,10 +132,10 @@ export default function EventDisplay() {
 						<Typography variant="body2" color="text.secondary">
 							Attendees:
 						</Typography>
-						{event.attendees.map((attendee, index) => <AccountCircleIcon key={index} />)}
+						{singleEvent.attendees.map((attendee, index) => <AccountCircleIcon key={index} />)}
 					</Box>
 					<Typography variant="body2" color="text.secondary">
-						Created on {event.date_created} by {event.owner} in the {event.thread} thread
+						Created on {singleEvent.date_created} by {singleEvent.owner} in the {singleEvent.thread} thread
 					</Typography>
 				</CardContent>
 				<CardActions style={styles.links}>

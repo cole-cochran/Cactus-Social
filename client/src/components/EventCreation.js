@@ -1,31 +1,22 @@
-
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-// checkboxes
+import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 // date and time field
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import TimePicker from '@mui/lab/TimePicker';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import Stack from '@mui/material/Stack';
 import MobileTimePicker from '@mui/lab/MobileTimePicker';
 
 import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
 import { CREATE_EVENT } from '../utils/mutations';
 //* CREATE_EVENT requires: threadId, title, description, start_date, end_date, start_time, end_time, category, in_person, location, image, and owner and it returns the Event
@@ -34,250 +25,194 @@ import { CREATE_EVENT } from '../utils/mutations';
 
 // TODO MAKE THIS CONSOLE.LOG A CACTUS INSTEAD WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
 
-// console.log(`                              ...----....
-//                          ..-:"''         ''"-..
-//                       .-'                      '-.
-//                     .'              .     .       '.
-//                   .'   .          .    .      .    .''.
-//                 .'  .    .       .   .   .     .   . ..:.
-//               .' .   . .  .       .   .   ..  .   . ....::.
-//              ..   .   .      .  .    .     .  ..  . ....:IA.
-//             .:  .   .    .    .  .  .    .. .  .. .. ....:IA.
-//            .: .   .   ..   .    .     . . .. . ... ....:.:VHA.
-//            '..  .  .. .   .       .  . .. . .. . .....:.::IHHB.
-//           .:. .  . .  . .   .  .  . . . ...:.:... .......:HIHMM.
-//          .:.... .   . ."::"'.. .   .  . .:.:.:II;,. .. ..:IHIMMA
-//          ':.:..  ..::IHHHHHI::. . .  ...:.::::.,,,. . ....VIMMHM
-//         .:::I. .AHHHHHHHHHHAI::. .:...,:IIHHHHHHMMMHHL:. . VMMMM
-//        .:.:V.:IVHHHHHHHMHMHHH::..:" .:HIHHHHHHHHHHHHHMHHA. .VMMM.
-//        :..V.:IVHHHHHMMHHHHHHHB... . .:VPHHMHHHMMHHHHHHHHHAI.:VMMI
-//        ::V..:VIHHHHHHMMMHHHHHH. .   .I":IIMHHMMHHHHHHHHHHHAPI:WMM
-//        ::". .:.HHHHHHHHMMHHHHHI.  . .:..I:MHMMHHHHHHHHHMHV:':H:WM
-//        :: . :.::IIHHHHHHMMHHHHV  .ABA.:.:IMHMHMMMHMHHHHV:'. .IHWW
-//        '.  ..:..:.:IHHHHHMMHV" .AVMHMA.:.'VHMMMMHHHHHV:' .  :IHWV
-//         :.  .:...:".:.:TPP"   .AVMMHMMA.:. "VMMHHHP.:... .. :IVAI
-//        .:.   '... .:"'   .   ..HMMMHMMMA::. ."VHHI:::....  .:IHW'
-//        ...  .  . ..:IIPPIH: ..HMMMI.MMMV:I:.  .:ILLH:.. ...:I:IM
-//      : .   .'"' .:.V". .. .  :HMMM:IMMMI::I. ..:HHIIPPHI::'.P:HM.
-//      :.  .  .  .. ..:.. .    :AMMM IMMMM..:...:IV":T::I::.".:IHIMA
-//      'V:.. .. . .. .  .  .   'VMMV..VMMV :....:V:.:..:....::IHHHMH
-//        "IHH:.II:.. .:. .  . . . " :HB"" . . ..PI:.::.:::..:IHHMMV"
-//         :IP""HHII:.  .  .    . . .'V:. . . ..:IH:.:.::IHIHHMMMMM"
-//         :V:. VIMA:I..  .     .  . .. . .  .:.I:I:..:IHHHHMMHHMMM
-//         :"VI:.VWMA::. .:      .   .. .:. ..:.I::.:IVHHHMMMHMMMMI
-//         :."VIIHHMMA:.  .   .   .:  .:.. . .:.II:I:AMMMMMMHMMMMMI
-//         :..VIHIHMMMI...::.,:.,:!"I:!"I!"I!"V:AI:VAMMMMMMHMMMMMM'
-//         ':.:HIHIMHHA:"!!"I.:AXXXVVXXXXXXXA:."HPHIMMMMHHMHMMMMMV
-//           V:H:I:MA:W'I :AXXXIXII:IIIISSSSSSXXA.I.VMMMHMHMMMMMM
-//             'I::IVA ASSSSXSSSSBBSBMBSSSSSSBBMMMBS.VVMMHIMM'"'
-//              I:: VPAIMSSSSSSSSSBSSSMMBSSSBBMMMMXXI:MMHIMMI
-//             .I::. "H:XIIXBBMMMMMMMMMMMMMMMMMBXIXXMMPHIIMM'
-//             :::I.  ':XSSXXIIIIXSSBMBSSXXXIIIXXSMMAMI:.IMM
-//             :::I:.  .VSSSSSISISISSSBII:ISSSSBMMB:MI:..:MM
-//             ::.I:.  ':"SSSSSSSISISSXIIXSSSSBMMB:AHI:..MMM.
-//             ::.I:. . ..:"BBSSSSSSSSSSSSBBBMMMB:AHHI::.HMMI
-//             :..::.  . ..::":BBBBBSSBBBMMMB:MMMMHHII::IHHMI
-//             ':.I:... ....:IHHHHHMMMMMMMMMMMMMMMHHIIIIHMMV"
-//               "V:. ..:...:.IHHHMMMMMMMMMMMMMMMMHHHMHHMHP'
-//                ':. .:::.:.::III::IHHHHMMMMMHMHMMHHHHM"
-//                  "::....::.:::..:..::IIIIIHHHHMMMHHMV"
-//                    "::.::.. .. .  ...:::IIHHMMMMHMV"
-//                      "V::... . .I::IHHMMV"'
-//                        '"VHVHHHAHHHHMMV:"'
-// `)
-// console.log("BEWARE, I LIVE!")
 // console.log("super secret dev link")
 // console.log("https://www.youtube.com/watch?v=Qi1KebO4bzc")
 
-export default function FullWidthTextField() {
+export default function EventCreation(props) {
+	const { threadId } = props;
 
-  return (
-    <div>
-      <Box
-        sx={{ width: 500, maxWidth: '100%', m: 2 }}
-      >
-        <TextField fullWidth label="Title" id="fullWidth" />
-      </Box>
-      <Box
-        sx={{
-          width: 500,
-          maxWidth: '100%',
-          m: 2
-        }}
-      >
-         <TextField fullWidth label="Category" id="fullWidth" />
-         <TextField fullWidth label="Location" id="fullWidth" />
-        <TextField fullWidth label="Description" id="fullWidth" />
-      </Box>
-     
+	const [ checked, setChecked ] = React.useState(true);
 
-      {/* date and time */}
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <Stack spacing={3}
-          sx={{
-            width: 500,
-            maxWidth: '100%',
-            m: 2
-          }}>
+	const [ createEvent ] = useMutation(CREATE_EVENT);
 
-          <MobileDatePicker
-            label="Start Date"
-            inputFormat="MM/dd/yyyy"
-            // value={value}
-            // onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-           <MobileDatePicker
-            label="End Date"
-            inputFormat="MM/dd/yyyy"
-            // value={value}
-            // onChange={handleChange}
-            renderInput={(params) => <TextField {...params} />}
-          />
-          <MobileTimePicker
-            label="Start Time"
-           
-            renderInput={(params) => <TextField {...params} />}
-          />
-           <MobileTimePicker
-            label="End Time"
-            
-            renderInput={(params) => <TextField {...params} />}
-          />
+	const [ eventDetails, setEventDetails ] = React.useState({
+		title: '',
+		description: '',
+		start_date: '',
+		end_date: '',
+		start_time: '',
+		end_time: '',
+		category: '',
+		location: '',
+		image: ''
+	});
 
-        </Stack>
-        <FormGroup 
-        sx={{
-    width: 500,
-    maxWidth: '100%',
-    m: 2
-  }}>
-     {/* checkbox in person */}
-          <FormControlLabel control={<Checkbox defaultChecked />} label="In Person" />
-        </FormGroup>
-      </LocalizationProvider>
-    </div>
-  );
+	const handleChange = (event) => {
+		const { name, value } = event.target;
+		setEventDetails({ ...eventDetails, [name]: value });
+	};
+
+	const handleCheck = (event) => {
+		setChecked(event.target.checked);
+	};
+
+	const handleEventFormSubmit = async (event) => {
+		event.preventDefault();
+
+		const token = AuthService.loggedIn() ? AuthService.getToken() : null;
+
+		if (!token) {
+			return false;
+		}
+
+		try {
+			const res = await createEvent({
+				variables: {
+					title: eventDetails.title,
+					description: eventDetails.description,
+					start_date: eventDetails.start_date,
+					end_date: eventDetails.end_date,
+					start_time: eventDetails.start_time,
+					end_time: eventDetails.end_time,
+					category: eventDetails.category,
+					in_person: checked,
+					location: eventDetails.location,
+					image: eventDetails.image,
+					thread: threadId,
+					owner: AuthService.getProfile().data._id
+				}
+			});
+
+			console.log(res.data);
+      window.location.replace(`events/${res.data.createEvent._id}`)
+		} catch (err) {
+			console.error(err);
+		}
+
+		setEventDetails({
+			title: '',
+			description: '',
+			start_date: '',
+			end_date: '',
+			start_time: '',
+			end_time: '',
+			category: '',
+			location: '',
+			image: ''
+		});
+	};
+
+	return (
+		<FormControl onSubmit={handleEventFormSubmit}>
+			<Box sx={{ width: 500, maxWidth: '100%', m: 2 }}>
+				<TextField fullWidth value={eventDetails.title} onChange={handleChange} label="Title" id="fullWidth" />
+			</Box>
+			<Box
+				sx={{
+					width: 500,
+					maxWidth: '100%',
+					m: 2
+				}}
+			>
+				<TextField
+					value={eventDetails.description}
+					onChange={handleChange}
+					fullWidth
+					label="Description"
+					id="fullWidth"
+				/>
+			</Box>
+			<LocalizationProvider dateAdapter={AdapterDateFns}>
+				<Stack
+					spacing={3}
+					sx={{
+						width: 500,
+						maxWidth: '100%',
+						m: 2
+					}}
+				>
+					<MobileDatePicker
+						label="start_date"
+						inputFormat="MM/dd/yyyy"
+						value={eventDetails.start_date}
+						onChange={handleChange}
+						renderInput={() => <TextField />}
+					/>
+					<MobileDatePicker
+						label="end_date"
+						inputFormat="MM/dd/yyyy"
+						value={eventDetails.end_date}
+						onChange={handleChange}
+						renderInput={() => <TextField />}
+					/>
+					<MobileTimePicker
+						name="start_time"
+						value={eventDetails.start_time}
+						onChange={handleChange}
+						label="Start Time"
+						renderInput={() => <TextField />}
+					/>
+					<MobileTimePicker
+						name="end_time"
+						value={eventDetails.end_time}
+						onChange={handleChange}
+						label="End Time"
+						renderInput={() => <TextField />}
+					/>
+				</Stack>
+			</LocalizationProvider>
+			<Box
+				sx={{
+					width: 500,
+					maxWidth: '100%',
+					m: 2
+				}}
+			>
+				<TextField
+					name="category"
+					value={eventDetails.category}
+					onChange={handleChange}
+					fullWidth
+					label="Category"
+					id="fullWidth"
+				/>
+			</Box>
+			<FormGroup
+				sx={{
+					width: 500,
+					maxWidth: '100%',
+					m: 2
+				}}
+			>
+				<Stack direction="row" spacing={1} alignItems="center">
+					<Typography>Virtual</Typography>
+					<Switch
+						value={checked}
+						checked={checked}
+						onChange={handleCheck}
+						inputProps={{ 'aria-label': 'controlled' }}
+					/>
+					<Typography>In Person</Typography>
+				</Stack>
+			</FormGroup>
+			<Box
+				sx={{
+					width: 500,
+					maxWidth: '100%',
+					m: 2
+				}}
+			>
+				<TextField
+					value={eventDetails.description}
+					onChange={handleChange}
+					fullWidth
+					label="Location"
+					id="fullWidth"
+				/>
+			</Box>
+			<FormGroup>
+				<button type="submit">Create Event</button>
+			</FormGroup>
+		</FormControl>
+	);
 }
-// title, tex input description text input, start date and end date modal, start time end time modal, category text input
-// inperson or not (true or false selector or switch) location text input
-// image input(empty)
-
-
-
-
-
-
-
-// export default function EventCreation() {
-//     const [values, setValues] = React.useState({
-//         username: '',
-//         first_name: '',
-//         last_name: '',
-//         email: '',
-//         password: '',
-//         showPassword: false,
-//       });
-
-//       const handleChange = (prop) => (event) => {
-//         setValues({ ...values, [prop]: event.target.value });
-//       };
-
-//       const handleClickShowPassword = () => {
-//         setValues({
-//           ...values,
-//           showPassword: !values.showPassword,
-//         });
-//       };
-
-//       const handleMouseDownPassword = (event) => {
-//         event.preventDefault();
-//     }
-//   return (
-
-//     <Box
-//       component="form"
-//       sx={{
-//         '& .MuiTextField-root': { m: 1, width: '25ch' },
-//       }}
-//       noValidate
-//       autoComplete="off"
-//     >
-//       <div>
-
-//       <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-//           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-//           <OutlinedInput
-//             id="outlined-adornment-password"
-//             type={values.showPassword ? 'text' : 'password'}
-//             value={values.password}
-//             onChange={handleChange('password')}
-//             endAdornment={
-//               <InputAdornment position="end">
-//                 <IconButton
-//                   aria-label="toggle password visibility"
-//                   onClick={handleClickShowPassword}
-//                   onMouseDown={handleMouseDownPassword}
-//                   edge="end"
-//                 >
-//                   {values.showPassword ? <VisibilityOff /> : <Visibility />}
-//                 </IconButton>
-//               </InputAdornment>
-//             }
-//             label="Password"
-//           />
-//         </FormControl>
-//         <TextField
-//           required
-//           id="outlined-required"
-//           label="Required"
-//           defaultValue="Hello World"
-//         />
-//         <TextField
-//           disabled
-//           id="outlined-disabled"
-//           label="Disabled"
-//           defaultValue="Hello World"
-//         />
-//         <TextField
-//           id="outlined-password-input"
-//           label="Password"
-//           type="password"
-//           autoComplete="current-password"
-//         />
-//         <TextField
-//           id="outlined-read-only-input"
-//           label="Read Only"
-//           defaultValue="Hello World"
-//           InputProps={{
-//             readOnly: true,
-//           }}
-//         />
-//         <TextField
-//           id="outlined-number"
-//           label="Number"
-//           type="number"
-//           InputLabelProps={{
-//             shrink: true,
-//           }}
-//         />
-//         <TextField id="outlined-search" label="Search field" type="search" />
-//         <TextField
-//           id="outlined-helperText"
-//           label="Helper text"
-//           defaultValue="Default Value"
-//           helperText="Some important text"
-//         />
-//       </div>
-
-
-
-
-
-{/* // title, tex input description text input, start date and end date modal, start time end time modal, category text input
-// inperson or not (true or false selector or switch) location text input
-// image input(empty) */}
-
-
-
-

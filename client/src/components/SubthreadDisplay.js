@@ -39,10 +39,9 @@ const style = {
 
 function SubthreadDisplay(props) {
 	
-	// TODO (subthreadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting of comments  
+	// TODO (subthreadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting of comments
 
 	// TODO (subthreadDisplay) Option for flagging a comment as inappropriate ? 
-
 
 	const { postId } = useParams();
 
