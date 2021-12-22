@@ -846,10 +846,11 @@ footer {
 }
 .profile-header h3 {
     font-size: 1rem;
+    color: white;
 }
 
 .join-date {
-
+    color: white;
     font-size: .75rem;
 }
 
@@ -858,9 +859,11 @@ footer {
     justify-content: center;
     width: 100%;
     padding-left: 1rem;
+    background-color: #232323;
 }
 
 .user-bio {
+    color: white;
     margin-top: .75rem;
     font-size: .875rem;
 }
