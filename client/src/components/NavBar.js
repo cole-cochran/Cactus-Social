@@ -107,7 +107,7 @@ const ResponsiveAppBar = (props) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar className="avatar" alt="Remy Sharp" src="/assets/img/avatar.svg" />
+                <Avatar className="avatar" alt="Remy Sharp" sx={{ width: 50, height: 50 }} src="/assets/img/avatar.svg" />
               </IconButton>
             </Tooltip>
             <Menu
