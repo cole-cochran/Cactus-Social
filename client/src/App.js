@@ -17,6 +17,12 @@ import { setContext } from '@apollo/client/link/context';
 import AuthService from './utils/auth';
 import Sendbird from './pages/Sendbird/Sendbird';
 
+//* import Weavy Auth
+import { Component } from 'react';
+import './App.css';
+import Weavy from './weavy/Weavy';
+import WeavyChat from './weavy/WeavyChat';
+
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({
 	uri: '/graphql'
@@ -40,6 +46,27 @@ const client = new ApolloClient({
 	link: authLink.concat(httpLink),
 	cache: new InMemoryCache()
 });
+export default class App extends Component {
+    async getJwt() {
+        return '[Provide your JWT here]';
+    }
+
+    render() {
+        return (
+            <Weavy jwt={this.getJwt}>
+                <div className="App">
+                    <WeavyChat
+                        spaceKey="react-space"
+                        spaceName="React Space"
+                        appKey="react-chat"
+                        appName="React Chat"
+                        appType="messenger"
+                    />
+                </div>
+            </Weavy>
+        );
+    }
+}
 
 function App() {
 	// console.log(AuthService.getProfile())
