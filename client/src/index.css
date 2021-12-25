@@ -47,7 +47,7 @@ html, body {
 .splash-page-header button {
     position: relative;
     z-index: 2;
-    background-color: #80deea;
+    background-color: var(--primary-green);
     color: black;
     font-size: .75rem;
     height: 2rem;
