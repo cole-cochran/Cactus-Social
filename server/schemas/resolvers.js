@@ -451,6 +451,19 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
+		updatePinnedPost: async (parent, args, context) => {
+			const {userId, postId} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$addToSet: {
+						pinnedPosts: postId
+					}
+				},
+				{new: true}
+			);
+			return user;
+		},
 
 		//* give user ability to pin posts
 		pinPost: async (parent, args, context) => {

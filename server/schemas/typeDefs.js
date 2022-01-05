@@ -40,6 +40,7 @@ const typeDefs = gql`
         tech_stack: [String]
         date_joined: String
         friends: [User]
+        pinnedPosts: [Post]
     }
 
     type Thread {
@@ -101,7 +102,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-
+        updatePinnedPosts(userId: ID!, postId: ID!): User
         loginUser(username: String!, password: String!): Auth
         createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!): Auth
 

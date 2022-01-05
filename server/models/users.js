@@ -95,6 +95,12 @@ const userSchema = new Schema({
 			type: ObjectId,
 			ref: 'User'
 		}
+	],
+	pinnedPosts: [
+		{
+			type: ObjectId,
+			ref: 'Post'
+		}
 	]
 });
 
