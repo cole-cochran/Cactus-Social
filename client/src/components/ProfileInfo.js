@@ -209,7 +209,7 @@ function ProfileInfo(props) {
 						<ul>
 							{techData.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
-									<Chip label={tech} variant="outlined" />
+									<Chip label={tech} cstyle={{backgroundColor:'white'}} variant="outlined" />
 								</li>
 							))}
                         </ul>
