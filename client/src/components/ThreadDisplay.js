@@ -1,28 +1,24 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
-import ReactDOM from 'react-dom'
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import Auth from '../utils/auth';
+// import AuthService from '../utils/auth';
 
-import { ALL_THREAD_POSTS, THREAD_DETAILS, PINNED_POSTS } from '../utils/queries';
+// import { PINNED_POSTS } from '../utils/queries';
+import { ALL_THREAD_POSTS, THREAD_DETAILS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
+
+// import { UPDATE_POST, REMOVE_POST, ADD_POST_REACTION, REMOVE_THREAD, UNPIN_POST } from '../utils/mutations';
 
 import {
 	CREATE_POST,
-	REMOVE_POST,
-	UPDATE_POST,
-	PIN_POST,
-	UNPIN_POST,
-	ADD_POST_REACTION,
-	REMOVE_THREAD
+	PIN_POST
 } from '../utils/mutations';
 //! Give description of imported mutations
 
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
@@ -55,9 +51,9 @@ function ThreadDisplay(props) {
 	const { threadId } = useParams();
 
 	const [ createPost ] = useMutation(CREATE_POST);
-	const [ removePost ] = useMutation(REMOVE_POST);
+	// const [ removePost ] = useMutation(REMOVE_POST);
 	const [ pinPost ] = useMutation(PIN_POST);
-	const [ unpinPost ] = useMutation(UNPIN_POST);
+	// const [ unpinPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
 		variables: { threadId: threadId }
@@ -83,7 +79,8 @@ function ThreadDisplay(props) {
 		event.preventDefault();
 
 		try {
-			const { data } = await createPost({
+			// const { data } = 
+			await createPost({
 				variables: {
 					threadId: singleThread.data.threadDetails._id,
                     post_text: newPostText
@@ -104,7 +101,8 @@ function ThreadDisplay(props) {
         console.log(pinnedPost.pinTitle) 
         console.log(pinnedPost.pinHash) 
 		try {
-			const { data } = await pinPost({
+			// const { data } = 
+			await pinPost({
 				variables: {
                     threadId: threadId,
                     postId: postId,

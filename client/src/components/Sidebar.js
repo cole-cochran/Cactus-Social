@@ -5,11 +5,9 @@ import EventsPanel from './EventsPanel';
 
 import AuthService from '../utils/auth';
 
-//DOM QUERIES
-//icons
-const threadIcon = document.querySelector('#thread-icon');
-const eventIcon = document.querySelector('#event-icon');
-//panels
+// const threadIcon = document.querySelector('#thread-icon');
+// const eventIcon = document.querySelector('#event-icon');
+
 
 const toggleSidebar = (e) => {
 	const sidebar = document.querySelector('#sidebar');

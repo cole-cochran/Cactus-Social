@@ -1,9 +1,9 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import FaceIcon from '@mui/icons-material/Face';
+// import Stack from '@mui/material/Stack';
+// import FaceIcon from '@mui/icons-material/Face';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
@@ -107,7 +107,8 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		try {
 			if (event.target.id === 'userBio') {
-				const updatedBio = await updateBio({
+				// const updatedBio = 
+				await updateBio({
 					variables: {
 						userId: AuthService.getProfile().data._id,
 						bio: bio
@@ -116,7 +117,8 @@ function ProfileInfo(props) {
 				setBio('');
 				window.location.reload(false);
 			} else if (event.target.id === 'userPhoto') {
-				const updatedPhoto = await updatePhoto({
+				// const updatedPhoto = 
+				await updatePhoto({
 					variables: {
 						userId: AuthService.getProfile().data._id,
 						picture: photo

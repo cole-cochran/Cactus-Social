@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useQuery } from '@apollo/client';
 import { USER_PROFILE } from '../utils/queries'; 

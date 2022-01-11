@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ThreadCreation from "./ThreadCreation";
 
 import { useQuery } from '@apollo/client';
-import AuthService from '../utils/auth';
+// import AuthService from '../utils/auth';
 
 import { ALL_THREADS } from '../utils/queries';
 

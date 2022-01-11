@@ -5,8 +5,8 @@ import FormControl from '@mui/material/FormControl';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
 // date and time field
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -14,7 +14,7 @@ import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import Stack from '@mui/material/Stack';
 import MobileTimePicker from '@mui/lab/MobileTimePicker';
 
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
@@ -84,7 +84,7 @@ export default function EventCreation(props) {
 			});
 
 			console.log(res.data);
-      window.location.replace(`events/${res.data.createEvent._id}`)
+			window.location.replace(`events/${res.data.createEvent._id}`)
 		} catch (err) {
 			console.error(err);
 		}
