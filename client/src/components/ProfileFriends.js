@@ -2,17 +2,16 @@ import React from "react";
 import {Link} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-
-import { USER_FRIENDS, ALL_USERS } from '../utils/queries';
+// import { USER_FRIENDS } from '../utils/queries.js';
+import { ALL_USERS } from '../utils/queries';
 //* USER_FRIENDS accepts userId and returns the user's _id and friends which contains the friend's _id, username, and picture
-//! MVP IS ALL USERS = FRIENDS
 // import { ADD_FRIEND, REMOVE_FRIEND } from '../utils/mutations';
 //* ADD_FRIENDS accepts: userId and friend (which corresponds to the friend's _id)
 //* REMOVE FRIENDS accepts: userId and friend (which corresponds to the friend's id)
 //* Both return the updated User
 
 import { useQuery } from '@apollo/client';
-import AuthService from '../utils/auth';
+// import AuthService from '../utils/auth';
 
 function ProfileFriends(props) {
 

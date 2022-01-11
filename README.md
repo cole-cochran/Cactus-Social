@@ -1,22 +1,16 @@
 # Cactus Social
 
-Version 1.1.0  
-
-<br>
+Version 1.1.0
 
 [Link To Deployed Application](https://cactus-social.herokuapp.com/)
 
-<br>
-
-Original Deployment Date : December 8, 2021  
-
-<br>
+Original Deployment Date : December 8, 2021
 
 Current Version Deployment Date: December 12th, 2021
 
 <br>
 
-<!-- GIF DEMO OF APPLICATION -->
+<!-- GIF DEMO OF APPLICATION COMING SOON-->
 
 --- 
 
@@ -57,13 +51,23 @@ If you are interested in improving or modifying this application in any way, ple
 
 <br>
 
-## Original Contributors
+## The Cactus Social Team
+<br>
 
+> Development Team: 
 
-- Jack Manzer
 - Damien Luzzo
 - Cole Cochran
 - Fox Rigney
+- Stephanie Cortez
+- Ethan Cho
+- Ismeny Castro
+- Jayla De'nae
+
+> Design Support Team
+
+- Jack Manzer
+- Ari Newman
 
 <br>
 
@@ -79,7 +83,7 @@ If you are interested in improving or modifying this application in any way, ple
 - [Credits](#credits)
 - [License](#license)
 - [Features](#features)
-- [Cactus Social Team](#developers)
+- [Contributors](#contributors)
 
 <br>
 
@@ -91,7 +95,9 @@ If you are interested in improving or modifying this application in any way, ple
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Visit the deployed application linked above and create your new account! NOTE: In the very near future, users will have the ability to download the application onto their desktops and phones.
+Visit the deployed application linked above and create your new account! 
+
+*NOTE: In the very near future, users will have the ability to download the application onto their desktops and phones.*
 
 <br>
 
@@ -101,7 +107,7 @@ Visit the deployed application linked above and create your new account! NOTE: I
 
 ## Usage
 
-To get started, simply visit the deployed application (liked at the top of this README) and sign up for a new account!
+To get started, simply visit the deployed application (linked at the top of this README) and sign up for a new account!
 
 <!-- video of splashpage -->
 
@@ -160,7 +166,7 @@ To get started, simply visit the deployed application (liked at the top of this 
 
 <br>
 
-NOTE: You must be logged in to access anything on Cactus Social besides the login page, sign up page, and the splash page.
+*NOTE: You must be logged in to access anything on Cactus Social besides the login page, sign up page, and the splash page.*
 
 That is all there is to it. Enjoy your time on Cactus Social!
 
@@ -178,7 +184,7 @@ That is all there is to it. Enjoy your time on Cactus Social!
 - Express.js 
 - React.js
 - Node.js 
-- Sendbird
+- Weavy
 - Mongoose 
 - React Router
 - GraphQL
@@ -217,14 +223,24 @@ That is all there is to it. Enjoy your time on Cactus Social!
 ## Screenshots
 
 <!-- Login page -->
+#### Login Page
+![Login Page](./client/public/assets/img/CS_login_page.png)
 
 <!-- Profile being updated -->
+#### Profile Page
+![Profile Page](./client/public/assets/img/CS_profile_page.png)
 
 <!-- Thread with sidebar open -->
+#### Thread With Posts
+![Thread Example](./client/public/assets/img/CS_threads.png)
 
 <!-- Post with comments and icon pressed -->
+#### Posts With Comments
+![Post Example](./client/public/assets/img/CS_post_view.png)
 
 <!-- Post being pinned -->
+#### Pinned Post Modal
+![Pinning A Post](./client/public/assets/img/CS_pin_post.png)
 
 <br>
 
@@ -232,21 +248,22 @@ That is all there is to it. Enjoy your time on Cactus Social!
 
 <br>
 
-## Developers
+### Current Contributors
 
-Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer) <br>
 Damien Luzzo: [Damien's GitHub](https://github.com/damienluzzo33)<br>
 Cole Cochran: [Cole's GitHub](https://github.com/cole-cochran)<br>
 Fox Rigney: [Fox's GitHub](https://github.com/foxrigney)<br>
+Stephanie Cortez: [Stephanie's GitHub](https://github.com/CortezStephanie)<br>
 Ethan Cho: [Ethan's GitHub](https://github.com/echo1826)<br>
-Stephanie Cortez: [Stephanie's GitHub](https://github.com/CortezStephanie)
+Ismeny Castro: [Ismeny's GitHub](https://github.com/Ismeny)<br>
+Jayla De'nae: [Jayla's GitHub](https://github.com/jayladenae)
 
 <br>
 
 ### Past Contributors
 
-Nathan Delman: [Nathan's GitHub](https://github.com/Delmanat3)<br>
-
+Jack Manzer: [Jack's GitHub](https://github.com/jackmanzer)<br>
+Nathan Delman: [Nathan's GitHub](https://github.com/Delmanat3)
 <br>
 
 ---

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -14,11 +13,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { EVENT_DETAILS } from '../utils/queries';
-import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
+// import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
 
 //! ADD  DESCRIPTION OF EVENT_DETAILS
 
-import Auth from '../utils/auth';
+// import AuthService from '../utils/auth';
 
 export default function EventDisplay() {
 
