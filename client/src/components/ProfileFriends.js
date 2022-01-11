@@ -11,7 +11,7 @@ import { USER_FRIENDS, ALL_USERS } from '../utils/queries';
 //* REMOVE FRIENDS accepts: userId and friend (which corresponds to the friend's id)
 //* Both return the updated User
 
-import { useQuery, useMutation} from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
 
 function ProfileFriends(props) {

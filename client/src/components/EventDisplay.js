@@ -115,7 +115,7 @@ export default function EventDisplay() {
 						</Typography>
 					) : (
 						<Typography variant="body2" color="text.secondary">
-							<a href={singleEvent.location}>Line to virtual event</a>
+							<a href={singleEvent.location}>Link to virtual event</a>
 						</Typography>
 					)}
 					{/* <AvatarGroup max={4}> */}
@@ -139,7 +139,7 @@ export default function EventDisplay() {
 					</Typography>
 				</CardContent>
 				<CardActions style={styles.links}>
-					{/* Dynamically display "attend" or "leave" based on if user events list contains this event or if user is owner/attendee */}
+					{/* Dynamically display "attend" or "leave" based on if user events list contains this event or if user is attendee */}
 					<Button style={styles.button} variant="contained" size="small">
 						Attend Event
 					</Button>

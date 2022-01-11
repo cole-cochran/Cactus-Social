@@ -49,13 +49,6 @@ const resolvers = {
 				.populate('events')
 				.populate('members')
 				.populate('moderator');
-				// .populate({ 
-				// 	path: 'posts',
-				// 	populate: {
-				// 		path: 'author',
-				// 		model: 'User'
-				// 	} 
-				// })
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -222,8 +215,6 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
-		//! FIX THIS MO FO ASAP
-
 		//* remove technology from user tech stack
 		removeTechnology: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
@@ -286,20 +277,6 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
-		// updateProfile: async (parent, args, context) => {
-		// 	const {userId, picture, bio, techArray} = args;
-		// 	const updatedUser = await User.findOneAndUpdate(
-		// 		{ _id: userId },
-		// 		{
-		// 			bio: bio,
-		// 			picture: picture,
-		// 			tech_stack: techArray
-		// 		},
-		// 		{ new: true }
-		// 	);
-		// 	return updatedUser;
-		// },
-
 		//* update the user's profile photo
 		updatePhoto: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
@@ -347,8 +324,6 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
-
-		//! CANT TEST UNTIL CONTEXT IS READY BECAUSE IT RETURNS THE USER WHO REMOVED THE THREAD
 
 		//* remove thread
 		removeThread: async (parent, args, context) => {

@@ -54,7 +54,7 @@ function SignUp() {
 					</div>
 				{data ? (
 					<p>
-						Success! You may now head <Link to="/">back to the homepage.</Link>
+						Success! You may now head <Link to="/">Back to the homepage</Link>
 					</p>
 				) : (
 					<form class="signup-form" onSubmit={handleFormSubmit}>

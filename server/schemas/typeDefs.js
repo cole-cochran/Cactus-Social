@@ -93,6 +93,8 @@ const typeDefs = gql`
         userEvents(userId: ID!): [Event]
         userFriends(userId: ID!): User
 
+        # pinned post for all to see on threads OR for users to quickly access important posts (second one sounds cool)
+
         pinnedPosts(threadId: ID!): [Post]
         threadEvents(threadId: ID!): [Event]
         threadDetails(threadId: ID!): Thread
@@ -107,8 +109,10 @@ const typeDefs = gql`
 
         addTechnology(userId: ID!, technology: String!): User
         removeTechnology(userId: ID!, technology: String!): User
+
         addFriend(userId: ID!, friend: ID!): User
         removeFriend(userId: ID!, friend: ID!): User
+
         updatePhoto(userId: ID!, picture: String!): User
         updateBio(userId: ID!, bio: String!): User
 
@@ -139,6 +143,7 @@ const typeDefs = gql`
         createEventComment(eventId: ID!, comment_text: String!): Event
         removeEventComment(eventId: ID!, commentId: ID!): Event
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
+        
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
     }
 `;
