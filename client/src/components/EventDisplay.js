@@ -49,7 +49,7 @@ export default function EventDisplay() {
 		chips: {
 			margin: '25px',
 			textAlign: 'center',
-			justifyContent: 'center'
+			justifyContent: 'center',
 		},
 		links: {
 			margin: '20px',

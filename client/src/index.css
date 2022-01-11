@@ -47,7 +47,7 @@ html, body {
 .splash-page-header button {
     position: relative;
     z-index: 2;
-    background-color: #80deea;
+    background-color: var(--primary-green);
     color: black;
     font-size: .75rem;
     height: 2rem;
@@ -439,80 +439,7 @@ html, body {
     
 }
 
-/*************LOGIN.HTML:MEDIA-QUERIES************/
-
-/*************DASHBOARD.HTML:STYLING************/
-/* body {
-    margin: 10px 60px;
-}
-a {
-    text-decoration: none;
-    color: black;
-}
-h1, h4, ol {
-    margin: 0;
-}
-p {
-    margin: 5px 0;
-}
-textarea {
-    width: 80%;
-    height: 80px;
-}
-button {
-    display: block;
-    margin-top: 1.5rem;
-    background-color: #56B524;
-    color: white;
-    border: none;
-    font-size: .875rem;
-    width: 6rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    border-radius: .25rem;
-}
-
-.main {
-    background-color: #DAF5CB;
-    padding: 10px 40px;
-}
-.comments {
-    margin: 40px 0;
-}
-.row {
-    padding: 5px 0;
-}
-.comment-ts {
-    padding-left: 10px;
-}
-
-.dashboard-form button {
-    display: block;
-    margin-top: 1.5rem;
-    background-color: #56B524;;
-    color: white;
-    border: none;
-    font-size: .875rem;
-    width: 6rem;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    border-radius: .25rem;
-}
-
-.dashboard-banner {
-   background-color: #56B524;
-    color: white;
-    height: 100vh;
-    padding: 3rem;
-}
-.dashboard-banner h1 {
-    font-size: 2rem;
-}
-.dashboard-banner p {
-    font-size: 1rem;
-} */
-
-
+/*************LOGIN.HTML:MEDIA-QUERIES************/;
 /********HEADER:START************/
 
 header {
@@ -693,8 +620,8 @@ footer {
 .chat {
     line-height: 1.1rem;
     font-size: .75rem;
-    background-color: #FFA000;
-    color: white;
+    background-color: #9200bb74;
+    color: black;
     padding: .5rem;
     border-radius: .25rem;
     margin-top: .5rem;
@@ -702,7 +629,7 @@ footer {
 }
 
 .chat p {
-    font-size: .65rem;
+    font-size: 1rem;
     margin-bottom: 0;
 }
 
@@ -713,8 +640,8 @@ footer {
     pointer-events: none;
 }
 .chat-date {
-    font-size: .55rem;
-    color: #FFE3A1;
+    font-size: .75rem;
+    color: white;
     margin-left: 1rem;
     pointer-events: none;
 }
@@ -724,10 +651,11 @@ footer {
 .subthread-title {
     font-size: .65rem;
     margin-left: 1rem;
-    color: #FFF1D1;
+    color: white;
 }
 .subthread {
-    background-color: #FF7600; 
+    background-color: var(--secondary-purple); 
+    color: white;
 }
 
 
@@ -735,8 +663,9 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-top: 1rem;
-    margin-left: 1rem;
+    /* margin-top: 1rem; */
+    margin-top: .5rem;
+    /* margin-left: .875rem; */
     font-size: .75rem !important;
     border: 1px solid slategray;
     border-radius: .25rem;
@@ -746,12 +675,12 @@ footer {
     background-color: lightblue;
 }
 
-.chat-input span {
+.chat-input input {
     padding: .5rem;
     font-size: .75rem;
 }
 
-.chat-input span:focus {
+.chat-input input:focus {
     outline:none;
 }
 .chat-input-buttons {
@@ -844,10 +773,11 @@ footer {
 }
 .profile-header h3 {
     font-size: 1rem;
+    color: white;
 }
 
 .join-date {
-
+    color: white;
     font-size: .75rem;
 }
 
@@ -856,9 +786,11 @@ footer {
     justify-content: center;
     width: 100%;
     padding-left: 1rem;
+    background-color: #232323;
 }
 
 .user-bio {
+    color: white;
     margin-top: .75rem;
     font-size: .875rem;
 }
