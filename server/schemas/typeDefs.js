@@ -89,6 +89,7 @@ const typeDefs = gql`
         allThreadPosts(threadId: ID!): [Post]
         allPostComments(postId: ID!): [Comment]
         
+        oneUser(username: String!): User
         userProfile(userId: ID!): User
         userThreads(userId: ID!): [Thread]
         userEvents(userId: ID!): [Event]
@@ -102,7 +103,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        updatePinnedPosts(userId: ID!, postId: ID!): User
+        updatePinnedPost(userId: ID!, postId: ID!): User
         loginUser(username: String!, password: String!): Auth
         createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!): Auth
 

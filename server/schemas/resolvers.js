@@ -1,6 +1,6 @@
 const { User, Comment, Post, Thread, Event } = require('../models/index');
 const { signToken } = require('../utils/auth');
-const { AuthenticationError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
 //! ADD ARRAY OF PIN STRINGS TO THREADS MODEL 
 
@@ -58,6 +58,14 @@ const resolvers = {
 				// })
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		oneUser: async (parent, args) => {
+			const user = await User.findOne({username: args.username});
+			if(!user) {
+				return new ApolloError('No user found with that username', '404');
+			}
+			return user;
 		},
 
 		//* find user's friends
