@@ -196,17 +196,26 @@ const resolvers = {
 
 		//* create a new user
 		createUser: async (parent, args) => {
-			const { first_name, last_name, username, email, password } = args;
-			const newUser = await User.create({ first_name, last_name, username, email, password });
-
-			const tokenData = {
-				username: newUser.username, 
-				email: newUser.email, 
-				_id: newUser._id
+			try{
+				const { first_name, last_name, username, email, password } = args;
+				const checkUsername = await User.findOne({ username });
+				if(checkUsername) {
+					return new ApolloError('Username already taken', 422);
+				}
+				const newUser = await User.create({ first_name, last_name, username, email, password });
+	
+				const tokenData = {
+					username: newUser.username, 
+					email: newUser.email, 
+					_id: newUser._id
+				}
+	
+				const token = signToken(tokenData);
+				return { token, newUser };
 			}
-
-			const token = signToken(tokenData);
-			return { token, newUser };
+			catch(err) {
+				return new ApolloError('Sign-up failed', '400');
+			}
 		},
 
 		//* add a new technology to user tech stack
