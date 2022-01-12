@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
 //* set up server to listen on port and open connection to graphql
 db.once('open', () => {
 	httpServer.listen(PORT, () => {
-		console.log(`App running on port ${PORT}!`);
+		console.log(`Server running on port ${PORT}!`);
 		console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
 	});
 });
