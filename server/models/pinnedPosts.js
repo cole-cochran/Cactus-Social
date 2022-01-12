@@ -21,6 +21,6 @@ const pinnedPostsSchema = new Schema({
     }
 });
 
-const PinnedPost = mongoose.model('pinnedPost', pinnedPostsSchema);
+const PinnedPost = mongoose.model('PinnedPost', pinnedPostsSchema);
 
 module.exports = PinnedPost;
