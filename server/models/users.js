@@ -96,10 +96,10 @@ const userSchema = new Schema({
 			ref: 'User'
 		}
 	],
-	pinnedPosts: [
+	pinned_posts: [
 		{
 			type: ObjectId,
-			ref: 'Post'
+			ref: 'PinnedPost'
 		}
 	]
 });

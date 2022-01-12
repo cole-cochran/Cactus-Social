@@ -34,16 +34,6 @@ const postSchema = new Schema({
         type: Boolean,
         default: false
     },
-    pinTitle: {
-        type: String,
-        minLength: [3, "Pin title needs to be at least 3 characters!"],
-        maxLength: [36, "Pin title needs to be less than 36 characters!"]
-    },
-    pinHash: {
-        type: String,
-        minLength: [3, "Pin hash needs to be at least 3 characters!"],
-        maxLength: [18, "Pin hash needs to be less than 18 characters!"]
-    },
     thread: {
         type: ObjectId,
         ref:'Thread'

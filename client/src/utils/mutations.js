@@ -486,47 +486,83 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
 }
 `;
 
-export const PIN_POST = gql`
-mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: String!) {
-    pinPost(threadId: $threadId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
-        _id
-        title
-        posts {
-            _id
-            post_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            pinned
-            pinHash
-            pinTitle
-            comments {
-                _id
-            }
-        }
-        moderator {
-            _id
-            username
-            picture
-        }
-        members {
-            _id
-            username
-            picture
-        }
-        date_created
-    }
-}
-`;
+//* OLD PIN_POST MUTATION
+// export const PIN_POST = gql`
+// mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: String!) {
+//     pinPost(threadId: $threadId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
+//         _id
+//         title
+//         posts {
+//             _id
+//             post_text
+//             date_created
+//             author {
+//                 _id
+//             }
+//             reactions
+//             edited
+//             pinned
+//             pinHash
+//             pinTitle
+//             comments {
+//                 _id
+//             }
+//         }
+//         moderator {
+//             _id
+//             username
+//             picture
+//         }
+//         members {
+//             _id
+//             username
+//             picture
+//         }
+//         date_created
+//     }
+// }
+// `;
 
-export const UNPIN_POST = gql`
-mutation unpinPost($threadId: ID!, $postId: ID!) {
-    unpinPost(threadId: $threadId, postId: $postId) {
-        _id
-        title
+//* OLD UNPIN_POST MUTATION
+// export const UNPIN_POST = gql`
+// mutation unpinPost($threadId: ID!, $postId: ID!) {
+//     unpinPost(threadId: $threadId, postId: $postId) {
+//         _id
+//         title
+//         posts {
+//             _id
+//             post_text
+//             date_created
+//             author {
+//                 _id
+//             }
+//             reactions
+//             edited
+//             pinned
+//             pinHash
+//             pinTitle
+//             comments {
+//                 _id
+//             }
+//         }
+//         moderator {
+//             _id
+//             username
+//             picture
+//         }
+//         members {
+//             _id
+//             username
+//             picture
+//         }
+//         date_created
+//     }
+// }
+// `;
+
+export const PIN_POST = gql`
+mutation updatePinnedPost($userId: ID!, $postId: ID!) {
+    updatePinnedPost(userId: $userId, postId: $postId) {
         posts {
             _id
             post_text
@@ -543,20 +579,9 @@ mutation unpinPost($threadId: ID!, $postId: ID!) {
                 _id
             }
         }
-        moderator {
-            _id
-            username
-            picture
-        }
-        members {
-            _id
-            username
-            picture
-        }
-        date_created
     }
 }
-`;
+`
 
 //! IF THE TIME PERMITS, MAKE THIS INCLUDE USERNAME IN THE RESOLVERS AND MODELS
 export const ADD_POST_REACTION = gql`

@@ -95,7 +95,7 @@ const typeDefs = gql`
         userEvents(userId: ID!): [Event]
         userFriends(userId: ID!): User
 
-        pinnedPosts(threadId: ID!): [Post]
+        pinnedPosts(userId: ID!): [Post]
         threadEvents(threadId: ID!): [Event]
         threadDetails(threadId: ID!): Thread
         eventDetails(eventId: ID!): Event

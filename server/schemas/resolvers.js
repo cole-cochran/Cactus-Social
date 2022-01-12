@@ -1,4 +1,4 @@
-const { User, Comment, Post, Thread, Event } = require('../models/index');
+const { User, Comment, Post, Thread, Event, PinnedPost } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
@@ -80,20 +80,25 @@ const resolvers = {
 		allPosts: async (parent, args, context) => {
 			return await Post.find({}).populate('author').populate('thread').populate('comments');
 		},
+		//* Old pinnedPosts
+		// pinnedPosts: async (parent, args, context) => {
+		// 	const { threadId } = args;
+		// 	const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
 
-		pinnedPosts: async (parent, args, context) => {
-			const { threadId } = args;
-			const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
+		// 	const allPins = [];
 
-			const allPins = [];
-
-			for (let pinnedPost of thread.pinned_posts) {
-				let post = await Post.findOne({ _id: pinnedPost }).populate('author');
+		// 	for (let pinnedPost of thread.pinned_posts) {
+		// 		let post = await Post.findOne({ _id: pinnedPost }).populate('author');
 				
-				allPins.push(post);
-			}
+		// 		allPins.push(post);
+		// 	}
 
-			return allPins;
+		// 	return allPins;
+		// },
+		pinnedPosts: async (parent, args, context) => {
+			const user = await User.findOne({_id: args.userId}).populate('pinned_posts');
+			const pinnedPosts = user.pinned_posts;
+			return pinnedPosts;
 		},
 
 		allComments: async (parent, args, context) => {
@@ -469,17 +474,22 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 		updatePinnedPost: async (parent, args, context) => {
-			const {userId, postId} = args;
+			const {userId, postId, pinTitle, pinHash} = args;
+			const pinnedPost = await PinnedPost.create({pinTitle: pinTitle, pinHash: pinHash, post: postId});
 			const user = await User.findOneAndUpdate(
 				{_id: userId},
 				{
 					$addToSet: {
-						pinnedPosts: postId
+						pinnedPosts: pinnedPost._id
 					}
 				},
 				{new: true}
 			);
 			return user;
+		},
+
+		removePinnedPost: async (parent, args, context) => {
+
 		},
 
 		//* give user ability to pin posts
