@@ -15,6 +15,13 @@ const typeDefs = gql`
         comments: [Comment]
     }
 
+    type PinnedPost {
+        _id: ID!
+        pinTitle: String
+        pinHash: String
+        post: Post
+    }
+
     type Comment {
         _id: ID!
         comment_text: String!
@@ -40,7 +47,7 @@ const typeDefs = gql`
         tech_stack: [String]
         date_joined: String
         friends: [User]
-        pinnedPosts: [Post]
+        pinned_posts: [PinnedPost]
     }
 
     type Thread {
@@ -103,7 +110,8 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        updatePinnedPost(userId: ID!, postId: ID!): User
+        updatePinnedPost(userId: ID!, postId: ID!, pinTitle: String, pinHash: String): User
+        removePinnedPost(userId: ID!, pinnedId: ID!): User
         loginUser(username: String!, password: String!): Auth
         createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!): Auth
 

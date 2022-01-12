@@ -12,7 +12,9 @@ const resolvers = {
 				.populate('threads')
 				.populate('events')
 				.populate('events.owner')
-				.populate('friends');
+				.populate('friends')
+				.populate('pinned_posts')
+				.populate('pinned_posts.post');
 		},
 
 		//* get single user
@@ -473,23 +475,36 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
+		//* New Pin Post Mutation
 		updatePinnedPost: async (parent, args, context) => {
 			const {userId, postId, pinTitle, pinHash} = args;
 			const pinnedPost = await PinnedPost.create({pinTitle: pinTitle, pinHash: pinHash, post: postId});
+			console.log(pinnedPost);
 			const user = await User.findOneAndUpdate(
 				{_id: userId},
 				{
 					$addToSet: {
-						pinnedPosts: pinnedPost._id
+						pinned_posts: pinnedPost._id
 					}
 				},
-				{new: true}
+				{new: true, populate: {path: 'pinned_posts'}}
 			);
+			console.log(user);
 			return user;
 		},
 
 		removePinnedPost: async (parent, args, context) => {
-
+			const { userId, pinnedId } = args;
+			await PinnedPost.deleteOne({_id: pinnedId});
+			const updatedUser = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$pull: {
+						pinned_posts: pinnedId
+					}
+				}
+			).populate('pinned_posts').populate('pinned_posts.post');
+			return updatedUser;
 		},
 
 		//* give user ability to pin posts
