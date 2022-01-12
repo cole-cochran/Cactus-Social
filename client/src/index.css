@@ -614,16 +614,16 @@ footer {
     /* background-color:  green; */
 }
 .thread-content-container {
-  /* background-color: red; */
-  padding-left: 3px;
-  /* margin-right: 1rem; */
-  width: 100%;
-  /* max-width: 40rem; */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  margin-right: 1rem;
+    /* background-color: red; */
+    padding-left: 3px;
+    /* margin-right: 1rem; */
+    width: 100%;
+    /* max-width: 40rem; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    margin-right: 1rem;
 }
 
 .thread-title-container {
@@ -637,14 +637,16 @@ footer {
 }
 
 .thread-header h3 {
-  margin-left: 1rem;
-  font-size: 1rem;
-  margin-top: 2rem;
+    margin-left: 1rem;
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    color: var(--grey1);
 }
 
 .thread-header p {
-  margin-left: 1rem;
-  font-size: .75rem;
+    margin-left: 1rem;
+    font-size: 1rem;
+    color: var(--grey1);
 }
 
 .chats-container {
@@ -665,7 +667,9 @@ footer {
     padding: 1rem;
     border-radius: .25rem;
     margin-top: .5rem;
-    margin-left: .875rem;
+    /* margin-left: .875rem; */
+    margin-left: 2%;
+    width: 98%;
 }
 
 .chat p {
@@ -685,6 +689,42 @@ footer {
     margin-left: 1rem;
     pointer-events: none;
 }
+
+.post-options {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 5px;
+}
+
+.comments-chip {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    padding: 12px 4px 12px 4px;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--ultra-dark);
+    cursor: pointer;
+}
+
+.comments-chip div {
+    background-color: var(--grey1);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    padding-top: 1px;
+    justify-content: center;
+    align-items: center;
+    color: var(--ultra-dark);
+    font-weight: 700;
+}
+
+.comments-chip p {
+    margin: 0px 10px 0px 10px;
+    color: var(--grey1);
+}
+
 .pos {
     pointer-events: none;
 }
@@ -704,14 +744,14 @@ footer {
     flex-direction: column;
     justify-content: space-between;
     margin-left: 2%;
+    width: 98%;
     margin-bottom: 10px;
     padding: 5px;
-    width: 98%;
     font-size: .75rem !important;
-    border: 1px solid slategray;
+    border: 1px solid var(--grey1);
     border-radius: 10px;
     position: sticky;
-    background-color: lightblue;
+    background-color: var(--ultra-dark);
 }
 
 .chat-input input {
@@ -730,11 +770,11 @@ footer {
 
 .chat-input-buttons button {
     border: none;
-    font-size: .75rem;
+    font-size: .9rem;
     color: white;
-    margin: .15rem;
+    font-weight: 600;
+    margin: 6px 2px 2px 0px;
     padding: .25rem;
-    padding-left: .28rem;
     border-radius: .25rem;
     background-color: var(--hero-green);
 }

@@ -50,6 +50,8 @@
 
 //*  add hash option to create event, maybe that pops out a modal
 
+//* Make pin modal dynamic to show pin form when unpinned and otherwise the option to remove the thread.
+
 //! ----------------------------------------------------------------------------------------------- 
 
 //?  EVENT CREATOR MODAL  (after hash command is entered)

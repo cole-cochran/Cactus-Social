@@ -11,6 +11,7 @@ import { ALL_THREAD_POSTS, THREAD_DETAILS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
 // import { UPDATE_POST, REMOVE_POST, ADD_POST_REACTION, REMOVE_THREAD, UNPIN_POST } from '../utils/mutations';
+import { UNPIN_POST } from '../utils/mutations';
 
 import {
 	CREATE_POST,
@@ -20,8 +21,6 @@ import {
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
 
 const style = {
 	position: 'absolute',
@@ -35,25 +34,23 @@ const style = {
 
 function ThreadDisplay(props) {
 
-
-	// TODO (threadDisplay) Make pin modal dynamic to show pin form when unpinned and otherwise the option to remove the thread. 
 	
 	// TODO (threadDisplay) Make pinning respond to click on "pin icon" from MUI instead of div body. 
 	
-	// TODO (threadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting, pinning, 
+	// TODO (threadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting
 
-	// TODO (threadDisplay) Option for flagging a post as inappropriate ? 
+	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
 
 	// TODO (threadDisplay) Allow only thread owners to delete thread
 
-	// TODO (threadDisplay) Allow only pin or thread owners to unpin posts
+	// TODO (threadDisplay) Allow users to unpin from their pinned posts
 
 	const { threadId } = useParams();
 
 	const [ createPost ] = useMutation(CREATE_POST);
 	// const [ removePost ] = useMutation(REMOVE_POST);
 	const [ pinPost ] = useMutation(PIN_POST);
-	// const [ unpinPost ] = useMutation(UNPIN_POST);
+	const [ unpinPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
 		variables: { threadId: threadId }
@@ -96,7 +93,8 @@ function ThreadDisplay(props) {
 
     const handlePinSubmit = async (event) => {
 		event.preventDefault();
-        const postId = JSON.parse(localStorage.getItem('postId'))
+        const postId = JSON.parse(localStorage.getItem('postId'));
+
         console.log(threadId) 
         console.log(pinnedPost.pinTitle) 
         console.log(pinnedPost.pinHash) 
@@ -119,6 +117,21 @@ function ThreadDisplay(props) {
 		}
 	};
 
+	const handleUnpinPost = async (event) => {
+		event.preventDefault();
+		const postId = event.target.parentNode.parentNode.getAttribute('data-id');
+		try {
+			await unpinPost({
+				variables: {
+					threadId: threadId,
+					postId: postId
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
     const handleChange = (event) => {
         const { name, value } = event.target;
     
@@ -140,9 +153,10 @@ function ThreadDisplay(props) {
 	const [ open, setOpen ] = React.useState(false);
 
 	const handleOpen = (event) => {
-        console.log(event.target.getAttribute('data-id'))
+        console.log(event.target.getAttribute('data-id'));
+		console.log(event.target.parentNode.parentNode.getAttribute('data-id'));
         
-        localStorage.setItem('postId', JSON.stringify(event.target.getAttribute('data-id')));
+        localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
 
         // event.stopPropagation();
         setOpen(true);
@@ -175,39 +189,41 @@ function ThreadDisplay(props) {
 						{threadPosts.data.allThreadPosts.map(
 							(post) => (
 								post.pinned ? (
-									<div className="chat subthread" data-id={post._id} key={post._id} onClick={handleOpen} >
+									<div className="chat subthread" data-id={post._id} key={post._id} >
 										<div className="pos">
 											<span className="chat-name">{post.author.username}</span>
 											<span className="chat-date">{post.date_created}</span>
 											{post.pinHash && (
-												<Link to={`/subthread/${post._id}`}>
-													<span className="subthread-title">{post.pinHash}</span>
-												</Link>
+												<span className="subthread-title">{post.pinHash}</span>
 											)}
 										</div>
 										<p>{post.post_text}</p>
-										<Link to={`/subthread/${post._id}`}>
-											<Chip
-												label="Comments"
-												size="small"
-												avatar={<Avatar>{post.comments.length}</Avatar>}
-											/>
-										</Link>
+										<div className='post-options'>
+										<button className='comments-chip'>
+											<div>{post.comments.length}</div>
+											<Link className='react-link' to={`/subthread/${post._id}`}>
+												{post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
+												</Link>
+										</button>
+										<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={handleUnpinPost} />
+										</div>
 									</div>
 								) : (
-									<div data-id={post._id} key={post._id} className="chat" onClick={handleOpen}>
+									<div data-id={post._id} key={post._id} className="chat">
 										<div className="pos">
 											<span className="chat-name">{post.author.username}</span>
 											<span className="chat-date">{post.date_created}</span>
 										</div>
 										<p className="pos">{post.post_text}</p>
-										<Link to={`/subthread/${post._id}`}>
-											<Chip
-												label="Comments"
-												size="small"
-												avatar={<Avatar>{post.comments.length}</Avatar>}
-											/>
-										</Link>
+										<div className='post-options'>
+											<button className='comments-chip'>
+											<div>{post.comments.length}</div>
+											<Link className='react-link' to={`/subthread/${post._id}`}>
+												{post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
+												</Link>
+											</button>
+											<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={handleOpen}/>
+									</div>
 									</div>
 								)
                             )
@@ -232,6 +248,9 @@ function ThreadDisplay(props) {
 								<button className="modal-button" type="submit">
 									Add
 								</button>
+								{/* <button className="modal-button" type="click">
+									Unpin
+								</button> */}
 							</form>
 						</Box>
 					</Modal>
@@ -243,7 +262,7 @@ function ThreadDisplay(props) {
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
                     <input onChange={handleChange} name="postText" value={newPostText} contentEditable></input>
 					<div className="chat-input-buttons">
-						<button type="submit" className="chat-input-send-button">send</button>
+						<button type="submit" className="chat-input-send-button">Send</button>
 					</div>
 				</form>
 				{/* </div> */}
