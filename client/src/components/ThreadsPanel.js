@@ -50,7 +50,6 @@ function ThreadsPanel() {
                         </Link>
                     </li>
                 ))}
-                {/* <li><Link to="/home">Austin Code Bootcamp Students</Link><img src="" alt="" /></li> */}
             </ul>
             <Modal
                 open={open}

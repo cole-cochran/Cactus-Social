@@ -164,10 +164,8 @@ function ThreadDisplay(props) {
 			<div className="thread-content-container">
 				{/* <div className="top-panel"> */}
 				<div className="thread-header">
-					{/* <h3>Austin Code Bootcamp Students</h3> */}
 					<h3>{singleThread.data.threadDetails.title}</h3>
 					<div>
-						{/* <p>M: Damien</p> */}
 						<p>M: {singleThread.data.threadDetails.moderator.username}</p>
 					</div>
 				</div>

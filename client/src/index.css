@@ -20,20 +20,35 @@
 
 }
 html, body {
-    height: 100vh
+    height: 100vh;
+}
+
+html::-webkit-scrollbar {
+    display: none;
 }
 
 #root {
-    height: 100vh;
+    height: 100%;
 }
 
 .App {
     height: 100%;
 }
 
-.app-content-container, .thread-wrapper, .aside {
+.app-content-container {
+    display: flex;
+    height: calc(100vh - 90.39px);
+}
+
+.thread-wrapper {
     display: flex; 
-    height: calc(100vh - 6rem);
+    height: 100%;
+    background-color: #232323;
+}
+
+.aside {
+    display: flex;
+    height: 100%;
 }
 
 /*************GLOBAL:STYLES************/
@@ -115,6 +130,7 @@ html, body {
 
 .splash-page-video {
     height: 30rem;
+    /* height: 100%; */
     /* width: 100%; */
 }
 
@@ -124,6 +140,10 @@ html, body {
 
 @media only screen and (min-width: 600px) {
 
+    .app-content-container {
+        display: flex;
+        height: calc(100vh - 96.39px);
+    }
     
 .splash-page-content {
     padding-top: 10rem;
@@ -132,7 +152,6 @@ html, body {
 
 .splash-page-video {
     height: 40rem;
-    /* width: 100%; */
 }
 
 .splash-page-content {
@@ -163,10 +182,9 @@ html, body {
         background-color: initial;
     }
     .splash-page-video {
-       width: 100vw;
-       object-fit: cover;
-       height: 100vh;
-       
+        width: 100vw;
+        object-fit: cover;
+        height: 100vh;
     }
 
     
@@ -257,6 +275,7 @@ html, body {
     background-color: var(--hero-green);
     color: white;
     height: 100vh;
+    /* height: 100%; */
     padding: 3rem;
     display: flex;
     flex-direction: column;
@@ -386,6 +405,7 @@ html, body {
 .signup-banner {
    background-color: #501069;
     height: 100vh;
+    /* height: 100%; */
     padding: 3rem;
 }
 .signup-banner h1 {
@@ -498,7 +518,7 @@ header {
     padding-top: 2rem;
     height: calc(100vh - 6rem);
     width: calc(100% - 2.5rem);
-    overflow: auto;
+    overflow: hidden;
     padding-left: 40px;
     padding-right: 20px;
 }
@@ -595,7 +615,7 @@ footer {
 }
 .thread-content-container {
   /* background-color: red; */
-  padding-left: 3rem;
+  padding-left: 3px;
   /* margin-right: 1rem; */
   width: 100%;
   /* max-width: 40rem; */
@@ -626,17 +646,23 @@ footer {
   margin-left: 1rem;
   font-size: .75rem;
 }
+
 .chats-container {
     height: 60vh;
     overflow: auto;
+}
+
+.chats-container::-webkit-scrollbar {
+    display: none;
 }
 
 .chat {
     line-height: 1.1rem;
     font-size: .75rem;
     background-color: #9200bb74;
-    color: black;
-    padding: .5rem;
+    /* color: black; */
+    color: white;
+    padding: 1rem;
     border-radius: .25rem;
     margin-top: .5rem;
     margin-left: .875rem;
@@ -644,7 +670,7 @@ footer {
 
 .chat p {
     font-size: 1rem;
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
 
 .chat-name {
@@ -677,25 +703,25 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* margin-top: 1rem; */
-    margin-top: .5rem;
-    /* margin-left: .875rem; */
+    margin-left: 2%;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 98%;
     font-size: .75rem !important;
     border: 1px solid slategray;
-    border-radius: .25rem;
-    margin-bottom: 1rem;
+    border-radius: 10px;
     position: sticky;
-    bottom: 20px;
     background-color: lightblue;
 }
 
 .chat-input input {
     padding: .5rem;
-    font-size: .75rem;
+    font-size: 1rem;
+    border-radius: 10px;
 }
 
 .chat-input input:focus {
-    outline:none;
+    /* outline:none; */
 }
 .chat-input-buttons {
     display: flex;
@@ -735,7 +761,7 @@ footer {
 }
 
 
-@media only screen and (height: 475px) {
+@media only screen and (max-height: 475px) {
   
     .chats-container {
         height: 30rem;
@@ -746,11 +772,14 @@ footer {
 /*************RIGHTSHELF:START****************/
 
 .right-shelf {
-  display: none;
+  display: block;
   background-color: var(--grey1);
   width: 16rem;
   min-width: 16rem;
   padding-left: 1rem;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: var(--ultra-dark);
 }
 
@@ -809,13 +838,13 @@ footer {
     cursor: pointer;
 }
 
-/*************RIGHTSHELF:END****************/
-/*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
+/*************RIGHT-SHELF:END****************/
+/*************THREAD-DISPLAY-MEDIA-QUERIES:START****************/
 
-@media only screen and (min-width: 925px) {
+@media only screen and (max-width: 925px) {
   
   .right-shelf {
-    display: block;
+    display: none;
   }
 }
 
@@ -839,7 +868,7 @@ footer {
     display: flex;
     justify-content: center;
     width: 100%;
-    padding-left: 1rem;
+    /* padding-left: 1rem; */
     background-color: #232323;
 }
 
@@ -848,10 +877,16 @@ footer {
     margin-top: .75rem;
     font-size: .875rem;
 }
+
 .profile-content-container {
     padding-left: 1.5rem;
     width: calc(100% - 2.5rem);
-    max-width: 40rem;
+    /* max-width: 40rem; */
+    height: 100%;
+}
+
+.profile-content-container::-webkit-scrollbar {
+    display: none;
 }
 
 .placeholder-img {
@@ -931,7 +966,8 @@ footer {
 .error-banner {
    background-color: #501069;
     color: white;
-    height: 100vh;
+    /* height: 100vh; */
+    height: 100%;
     padding: 3rem;
 }
 .error-banner h1 {

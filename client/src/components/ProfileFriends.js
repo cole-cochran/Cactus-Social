@@ -32,22 +32,13 @@ function ProfileFriends(props) {
                                 {/* <Chip color="success" avatar={<Avatar src="../../public/assets/img/profile.svg" />}
                                 label={user.username} /> */}
                                 <button className="friend-chips">
-                                    <img className="friend-pic" src="../../assets/img/profile.svg" alt="friend avatar"/>
+                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                     {/* <p>Hello</p> */}
                                     <p>{user.username}</p>
                         </button>
                             </Link>
                         </li>
                     ))}
-                    <li>
-                        {/* <Link to={`/profile/${user._id}`}> */}
-                        <button className="friend-chips">
-                            <img className="friend-pic" src="../../assets/img/profile.svg" alt="friend avatar"/>
-                            <p>Hello</p>
-                            {/* <p>{user.username}</p> */}
-                        </button>
-                        {/* </Link> */}
-                    </li>
                 </ul>
                 </div>
             )}
