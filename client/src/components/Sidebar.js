@@ -15,12 +15,12 @@ const toggleSidebar = (e) => {
 	let sidebarDisplay = sidebar.getAttribute('data-sidebardisplay');
 
 	if (sidebarDisplay === 'hidden') {
-		e.target.style.transform = 'rotate(180deg)';
+		// e.target.style.transform = 'rotate(180deg)';
 		sidebar.style.left = '2.5rem';
 		sidebar.setAttribute('data-sidebardisplay', 'visible');
 		aside.style.width = '100%';
 	} else {
-		e.target.style.transform = '';
+		// e.target.style.transform = '';
 		sidebar.style.left = '-100%';
 		sidebar.setAttribute('data-sidebardisplay', 'hidden');
 		aside.style.width = '3rem';
@@ -48,8 +48,6 @@ function toggleSidebarPanelDisplay(e) {
 
 function Sidebar(props) {
 
-	// TODO (sidebar) Color coordinate active toggled sidebar
-
     const userId = AuthService.getProfile().data._id;
 
 	return (
@@ -59,7 +57,7 @@ function Sidebar(props) {
 					<li>
 						<img
 							onClick={toggleSidebar}
-							src="/assets/img/arrow-right.svg"
+							src="/assets/img/white-cactus.svg"
 							data-panel="threads-panel"
 							alt="click to open sidebar"
 						/>
@@ -67,7 +65,7 @@ function Sidebar(props) {
 					<li>
 						<img
 							onClick={toggleSidebarPanelDisplay}
-							src="/assets/img/thread.svg"
+							src="/assets/img/google-docs.svg"
 							data-panel="threads-panel"
 							alt="click to open sidebar"
 						/>
@@ -75,24 +73,24 @@ function Sidebar(props) {
 					<li>
 						<img
 							onClick={toggleSidebarPanelDisplay}
-							src="/assets/img/event.svg"
+							src="/assets/img/google-calendar.svg"
 							data-panel="events-panel"
 							alt="click to open profile"
 						/>
 					</li>
 					<li>
 						<Link to="/chat">
-							<img src="/assets/img/msg.svg" alt="click to open profile" />
+							<img src="/assets/img/speech-bubble.svg" alt="click to open profile" />
 						</Link>
 					</li>
 					<li>
 						<Link to={`/profile/${userId}`}>
-							<img src="/assets/img/profile.svg" alt="click to open profile" />
+							<img src="/assets/img/home-page.svg" alt="click to open profile" />
 						</Link>
 					</li>
 					<li>
 						<div onClick={AuthService.logout}>
-							<img src="/assets/img/logout.svg" alt="click to open profile" />
+							<img src="/assets/img/log-out.svg" alt="click to open profile" />
 						</div>
 					</li>
 				</ul>

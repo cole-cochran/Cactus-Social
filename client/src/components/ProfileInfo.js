@@ -187,14 +187,13 @@ function ProfileInfo(props) {
 		<div className="profile-wrapper">
 			<div className="profile-content-container">
 				<div className="profile-header">
-                    <div>
+                    <div className='profile-pic-div'>
                         <div style={imageStyles}>
                             <InsertEmoticonIcon sx={{ width: "200px", height: "200px", alignSelf: "center" }} />
                         </div>
                         {canEditProfile && 
-                        <div>
-                            <img style={{ backgroundColor: "white", padding: "5px", borderRadius: "50%", marginRight: "10px", position: "relative", bottom: "50px", left: "80px", cursor: "pointer"}} src="/assets/img/edit.svg" alt="edit button" id="editImage" onClick={handleOpen} />
-                        </div>}
+                        <img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
+						}
                     </div>
 					<h3>
 						{specificUser.first_name} {specificUser.last_name}
@@ -207,7 +206,7 @@ function ProfileInfo(props) {
                     <div className="user-bio">{specificUser.bio}</div>
                     {canEditProfile && 
                     <div style={{marginLeft: "10px"}}>
-                        <img style={{cursor: "pointer"}} src="/assets/img/edit.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+                        <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
                     </div>}
                 </div>
 				
@@ -216,13 +215,16 @@ function ProfileInfo(props) {
 						<ul>
 							{techData.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
-									<Chip label={tech} cstyle={{backgroundColor:'white'}} variant="outlined" />
+									{/* <Chip label={tech} style={{backgroundColor:'white'}} variant="outlined" /> */}
+									<button className="tech-chip">
+										{tech}
+									</button>
 								</li>
 							))}
                         </ul>
                         {canEditProfile && 
                         <div>
-                            <img style={{cursor: "pointer"}} src="/assets/img/edit.svg" alt="edit button" id="editTech" onClick={handleOpen} />
+                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
                         </div>}
 					</div>
 				</div>

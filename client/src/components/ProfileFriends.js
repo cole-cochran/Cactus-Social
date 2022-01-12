@@ -29,11 +29,25 @@ function ProfileFriends(props) {
                     {allUsers.map((user, index) => (
                         <li key={`${user}-${index}`}>
                             <Link to={`/profile/${user._id}`}>
-                                <Chip color="success" avatar={<Avatar src="../../public/assets/img/profile.svg" />}
-                                label={user.username} />
+                                {/* <Chip color="success" avatar={<Avatar src="../../public/assets/img/profile.svg" />}
+                                label={user.username} /> */}
+                                <button className="friend-chips">
+                                    <img className="friend-pic" src="../../assets/img/profile.svg" alt="friend avatar"/>
+                                    {/* <p>Hello</p> */}
+                                    <p>{user.username}</p>
+                        </button>
                             </Link>
                         </li>
                     ))}
+                    <li>
+                        {/* <Link to={`/profile/${user._id}`}> */}
+                        <button className="friend-chips">
+                            <img className="friend-pic" src="../../assets/img/profile.svg" alt="friend avatar"/>
+                            <p>Hello</p>
+                            {/* <p>{user.username}</p> */}
+                        </button>
+                        {/* </Link> */}
+                    </li>
                 </ul>
                 </div>
             )}
