@@ -98,7 +98,7 @@ const resolvers = {
 		// 	return allPins;
 		// },
 		pinnedPosts: async (parent, args, context) => {
-			const user = await User.findOne({_id: args.userId}).populate('pinned_posts');
+			const user = await User.findOne({_id: args.userId}).populate('pinned_posts').populate('pinned_posts.post');
 			const pinnedPosts = user.pinned_posts;
 			return pinnedPosts;
 		},
