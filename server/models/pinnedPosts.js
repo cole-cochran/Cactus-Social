@@ -17,7 +17,7 @@ const pinnedPostsSchema = new Schema({
     },
     post: {
         type: ObjectId,
-        ref: 'posts'
+        ref: 'Post'
     }
 });
 

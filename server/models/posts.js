@@ -30,10 +30,6 @@ const postSchema = new Schema({
         type: Boolean,
         default: false
     },
-    pinned: {
-        type: Boolean,
-        default: false
-    },
     thread: {
         type: ObjectId,
         ref:'Thread'

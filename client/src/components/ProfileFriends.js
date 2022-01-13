@@ -1,7 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
+
 // import { USER_FRIENDS } from '../utils/queries.js';
 import { ALL_USERS } from '../utils/queries';
 //* USER_FRIENDS accepts userId and returns the user's _id and friends which contains the friend's _id, username, and picture
@@ -14,10 +13,11 @@ import { useQuery } from '@apollo/client';
 // import AuthService from '../utils/auth';
 
 function ProfileFriends(props) {
-    const [searchUsername, setSearchUsername] = React.useState('');
+    // const [searchUsername, setSearchUsername] = React.useState('');
     // const friendsQuery = useQuery(USER_FRIENDS);
     const { loading, data } = useQuery(ALL_USERS);
     const allUsers = data?.allUsers || [];
+    console.log(allUsers);
 
     return (
         <React.Fragment>
@@ -34,7 +34,6 @@ function ProfileFriends(props) {
                                 label={user.username} /> */}
                                 <button className="friend-chips">
                                     <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                                    {/* <p>Hello</p> */}
                                     <p>{user.username}</p>
                         </button>
                             </Link>
