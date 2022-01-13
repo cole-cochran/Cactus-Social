@@ -385,8 +385,8 @@ mutation removeThread($threadId: ID!) {
 // * POST STUFF
 
 export const CREATE_POST = gql`
-mutation createPost($threadId: ID!, $post_text: String!) {
-    createPost( threadId: $threadId, post_text: $post_text) {
+mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
+    createPost( threadId: $threadId, post_text: $post_text, author: $author) {
         _id
         title
         posts {

@@ -7,11 +7,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
 // import { PINNED_POSTS } from '../utils/queries';
-import { ALL_THREAD_POSTS, THREAD_DETAILS } from '../utils/queries';
+import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import { ADD_POST_REACTION, REMOVE_THREAD, UNPIN_POST, UPDATE_POST, REMOVE_POST } from '../utils/mutations';
-import { CREATE_POST, PIN_POST } from '../utils/mutations';
+// import { ADD_POST_REACTION, REMOVE_THREAD, UPDATE_POST, REMOVE_POST } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST } from '../utils/mutations';
 
 //! Give description of imported mutations
 
@@ -28,22 +28,22 @@ const style = {
 	boxShadow: 24
 };
 
+
 function ThreadDisplay(props) {
 	
 	// TODO (threadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting
-
 	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
-
 	// TODO (threadDisplay) Allow only thread owners to delete thread
-
 	// TODO (threadDisplay) Allow users to unpin from their pinned posts
+
+	let updatedThreadPosts;
 
 	const { threadId } = useParams();
 
 	const [ createPost ] = useMutation(CREATE_POST);
 	// const [ removePost ] = useMutation(REMOVE_POST);
-	// const [ updatePinnedPost ] = useMutation(PIN_POST);
-	// const [ unpinPost ] = useMutation(UNPIN_POST);
+	const [ updatePinnedPost ] = useMutation(PIN_POST);
+	const [ removePinnedPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
 		variables: { threadId: threadId }
@@ -53,8 +53,14 @@ function ThreadDisplay(props) {
 		variables: { threadId: threadId }
 	});
 
-	const errors = singleThread.error || threadPosts.error;
-	const loading = singleThread.loading || threadPosts.loading;
+	const userData = useQuery(USER_PROFILE, {
+		variables: { userId: AuthService.getProfile().data._id }
+	});
+
+	const errors = singleThread.error || threadPosts.error || userData.error;
+	const loading = singleThread.loading || threadPosts.loading || userData.loading;
+
+	const [ open, setOpen ] = React.useState(false);
 
 	const [ newPostText, setNewPostText ] = React.useState('');
 	// const [editPost, setEditPost] = React.useState('');
@@ -65,64 +71,87 @@ function ThreadDisplay(props) {
         }
     );
 
+	const handleOpen = (event) => {
+        localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
+        setOpen(true);
+    }
+	const handleClose = (event) => {
+        localStorage.removeItem('postId');
+        setOpen(false);
+    }
+	
 	const handlePostSubmit = async (event) => {
 		event.preventDefault();
-
+		console.log(singleThread.data.threadDetails._id);
+		console.log(newPostText);
 		try {
 			// const { data } = 
 			await createPost({
 				variables: {
 					threadId: singleThread.data.threadDetails._id,
-                    post_text: newPostText
+                    post_text: newPostText,
+					author: AuthService.getProfile().data._id
 				}
 			});
 
 			setNewPostText('');
-            window.location.reload(false);
+			// setUpdatedPosts(true);
+            // window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
 	};
 
-    // const handlePinSubmit = async (event) => {
-	// 	event.preventDefault();
-    //     const postId = JSON.parse(localStorage.getItem('postId'))
-    //     // console.log(threadId) 
-    //     // console.log(pinnedPost.pinTitle) 
-    //     // console.log(pinnedPost.pinHash) 
-	// 	try {
-	// 		// const { data } = 
-	// 		await pinPost({
-	// 			variables: {
-    //                 userId: AuthService.getProfile().data._id,
-    //                 postId: postId,
-	// 				pinTitle: pinnedPost.pinTitle,
-    //                 pinHash: pinnedPost.pinHash
-	// 			}
-	// 		});
+    const handlePinPost = async (event) => {
+		// event.preventDefault();
+        const postId = JSON.parse(localStorage.getItem('postId'))
 
-	// 		setNewPostText('');
-    //         handleClose();
-    //         // window.location.assign(`/threads/${threadId}`);
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// };
+		try {
+			// const { data } = 
+			await updatePinnedPost({
+				variables: {
+                    userId: AuthService.getProfile().data._id,
+                    postId: postId,
+					pinTitle: pinnedPost.pinTitle,
+                    pinHash: pinnedPost.pinHash
+				}
+			});
 
-	// const handleUnpinPost = async (event) => {
-	// 	event.preventDefault();
-	// 	const postId = event.target.parentNode.parentNode.getAttribute('data-id');
-	// 	try {
-	// 		await unpinPost({
-	// 			variables: {
-	// 				threadId: threadId,
-	// 				postId: postId
-	// 			}
-	// 		})
-	// 	} catch (err) {
-	// 		console.error(err);
-	// 	}
-	// }
+			setPinnedPost({
+				pinTitle: '',
+				pinHash: ''
+			});
+
+			handleClose();
+
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	let usersThreadPins;
+
+	const handleUnpinPost = async (event) => {
+		event.preventDefault();
+		const postId = event.target.parentNode.parentNode.getAttribute('data-id');
+
+		const foundPinArr = usersThreadPins.filter((post) => (
+			post.post._id === postId ? post : null
+		));
+
+		const foundPin = foundPinArr[0];
+
+		try {
+			await removePinnedPost({
+				variables: {
+					userId: AuthService.getProfile().data._id,
+					pinnedId: foundPin._id
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+	}
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -142,28 +171,49 @@ function ThreadDisplay(props) {
         }
     };
 
-	const [ open, setOpen ] = React.useState(false);
-
-	const handleOpen = (event) => {
-        console.log(event.target.getAttribute('data-id'));
-		console.log(event.target.parentNode.parentNode.getAttribute('data-id'));
-        
-        localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
-
-        // event.stopPropagation();
-        setOpen(true);
-    }
-	const handleClose = (event) => {
-        localStorage.removeItem('postId');
-        setOpen(false);
-    }
-
 	if (loading) {
 		return <p>loading...</p>;
 	} else {
-		console.log(threadPosts.data);
-		console.log(singleThread.data);
+		// console.log(threadPosts.data);
+		// console.log(singleThread.data);
+		// console.log(userData.data.userProfile.pinned_posts);
 	}
+
+	if (userData.data.userProfile.pinned_posts.length) {
+		const allUserPins = userData.data.userProfile.pinned_posts;
+
+		usersThreadPins = allUserPins.filter((pinnedPost) => (
+			pinnedPost.post.thread._id === threadId
+		));
+
+		const userPinIds = usersThreadPins.map((pin) => {
+			return pin.post._id
+		});
+
+		console.log("user's thread pins", usersThreadPins);
+
+		console.log("user's thread pin ids", userPinIds);
+
+		console.log(threadPosts.data.allThreadPosts);
+
+		updatedThreadPosts = threadPosts.data.allThreadPosts.map((threadPost) => {
+			if (userPinIds.indexOf(threadPost._id) !== -1) {
+				console.log("found it")
+				return {
+					...threadPost,
+					pinned: true
+				}
+			} else {
+				console.log("nope")
+				return {
+					...threadPost,
+					pinned: false
+				}
+			}
+		});
+	}
+
+	console.log(updatedThreadPosts);
 
 	return (
 		<main className="thread-wrapper">
@@ -178,8 +228,7 @@ function ThreadDisplay(props) {
 				<div className="chats-container">
 					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
 					<div>
-						{/* //!  SET UP QUERY FOR USER'S PINS AND FILTER THREAD POSTS USER HAS PINNED THEN USE THAT TO ADD PINNED FLAG TO THREAD POSTS THEN RUN THIS SAME BOOLEAN CHECK */}
-						{threadPosts.data.allThreadPosts.map(
+						{updatedThreadPosts.map(
 							(post) => (
 								post.pinned ? (
 									<div className="chat subthread" data-id={post._id} key={post._id} >
@@ -198,7 +247,7 @@ function ThreadDisplay(props) {
 												{post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
 												</Link>
 										</button>
-										<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} />
+										<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={handleUnpinPost}/>
 										</div>
 									</div>
 								) : (
@@ -230,7 +279,7 @@ function ThreadDisplay(props) {
 						aria-describedby="modal-modal-description"
 					>
 						<Box sx={style}>
-							<form className="modal-form">
+							<form className="modal-form" onSubmit={handlePinPost}>
 								<div className="modal-header">
 									<h4>Add Subthread</h4>
 								</div>
@@ -241,16 +290,11 @@ function ThreadDisplay(props) {
 								<button className="modal-button" type="submit">
 									Add
 								</button>
-								{/* <button className="modal-button" type="click">
-									Unpin
-								</button> */}
 							</form>
 						</Box>
 					</Modal>
 				</div>
 				{/* </div> */}
-				{/* <div> */}
-				{/* <div className="chat-input"> */}
 				<form onSubmit={handlePostSubmit} className="chat-input">
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
                     <input onChange={handleChange} name="postText" value={newPostText} contentEditable></input>
@@ -258,7 +302,6 @@ function ThreadDisplay(props) {
 						<button type="submit" className="chat-input-send-button">Send</button>
 					</div>
 				</form>
-				{/* </div> */}
 			</div>
 		</main>
 	);

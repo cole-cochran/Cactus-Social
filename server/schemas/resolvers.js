@@ -21,7 +21,19 @@ const resolvers = {
 		userProfile: async (parent, args, context) => {
 			//! add user to the context when we create it and refer to the id as "_id"
 			// if (context.user) {
-			return await User.findOne({ _id: args.userId });
+			return await User.findOne({ _id: args.userId }).populate("pinned_posts").populate("pinned_posts.post")
+			.populate({
+				path: "pinned_posts",
+				model: "PinnedPost",
+				populate: {
+					path: "post",
+					model: "Post",
+					populate: {
+						path: "thread",
+						model: "Thread"
+					}
+				}
+			});
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -392,7 +404,7 @@ const resolvers = {
 				{
 					thread: threadId,
 					post_text: post_text,
-					author: context.user._id
+					author: author
 				}
 			);
 			const thread = await Thread.findOneAndUpdate(
@@ -463,8 +475,8 @@ const resolvers = {
 						pinned_posts: pinnedPost._id
 					}
 				},
-				{new: true, populate: {path: 'pinned_posts'}}
-			);
+				{new: true}
+			).populate('pinned_posts');
 			console.log(user);
 			return user;
 		},
@@ -478,7 +490,8 @@ const resolvers = {
 					$pull: {
 						pinned_posts: pinnedId
 					}
-				}
+				},
+				{new: true}
 			).populate('pinned_posts');
 			// .populate('pinned_posts.post');
 			return updatedUser;

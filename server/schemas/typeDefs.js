@@ -124,8 +124,9 @@ const typeDefs = gql`
         createThread(title: String!, moderator: ID!): Thread
         removeThread(threadId: ID!): User
 
-        createPost(threadId: ID!, post_text: String!): Thread
+        createPost(threadId: ID!, post_text: String!, author: ID!): Thread
         removePost(threadId: ID!, postId: ID!): Thread
+        
         updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
