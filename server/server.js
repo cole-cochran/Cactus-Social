@@ -3,6 +3,8 @@ const compression = require('compression');
 const logger = require('morgan');
 const path = require('path');
 const { ApolloServer } = require('apollo-server-express');
+const socketIo = require('socket.io');
+const http = require('http');
 
 //* set up port and express app
 const PORT = process.env.PORT || 3001;
@@ -41,10 +43,23 @@ app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
+//* http server that will serve the socket io server
+const httpServer = http.createServer(app);
+const io = new socketIo.Server(httpServer);
+
+//* on websocket connection console logs a user connected
+//* on websocket disconnect logs a user disconnected
+io.on('connection', (socket) => {
+	console.log('a user connected');
+	socket.on('disconnect', () => {
+		console.log('a user has disconnected');
+	});
+});
+
 //* set up server to listen on port and open connection to graphql
 db.once('open', () => {
-	app.listen(PORT, () => {
-		console.log(`App running on port ${PORT}!`);
+	httpServer.listen(PORT, () => {
+		console.log(`Server running on port ${PORT}!`);
 		console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
 	});
 });

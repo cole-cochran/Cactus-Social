@@ -31,7 +31,7 @@ const style = {
 
 function ProfileInfo(props) {
 	const { specificUser } = props;
-	console.log(specificUser);
+	// console.log(specificUser);
 
     //* UPDATE_PHOTO needs: userId and picture args
 	const [ updatePhoto ] = useMutation(UPDATE_PHOTO);

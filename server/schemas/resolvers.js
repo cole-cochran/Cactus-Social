@@ -1,6 +1,6 @@
-const { User, Comment, Post, Thread, Event } = require('../models/index');
+const { User, Comment, Post, Thread, Event, PinnedPost } = require('../models/index');
 const { signToken } = require('../utils/auth');
-const { AuthenticationError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
 //! ADD ARRAY OF PIN STRINGS TO THREADS MODEL 
 
@@ -12,7 +12,9 @@ const resolvers = {
 				.populate('threads')
 				.populate('events')
 				.populate('events.owner')
-				.populate('friends');
+				.populate('friends')
+				.populate('pinned_posts')
+				.populate('pinned_posts.post');
 		},
 
 		//* get single user
@@ -60,6 +62,14 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
+		oneUser: async (parent, args) => {
+			const user = await User.findOne({username: args.username});
+			if(!user) {
+				return new ApolloError('No user found with that username', '404');
+			}
+			return user;
+		},
+
 		//* find user's friends
 		userFriends: async (parent, args, context) => {
 			//! add user context to ensure they are logged in and change query in typeDefs
@@ -72,20 +82,25 @@ const resolvers = {
 		allPosts: async (parent, args, context) => {
 			return await Post.find({}).populate('author').populate('thread').populate('comments');
 		},
+		//* Old pinnedPosts
+		// pinnedPosts: async (parent, args, context) => {
+		// 	const { threadId } = args;
+		// 	const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
 
-		pinnedPosts: async (parent, args, context) => {
-			const { threadId } = args;
-			const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
+		// 	const allPins = [];
 
-			const allPins = [];
-
-			for (let pinnedPost of thread.pinned_posts) {
-				let post = await Post.findOne({ _id: pinnedPost }).populate('author');
+		// 	for (let pinnedPost of thread.pinned_posts) {
+		// 		let post = await Post.findOne({ _id: pinnedPost }).populate('author');
 				
-				allPins.push(post);
-			}
+		// 		allPins.push(post);
+		// 	}
 
-			return allPins;
+		// 	return allPins;
+		// },
+		pinnedPosts: async (parent, args, context) => {
+			const user = await User.findOne({_id: args.userId}).populate('pinned_posts').populate('pinned_posts.post');
+			const pinnedPosts = user.pinned_posts;
+			return pinnedPosts;
 		},
 
 		allComments: async (parent, args, context) => {
@@ -188,17 +203,26 @@ const resolvers = {
 
 		//* create a new user
 		createUser: async (parent, args) => {
-			const { first_name, last_name, username, email, password } = args;
-			const newUser = await User.create({ first_name, last_name, username, email, password });
-
-			const tokenData = {
-				username: newUser.username, 
-				email: newUser.email, 
-				_id: newUser._id
+			try{
+				const { first_name, last_name, username, email, password } = args;
+				const checkUsername = await User.findOne({ username });
+				if(checkUsername) {
+					return new ApolloError('Username already taken', 422);
+				}
+				const newUser = await User.create({ first_name, last_name, username, email, password });
+	
+				const tokenData = {
+					username: newUser.username, 
+					email: newUser.email, 
+					_id: newUser._id
+				}
+	
+				const token = signToken(tokenData);
+				return { token, newUser };
 			}
-
-			const token = signToken(tokenData);
-			return { token, newUser };
+			catch(err) {
+				return new ApolloError('Sign-up failed', '400');
+			}
 		},
 
 		//* add a new technology to user tech stack
@@ -450,6 +474,37 @@ const resolvers = {
 			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
+		},
+		//* New Pin Post Mutation
+		updatePinnedPost: async (parent, args, context) => {
+			const {userId, postId, pinTitle, pinHash} = args;
+			const pinnedPost = await PinnedPost.create({pinTitle: pinTitle, pinHash: pinHash, post: postId});
+			console.log(pinnedPost);
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$addToSet: {
+						pinned_posts: pinnedPost._id
+					}
+				},
+				{new: true, populate: {path: 'pinned_posts'}}
+			);
+			console.log(user);
+			return user;
+		},
+
+		removePinnedPost: async (parent, args, context) => {
+			const { userId, pinnedId } = args;
+			await PinnedPost.deleteOne({_id: pinnedId});
+			const updatedUser = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$pull: {
+						pinned_posts: pinnedId
+					}
+				}
+			).populate('pinned_posts').populate('pinned_posts.post');
+			return updatedUser;
 		},
 
 		//* give user ability to pin posts

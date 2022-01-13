@@ -3,6 +3,7 @@ const User = require("./users");
 const Post = require("./posts");
 const Comment = require("./comments");
 const Event = require("./events");
+const PinnedPost = require('./pinnedPosts');
 // const Tech = require("./tech");
 
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
     Thread: Thread,
     Event: Event,
     Post: Post,
-    Comment: Comment
+    Comment: Comment,
+    PinnedPost: PinnedPost
 };

@@ -86,13 +86,13 @@ function ThreadDisplay(props) {
     const handlePinSubmit = async (event) => {
 		event.preventDefault();
         const postId = JSON.parse(localStorage.getItem('postId'))
-        console.log(threadId) 
-        console.log(pinnedPost.pinTitle) 
-        console.log(pinnedPost.pinHash) 
+        // console.log(threadId) 
+        // console.log(pinnedPost.pinTitle) 
+        // console.log(pinnedPost.pinHash) 
 		try {
 			const { data } = await pinPost({
 				variables: {
-                    threadId: threadId,
+                    userId: Auth.getProfile().data._id,
                     postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash

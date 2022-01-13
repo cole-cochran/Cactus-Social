@@ -17,7 +17,6 @@ const userSchema = new Schema({
 	first_name: {
 		type: String,
 		trim: true,
-		lowercase: true,
 		required: 'First name is required',
 		minLength: [ 2, 'First Name cant be less than 2 characters' ],
 		maxLength: [ 40, 'First name cannot be longer than 40 character' ]
@@ -25,7 +24,6 @@ const userSchema = new Schema({
 	last_name: {
 		type: String,
 		trim: true,
-		lowercase: true,
 		required: 'Last name is required',
 		minLength: [ 2, 'Last Name cant be less than 2 characters' ],
 		maxLength: [ 40, 'Last name cannot be longer than 40 character' ]
@@ -95,6 +93,12 @@ const userSchema = new Schema({
 			type: ObjectId,
 			ref: 'User'
 		}
+	],
+	pinned_posts: [
+		{
+			type: ObjectId,
+			ref: 'PinnedPost'
+		}
 	]
 });
 
@@ -103,6 +107,8 @@ userSchema.pre('save', async function(next) {
 		const saltRounds = 10;
 		this.password = await bcrypt.hash(this.password, saltRounds);
 	}
+	this.first_name.charAt(0).toUpperCase() + this.first_name.slice(1);
+	this.last_name.charAt(0).toUpperCase() + this.last_name.slice(1);
 	next();
 });
 
