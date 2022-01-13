@@ -562,26 +562,14 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
 
 export const PIN_POST = gql`
 mutation updatePinnedPost($userId: ID!, $postId: ID!, $pinTitle: String, $pinHash: String) {
-    updatePinnedPost(userId: $userId, postId: $postId) {
+    updatePinnedPost(userId: $userId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
         pinned_posts {
             pinHash
             pinTitle
             post {
                 _id
-                post_text
-                date_created
-                author {
-                    _id
-                }
-                reactions
-                edited
-                pinned
-                comments {
-                    _id
-                }
             }
         }
-        
     }
 }
 `
