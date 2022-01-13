@@ -32,7 +32,6 @@ function SplashPage() {
 				autoPlay
 				loop
 				muted
-
 			>
 				<source src={CACTUSVIDEO} type="video/mp4" />
 			</video>

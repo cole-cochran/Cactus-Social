@@ -50,6 +50,10 @@
 
 //*  add hash option to create event, maybe that pops out a modal
 
+//*  Make pin modal dynamic to show pin form when unpinned and otherwise the option to remove the thread.
+
+//*  Make pinning respond to click on "pin icon" from MUI instead of div body. 
+
 //! ----------------------------------------------------------------------------------------------- 
 
 //?  EVENT CREATOR MODAL  (after hash command is entered)
@@ -60,3 +64,12 @@
 
 //! ----------------------------------------------------------------------------------------------- 
 
+//* DONE (eventsPanel) Query the database to get ALL_EVENTS so they can displayed in rows
+
+//* DONE (eventsPanel) use mutation to allow user to create event in pop-out modal with the event form in it.
+
+//* DONE (eventCreation) fix up event creation form and connect functionality
+
+//* DONE (sidebar) enable user to see all the events at their disposal by clicking on the event icon in the sidebar
+
+//* DONE (app) set up a route so that users can view events based on the event id that is identified in the params

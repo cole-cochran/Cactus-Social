@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Error from './pages/Error';
-import EventCreation from './components/EventCreation';
+// import EventCreation from './components/EventCreation';
 //*import browser router
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -42,6 +42,17 @@ const client = new ApolloClient({
 });
 
 function App() {
+
+	// TODO (app) Consider global state, reducers, and custom hooks
+
+	// TODO (app) need to refactor things into their own components ?
+
+	// TODO (app) look into getting the hashing functionality added for users posting in threads and commenting on posts and events
+
+	// TODO (app) Force the creation of an event to create a post in the associated thread. Allow users to make event either public, open to members of shared threads, visible to friends, or private to an invite only type thing that allows them to only invite certain members of their list of friends
+
+	// TODO (app) Need to add the ability for people to send and accept/deny friend requests. Maybe 
+
 	// console.log(AuthService.getProfile())
 	return (
 		// <ThreadCreation/>

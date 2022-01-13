@@ -363,7 +363,7 @@ mutation createThread($moderator: ID!, $title: String!) {
 }
 `;
 
-//! create mini modal to all owner to delete event
+//! create mini modal to allow owner to delete event
 // ! THIS WORKS BUT RETURNS THE WRONG THANG AT THE MOMENT. NEED CONTEXT TO RETURN PROPER USER
 
 export const REMOVE_THREAD = gql`
@@ -562,29 +562,34 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
 
 export const PIN_POST = gql`
 mutation updatePinnedPost($userId: ID!, $postId: ID!, $pinTitle: String, $pinHash: String) {
-    updatePinnedPost(userId: $userId, postId: $postId) {
+    updatePinnedPost(userId: $userId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
         pinned_posts {
             pinHash
             pinTitle
             post {
                 _id
-                post_text
-                date_created
-                author {
-                    _id
-                }
-                reactions
-                edited
-                pinned
-                comments {
-                    _id
-                }
             }
         }
-        
     }
 }
 `
+
+export const UNPIN_POST = gql`
+mutation removePinnedPost($userId: ID!, $pinnedId: ID!) {
+    removePinnedPost(userId: $userId, pinnedId: $pinnedId) {
+        _id
+        pinned_posts {
+            _id
+            pinHash
+            pinTitle
+            post {
+                _id
+            }
+        }
+    }
+}
+`
+
 
 //! IF THE TIME PERMITS, MAKE THIS INCLUDE USERNAME IN THE RESOLVERS AND MODELS
 export const ADD_POST_REACTION = gql`

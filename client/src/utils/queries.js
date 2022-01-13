@@ -36,6 +36,7 @@ export const ALL_USERS = gql`
 		}
 	}
 `;
+
 //* This is for internal use only
 export const ALL_THREADS = gql`
 query allThreads {
@@ -48,14 +49,6 @@ query allThreads {
 				_id
 			}
 			post_text
-		}
-		pinned_posts {
-			_id
-			author {
-				_id
-			}
-			pinTitle
-			pinHash
 		}
 		events {
 			title
@@ -154,7 +147,6 @@ export const ALL_POSTS = gql`
 			}
 			reactions
 			edited
-			pinned
 			thread {
 				_id
 				title
@@ -189,9 +181,6 @@ export const ALL_THREAD_POSTS = gql`
 			}
 			reactions
 			edited
-			pinned
-			pinHash
-			pinTitle
 			thread {
 				_id
 				title
@@ -355,7 +344,6 @@ export const THREAD_DETAILS = gql`
 				}
 				reactions
 				edited
-				pinned
 				comments {
 					_id
 				}
@@ -459,9 +447,6 @@ export const POST_DETAILS = gql`
 			}
 			reactions
 			edited
-			pinned
-			pinTitle
-			pinHash
 			thread {
 				_id
 				title

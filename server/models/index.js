@@ -7,7 +7,6 @@ const PinnedPost = require('./pinnedPosts');
 // const Tech = require("./tech");
 
 module.exports = {
-    // Tech: Tech,
     User: User,
     Thread: Thread,
     Event: Event,

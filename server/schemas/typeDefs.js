@@ -8,9 +8,6 @@ const typeDefs = gql`
         author: User
         reactions: [String]
         edited: Boolean
-        pinned: Boolean
-        pinTitle: String
-        pinHash: String
         thread: Thread
         comments: [Comment]
     }
@@ -54,7 +51,6 @@ const typeDefs = gql`
         _id: ID!
         title: String!
         posts: [Post]
-        pinned_posts: [Post]
         events: [Event]
         moderator: User
         members: [User]
@@ -112,13 +108,16 @@ const typeDefs = gql`
     type Mutation {
         updatePinnedPost(userId: ID!, postId: ID!, pinTitle: String, pinHash: String): User
         removePinnedPost(userId: ID!, pinnedId: ID!): User
+
         loginUser(username: String!, password: String!): Auth
         createUser(first_name: String!, last_name: String!, username: String!, email: String!, password: String!): Auth
 
         addTechnology(userId: ID!, technology: String!): User
         removeTechnology(userId: ID!, technology: String!): User
+
         addFriend(userId: ID!, friend: ID!): User
         removeFriend(userId: ID!, friend: ID!): User
+
         updatePhoto(userId: ID!, picture: String!): User
         updateBio(userId: ID!, bio: String!): User
 
@@ -128,9 +127,6 @@ const typeDefs = gql`
         createPost(threadId: ID!, post_text: String!): Thread
         removePost(threadId: ID!, postId: ID!): Thread
         updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
-
-        pinPost(threadId: ID!, postId: ID!, pinTitle: String!, pinHash: String!): Thread
-        unpinPost(threadId: ID!, postId: ID!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
 
@@ -149,8 +145,13 @@ const typeDefs = gql`
         createEventComment(eventId: ID!, comment_text: String!): Event
         removeEventComment(eventId: ID!, commentId: ID!): Event
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
+        
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
     }
 `;
 
 module.exports = typeDefs;
+
+
+// pinPost(threadId: ID!, postId: ID!, pinTitle: String!, pinHash: String!): Thread
+// unpinPost(threadId: ID!, postId: ID!): Thread

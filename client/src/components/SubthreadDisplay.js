@@ -1,5 +1,5 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
 
 import { useParams } from 'react-router-dom';
@@ -9,35 +9,42 @@ import AuthService from '../utils/auth';
 import { POST_DETAILS, ALL_POST_COMMENTS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-import {
-	REMOVE_POST,
-	UPDATE_POST,
-	UNPIN_POST,
-	ADD_POST_REACTION,
-	CREATE_POST_COMMENT,
-	REMOVE_POST_COMMENT,
-	UPDATE_POST_COMMENT,
-	ADD_POST_COMMENT_REACTION
-} from '../utils/mutations';
+// import {
+// 	REMOVE_POST,
+// 	UPDATE_POST,
+// 	UNPIN_POST,
+// 	ADD_POST_REACTION,
+// 	CREATE_POST_COMMENT,
+// 	REMOVE_POST_COMMENT,
+// 	UPDATE_POST_COMMENT,
+// 	ADD_POST_COMMENT_REACTION
+// } from '../utils/mutations';
+
+import { CREATE_POST_COMMENT } from '../utils/mutations';
 //! Give description of imported mutations
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
+// import Box from '@mui/material/Box';
+// import Typography from '@mui/material/Typography';
+// import Modal from '@mui/material/Modal';
+// import Avatar from '@mui/material/Avatar';
+// import Chip from '@mui/material/Chip';
 
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	boxShadow: 24
-};
+// const style = {
+// 	position: 'absolute',
+// 	top: '50%',
+// 	left: '50%',
+// 	transform: 'translate(-50%, -50%)',
+// 	width: 400,
+// 	bgcolor: 'background.paper',
+// 	boxShadow: 24
+// };
 
 function SubthreadDisplay(props) {
+	
+	// TODO (subthreadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting of comments
+
+	// TODO (subthreadDisplay) Option for flagging a comment as inappropriate ? 
+
 	const { postId } = useParams();
 
 	const [ createPostComment ] = useMutation(CREATE_POST_COMMENT);
@@ -60,7 +67,8 @@ function SubthreadDisplay(props) {
 		event.preventDefault();
 
 		try {
-			const { data } = await createPostComment({
+			// const { data } = 
+			await createPostComment({
 				variables: {
 					postId: postId,
 					comment_text: newCommentText,

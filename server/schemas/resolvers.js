@@ -28,7 +28,7 @@ const resolvers = {
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator').populate('pinned_posts');
+			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
 		},
 
 		allThreadPosts: async (parent, args, context) => {
@@ -51,13 +51,6 @@ const resolvers = {
 				.populate('events')
 				.populate('members')
 				.populate('moderator');
-				// .populate({ 
-				// 	path: 'posts',
-				// 	populate: {
-				// 		path: 'author',
-				// 		model: 'User'
-				// 	} 
-				// })
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -246,8 +239,6 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
-		//! FIX THIS MO FO ASAP
-
 		//* remove technology from user tech stack
 		removeTechnology: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
@@ -310,20 +301,6 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
-		// updateProfile: async (parent, args, context) => {
-		// 	const {userId, picture, bio, techArray} = args;
-		// 	const updatedUser = await User.findOneAndUpdate(
-		// 		{ _id: userId },
-		// 		{
-		// 			bio: bio,
-		// 			picture: picture,
-		// 			tech_stack: techArray
-		// 		},
-		// 		{ new: true }
-		// 	);
-		// 	return updatedUser;
-		// },
-
 		//* update the user's profile photo
 		updatePhoto: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
@@ -371,8 +348,6 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
-
-		//! CANT TEST UNTIL CONTEXT IS READY BECAUSE IT RETURNS THE USER WHO REMOVED THE THREAD
 
 		//* remove thread
 		removeThread: async (parent, args, context) => {
@@ -475,6 +450,7 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
+
 		//* New Pin Post Mutation
 		updatePinnedPost: async (parent, args, context) => {
 			const {userId, postId, pinTitle, pinHash} = args;
@@ -503,70 +479,71 @@ const resolvers = {
 						pinned_posts: pinnedId
 					}
 				}
-			).populate('pinned_posts').populate('pinned_posts.post');
+			).populate('pinned_posts');
+			// .populate('pinned_posts.post');
 			return updatedUser;
 		},
 
 		//* give user ability to pin posts
-		pinPost: async (parent, args, context) => {
-			//! probably need to add user context here as well to make sure they have permission
-			// if (context.user) {
-			const { threadId, postId, pinTitle, pinHash } = args;
-			await Post.findOneAndUpdate(
-				{ _id: postId },
-				{
-					pinTitle: pinTitle,
-					pinHash: pinHash,
-					pinned: true
-				},
-				{ new: true }
-			);
+		// pinPost: async (parent, args, context) => {
+		// 	//! probably need to add user context here as well to make sure they have permission
+		// 	// if (context.user) {
+		// 	const { threadId, postId, pinTitle, pinHash } = args;
+		// 	await Post.findOneAndUpdate(
+		// 		{ _id: postId },
+		// 		{
+		// 			pinTitle: pinTitle,
+		// 			pinHash: pinHash,
+		// 			pinned: true
+		// 		},
+		// 		{ new: true }
+		// 	);
 
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{ 
-					$addToSet: 
-						{
-							pinned_posts: postId
-						} 
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
+		// 	const thread = await Thread.findOneAndUpdate(
+		// 		{ _id: threadId },
+		// 		{ 
+		// 			$addToSet: 
+		// 				{
+		// 					pinned_posts: postId
+		// 				} 
+		// 		},
+		// 		{ new: true }
+		// 	).populate('posts').populate('moderator').populate('members');
 
-			return thread;
-			// }
-			// throw new AuthenticationError('Could not find User!');
-		},
+		// 	return thread;
+		// 	// }
+		// 	// throw new AuthenticationError('Could not find User!');
+		// },
 
-		//* give user ability to unpin posts
-		unpinPost: async (parent, args, context) => {
-			//! probably need to add user context here as well to make sure they have permission
-			const { threadId, postId } = args;
-			await Post.findOneAndUpdate(
-				{ _id: postId },
-				{
-					pinTitle: '',
-					pinHash: '',
-					pinned: false
-				},
-				{ new: true }
-			);
+		// //* give user ability to unpin posts
+		// unpinPost: async (parent, args, context) => {
+		// 	//! probably need to add user context here as well to make sure they have permission
+		// 	const { threadId, postId } = args;
+		// 	await Post.findOneAndUpdate(
+		// 		{ _id: postId },
+		// 		{
+		// 			pinTitle: '',
+		// 			pinHash: '',
+		// 			pinned: false
+		// 		},
+		// 		{ new: true }
+		// 	);
 
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{ 
-					$pull: 
-						{
-							pinned_posts: postId
-						} 
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
+		// 	const thread = await Thread.findOneAndUpdate(
+		// 		{ _id: threadId },
+		// 		{ 
+		// 			$pull: 
+		// 				{
+		// 					pinned_posts: postId
+		// 				} 
+		// 		},
+		// 		{ new: true }
+		// 	).populate('posts').populate('moderator').populate('members');
 
-			return thread;
-			// }
-			// throw new AuthenticationError('Could not find User!');
-		},
+		// 	return thread;
+		// 	// }
+		// 	// throw new AuthenticationError('Could not find User!');
+		// },
 
 		//! PROBABLY HOLD THIS OFF UNTIL LAST BECAUSE REACTIONS NEED TO BE AN OBJECT WITH USERNAME INCLUDED OR THEY COULD JUST BE ANONYMOUS
 		//* let users react to a post

@@ -1,20 +1,67 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import { useMutation } from '@apollo/client';
+import { CREATE_THREAD } from '../utils/mutations';
+import AuthService from '../utils/auth';
 
-export default function FullWidthTextField() {
+export default function ThreadCreation() {
+	const [ createThread, { error } ] = useMutation(CREATE_THREAD);
 
-    return (
-      <div>
-        <Box
-          sx={{ width: 500, maxWidth: '100%', m: 2 }}
-        >
-          <TextField fullWidth label="Title" id="fullWidth" />
-        </Box>
-        
-        
-      </div>
-    )
-  };
+	const [ threadData, setThreadData ] = React.useState({
+		title: '',
+		moderator: AuthService.getProfile().data._id
+	});
 
-  export default ThreadCreation;
+	const handleInputChange = (event) => {
+		const { name, value } = event.target;
+		setThreadData({ ...threadData, [name]: value });
+	};
+
+	const handleThreadSubmit = async (event) => {
+		event.preventDefault();
+
+		const token = AuthService.loggedIn() ? AuthService.getToken() : null;
+
+		if (!token) {
+			return false;
+		}
+
+		try {
+			const res = await createThread({
+				variables: {
+					title: threadData.threadTitle,
+					// moderator: AuthService.getProfile().data._id
+					moderator: AuthService.getProfile().data._id
+				}
+			});
+
+			console.log(res.data);
+			window.location.replace(`/threads/${res.data.createThread._id}`);
+		} catch (err) {
+			console.error(err);
+		}
+
+		setThreadData({
+			title: ''
+		});
+	};
+
+	return (
+		<form className="modal-form" onSubmit={handleThreadSubmit}>
+			<div className="modal-header">
+				<h4>Create New Thread</h4>
+			</div>
+			<label>Title</label>
+			<input
+				type="text"
+				name="title"
+				onChange={handleInputChange}
+				value={threadData.title}
+				placeholder="e.g. Halo 2 Forum"
+				required
+			/>
+			<button className="modal-button" type="submit">
+				Create
+			</button>
+		</form>
+	);
+}

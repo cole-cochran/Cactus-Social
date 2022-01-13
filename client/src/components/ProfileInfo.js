@@ -1,9 +1,9 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import FaceIcon from '@mui/icons-material/Face';
+// import Stack from '@mui/material/Stack';
+// import FaceIcon from '@mui/icons-material/Face';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
@@ -30,6 +30,11 @@ const style = {
 };
 
 function ProfileInfo(props) {
+
+	// TODO (profileInfo) Allow user quick access to create a new event or start a new thread without the sidebar
+
+	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
+
 	const { specificUser } = props;
 	// console.log(specificUser);
 
@@ -102,7 +107,8 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		try {
 			if (event.target.id === 'userBio') {
-				const updatedBio = await updateBio({
+				// const updatedBio = 
+				await updateBio({
 					variables: {
 						userId: AuthService.getProfile().data._id,
 						bio: bio
@@ -111,7 +117,8 @@ function ProfileInfo(props) {
 				setBio('');
 				window.location.reload(false);
 			} else if (event.target.id === 'userPhoto') {
-				const updatedPhoto = await updatePhoto({
+				// const updatedPhoto = 
+				await updatePhoto({
 					variables: {
 						userId: AuthService.getProfile().data._id,
 						picture: photo
@@ -180,14 +187,13 @@ function ProfileInfo(props) {
 		<div className="profile-wrapper">
 			<div className="profile-content-container">
 				<div className="profile-header">
-                    <div>
+                    <div className='profile-pic-div'>
                         <div style={imageStyles}>
                             <InsertEmoticonIcon sx={{ width: "200px", height: "200px", alignSelf: "center" }} />
                         </div>
                         {canEditProfile && 
-                        <div>
-                            <img style={{ backgroundColor: "white", padding: "5px", borderRadius: "50%", marginRight: "10px", position: "relative", bottom: "50px", left: "80px", cursor: "pointer"}} src="/assets/img/edit.svg" alt="edit button" id="editImage" onClick={handleOpen} />
-                        </div>}
+                        <img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
+						}
                     </div>
 					<h3>
 						{specificUser.first_name} {specificUser.last_name}
@@ -200,7 +206,7 @@ function ProfileInfo(props) {
                     <div className="user-bio">{specificUser.bio}</div>
                     {canEditProfile && 
                     <div style={{marginLeft: "10px"}}>
-                        <img style={{cursor: "pointer"}} src="/assets/img/edit.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+                        <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
                     </div>}
                 </div>
 				
@@ -209,13 +215,16 @@ function ProfileInfo(props) {
 						<ul>
 							{techData.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
-									<Chip label={tech} cstyle={{backgroundColor:'white'}} variant="outlined" />
+									{/* <Chip label={tech} style={{backgroundColor:'white'}} variant="outlined" /> */}
+									<button className="tech-chip">
+										{tech}
+									</button>
 								</li>
 							))}
                         </ul>
                         {canEditProfile && 
                         <div>
-                            <img style={{cursor: "pointer"}} src="/assets/img/edit.svg" alt="edit button" id="editTech" onClick={handleOpen} />
+                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
                         </div>}
 					</div>
 				</div>

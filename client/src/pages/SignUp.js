@@ -50,11 +50,11 @@ function SignUp() {
 			<div className="signup-form-section">
 				<div className="center-signup-form">
 					<div>
-						<img className="one-cacti-illustration" src="/assets/img/one-cacti-illustration.svg"/>
+						<img className="one-cacti-illustration" src="/assets/img/one-cacti-illustration.svg" alt="one cactus"/>
 					</div>
 				{data ? (
 					<p>
-						Success! You may now head <Link to="/">back to the homepage.</Link>
+						Success! You may now head <Link to="/">Back to the homepage</Link>
 					</p>
 				) : (
 					<form class="signup-form" onSubmit={handleFormSubmit}>
@@ -133,7 +133,7 @@ function SignUp() {
 				)}
 				{error && <div className="my-3 p-3 bg-danger text-white">{error.message}</div>}
 					<div>
-						<img className="two-cacti-illustration" src="/assets/img/two-cacti-illustration.svg"/>
+						<img className="two-cacti-illustration" src="/assets/img/two-cacti-illustration.svg" alt="two cacti"/>
 					</div>
 				</div>
 			</div>
