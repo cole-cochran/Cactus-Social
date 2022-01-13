@@ -25,6 +25,9 @@ function Profile(props) {
     });
 
     const specificUser = data?.userProfile || {};
+    // console.log(specificUser);
+    // const [ addedTech, setAddedTech ] = React.useState('');
+	// const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
 
     if (loading) {
         return <p>loading...</p>;

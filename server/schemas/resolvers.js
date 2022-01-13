@@ -202,6 +202,9 @@ const resolvers = {
 				if(checkUsername) {
 					return new ApolloError('Username already taken', 422);
 				}
+				// if(password.length < 6 || password.length > 32) {
+				// 	return new ApolloError('Password must be at least 6 characters long')
+				// }
 				const newUser = await User.create({ first_name, last_name, username, email, password });
 	
 				const tokenData = {
@@ -214,6 +217,7 @@ const resolvers = {
 				return { token, newUser };
 			}
 			catch(err) {
+				console.log(err);
 				return new ApolloError('Sign-up failed', '400');
 			}
 		},
