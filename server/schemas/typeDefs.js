@@ -102,13 +102,7 @@ const typeDefs = gql`
         userEvents(userId: ID!): [Event]
         userFriends(userId: ID!): User
 
-<<<<<<< HEAD
-        # pinned post for all to see on threads OR for users to quickly access important posts (second one sounds cool)
-
-        pinnedPosts(threadId: ID!): [Post]
-=======
         pinnedPosts(userId: ID!): [Post]
->>>>>>> faec9ac1079a62f6c8159cdb5a3f147c273e2020
         threadEvents(threadId: ID!): [Event]
         threadDetails(threadId: ID!): Thread
         eventDetails(eventId: ID!): Event
