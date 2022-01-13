@@ -479,7 +479,8 @@ const resolvers = {
 						pinned_posts: pinnedId
 					}
 				}
-			).populate('pinned_posts').populate('pinned_posts.post');
+			).populate('pinned_posts');
+			// .populate('pinned_posts.post');
 			return updatedUser;
 		},
 

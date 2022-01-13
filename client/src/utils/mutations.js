@@ -574,6 +574,23 @@ mutation updatePinnedPost($userId: ID!, $postId: ID!, $pinTitle: String, $pinHas
 }
 `
 
+export const UNPIN_POST = gql`
+mutation removePinnedPost($userId: ID!, $pinnedId: ID!) {
+    removePinnedPost(userId: $userId, pinnedId: $pinnedId) {
+        _id
+        pinned_posts {
+            _id
+            pinHash
+            pinTitle
+            post {
+                _id
+            }
+        }
+    }
+}
+`
+
+
 //! IF THE TIME PERMITS, MAKE THIS INCLUDE USERNAME IN THE RESOLVERS AND MODELS
 export const ADD_POST_REACTION = gql`
 mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {

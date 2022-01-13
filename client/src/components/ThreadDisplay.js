@@ -42,7 +42,7 @@ function ThreadDisplay(props) {
 
 	const [ createPost ] = useMutation(CREATE_POST);
 	// const [ removePost ] = useMutation(REMOVE_POST);
-	const [ pinPost ] = useMutation(PIN_POST);
+	// const [ updatePinnedPost ] = useMutation(PIN_POST);
 	// const [ unpinPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
@@ -84,30 +84,30 @@ function ThreadDisplay(props) {
 		}
 	};
 
-    const handlePinSubmit = async (event) => {
-		event.preventDefault();
-        const postId = JSON.parse(localStorage.getItem('postId'))
-        // console.log(threadId) 
-        // console.log(pinnedPost.pinTitle) 
-        // console.log(pinnedPost.pinHash) 
-		try {
-			// const { data } = 
-			await pinPost({
-				variables: {
-                    userId: AuthService.getProfile().data._id,
-                    postId: postId,
-					pinTitle: pinnedPost.pinTitle,
-                    pinHash: pinnedPost.pinHash
-				}
-			});
+    // const handlePinSubmit = async (event) => {
+	// 	event.preventDefault();
+    //     const postId = JSON.parse(localStorage.getItem('postId'))
+    //     // console.log(threadId) 
+    //     // console.log(pinnedPost.pinTitle) 
+    //     // console.log(pinnedPost.pinHash) 
+	// 	try {
+	// 		// const { data } = 
+	// 		await pinPost({
+	// 			variables: {
+    //                 userId: AuthService.getProfile().data._id,
+    //                 postId: postId,
+	// 				pinTitle: pinnedPost.pinTitle,
+    //                 pinHash: pinnedPost.pinHash
+	// 			}
+	// 		});
 
-			setNewPostText('');
-            handleClose();
-            // window.location.assign(`/threads/${threadId}`);
-		} catch (err) {
-			console.error(err);
-		}
-	};
+	// 		setNewPostText('');
+    //         handleClose();
+    //         // window.location.assign(`/threads/${threadId}`);
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// };
 
 	// const handleUnpinPost = async (event) => {
 	// 	event.preventDefault();
@@ -230,7 +230,7 @@ function ThreadDisplay(props) {
 						aria-describedby="modal-modal-description"
 					>
 						<Box sx={style}>
-							<form className="modal-form" onSubmit={handlePinSubmit}>
+							<form className="modal-form">
 								<div className="modal-header">
 									<h4>Add Subthread</h4>
 								</div>
