@@ -50,7 +50,9 @@
 
 //*  add hash option to create event, maybe that pops out a modal
 
-//* Make pin modal dynamic to show pin form when unpinned and otherwise the option to remove the thread.
+//*  Make pin modal dynamic to show pin form when unpinned and otherwise the option to remove the thread.
+
+//*  Make pinning respond to click on "pin icon" from MUI instead of div body. 
 
 //! ----------------------------------------------------------------------------------------------- 
 

@@ -12,6 +12,7 @@ Current Version Deployment Date: December 12th, 2021
 
 <!-- GIF DEMO OF APPLICATION COMING SOON-->
 
+
 --- 
 
 <br>
@@ -109,7 +110,7 @@ Visit the deployed application linked above and create your new account!
 
 To get started, simply visit the deployed application (linked at the top of this README) and sign up for a new account!
 
-<!-- video of splashpage -->
+<!-- VIDEO DEMO OF USING APP -->
 
 <br>
 

@@ -10,13 +10,9 @@ import { useQuery, useMutation } from '@apollo/client';
 import { ALL_THREAD_POSTS, THREAD_DETAILS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import { UPDATE_POST, REMOVE_POST, ADD_POST_REACTION, REMOVE_THREAD, UNPIN_POST } from '../utils/mutations';
-import { UNPIN_POST } from '../utils/mutations';
+// import { ADD_POST_REACTION, REMOVE_THREAD } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, UPDATE_POST, REMOVE_POST } from '../utils/mutations';
 
-import {
-	CREATE_POST,
-	PIN_POST
-} from '../utils/mutations';
 //! Give description of imported mutations
 
 import Box from '@mui/material/Box';
@@ -33,9 +29,6 @@ const style = {
 };
 
 function ThreadDisplay(props) {
-
-	
-	// TODO (threadDisplay) Make pinning respond to click on "pin icon" from MUI instead of div body. 
 	
 	// TODO (threadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting
 
