@@ -28,8 +28,6 @@ function Profile(props) {
 
     if (loading) {
         return <p>loading...</p>;
-    } else {
-        console.log(specificUser.data)
     }
 
     return (

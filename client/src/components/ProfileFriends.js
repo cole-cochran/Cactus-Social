@@ -14,7 +14,8 @@ import { useQuery } from '@apollo/client';
 // import AuthService from '../utils/auth';
 
 function ProfileFriends(props) {
-
+    const [searchUsername, setSearchUsername] = React.useState('');
+    const friendsQuery = useQuery(USER_FRIENDS);
     const { loading, data } = useQuery(ALL_USERS);
     const allUsers = data?.allUsers || [];
 

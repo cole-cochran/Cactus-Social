@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-// import AuthService from '../utils/auth';
+import AuthService from '../utils/auth';
 
 // import { PINNED_POSTS } from '../utils/queries';
 import { ALL_THREAD_POSTS, THREAD_DETAILS } from '../utils/queries';
@@ -86,16 +86,15 @@ function ThreadDisplay(props) {
 
     const handlePinSubmit = async (event) => {
 		event.preventDefault();
-        const postId = JSON.parse(localStorage.getItem('postId'));
-
-        console.log(threadId) 
-        console.log(pinnedPost.pinTitle) 
-        console.log(pinnedPost.pinHash) 
+        const postId = JSON.parse(localStorage.getItem('postId'))
+        // console.log(threadId) 
+        // console.log(pinnedPost.pinTitle) 
+        // console.log(pinnedPost.pinHash) 
 		try {
 			// const { data } = 
 			await pinPost({
 				variables: {
-                    threadId: threadId,
+                    userId: AuthService.getProfile().data._id,
                     postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash
