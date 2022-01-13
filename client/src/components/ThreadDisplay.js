@@ -10,8 +10,8 @@ import AuthService from '../utils/auth';
 import { ALL_THREAD_POSTS, THREAD_DETAILS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import { ADD_POST_REACTION, REMOVE_THREAD } from '../utils/mutations';
-import { CREATE_POST, PIN_POST, UNPIN_POST, UPDATE_POST, REMOVE_POST } from '../utils/mutations';
+// import { ADD_POST_REACTION, REMOVE_THREAD, UNPIN_POST, UPDATE_POST, REMOVE_POST } from '../utils/mutations';
+import { CREATE_POST, PIN_POST } from '../utils/mutations';
 
 //! Give description of imported mutations
 
@@ -43,7 +43,7 @@ function ThreadDisplay(props) {
 	const [ createPost ] = useMutation(CREATE_POST);
 	// const [ removePost ] = useMutation(REMOVE_POST);
 	const [ pinPost ] = useMutation(PIN_POST);
-	const [ unpinPost ] = useMutation(UNPIN_POST);
+	// const [ unpinPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
 		variables: { threadId: threadId }
@@ -109,20 +109,20 @@ function ThreadDisplay(props) {
 		}
 	};
 
-	const handleUnpinPost = async (event) => {
-		event.preventDefault();
-		const postId = event.target.parentNode.parentNode.getAttribute('data-id');
-		try {
-			await unpinPost({
-				variables: {
-					threadId: threadId,
-					postId: postId
-				}
-			})
-		} catch (err) {
-			console.error(err);
-		}
-	}
+	// const handleUnpinPost = async (event) => {
+	// 	event.preventDefault();
+	// 	const postId = event.target.parentNode.parentNode.getAttribute('data-id');
+	// 	try {
+	// 		await unpinPost({
+	// 			variables: {
+	// 				threadId: threadId,
+	// 				postId: postId
+	// 			}
+	// 		})
+	// 	} catch (err) {
+	// 		console.error(err);
+	// 	}
+	// }
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -178,6 +178,7 @@ function ThreadDisplay(props) {
 				<div className="chats-container">
 					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
 					<div>
+						{/* //!  SET UP QUERY FOR USER'S PINS AND FILTER THREAD POSTS USER HAS PINNED THEN USE THAT TO ADD PINNED FLAG TO THREAD POSTS THEN RUN THIS SAME BOOLEAN CHECK */}
 						{threadPosts.data.allThreadPosts.map(
 							(post) => (
 								post.pinned ? (
@@ -197,7 +198,7 @@ function ThreadDisplay(props) {
 												{post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
 												</Link>
 										</button>
-										<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={handleUnpinPost} />
+										<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} />
 										</div>
 									</div>
 								) : (
