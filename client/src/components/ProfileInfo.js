@@ -1,9 +1,9 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import FaceIcon from '@mui/icons-material/Face';
+// import Stack from '@mui/material/Stack';
+// import FaceIcon from '@mui/icons-material/Face';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
@@ -30,6 +30,10 @@ const style = {
 };
 
 function ProfileInfo(props) {
+	// TODO (profileInfo) Allow user quick access to create a new event or start a new thread without the sidebar
+
+	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
+
 	const { specificUser } = props;
 	// console.log(specificUser);
 
