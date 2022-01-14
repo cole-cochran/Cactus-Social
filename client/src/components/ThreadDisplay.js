@@ -40,9 +40,19 @@ function ThreadDisplay(props) {
 
 	const { threadId } = useParams();
 
-	const [ createPost ] = useMutation(CREATE_POST);
+	const [ createPost ] = useMutation(CREATE_POST, {
+		refetchQueries: [
+			ALL_THREAD_POSTS,
+			'allThreadPosts'
+		],
+	});
 	// const [ removePost ] = useMutation(REMOVE_POST);
-	const [ updatePinnedPost ] = useMutation(PIN_POST);
+	const [ updatePinnedPost ] = useMutation(PIN_POST, {
+		refetchQueries: [
+			USER_PROFILE,
+			'userProfile'
+		],
+	});
 	const [ removePinnedPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
@@ -82,8 +92,8 @@ function ThreadDisplay(props) {
 	
 	const handlePostSubmit = async (event) => {
 		event.preventDefault();
-		console.log(singleThread.data.threadDetails._id);
-		console.log(newPostText);
+		// console.log(singleThread.data.threadDetails._id);
+		// console.log(newPostText);
 		try {
 			// const { data } = 
 			await createPost({
@@ -93,17 +103,17 @@ function ThreadDisplay(props) {
 					author: AuthService.getProfile().data._id
 				}
 			});
-
-			setNewPostText('');
 			// setUpdatedPosts(true);
-            window.location.reload(false);
+            // window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
+
+		setNewPostText('');
 	};
 
     const handlePinPost = async (event) => {
-		// event.preventDefault();
+		event.preventDefault();
         const postId = JSON.parse(localStorage.getItem('postId'))
 
 		try {

@@ -467,17 +467,15 @@ const resolvers = {
 		updatePinnedPost: async (parent, args, context) => {
 			const {userId, postId, pinTitle, pinHash} = args;
 			const pinnedPost = await PinnedPost.create({pinTitle: pinTitle, pinHash: pinHash, post: postId});
-			console.log(pinnedPost);
 			const user = await User.findOneAndUpdate(
 				{_id: userId},
 				{
-					$addToSet: {
+					$push: {
 						pinned_posts: pinnedPost._id
 					}
 				},
 				{new: true}
 			).populate('pinned_posts');
-			console.log(user);
 			return user;
 		},
 
@@ -493,7 +491,6 @@ const resolvers = {
 				},
 				{new: true}
 			).populate('pinned_posts');
-			// .populate('pinned_posts.post');
 			return updatedUser;
 		},
 
