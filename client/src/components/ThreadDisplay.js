@@ -96,7 +96,7 @@ function ThreadDisplay(props) {
 
 			setNewPostText('');
 			// setUpdatedPosts(true);
-            // window.location.reload(false);
+            window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
@@ -169,14 +169,10 @@ function ThreadDisplay(props) {
                 pinHash: value
             })
         }
-    };
+    }; 
 
 	if (loading) {
-		return <p>loading...</p>;
-	} else {
-		// console.log(threadPosts.data);
-		// console.log(singleThread.data);
-		// console.log(userData.data.userProfile.pinned_posts);
+		return <img src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
 	}
 
 	if (userData.data.userProfile.pinned_posts.length) {
@@ -218,7 +214,6 @@ function ThreadDisplay(props) {
 	return (
 		<main className="thread-wrapper">
 			<div className="thread-content-container">
-				{/* <div className="top-panel"> */}
 				<div className="thread-header">
 					<h3>{singleThread.data.threadDetails.title}</h3>
 					<div>
@@ -294,7 +289,6 @@ function ThreadDisplay(props) {
 						</Box>
 					</Modal>
 				</div>
-				{/* </div> */}
 				<form onSubmit={handlePostSubmit} className="chat-input">
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
                     <input onChange={handleChange} name="postText" value={newPostText} contentEditable></input>

@@ -36,7 +36,7 @@ function ThreadsPanel() {
 
     return (
         <div id="sidebar-thread-panel">
-            <div class="thread-sidebar-header">
+            <div className="thread-sidebar-header">
                 <h3>Threads</h3> 
                 <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>

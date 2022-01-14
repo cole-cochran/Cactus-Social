@@ -398,7 +398,6 @@ mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -432,7 +431,6 @@ mutation removePost($threadId: ID!, $postId: ID!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -466,7 +464,6 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -606,7 +603,6 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -639,7 +635,6 @@ mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -674,7 +669,6 @@ mutation removePostComment($postId: ID!, $commentId: ID!) {
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -709,7 +703,6 @@ mutation updatePostComment($postId: ID!, $commentId: ID!, $comment_text: String!
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -744,7 +737,6 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -811,7 +803,6 @@ mutation removeEvent($threadId: ID!, $eventId: ID!, $userId: ID!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
