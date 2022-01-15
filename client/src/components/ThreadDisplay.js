@@ -244,7 +244,7 @@ function ThreadDisplay(props) {
 
 		// console.log("user's thread pin ids", userPinIds);
 
-		// console.log(threadPosts.data.allThreadPosts);
+		console.log("thread posts", threadPosts.data.allThreadPosts);
 
 		updatedThreadPosts = threadPosts.data.allThreadPosts.map((threadPost) => {
 			if (userPinIds.indexOf(threadPost._id) !== -1) {
@@ -259,6 +259,9 @@ function ThreadDisplay(props) {
 				}
 			}
 		});
+	} else {
+		updatedThreadPosts = threadPosts.data.allThreadPosts;
+		console.log(updatedThreadPosts)
 	}
 
 	const scroll = () => {
@@ -271,7 +274,7 @@ function ThreadDisplay(props) {
 
 	return (
 		<main className="thread-wrapper">
-			<div className="thread-content-container"onLoad={scroll}>
+			<div className="thread-content-container" onLoad={scroll}>
 				<div className="thread-header">
 					<h3>{singleThread.data.threadDetails.title}</h3>
 					<div>
