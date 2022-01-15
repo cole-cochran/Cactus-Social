@@ -177,6 +177,7 @@ function ThreadDisplay(props) {
 			console.error(err);
 		}
 		setEditPost({ post_text: "" })
+		handleCloseEditor();
 	}
 
 	let usersThreadPins;
