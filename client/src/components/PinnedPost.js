@@ -1,18 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AuthService from "../utils/auth";
 
 export function PinnedPost(props) {
 
-    const { post, unpin } = props;
+    const { post, unpin, openEditor } = props;
 
+    const owner = AuthService.getProfile().data._id;
+    
     return (
         <div className="chat subthread" data-id={post._id} key={post._id} >
-            <div className="pos">
-                <span className="chat-name">{post.author.username}</span>
-                <span className="chat-date">{post.date_created}</span>
-                {post.pinHash && (
-                    <span className="subthread-title">{post.pinHash}</span>
-                )}
+            <div className="pos post-bar">
+                <div>
+                    <span className="chat-name">{post.author.username}</span>
+                    <span className="chat-date">{post.date_created}</span>
+                    {post.edited ? (<span className="edit-span">(edited)</span>):(null)}
+                </div>
+                {
+                owner === post.author._id && 
+                    <img src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={openEditor}/>
+                }
             </div>
             <p>{post.post_text}</p>
             <div className='post-options'>

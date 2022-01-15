@@ -14,12 +14,13 @@ export function ThreadPost(props) {
                 <div>
                     <span className="chat-name">{post.author.username}</span>
                     <span className="chat-date">{post.date_created}</span>
+                    {post.edited ? (<span className="edit-span">(edited)</span>):(null)}
                 </div>
-                {owner === post.author._id ? (
-                    <div>
-                        <img src="../../assets/img/dotdotdot.svg" alt="post settings" style={{width: "24px", height: "24px", cursor: "pointer", marginRight: "4px"}} onClick={openEditor}/>
-                    </div>
-                ) : (null)}
+                {
+                owner === post.author._id ? 
+                    <img src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={openEditor}/>
+                : <React.Fragment />
+                }
             </div>
             <p className="pos post-text">{post.post_text}</p>
             <div className='post-options'>
@@ -29,7 +30,10 @@ export function ThreadPost(props) {
                     {post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
                     </Link>
                 </button>
+                {/* {owner === post.author._id ? 
+                (null) : ( */}
                 <img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={pin}/>
+                {/* )} */}
             </div>
         </div>
     )

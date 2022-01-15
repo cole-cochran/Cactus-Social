@@ -89,7 +89,9 @@ function ThreadDisplay(props) {
 	const [ openEditor, setOpenEditor ] = React.useState(false);
 
 	const [ newPostText, setNewPostText ] = React.useState('');
-	const [editPost, setEditPost] = React.useState('');
+	const [editPost, setEditPost] = React.useState({
+		post_text: ""
+	});
 	const [ pinnedPost, setPinnedPost ] = React.useState(
         {
             pinTitle: '',
@@ -104,7 +106,7 @@ function ThreadDisplay(props) {
 
 	const handleCloseEditor = (event) => {
 		localStorage.removeItem('postId');
-        setOpen(false);
+        setOpenEditor(false);
 	}
 
 	const handleOpen = (event) => {
@@ -160,6 +162,23 @@ function ThreadDisplay(props) {
 		}
 	};
 
+	const handleEditPost = async (event) => {
+		event.preventDefault();
+		const postId = JSON.parse(localStorage.getItem('postId'));
+		try {
+			await updatePost({
+				variables: {
+					threadId: singleThread.data.threadDetails._id,
+					postId: postId,
+					post_text: editPost.post_text
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+		setEditPost({ post_text: "" })
+	}
+
 	let usersThreadPins;
 
 	const handleUnpinPost = async (event) => {
@@ -199,7 +218,11 @@ function ThreadDisplay(props) {
                 ...pinnedPost,
                 pinHash: value
             })
-        }
+        } else if (name === 'editedPost') {
+			setEditPost({
+				post_text: value
+			})
+		}
     };
 
 	if (loading) {
@@ -217,21 +240,19 @@ function ThreadDisplay(props) {
 			return pin.post._id
 		});
 
-		console.log("user's thread pins", usersThreadPins);
+		// console.log("user's thread pins", usersThreadPins);
 
-		console.log("user's thread pin ids", userPinIds);
+		// console.log("user's thread pin ids", userPinIds);
 
-		console.log(threadPosts.data.allThreadPosts);
+		// console.log(threadPosts.data.allThreadPosts);
 
 		updatedThreadPosts = threadPosts.data.allThreadPosts.map((threadPost) => {
 			if (userPinIds.indexOf(threadPost._id) !== -1) {
-				console.log("found it")
 				return {
 					...threadPost,
 					pinned: true
 				}
 			} else {
-				console.log("nope")
 				return {
 					...threadPost,
 					pinned: false
@@ -240,30 +261,35 @@ function ThreadDisplay(props) {
 		});
 	}
 
-	console.log(updatedThreadPosts);
+	const scroll = () => {
+		var element = document.getElementById("chats-container");
+		// console.log(element.height)
+		element.scrollTop = element.scrollHeight;
+	}
+
+	// console.log(updatedThreadPosts);
 
 	return (
 		<main className="thread-wrapper">
-			<div className="thread-content-container">
+			<div className="thread-content-container"onLoad={scroll}>
 				<div className="thread-header">
 					<h3>{singleThread.data.threadDetails.title}</h3>
 					<div>
 						<p>M: {singleThread.data.threadDetails.moderator.username}</p>
 					</div>
 				</div>
-				<div className="chats-container">
+				<div id="chats-container" className="chats-container">
 					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
-					<div>
-						{updatedThreadPosts.map(
-							(post) => (
-								post.pinned ? (
-									<PinnedPost post={post} unpin={handleUnpinPost} editor={handleOpenEditor} />
-								) : (
-									<ThreadPost post={post} unpin={handleUnpinPost} pin={handleOpen} />
-								)
-                            )
-						)}
-					</div>
+					{updatedThreadPosts.map(
+						(post) => (
+							post.pinned ? (
+								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor} />
+							) : (
+								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+								/>
+							)
+						)
+					)}
 					<Modal
                         data-id="pinning"
 						open={open}
@@ -282,6 +308,26 @@ function ThreadDisplay(props) {
 								<input value={pinnedPost.pinHash} name="pinHash" onChange={handleChange} placeholder="e.g. #cactus-party" />
 								<button className="modal-button" type="submit">
 									Add
+								</button>
+							</form>
+						</Box>
+					</Modal>
+					<Modal
+                        data-id="editor"
+						open={openEditor}
+						onClose={handleCloseEditor}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<form className="modal-form" onSubmit={handleEditPost}>
+								<div className="modal-header">
+									<h4>Update Post</h4>
+								</div>
+								<label>Post Text</label>
+								<input value={editPost.post_text} name="editedPost" onChange={handleChange} placeholder="e.g. Cactus Party" />
+								<button className="modal-button" type="submit">
+									Update
 								</button>
 							</form>
 						</Box>

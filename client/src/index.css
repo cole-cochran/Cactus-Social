@@ -12,6 +12,7 @@
     --ultra-dark: #101010;
     --cactus-green-1: #00720B;
     --cactus-purple-1: #9200bb74;
+    --cactus-purple-highlight: #a518cc;
 }
 
 * {
@@ -653,6 +654,7 @@ footer {
 .chats-container {
     height: 60vh;
     overflow: auto;
+    padding-bottom: 10px;
 }
 
 .chats-container::-webkit-scrollbar {
@@ -666,11 +668,18 @@ footer {
     /* color: black; */
     color: white;
     padding: 1rem;
-    border-radius: .25rem;
+    border-radius: 1rem;
     margin-top: .5rem;
     /* margin-left: .875rem; */
     margin-left: 2%;
     width: 98%;
+    border: 1px solid white;
+    transition: background-color 0.25s ease-in;
+}
+
+.chat:hover {
+    box-shadow: -1px -1px 6px white;
+    background-color: var(--cactus-purple-highlight);
 }
 
 .chat p {
@@ -685,6 +694,14 @@ footer {
     pointer-events: none;
 }
 .chat-date {
+    font-size: .75rem;
+    color: white;
+    margin-left: 1rem;
+    pointer-events: none;
+}
+
+.edit-span {
+    font-style: italic;
     font-size: .75rem;
     color: white;
     margin-left: 1rem;
@@ -735,9 +752,9 @@ footer {
     color: var(--grey1);
 }
 
-.pos {
+/* .pos {
     pointer-events: none;
-}
+} */
 .subthread-title {
     font-size: .65rem;
     margin-left: 1rem;
@@ -756,7 +773,7 @@ footer {
     margin-left: 2%;
     width: 98%;
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 0px 5px 5px 5px;
     font-size: .75rem !important;
     border: 1px solid var(--grey1);
     border-radius: 10px;
@@ -813,9 +830,9 @@ footer {
 
 @media only screen and (max-height: 475px) {
   
-    .chats-container {
+    /* .chats-container {
         height: 30rem;
-    }
+    } */
 }
 
 /*************THREEDDISPLAY-MEDIA-QUERIES:END****************/
