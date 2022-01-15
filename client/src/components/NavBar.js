@@ -43,7 +43,7 @@ const ResponsiveAppBar = (props) => {
   };
 
   return (
-    <AppBar position="static" elevation={0} style={{ background: '#2FB65E' }}>
+    <AppBar position="static" elevation={0} style={{ background: '#9200BB' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <Typography
@@ -53,7 +53,7 @@ const ResponsiveAppBar = (props) => {
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           > */}
             {/* <img className="logo" src="/assets/img/logo.svg" alt="logo"/> */}
-            <p className="logo">Cactus</p>
+            <p className="logo">Cactus Social</p>
           {/* </Typography> */}
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
