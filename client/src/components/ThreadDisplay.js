@@ -50,7 +50,12 @@ function ThreadDisplay(props) {
 		],
 	});
 
-	const [ removePost ] = useMutation(REMOVE_POST);
+	const [ removePost ] = useMutation(REMOVE_POST, {
+		refetchQueries: [
+			ALL_THREAD_POSTS,
+			'allThreadPosts'
+		],
+	});
 
 	const [ updatePost ] = useMutation(UPDATE_POST, {
 		refetchQueries: [
@@ -87,6 +92,7 @@ function ThreadDisplay(props) {
 
 	const [ open, setOpen ] = React.useState(false);
 	const [ openEditor, setOpenEditor ] = React.useState(false);
+	// const [ openDropdown, setOpenDropdown] = React.useState(false);
 
 	const [ newPostText, setNewPostText ] = React.useState('');
 	const [editPost, setEditPost] = React.useState({
@@ -99,8 +105,28 @@ function ThreadDisplay(props) {
         }
     );
 
+	const handleOpenDropdown = (event) => {
+		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+		localStorage.setItem('postId', JSON.stringify(postData));
+		//! conditional logic
+		console.log(event.target.parentNode.childNodes[1]);
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseDropdown = (event) => {
+        //! conditional logic
+		console.log(event.target);
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			console.log("fired!")
+			const dropdowns = document.querySelectorAll('.dropdown-content');
+			for (let dropdown of dropdowns) {
+				dropdown.style.display = "none";
+			}
+		}
+	}
+
 	const handleOpenEditor = (event) => {
-		localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
         setOpenEditor(true);
 	}
 
@@ -110,6 +136,7 @@ function ThreadDisplay(props) {
 	}
 
 	const handleOpen = (event) => {
+		console.log()
         localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
         setOpen(true);
     }
@@ -117,6 +144,24 @@ function ThreadDisplay(props) {
         localStorage.removeItem('postId');
         setOpen(false);
     }
+
+	const handleRemovePost = (event) => {
+		event.preventDefault();
+        const postId = JSON.parse(localStorage.getItem('postId'))
+
+		try {
+			removePost({
+				variables: {
+					threadId: threadId,
+					postId: postId
+				}
+			})
+		} catch(err) {
+			console.error(err);
+		}
+
+		localStorage.removeItem('postId');
+	}
 	
 	const handlePostSubmit = async (event) => {
 		event.preventDefault();
@@ -230,8 +275,11 @@ function ThreadDisplay(props) {
 		return <img src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
 	}
 
+	//!  GO INTO RESOLVERS AND SET IT UP TO REMOVE PINNED POSTS WHEN THEY ARE DELETED -- FOR NOW, MANUALLY REMOVE ALL PINNED POSTS FROM MY USER
+
 	if (userData.data.userProfile.pinned_posts.length) {
 		const allUserPins = userData.data.userProfile.pinned_posts;
+		console.log(allUserPins)
 
 		usersThreadPins = allUserPins.filter((pinnedPost) => (
 			pinnedPost.post.thread._id === threadId
@@ -240,12 +288,6 @@ function ThreadDisplay(props) {
 		const userPinIds = usersThreadPins.map((pin) => {
 			return pin.post._id
 		});
-
-		// console.log("user's thread pins", usersThreadPins);
-
-		// console.log("user's thread pin ids", userPinIds);
-
-		console.log("thread posts", threadPosts.data.allThreadPosts);
 
 		updatedThreadPosts = threadPosts.data.allThreadPosts.map((threadPost) => {
 			if (userPinIds.indexOf(threadPost._id) !== -1) {
@@ -267,14 +309,11 @@ function ThreadDisplay(props) {
 
 	const scroll = () => {
 		var element = document.getElementById("chats-container");
-		// console.log(element.height)
 		element.scrollTop = element.scrollHeight;
 	}
 
-	// console.log(updatedThreadPosts);
-
 	return (
-		<main className="thread-wrapper">
+		<main onClick={handleCloseDropdown} className="thread-wrapper">
 			<div className="thread-content-container" onLoad={scroll}>
 				<div className="thread-header">
 					<h3>{singleThread.data.threadDetails.title}</h3>
@@ -287,10 +326,11 @@ function ThreadDisplay(props) {
 					{updatedThreadPosts.map(
 						(post) => (
 							post.pinned ? (
-								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor} />
+								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
+								dropdown={handleOpenDropdown} remove={handleRemovePost} />
 							) : (
 								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
-								/>
+								dropdown={handleOpenDropdown} remove={handleRemovePost} />
 							)
 						)
 					)}

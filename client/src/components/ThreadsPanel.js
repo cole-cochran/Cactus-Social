@@ -21,7 +21,9 @@ const style = {
     boxShadow: 24,
 };
 
-function ThreadsPanel() {
+function ThreadsPanel(props) {
+
+    const {toggle} = props;
 
     const { loading, data } = useQuery(ALL_THREADS);
     const allThreads = data?.allThreads || [];
@@ -38,12 +40,13 @@ function ThreadsPanel() {
         <div id="sidebar-thread-panel">
             <div className="thread-sidebar-header">
                 <h3>Threads</h3> 
-                <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add thread" onClick={handleOpen}/>
+                <img className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul>
                 {allThreads.map((individualThread) => (
                     <li key={individualThread._id}>
                         <Link
+                        onClick={toggle}
                             to={`/threads/${individualThread._id}`}
                         >
                             {individualThread.title}

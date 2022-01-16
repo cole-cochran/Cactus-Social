@@ -96,8 +96,8 @@ function Sidebar(props) {
 				</ul>
 			</div>
 			<div className="sidebar" id="sidebar" data-sidebardisplay="hidden">
-				<ThreadsPanel />
-				<EventsPanel />
+				<ThreadsPanel toggle={toggleSidebar}/>
+				<EventsPanel toggle={toggleSidebar}/>
 			</div>
 		</aside>
 	);

@@ -4,7 +4,7 @@ import AuthService from "../utils/auth";
 
 export function ThreadPost(props) {
 
-    const { post, pin, openEditor } = props;
+    const { post, pin, openEditor, dropdown, remove } = props;
 
     const owner = AuthService.getProfile().data._id;
 
@@ -18,7 +18,17 @@ export function ThreadPost(props) {
                 </div>
                 {
                 owner === post.author._id ? 
-                    <img src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={openEditor}/>
+                <div className="dropdown">
+                    <img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={dropdown}/>
+                    <div className="dropdown-content">
+                        <div className="dropdown-option" onClick={openEditor}>
+                            Update
+                        </div>
+                        <div onClick={remove} >
+                            Delete
+                        </div>
+                    </div>
+                </div>
                 : <React.Fragment />
                 }
             </div>
