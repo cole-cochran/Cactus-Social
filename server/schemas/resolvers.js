@@ -217,8 +217,9 @@ const resolvers = {
 				return { token, newUser };
 			}
 			catch(err) {
-				console.log(err);
-				return new ApolloError('Sign-up failed', '400');
+				console.log(Object.keys(err.errors));
+				if(err.errors.username) return new ApolloError(`${err.errors.username}`, '400');
+				if(err.errors.password) return new ApolloError(`${err.errors.password}`, '400');
 			}
 		},
 

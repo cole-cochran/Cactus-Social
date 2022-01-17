@@ -5,6 +5,7 @@ const path = require('path');
 const { ApolloServer } = require('apollo-server-express');
 const socketIo = require('socket.io');
 const http = require('http');
+const cors = require('cors');
 
 //* set up port and express app
 const PORT = process.env.PORT || 3001;
@@ -33,6 +34,7 @@ app.use(logger('dev'));
 app.use(compression());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 // app.use(express.static('public'));
 
 if (process.env.NODE_ENV === 'production') {
@@ -45,12 +47,20 @@ app.get('*', (req, res) => {
 
 //* http server that will serve the socket io server
 const httpServer = http.createServer(app);
-const io = new socketIo.Server(httpServer);
+const io = socketIo(httpServer, {
+	cors: {
+		origin: "http://localhost:3000",
+		methods: ['GET', 'POST']
+	}
+});
 
 //* on websocket connection console logs a user connected
 //* on websocket disconnect logs a user disconnected
 io.on('connection', (socket) => {
 	console.log('a user connected');
+	const count = io.engine.clientsCount;
+	console.log(`${count} users connected`);
+	console.log(socket.id);
 	socket.on('disconnect', () => {
 		console.log('a user has disconnected');
 	});

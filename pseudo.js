@@ -4,7 +4,7 @@
 
 //?  USER DASHBOARD/PROFILE
 
-//*  We need a login/sign-up page (also need validation of login for most of our routes) 
+
 // TODO  -  Check out module 14
 
 //*  For user sign-up, we want to include: 
@@ -63,6 +63,8 @@
 //*  Automatically becomes a pin (tiers for pins), allow host to unpin if they choose
 
 //! ----------------------------------------------------------------------------------------------- 
+
+//* DONE We need a login/sign-up page (also need validation of login for most of our routes) 
 
 //* DONE (eventsPanel) Query the database to get ALL_EVENTS so they can displayed in rows
 
