@@ -200,6 +200,7 @@ html::-webkit-scrollbar {
     /* font-family: aglet-slab, sans-serif; */
     font-weight: 400;
     font-style: normal;
+    font-size: 21px;
     color: var(--secondary-purple);
 }
 /******************NABBAR*******************/
