@@ -428,18 +428,36 @@ const resolvers = {
 			// if (context.user) {
 			await Post.findOneAndDelete({ _id: postId }, { new: true });
 
-			//! THIS IS NOT EFFICIENT AT SCALE ---> THERE MUST BE AN EASIER WAY TO DO THIS
-
-			const relatedPins = await PinnedPost.find(
-				{ post: postId }
+			await PinnedPost.deleteMany(
+				{ post: postId },
+				{ new: true }
 			);
 
-			for (let pin of relatedPins) {
-				await PinnedPost.findOneAndDelete(
-					{ _id: pin._id },
-					{ new: true }
-				)
-			}
+			// const relatedPins = await PinnedPost.find(
+			// 	{ post: postId }
+			// );
+
+			// for (let pin of relatedPins) {
+			// 	await PinnedPost.findOneAndDelete(
+			// 		{ _id: pin._id },
+			// 		{ new: true }
+			// 	)
+			// }
+
+			// await User.updateMany(
+			// 	{ 
+			// 		pinned_posts: {
+			// 			post: postId 
+			// 		}
+			// 	},
+			// 	{
+			// 		$pull: {
+			// 			pinned_posts: {
+			// 				post: postId
+			// 			}
+			// 		}
+			// 	}
+			// )
 
 			// const allUsers = await User.find({}).populate('pinned_posts').populate('pinned_posts.post');
 			// for (let user of allUsers) {

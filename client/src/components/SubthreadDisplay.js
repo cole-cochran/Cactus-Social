@@ -8,19 +8,9 @@ import AuthService from '../utils/auth';
 import { POST_DETAILS, ALL_POST_COMMENTS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import {
-// 	REMOVE_POST,
-// 	UPDATE_POST,
-// 	UNPIN_POST,
-// 	ADD_POST_REACTION,
-// 	CREATE_POST_COMMENT,
-// 	REMOVE_POST_COMMENT,
-// 	UPDATE_POST_COMMENT,
-// 	ADD_POST_COMMENT_REACTION
-// } from '../utils/mutations';
+// import { REMOVE_POST, UPDATE_POST, UNPIN_POST, ADD_POST_REACTION, REMOVE_POST_COMMENT, UPDATE_POST_COMMENT, ADD_POST_COMMENT_REACTION } from '../utils/mutations';
 
 import { CREATE_POST_COMMENT } from '../utils/mutations';
-//! Give description of imported mutations
 
 // import Box from '@mui/material/Box';
 // import Modal from '@mui/material/Modal';
@@ -65,7 +55,6 @@ function SubthreadDisplay(props) {
 		event.preventDefault();
 
 		try {
-			// const { data } = 
 			await createPostComment({
 				variables: {
 					postId: postId,

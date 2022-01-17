@@ -12,8 +12,6 @@ import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries
 // import { ADD_POST_REACTION, REMOVE_THREAD } from '../utils/mutations';
 import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST } from '../utils/mutations';
 
-//! Give description of imported mutations
-
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { PinnedPost } from './PinnedPost';
