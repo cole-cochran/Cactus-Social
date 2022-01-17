@@ -427,6 +427,34 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			await Post.findOneAndDelete({ _id: postId }, { new: true });
+
+			//! THIS IS NOT EFFICIENT AT SCALE ---> THERE MUST BE AN EASIER WAY TO DO THIS
+
+			const relatedPins = await PinnedPost.find(
+				{ post: postId }
+			);
+
+			for (let pin of relatedPins) {
+				await PinnedPost.findOneAndDelete(
+					{ _id: pin._id },
+					{ new: true }
+				)
+			}
+
+			// const allUsers = await User.find({}).populate('pinned_posts').populate('pinned_posts.post');
+			// for (let user of allUsers) {
+			// 	for (let pin of allPinsOfPost) {
+			// 		await User.findOneAndUpdate(
+			// 			{_id: user._id}, 
+			// 			{
+			// 				$pull: {
+			// 					pinned_posts: pin._id
+			// 				}
+			// 			},
+			// 			{ new: true }
+			// 		)
+			// 	}
+			// }			
 			const thread = await Thread.findOneAndUpdate(
 				{ _id: threadId },
 				{

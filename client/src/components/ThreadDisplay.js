@@ -1,5 +1,4 @@
 import React from 'react';
-// import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
 import { ThreadPost } from "../components/ThreadPost";
 
@@ -32,8 +31,6 @@ const style = {
 
 
 function ThreadDisplay(props) {
-	
-	// TODO (threadDisplay) Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting
 
 	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
 
@@ -92,7 +89,6 @@ function ThreadDisplay(props) {
 
 	const [ open, setOpen ] = React.useState(false);
 	const [ openEditor, setOpenEditor ] = React.useState(false);
-	// const [ openDropdown, setOpenDropdown] = React.useState(false);
 
 	const [ newPostText, setNewPostText ] = React.useState('');
 	const [editPost, setEditPost] = React.useState({
@@ -108,14 +104,12 @@ function ThreadDisplay(props) {
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
 		localStorage.setItem('postId', JSON.stringify(postData));
-		//! conditional logic
 		console.log(event.target.parentNode.childNodes[1]);
 		const content = event.target.parentNode.childNodes[1];
 		content.style.display = "flex";
 	}
 
 	const handleCloseDropdown = (event) => {
-        //! conditional logic
 		console.log(event.target);
 		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
 			console.log("fired!")
@@ -274,8 +268,6 @@ function ThreadDisplay(props) {
 	if (loading) {
 		return <img src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
 	}
-
-	//!  GO INTO RESOLVERS AND SET IT UP TO REMOVE PINNED POSTS WHEN THEY ARE DELETED -- FOR NOW, MANUALLY REMOVE ALL PINNED POSTS FROM MY USER
 
 	if (userData.data.userProfile.pinned_posts.length) {
 		const allUserPins = userData.data.userProfile.pinned_posts;
