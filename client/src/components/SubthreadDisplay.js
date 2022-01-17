@@ -1,5 +1,4 @@
 import React from 'react';
-// import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
 
 import { useParams } from 'react-router-dom';
@@ -24,7 +23,6 @@ import { CREATE_POST_COMMENT } from '../utils/mutations';
 //! Give description of imported mutations
 
 // import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 // import Modal from '@mui/material/Modal';
 // import Avatar from '@mui/material/Avatar';
 // import Chip from '@mui/material/Chip';
@@ -105,10 +103,14 @@ function SubthreadDisplay(props) {
 					<div className="chats-container">
 						{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
 						<div className="chat subthread">
-							<div>
-								<span className="chat-name">{singlePost.data.postDetails.author.username}</span>
-								<span className="chat-date">{singlePost.data.postDetails.date_created}</span>
-								<Link to={`/threads/${singlePost.data.postDetails.thread._id}`}>Back to Thread</Link>
+							<div className='subthread-bar'>
+								<div>
+									<span className="chat-name">{singlePost.data.postDetails.author.username}</span>
+									<span className="chat-date">{singlePost.data.postDetails.date_created}</span>
+								</div>
+								<Link className='back-button' to={`/threads/${singlePost.data.postDetails.thread._id}`}>
+									<img src="../../assets/img/undo.png" alt="go back" />
+								</Link>
 							</div>
 							<p>{singlePost.data.postDetails.post_text}</p>
 						</div>

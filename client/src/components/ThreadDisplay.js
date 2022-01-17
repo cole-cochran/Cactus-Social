@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
-// import { PINNED_POSTS } from '../utils/queries';
 import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 

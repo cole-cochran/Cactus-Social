@@ -522,7 +522,6 @@ const resolvers = {
 			return updatedUser;
 		},
 
-		//* give user ability to pin posts
 		// pinPost: async (parent, args, context) => {
 		// 	//! probably need to add user context here as well to make sure they have permission
 		// 	// if (context.user) {
@@ -585,6 +584,7 @@ const resolvers = {
 
 		//! PROBABLY HOLD THIS OFF UNTIL LAST BECAUSE REACTIONS NEED TO BE AN OBJECT WITH USERNAME INCLUDED OR THEY COULD JUST BE ANONYMOUS
 		//* let users react to a post
+		
 		addPostReaction: async (parent, args, context) => {
 			const { threadId, postId, reaction } = args;
 			await Post.findOneAndUpdate(

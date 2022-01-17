@@ -805,6 +805,15 @@ footer {
     color: white;
 }
 
+.subthread-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-button {
+    text-decoration: none;
+}
 
 .chat-input {
     display: flex;
