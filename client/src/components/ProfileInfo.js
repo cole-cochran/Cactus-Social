@@ -173,7 +173,7 @@ function ProfileInfo(props) {
         height: "300px",
         width: "300px",
         borderRadius: "50%",
-        backgroundColor: "green",
+        backgroundColor: 'var(--cactus-green-1)',
         color: "white",
         alignContent: "center",
         textAlign: "center",

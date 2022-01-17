@@ -250,7 +250,7 @@ html::-webkit-scrollbar {
 .login-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: #56B524;
+    background-color: #00720b;
     color: white;
     border: none;
     font-size: .875rem;
@@ -272,7 +272,7 @@ html::-webkit-scrollbar {
 }
 
 .login-banner {
-    background-color: var(--hero-green);
+    background-color: var(--cactus-green-1);
     color: white;
     height: 100vh;
     /* height: 100%; */
@@ -339,7 +339,7 @@ html::-webkit-scrollbar {
 
 /*************SIGNUP.HTML:STYLES************/
 .sign-up-header {
-    background-color: var(--hero-green);
+    background-color: var(--cactus-green-1);
     height: 4rem;
 }
 .signup-form-section {
@@ -381,7 +381,7 @@ html::-webkit-scrollbar {
 .signup-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: #56B524;;
+    background-color: #00720B;;
     color: white;
     border: none;
     font-size: .875rem;
