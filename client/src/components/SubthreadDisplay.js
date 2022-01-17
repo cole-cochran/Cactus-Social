@@ -125,7 +125,7 @@ function SubthreadDisplay(props) {
 						))}
 					</div>
 					<form onSubmit={handleCommentSubmit} className="chat-input">
-						<input onChange={handleChange} name="postCommentText" value={newCommentText} contentEditable />
+						<input onChange={handleChange} name="postCommentText" value={newCommentText} contentEditable autoComplete='off' />
 						<div className="chat-input-buttons">
 							<button type="submit" className="chat-input-send-button">
 								send

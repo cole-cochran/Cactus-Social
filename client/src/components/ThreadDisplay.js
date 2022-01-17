@@ -120,6 +120,12 @@ function ThreadDisplay(props) {
 	}
 
 	const handleOpenEditor = (event) => {
+		// const postId = JSON.parse(localStorage.getItem('postId'));
+		console.log(event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent)
+		const currentText = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+		setEditPost({
+			post_text: currentText
+		})
         setOpenEditor(true);
 	}
 
@@ -370,7 +376,7 @@ function ThreadDisplay(props) {
 				</div>
 				<form onSubmit={handlePostSubmit} className="chat-input">
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
-                    <input onChange={handleChange} name="postText" value={newPostText} contentEditable></input>
+                    <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/>
 					<div className="chat-input-buttons">
 						<button type="submit" className="chat-input-send-button">Send</button>
 					</div>
