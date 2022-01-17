@@ -17,7 +17,7 @@ import { EVENT_DETAILS } from '../utils/queries';
 
 //! ADD  DESCRIPTION OF EVENT_DETAILS
 
-// import AuthService from '../utils/auth';
+import AuthService from '../utils/auth';
 
 export default function EventDisplay() {
 
@@ -31,14 +31,14 @@ export default function EventDisplay() {
 
 	// for when we get the routes going
 	const { eventId } = useParams();
+	console.log(eventId)
 
-	const { loading, data } = useQuery(EVENT_DETAILS, {
-		variables: {
-			eventId: eventId
-		}
+	const singleEvent = useQuery(EVENT_DETAILS, {
+		variables: { eventId: eventId }
 	});
-
-	const singleEvent = data?.event || {};
+	
+	const errors = singleEvent.error;
+	const loading = singleEvent.loading;
 
 	const styles = {
 		card: {
@@ -63,58 +63,70 @@ export default function EventDisplay() {
 		}
 	};
 
-	if (!singleEvent) {
-		return <h3>This event no longer exists!</h3>;
-	}
-
 	if (loading) {
 		return <div>Loading...</div>;
 	}
 
+	if (!singleEvent.data.eventDetails) {
+		return <h3>This event no longer exists!</h3>;
+	}
+
+	console.log(singleEvent.data.eventDetails)
+
+	const eventData = singleEvent.data.eventDetails;
+
 	return (
-		<div>
+		<div className='event-container'>
 			<Card style={styles.card} sx={{ maxWidth: 750 }}>
-				<CardMedia component="img" height="345" image={singleEvent.image} alt={singleEvent.title} />
+				{/* <div className='event-card'></div> */}
+				<div>
+					<img className='event-img' src="../../assets/img/camping_trip.png" alt="event icon" />
+					<h2 className='event-title'>{eventData.title}</h2>
+					<h5 className='event-host'>Host: {eventData.owner.username}</h5>
+				</div>
+				<div>
+					<p className='event-description'>{eventData.description}</p>
+					<div className='event-datetime'>
+
+					</div>
+				</div>
+
 				<CardContent>
-					<Typography gutterBottom variant="h5" component="div">
-						{singleEvent.title}
+						
 					</Typography>
-					<Typography variant="body2" color="text.secondary">
-						{singleEvent.description}
-					</Typography>
-					{singleEvent.start_date === singleEvent.end_date ? (
+					{eventData.start_date === eventData.end_date ? (
 						<Typography variant="body2" color="text.secondary">
-							Event Date: {singleEvent.start_date}
-							Event Time: {singleEvent.start_time} to {singleEvent.end_time}
+							Event Date: {eventData.start_date}
+							Event Time: {eventData.start_time} to {eventData.end_time}
 						</Typography>
 					) : (
 						<div>
 							<Typography variant="body2" color="text.secondary">
-								Begins: {singleEvent.start_date} @ {singleEvent.start_time}
+								Begins: {eventData.start_date} @ {eventData.start_time}
 							</Typography>
 							<Typography variant="body2" color="text.secondary">
-								Ends: {singleEvent.end_date} @ {singleEvent.end_time}
+								Ends: {eventData.end_date} @ {eventData.end_time}
 							</Typography>
 						</div>
 					)}
-					{singleEvent.in_person ? (
+					{eventData.in_person ? (
 						<Stack style={styles.chips} direction="row" spacing={1}>
 							<Chip label="In Person Event" variant="outlined" />
-							<Chip label={singleEvent.category} variant="outlined" />
+							<Chip label={eventData.category} variant="outlined" />
 						</Stack>
 					) : (
 						<Stack style={styles.chips} direction="row" spacing={1}>
 							<Chip label="Virtual Event" variant="outlined" />
-							<Chip label={singleEvent.category} variant="outlined" />
+							<Chip label={eventData.category} variant="outlined" />
 						</Stack>
 					)}
-					{singleEvent.in_person ? (
+					{eventData.in_person ? (
 						<Typography variant="body2" color="text.secondary">
-							{singleEvent.location}
+							{eventData.location}
 						</Typography>
 					) : (
 						<Typography variant="body2" color="text.secondary">
-							<a href={singleEvent.location}>Link to virtual event</a>
+							<a href={eventData.location}>Link to virtual event</a>
 						</Typography>
 					)}
 					{/* <AvatarGroup max={4}> */}
@@ -131,10 +143,16 @@ export default function EventDisplay() {
 						<Typography variant="body2" color="text.secondary">
 							Attendees:
 						</Typography>
-						{singleEvent.attendees.map((attendee, index) => <AccountCircleIcon key={index} />)}
+						{eventData.attendees.map((attendee) => (
+							<div>
+								<AccountCircleIcon key={attendee._id} />
+								<p>{attendee.username}</p>
+							</div>
+							)
+						)}
 					</Box>
 					<Typography variant="body2" color="text.secondary">
-						Created on {singleEvent.date_created} by {singleEvent.owner} in the {singleEvent.thread} thread
+						Created on {eventData.date_created} by {eventData.owner.username} in the {eventData.thread.title} thread
 					</Typography>
 				</CardContent>
 				<CardActions style={styles.links}>

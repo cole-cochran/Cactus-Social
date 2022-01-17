@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { ThreadPost } from "../components/ThreadPost";
 
 import { useParams } from 'react-router-dom';
@@ -109,9 +109,7 @@ function ThreadDisplay(props) {
 	}
 
 	const handleCloseDropdown = (event) => {
-		console.log(event.target);
 		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
-			console.log("fired!")
 			const dropdowns = document.querySelectorAll('.dropdown-content');
 			for (let dropdown of dropdowns) {
 				dropdown.style.display = "none";
@@ -120,8 +118,6 @@ function ThreadDisplay(props) {
 	}
 
 	const handleOpenEditor = (event) => {
-		// const postId = JSON.parse(localStorage.getItem('postId'));
-		console.log(event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent)
 		const currentText = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
 		setEditPost({
 			post_text: currentText
@@ -135,7 +131,6 @@ function ThreadDisplay(props) {
 	}
 
 	const handleOpen = (event) => {
-		console.log()
         localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
         setOpen(true);
     }
@@ -301,7 +296,6 @@ function ThreadDisplay(props) {
 		});
 	} else {
 		updatedThreadPosts = threadPosts.data.allThreadPosts;
-		console.log(updatedThreadPosts)
 	}
 
 	const scroll = () => {
