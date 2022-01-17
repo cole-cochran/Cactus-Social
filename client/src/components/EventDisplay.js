@@ -1,20 +1,10 @@
 import React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { EVENT_DETAILS } from '../utils/queries';
-// import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
-
+import { useMutation, useQuery } from '@apollo/client';
+import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
+// import { CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
+import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT } from '../utils/mutations';
 //! ADD  DESCRIPTION OF EVENT_DETAILS
 
 import AuthService from '../utils/auth';
@@ -36,35 +26,61 @@ export default function EventDisplay() {
 	const singleEvent = useQuery(EVENT_DETAILS, {
 		variables: { eventId: eventId }
 	});
+
+	const singleUser = useQuery(USER_PROFILE, {
+		variables: { userId: AuthService.getProfile().data._id }
+	})
+	console.log(singleUser);
+
+	const [ updateEvent ] = useMutation(UPDATE_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+
+	const [ removeEvent ] = useMutation(REMOVE_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+
+	const [ attendEvent ] = useMutation(ATTEND_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+
+	const [ leaveEvent ] = useMutation(LEAVE_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+
+
+	//* If the logged in user is event owner, let them update or delete the event
+
+	//* Otherwise, let the user attend or leave the event
 	
-	const errors = singleEvent.error;
-	const loading = singleEvent.loading;
+	const errors = singleEvent.error || singleUser.error;
+	const loading = singleEvent.loading || singleUser.loading;
 
 	const styles = {
 		card: {
 			margin: '20px auto',
 			textAlign: 'center'
-		},
-		chips: {
-			margin: '25px',
-			textAlign: 'center',
-			justifyContent: 'center',
-		},
-		links: {
-			margin: '20px',
-			textAlign: 'center',
-			justifyContent: 'center'
-		},
-		box: {
-			margin: '30px'
-		},
-		button: {
-			marginBottom: '10px'
 		}
 	};
 
 	if (loading) {
 		return <div>Loading...</div>;
+	}
+
+	if (errors) {
+		return <div>ERROR: {errors}</div>
 	}
 
 	if (!singleEvent.data.eventDetails) {
@@ -77,95 +93,103 @@ export default function EventDisplay() {
 
 	return (
 		<div className='event-container'>
-			<Card style={styles.card} sx={{ maxWidth: 750 }}>
-				{/* <div className='event-card'></div> */}
-				<div>
+			<div className='event-card'>
+				<div className='event-main-div'>
 					<img className='event-img' src="../../assets/img/camping_trip.png" alt="event icon" />
-					<h2 className='event-title'>{eventData.title}</h2>
-					<h5 className='event-host'>Host: {eventData.owner.username}</h5>
-				</div>
-				<div>
-					<p className='event-description'>{eventData.description}</p>
-					<div className='event-datetime'>
-
+					<div className='event-meta'>
+						<div>
+							<h2 className='event-title'>{eventData.title}</h2>
+							<h5 className='event-host'>Host: {eventData.owner.username}</h5>
+						</div>
+						<div>
+							<p>Event Type: </p>
+							<button>
+								{eventData.category}
+							</button>
+						</div>
+					</div>
+					<div className='event-option-div'>
+						{eventData.in_person ? (
+							<div className='event-inperson'>
+								<img src="../../assets/img/place_marker.svg" alt="place marker"/>
+								<p>In-Person</p>
+							</div>
+						) : (
+							<div className='event-inperson'>
+								<img src="../../assets/img/laptop.svg" alt="laptop"/>
+								<p>Virtual</p>
+							</div>
+						)}
+						<div className='event-attend'>
+							<img src="../../assets/img/plus-sign.svg" alt="plus sign" />
+							<p>Attend Event</p>
+						</div>
+						{/* <div>
+							<img src="../../assets/img/minus_sign.png" alt="minus sign" />
+							<p>Leave Event</p>
+						</div> */}
 					</div>
 				</div>
-
-				<CardContent>
-						
-					</Typography>
+				<div className='event-desc-div'>
+					<p className='event-description'>{eventData.description}</p>
+					<div className='event-datetime'>
 					{eventData.start_date === eventData.end_date ? (
-						<Typography variant="body2" color="text.secondary">
-							Event Date: {eventData.start_date}
+						<p>Event Date: {eventData.start_date}
 							Event Time: {eventData.start_time} to {eventData.end_time}
-						</Typography>
+						</p>
 					) : (
 						<div>
-							<Typography variant="body2" color="text.secondary">
+							<p>
 								Begins: {eventData.start_date} @ {eventData.start_time}
-							</Typography>
-							<Typography variant="body2" color="text.secondary">
+							</p>
+							<p>
 								Ends: {eventData.end_date} @ {eventData.end_time}
-							</Typography>
+							</p>
 						</div>
 					)}
+					</div>
+				</div>
+				<div className='event-other-div'>
 					{eventData.in_person ? (
-						<Stack style={styles.chips} direction="row" spacing={1}>
-							<Chip label="In Person Event" variant="outlined" />
-							<Chip label={eventData.category} variant="outlined" />
-						</Stack>
+						<p className='event-location'>
+							Location: {eventData.location}
+						</p>
 					) : (
-						<Stack style={styles.chips} direction="row" spacing={1}>
-							<Chip label="Virtual Event" variant="outlined" />
-							<Chip label={eventData.category} variant="outlined" />
-						</Stack>
+						<a className='event-virtual' href={eventData.location}>Link To Virtual Event</a>
 					)}
-					{eventData.in_person ? (
-						<Typography variant="body2" color="text.secondary">
-							{eventData.location}
-						</Typography>
-					) : (
-						<Typography variant="body2" color="text.secondary">
-							<a href={eventData.location}>Link to virtual event</a>
-						</Typography>
-					)}
-					{/* <AvatarGroup max={4}> */}
-					{/* <Avatar alt={event.attendees[0]} src="/static/images/avatar/1.jpg" /> */}
-					{/* </AvatarGroup> */}
-					<Box
-						style={styles.box}
-						sx={{
-							'& > :not(style)': {
-								m: 1
-							}
-						}}
-					>
-						<Typography variant="body2" color="text.secondary">
+
+					<div>
+						<p>
 							Attendees:
-						</Typography>
+						</p>
 						{eventData.attendees.map((attendee) => (
-							<div>
-								<AccountCircleIcon key={attendee._id} />
+							<div className='event-attendee' key={attendee._id}>
+								<img src="../../assets/img/test_account.png" alt="user profile pic"/>
 								<p>{attendee.username}</p>
 							</div>
 							)
 						)}
-					</Box>
-					<Typography variant="body2" color="text.secondary">
-						Created on {eventData.date_created} by {eventData.owner.username} in the {eventData.thread.title} thread
-					</Typography>
-				</CardContent>
-				<CardActions style={styles.links}>
-					{/* Dynamically display "attend" or "leave" based on if user events list contains this event or if user is attendee */}
-					<Button style={styles.button} variant="contained" size="small">
-						Attend Event
-					</Button>
-					{/* DO WE WANT TO POP OUT COMMENT WHEN CLICKED OR HAVE THAT OPTION ALREADY PRESENT ? */}
-					<Button style={styles.button} variant="contained" size="small">
+					</div>
+					<div>
+						<p>
+							Created on {eventData.date_created} by {eventData.owner.username} in the {eventData.thread.title} thread
+						</p>
+					</div>
+				</div>
+				<div className='event-actions'>
+					<button>
+						Contact Host
+					</button>
+					{/* when see comments button is pressed, render the event comments component with the eventId passes into it as a prop */}
+					{/* if the comments are shown show new button that allows users to hide comments -- need a piece of state to track opening and closing status */}
+					<button>
 						See Comments
-					</Button>
-				</CardActions>
-			</Card>
+					</button>
+					{/* <button>
+						Hide Comments
+					</button> */}
+				</div>
+			</div>
 		</div>
 	);
 }
