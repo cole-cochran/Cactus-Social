@@ -101,7 +101,7 @@ export default function EventDisplay() {
 							<h2 className='event-title'>{eventData.title}</h2>
 							<h5 className='event-host'>Host: {eventData.owner.username}</h5>
 						</div>
-						<div>
+						<div className='event-type'>
 							<p>Event Type: </p>
 							<button>
 								{eventData.category}
@@ -131,7 +131,7 @@ export default function EventDisplay() {
 					</div>
 				</div>
 				<div className='event-desc-div'>
-					<p className='event-description'>{eventData.description}</p>
+					<p className='event-description'><span>Description: </span>{eventData.description}</p>
 					<div className='event-datetime'>
 					{eventData.start_date === eventData.end_date ? (
 						<p>Event Date: {eventData.start_date}
@@ -158,10 +158,11 @@ export default function EventDisplay() {
 						<a className='event-virtual' href={eventData.location}>Link To Virtual Event</a>
 					)}
 
-					<div>
-						<p>
+					<div className='event-attendees'>
+						<h5>
 							Attendees:
-						</p>
+						</h5>
+						<div className='event-attendees-div'>
 						{eventData.attendees.map((attendee) => (
 							<div className='event-attendee' key={attendee._id}>
 								<img src="../../assets/img/test_account.png" alt="user profile pic"/>
@@ -169,8 +170,9 @@ export default function EventDisplay() {
 							</div>
 							)
 						)}
+						</div>
 					</div>
-					<div>
+					<div className='event-creation-info'>
 						<p>
 							Created on {eventData.date_created} by {eventData.owner.username} in the {eventData.thread.title} thread
 						</p>

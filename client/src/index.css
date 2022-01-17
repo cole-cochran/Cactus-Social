@@ -13,6 +13,7 @@
     --cactus-green-1: #00720B;
     --cactus-purple-1: #9200bb74;
     --cactus-purple-highlight: #a518cc;
+    --dark-mode: #232323;
 }
 
 * {
@@ -1196,4 +1197,200 @@ footer {
     content: attr(data-placeholder);
 }
 
-/*******************THREAD:INPUT*******************/
+/*******************EVENT-DISPLAY*******************/
+
+.event-container {
+    width: 100%;
+    display: flex;
+    ;
+    justify-content: center;
+    background-color: var(--dark-mode);
+}
+
+.event-card {
+    margin: 10px;
+    border: 5px solid var(--cactus-purple-1);
+    border-radius: 15px;
+    background-color: var(--dark-mode);
+    display: flex;
+    ;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: inset 6px 6px 12px black, inset -6px 6px 12px black, inset 6px -6px 12px black, inset -6px -6px 12px black;
+}
+
+.event-main-div {
+    background-color: #9200bb44;
+    width: 100%;
+    display: flex;
+    ;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.event-img {
+    max-width: 100%;
+    margin: 20px;
+}
+
+.event-meta {
+    margin: 20px;
+}
+
+.event-title {
+    color: white;
+}
+
+.event-host {
+    color: var(--grey1)
+}
+
+.event-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.event-type p {
+    color: var(--grey1);
+    margin-right: 10px;
+    padding-top: 15px;
+}
+
+.event-type button {
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    border-radius: 15px;
+    color: white;
+    padding: 6px;
+}
+
+.event-option-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-option-div div {
+    display: flex;
+    align-items: center;
+}
+
+.event-inperson img {
+    margin-right: 10px;
+}
+
+.event-attend img {
+    margin-right: 10px;
+}
+
+.event-option-div p {
+    padding-top: 15px;
+    color: var(--grey1);
+}
+
+.event-desc-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border-top: 5px solid var(--cactus-purple-1);
+}
+
+.event-description {
+    width: 90%;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--cactus-green-1);
+}
+
+.event-description span {
+    margin-right: 5px;
+    font-size: 1.5rem;
+}
+
+.event-datetime {
+    width: 90%;
+    border-bottom: 2px solid var(--cactus-green-1);
+}
+
+.event-other-div {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-location {
+    width: 90%;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--cactus-green-1);
+}
+
+.event-attendees {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-attendees h5 {
+    margin: 15px;
+}
+
+.event-attendees-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+    width: 90%;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--cactus-green-1);
+}
+
+.event-attendee {
+    display: flex;
+}
+
+.event-attendee img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.event-attendee p {
+    margin-right: 5px;
+}
+
+.event-creation-info {
+    padding-top: 15px;
+    text-align: center;
+    width: 90%;
+    border-bottom: 2px solid var(--cactus-green-1);
+}
+
+.event-actions {
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+.event-actions button {
+    margin: 5px;
+    color: var(--grey1);
+    background-color: var(--cactus-purple-1);
+    border: 1px solid white;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+.event-actions button:hover {
+    background-color: var(--cactus-purple-highlight);
+    box-shadow: -1px -1px 2px white, -1px 1px 2px white, 1px -1px 2px white, 1px 1px 2px white;
+}
