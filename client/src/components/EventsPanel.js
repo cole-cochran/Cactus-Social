@@ -40,7 +40,7 @@ function EventsPanel() {
         <div id="sidebar-events-panel">
             <div className="thread-sidebar-header">
                 <h3>Events</h3> 
-                <img className="sidebar-add-icon" src="/assets/img/add.svg" alt="click to add thread" onClick={handleOpen}/>
+                <img className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul>
                 {allEvents.map((event) => (

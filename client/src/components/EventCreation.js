@@ -1,20 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import Switch from '@mui/material/Switch';
-import Typography from '@mui/material/Typography';
-import FormGroup from '@mui/material/FormGroup';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
-// date and time field
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import Stack from '@mui/material/Stack';
-import MobileTimePicker from '@mui/lab/MobileTimePicker';
 
-// import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
@@ -23,15 +8,9 @@ import { CREATE_EVENT } from '../utils/mutations';
 
 //! REDIRECT (AFTER SUBMISSION) TO THE EVENT DISPLAY
 
-// TODO MAKE THIS CONSOLE.LOG A CACTUS INSTEAD WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
+// TODO MAKE A CONSOLE.LOG FOR AN ASCII CACTUS WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
 
-// console.log("super secret dev link")
-// console.log("https://www.youtube.com/watch?v=Qi1KebO4bzc")
-
-export default function EventCreation(props) {
-	const { threadId } = props;
-
-	const [ checked, setChecked ] = React.useState(true);
+export default function EventCreation() {
 
 	const [ createEvent ] = useMutation(CREATE_EVENT);
 
@@ -43,17 +22,21 @@ export default function EventCreation(props) {
 		start_time: '',
 		end_time: '',
 		category: '',
+		in_person: false,
 		location: '',
 		image: ''
 	});
 
 	const handleChange = (event) => {
+		console.log(event.target.value)
 		const { name, value } = event.target;
-		setEventDetails({ ...eventDetails, [name]: value });
-	};
-
-	const handleCheck = (event) => {
-		setChecked(event.target.checked);
+		if (name === 'in_person') {
+			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person})
+		} else {
+			setEventDetails({ ...eventDetails, [name]: value });
+		}
+		
+		console.log(eventDetails);
 	};
 
 	const handleEventFormSubmit = async (event) => {
@@ -75,10 +58,9 @@ export default function EventCreation(props) {
 					start_time: eventDetails.start_time,
 					end_time: eventDetails.end_time,
 					category: eventDetails.category,
-					in_person: checked,
+					in_person: eventDetails.in_person,
 					location: eventDetails.location,
 					image: eventDetails.image,
-					thread: threadId,
 					owner: AuthService.getProfile().data._id
 				}
 			});
@@ -97,122 +79,53 @@ export default function EventCreation(props) {
 			start_time: '',
 			end_time: '',
 			category: '',
+			in_person: false,
 			location: '',
 			image: ''
 		});
 	};
 
 	return (
-		<FormControl onSubmit={handleEventFormSubmit}>
-			<Box sx={{ width: 500, maxWidth: '100%', m: 2 }}>
-				<TextField fullWidth value={eventDetails.title} onChange={handleChange} label="Title" id="fullWidth" />
-			</Box>
-			<Box
-				sx={{
-					width: 500,
-					maxWidth: '100%',
-					m: 2
-				}}
-			>
-				<TextField
-					value={eventDetails.description}
-					onChange={handleChange}
-					fullWidth
-					label="Description"
-					id="fullWidth"
-				/>
-			</Box>
-			<LocalizationProvider dateAdapter={AdapterDateFns}>
-				<Stack
-					spacing={3}
-					sx={{
-						width: 500,
-						maxWidth: '100%',
-						m: 2
-					}}
-				>
-					<MobileDatePicker
-						label="start_date"
-						inputFormat="MM/dd/yyyy"
-						value={eventDetails.start_date}
-						onChange={handleChange}
-						renderInput={() => <TextField />}
-					/>
-					<MobileDatePicker
-						label="end_date"
-						inputFormat="MM/dd/yyyy"
-						value={eventDetails.end_date}
-						onChange={handleChange}
-						renderInput={() => <TextField />}
-					/>
-					<MobileTimePicker
-						name="start_time"
-						value={eventDetails.start_time}
-						onChange={handleChange}
-						label="Start Time"
-						renderInput={() => <TextField />}
-					/>
-					<MobileTimePicker
-						name="end_time"
-						value={eventDetails.end_time}
-						onChange={handleChange}
-						label="End Time"
-						renderInput={() => <TextField />}
-					/>
-				</Stack>
-			</LocalizationProvider>
-			<Box
-				sx={{
-					width: 500,
-					maxWidth: '100%',
-					m: 2
-				}}
-			>
-				<TextField
-					name="category"
-					value={eventDetails.category}
-					onChange={handleChange}
-					fullWidth
-					label="Category"
-					id="fullWidth"
-				/>
-			</Box>
-			<FormGroup
-				sx={{
-					width: 500,
-					maxWidth: '100%',
-					m: 2
-				}}
-			>
-				<Stack direction="row" spacing={1} alignItems="center">
-					<Typography>Virtual</Typography>
-					<Switch
-						value={checked}
-						checked={checked}
-						onChange={handleCheck}
-						inputProps={{ 'aria-label': 'controlled' }}
-					/>
-					<Typography>In Person</Typography>
-				</Stack>
-			</FormGroup>
-			<Box
-				sx={{
-					width: 500,
-					maxWidth: '100%',
-					m: 2
-				}}
-			>
-				<TextField
-					value={eventDetails.description}
-					onChange={handleChange}
-					fullWidth
-					label="Location"
-					id="fullWidth"
-				/>
-			</Box>
-			<FormGroup>
+		<form onSubmit={handleEventFormSubmit}>
+			<div className='event-creation-inputs'>
+				<div>
+					<label forhtml="title">Title</label>
+					<input type="text" value={eventDetails.title} onChange={handleChange} id="title" name="title"></input>
+				</div>
+				<div>
+					<label forhtml="description">Description</label>
+					<input type="text" value={eventDetails.description} onChange={handleChange} id="description" name="description" ></input>
+				</div>
+				<div>
+					<label forhtml="start_date">Start Date</label>
+					<input type="date" value={eventDetails.start_date} onChange={handleChange}  id="start_date" name="start_date" />
+				</div>
+				<div>
+					<label forhtml="end_date">End Date</label>
+					<input type="date" value={eventDetails.end_date} onChange={handleChange} id="end_date" name="end_date" />
+				</div>
+				<div>
+					<label forhtml="start_time">Start Time</label>
+					<input type="time" value={eventDetails.start_time} onChange={handleChange} id="start_time" name="start_time" />
+				</div>
+				<div>
+					<label forhtml="end_time">End Time</label>
+					<input type="time" value={eventDetails.end_time} onChange={handleChange} id="end_time" name="end_time" />
+				</div>
+				<div>
+					<label forhtml="category">Category</label>
+					<input type="text" value={eventDetails.category} onChange={handleChange} id="category" name="category" />
+				</div>
+				<div>
+					<label forhtml="in_person">In Person Event</label>
+					<input type="checkbox" value={eventDetails.in_person} onChange={handleChange} id="in_person" name="in_person"/>
+				</div>
+				<div>
+					<label forhtml="location">Event Location / URL</label>
+					<input type="text" value={eventDetails.location} onChange={handleChange} id="location" name="location"/>
+				</div>
 				<button type="submit">Create Event</button>
-			</FormGroup>
-		</FormControl>
+			</div>
+		</form>
 	);
 }

@@ -136,7 +136,7 @@ const typeDefs = gql`
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(threadId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event
+        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event
         updateEvent(threadId: ID!, eventId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String): Event
         removeEvent(threadId: ID!, eventId: ID!, userId: ID!): Thread
 

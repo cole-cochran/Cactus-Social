@@ -22,20 +22,24 @@ const eventSchema = new Schema({
 		maxLength: [ 600, 'Provide a description with less than 128 characters' ] 
     },
     start_date: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        get: (timestamp) => dateFormat(timestamp)
     },
     end_date: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        get: (timestamp) => dateFormat(timestamp)
     },
     start_time: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        get: (timestamp) => dateFormat(timestamp)
     },
     end_time: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        get: (timestamp) => dateFormat(timestamp)
     },
     owner: {
         type: ObjectId,

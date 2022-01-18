@@ -11,8 +11,6 @@ import AuthService from '../utils/auth';
 
 export default function EventDisplay() {
 
-	// TODO (eventDisplay) make this beautiful
-
 	// TODO (eventDisplay) add functionality for event owner to update, remove, or invite others to the event
 
 	// TODO (eventDisplay) allow others to attend, leave, comment on events as they please
@@ -174,7 +172,7 @@ export default function EventDisplay() {
 					</div>
 					<div className='event-creation-info'>
 						<p>
-							Created on {eventData.date_created} by {eventData.owner.username} in the {eventData.thread.title} thread
+							Created on {eventData.date_created} by {eventData.owner.username}
 						</p>
 					</div>
 				</div>

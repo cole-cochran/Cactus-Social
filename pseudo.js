@@ -66,6 +66,10 @@
 
 //*  Automatically becomes a pin (tiers for pins), allow host to unpin if they choose
 
+//? EVENT DISPLAY PAGE
+
+//* make this beautiful
+
 //! ----------------------------------------------------------------------------------------------- 
 
 //* DONE (eventsPanel) Query the database to get ALL_EVENTS so they can displayed in rows
