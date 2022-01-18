@@ -43,7 +43,7 @@ const ResponsiveAppBar = (props) => {
   };
 
   return (
-    <AppBar position="static" elevation={0} style={{ background: '#2FB65E' }}>
+    <AppBar position="static" elevation={0} style={{ background: 'var(--cactus-green-1' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <Typography
