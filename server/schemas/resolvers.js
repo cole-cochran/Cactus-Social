@@ -762,12 +762,12 @@ const resolvers = {
 
 		//* remove the event
 		removeEvent: async (parent, args, context) => {
-			const { eventId, threadId, userId } = args;
+			const { eventId, userId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			const event = await Event.findOneAndDelete({ _id: eventId }, { new: true });
+			const event = await Event.findOne({ _id: eventId });
 			//! use context to get userId and complete this
-			await User.findOneAndUpdate(
+			const user = await User.findOneAndUpdate(
 				// { _id: context.user._id },
 				{ _id: userId },
 				{
@@ -791,17 +791,20 @@ const resolvers = {
 				)
 			}
 
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$pull: {
-						events: eventId
-					}
-				},
-				{ new: true }
-			);
+			await Event.findOneAndDelete({ _id: eventId }, { new: true });
 
-			return thread;
+			return user;
+			// const thread = await Thread.findOneAndUpdate(
+			// 	{ _id: threadId },
+			// 	{
+			// 		$pull: {
+			// 			events: eventId
+			// 		}
+			// 	},
+			// 	{ new: true }
+			// );
+
+			// return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},

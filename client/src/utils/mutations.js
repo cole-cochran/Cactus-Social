@@ -713,60 +713,29 @@ mutation createEvent($title: String!, $description: String!, $start_date: String
 `;
 
 export const REMOVE_EVENT = gql`
-mutation removeEvent($threadId: ID!, $eventId: ID!, $userId: ID!) {
-    removeEvent(threadId: $threadId, eventId: $eventId, userId: $userId) {
+mutation removeEvent($eventId: ID!, $userId: ID!) {
+    removeEvent(eventId: $eventId, userId: $userId) {
         _id
         title
-        posts {
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
             _id
-            post_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            comments {
-                _id
-            }
         }
-        events {
+        attendees {
             _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
-            comments {
-                _id
-            }
         }
-        moderator {
-            _id
-            username
-            picture
-        }
-        members {
-            _id
-            username
-            picture
-        }
+        category
+        in_person
+        location
+        image
         date_created
+        edited
+        comments {
+            _id
+        }
     }
 }
 `;

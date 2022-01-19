@@ -1266,6 +1266,13 @@ footer {
 
 .event-attend img {
     margin-right: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: box-shadow 0.5s linear;
+}
+
+.event-attend img:hover {
+    box-shadow: 1px 1px 3px white, -1px 1px 3px white, 1px -1px 3px white, -1px -1px 3px white, inset 2px 2px 2px white, inset -2px 2px 2px white, inset 2px -2px 2px white, inset -2px -2px 2px white;
 }
 
 .event-option-div p {

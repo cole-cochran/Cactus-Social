@@ -62,7 +62,6 @@ export default function EventDisplay() {
 		]
 	});
 
-
 	//* If the logged in user is event owner, let them update or delete the event
 
 	//* Otherwise, let the user attend or leave the event
@@ -85,6 +84,59 @@ export default function EventDisplay() {
 	console.log(singleEvent.data.eventDetails)
 
 	const eventData = singleEvent.data.eventDetails;
+
+	let attending = false;
+
+	for (let user of eventData.attendees) {
+		console.log(user)
+		if (user._id === userId) {
+			console.log(user._id)
+			console.log(userId)
+			attending = true;
+			break;
+		}
+	}
+
+	let owner = false;
+
+	if (eventData.owner._id === userId) {
+		owner = true;
+	}
+
+	console.log(attending);
+
+	const handleAttend = async () => {
+		await attendEvent({
+			variables: {
+				eventId: eventId,
+				attendee: userId
+			}
+		})
+	}
+
+	const handleLeave = async () => {
+		await leaveEvent({
+			variables: {
+				eventId: eventId,
+				attendee: userId
+			}
+		})
+	}
+
+	const handleEdit = () => {
+
+	}
+
+	const handleDelete = async () => {
+		await removeEvent({
+			variables: {
+				eventId: eventId,
+				userId: userId
+			}
+		});
+
+		window.location.replace(`/profile/${userId}`);
+	}
 
 	return (
 		<React.Fragment>
@@ -119,14 +171,24 @@ export default function EventDisplay() {
 									<p>Virtual</p>
 								</div>
 							)}
-							<div className='event-attend'>
-								<img src="../../assets/img/plus-sign.svg" alt="plus sign" />
-								<p>Attend</p>
-							</div>
-							{/* <div>
-								<img src="../../assets/img/minus_sign.png" alt="minus sign" />
-								<p>Leave</p>
-							</div> */}
+							{!attending ? (
+								<div className='event-attend'>
+									<img src="../../assets/img/plus-sign.svg" alt="plus sign" onClick={handleAttend} />
+									<p>Attend</p>
+								</div>
+							) : (
+								<div className='event-attend'>
+									<img src="../../assets/img/minus_sign.png" alt="minus sign" onClick={handleLeave} />
+									<p>Leave</p>
+								</div>
+							)}
+							{owner &&
+								<div className='event-owner-options'>
+									<img src="../../assets/img/dotdotdot.svg" alt="event options"/>
+									<p>Options</p>
+								</div>
+							}
+							
 						</div>
 					</div>
 					<div className='event-desc-div'>
