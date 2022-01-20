@@ -57,7 +57,7 @@ const io = socketIo(httpServer, {
 //* on websocket connection console logs a user connected
 //* on websocket disconnect logs a user disconnected
 io.on('connection', (socket) => {
-	// console.log('a user connected');
+	console.log(`user ${socket.id} connected`);
 	// const count = io.engine.clientsCount;
 	// console.log(`${count} users connected`);
 	// console.log(socket.id);
@@ -72,7 +72,7 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('disconnect', () => {
-		console.log('a user has disconnected');
+		console.log(`user ${socket.id} has disconnected`);
 	});
 });
 
