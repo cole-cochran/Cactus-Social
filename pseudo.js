@@ -12,6 +12,8 @@
 
 //*  CHECK OUT STACK OVERFLOW FOR MORE FIELDS
 
+//* For Posts and Comments, we create a room that involves using the threadId and the postId respectively and have user subscribe to these rooms by being added to these rooms from other users already in that room. The events would have to be 'send_join_request", "join_request_accepted", "message". For the rooms we will keep posts and comments into separate rooms rather than nested rooms from a performance standpoint and easier to understand. Use the threadId to create the rooms for posts and then postId to create the rooms for comments, by default make user join the thread rooms automatically when navigated to that page(?), then possibly using e.target.id to get the _id on the post to join the room for comments on that post.
+
 //! -----------------------------------------------------------------------------------------------
 
 //?  USER TIMELINE
