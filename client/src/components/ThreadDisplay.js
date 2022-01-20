@@ -109,7 +109,6 @@ function ThreadDisplay(props) {
 		socket.emit("join_thread", {room: threadId, user: AuthService.getProfile().data.username});
 	});
 
-	const handlePostSubmit = async (event) => {
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
 		localStorage.setItem('postId', JSON.stringify(postData));
