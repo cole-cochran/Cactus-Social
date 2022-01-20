@@ -257,6 +257,17 @@ export const USER_PROFILE = gql`
 			bio
 			tech_stack
 			date_joined
+			pinned_posts {
+				_id
+				pinTitle
+				pinHash
+				post {
+					_id
+					thread {
+						_id
+					}
+				}
+			}
 		}
 	}
 `;

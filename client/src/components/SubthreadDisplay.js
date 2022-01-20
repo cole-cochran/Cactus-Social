@@ -1,5 +1,4 @@
 import React from 'react';
-// import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
 
 import { useParams } from 'react-router-dom';
@@ -9,22 +8,11 @@ import AuthService from '../utils/auth';
 import { POST_DETAILS, ALL_POST_COMMENTS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import {
-// 	REMOVE_POST,
-// 	UPDATE_POST,
-// 	UNPIN_POST,
-// 	ADD_POST_REACTION,
-// 	CREATE_POST_COMMENT,
-// 	REMOVE_POST_COMMENT,
-// 	UPDATE_POST_COMMENT,
-// 	ADD_POST_COMMENT_REACTION
-// } from '../utils/mutations';
+// import { REMOVE_POST, UPDATE_POST, UNPIN_POST, ADD_POST_REACTION, REMOVE_POST_COMMENT, UPDATE_POST_COMMENT, ADD_POST_COMMENT_REACTION } from '../utils/mutations';
 
 import { CREATE_POST_COMMENT } from '../utils/mutations';
-//! Give description of imported mutations
 
 // import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 // import Modal from '@mui/material/Modal';
 // import Avatar from '@mui/material/Avatar';
 // import Chip from '@mui/material/Chip';
@@ -67,7 +55,6 @@ function SubthreadDisplay(props) {
 		event.preventDefault();
 
 		try {
-			// const { data } = 
 			await createPostComment({
 				variables: {
 					postId: postId,
@@ -105,10 +92,14 @@ function SubthreadDisplay(props) {
 					<div className="chats-container">
 						{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
 						<div className="chat subthread">
-							<div>
-								<span className="chat-name">{singlePost.data.postDetails.author.username}</span>
-								<span className="chat-date">{singlePost.data.postDetails.date_created}</span>
-								<Link to={`/threads/${singlePost.data.postDetails.thread._id}`}>Back to Thread</Link>
+							<div className='subthread-bar'>
+								<div>
+									<span className="chat-name">{singlePost.data.postDetails.author.username}</span>
+									<span className="chat-date">{singlePost.data.postDetails.date_created}</span>
+								</div>
+								<Link className='back-button' to={`/threads/${singlePost.data.postDetails.thread._id}`}>
+									<img src="../../assets/img/undo.png" alt="go back" />
+								</Link>
 							</div>
 							<p>{singlePost.data.postDetails.post_text}</p>
 						</div>
@@ -123,7 +114,7 @@ function SubthreadDisplay(props) {
 						))}
 					</div>
 					<form onSubmit={handleCommentSubmit} className="chat-input">
-						<input onChange={handleChange} name="postCommentText" value={newCommentText} contentEditable />
+						<input onChange={handleChange} name="postCommentText" value={newCommentText} contentEditable autoComplete='off' />
 						<div className="chat-input-buttons">
 							<button type="submit" className="chat-input-send-button">
 								send

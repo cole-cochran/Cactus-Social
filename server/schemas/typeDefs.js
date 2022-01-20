@@ -124,8 +124,9 @@ const typeDefs = gql`
         createThread(title: String!, moderator: ID!): Thread
         removeThread(threadId: ID!): User
 
-        createPost(threadId: ID!, post_text: String!): Thread
+        createPost(threadId: ID!, post_text: String!, author: ID!): Thread
         removePost(threadId: ID!, postId: ID!): Thread
+        
         updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
@@ -135,9 +136,9 @@ const typeDefs = gql`
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(threadId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event
-        updateEvent(threadId: ID!, eventId: ID!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String): Event
-        removeEvent(threadId: ID!, eventId: ID!, userId: ID!): Thread
+        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event
+        updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Event
+        removeEvent(eventId: ID!, userId: ID!): User
 
         attendEvent(eventId: ID!, attendee: ID!): Event
         leaveEvent(eventId: ID!, attendee: ID!): Event

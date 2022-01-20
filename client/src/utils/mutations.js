@@ -363,9 +363,6 @@ mutation createThread($moderator: ID!, $title: String!) {
 }
 `;
 
-//! create mini modal to allow owner to delete event
-// ! THIS WORKS BUT RETURNS THE WRONG THANG AT THE MOMENT. NEED CONTEXT TO RETURN PROPER USER
-
 export const REMOVE_THREAD = gql`
 mutation removeThread($threadId: ID!) {
     removeThread(threadId: $threadId) {
@@ -385,8 +382,8 @@ mutation removeThread($threadId: ID!) {
 // * POST STUFF
 
 export const CREATE_POST = gql`
-mutation createPost($threadId: ID!, $post_text: String!) {
-    createPost( threadId: $threadId, post_text: $post_text) {
+mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
+    createPost( threadId: $threadId, post_text: $post_text, author: $author) {
         _id
         title
         posts {
@@ -398,7 +395,6 @@ mutation createPost($threadId: ID!, $post_text: String!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -418,6 +414,8 @@ mutation createPost($threadId: ID!, $post_text: String!) {
 }
 `;
 
+//!  NEED TO SET UP RESOLVER TO REMOVE THIS POST FROM THE USER'S PINNED POSTS
+
 export const REMOVE_POST = gql`
 mutation removePost($threadId: ID!, $postId: ID!) {
     removePost( threadId: $threadId, postId: $postId) {
@@ -432,7 +430,6 @@ mutation removePost($threadId: ID!, $postId: ID!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -466,7 +463,6 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -485,80 +481,6 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
     }
 }
 `;
-
-//* OLD PIN_POST MUTATION
-// export const PIN_POST = gql`
-// mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: String!) {
-//     pinPost(threadId: $threadId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
-//         _id
-//         title
-//         posts {
-//             _id
-//             post_text
-//             date_created
-//             author {
-//                 _id
-//             }
-//             reactions
-//             edited
-//             pinned
-//             pinHash
-//             pinTitle
-//             comments {
-//                 _id
-//             }
-//         }
-//         moderator {
-//             _id
-//             username
-//             picture
-//         }
-//         members {
-//             _id
-//             username
-//             picture
-//         }
-//         date_created
-//     }
-// }
-// `;
-
-//* OLD UNPIN_POST MUTATION
-// export const UNPIN_POST = gql`
-// mutation unpinPost($threadId: ID!, $postId: ID!) {
-//     unpinPost(threadId: $threadId, postId: $postId) {
-//         _id
-//         title
-//         posts {
-//             _id
-//             post_text
-//             date_created
-//             author {
-//                 _id
-//             }
-//             reactions
-//             edited
-//             pinned
-//             pinHash
-//             pinTitle
-//             comments {
-//                 _id
-//             }
-//         }
-//         moderator {
-//             _id
-//             username
-//             picture
-//         }
-//         members {
-//             _id
-//             username
-//             picture
-//         }
-//         date_created
-//     }
-// }
-// `;
 
 export const PIN_POST = gql`
 mutation updatePinnedPost($userId: ID!, $postId: ID!, $pinTitle: String, $pinHash: String) {
@@ -590,8 +512,6 @@ mutation removePinnedPost($userId: ID!, $pinnedId: ID!) {
 }
 `
 
-
-//! IF THE TIME PERMITS, MAKE THIS INCLUDE USERNAME IN THE RESOLVERS AND MODELS
 export const ADD_POST_REACTION = gql`
 mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
     addPostReaction(threadId: $threadId, postId: $postId, reaction: $reaction) {
@@ -606,7 +526,6 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
             }
             reactions
             edited
-            pinned
             comments {
                 _id
             }
@@ -639,7 +558,6 @@ mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -674,7 +592,6 @@ mutation removePostComment($postId: ID!, $commentId: ID!) {
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -709,7 +626,6 @@ mutation updatePostComment($postId: ID!, $commentId: ID!, $comment_text: String!
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -744,7 +660,6 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
         }
         reactions
         edited
-        pinned
         thread {
             _id
             title
@@ -769,8 +684,8 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
 //*  EVENT STUFF
 
 export const CREATE_EVENT = gql`
-mutation createEvent($threadId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $owner: ID!) {
-    createEvent(threadId: $threadId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
+mutation createEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $owner: ID!) {
+    createEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
         _id
         title
         description
@@ -798,68 +713,24 @@ mutation createEvent($threadId: ID!, $title: String!, $description: String!, $st
 `;
 
 export const REMOVE_EVENT = gql`
-mutation removeEvent($threadId: ID!, $eventId: ID!, $userId: ID!) {
-    removeEvent(threadId: $threadId, eventId: $eventId, userId: $userId) {
+mutation removeEvent($eventId: ID!, $userId: ID!) {
+    removeEvent(eventId: $eventId, userId: $userId) {
         _id
-        title
-        posts {
-            _id
-            post_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            pinned
-            comments {
-                _id
-            }
-        }
-        events {
-            _id
-            title
-            start_date
-            end_date
-            start_time
-            end_time
-            owner {
-                _id
-            }
-            attendees {
-                _id
-            }
-            category
-            in_person
-            location
-            image
-            thread {
-                _id
-            }
-            date_created
-            edited
-            comments {
-                _id
-            }
-        }
-        moderator {
-            _id
-            username
-            picture
-        }
-        members {
-            _id
-            username
-            picture
-        }
-        date_created
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        tech_stack
+        date_joined
     }
 }
 `;
 
 export const UPDATE_EVENT = gql`
-mutation updateEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
-    updateEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
+mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
+    updateEvent(eventId: $eventId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
         _id
         title
         description
@@ -867,38 +738,10 @@ mutation updateEvent($title: String!, $description: String!, $start_date: String
         end_date
         start_time
         end_time
-        owner {
-            _id
-            username
-            picture
-        }
-        attendees {
-            _id
-            username
-            picture
-        }
         category
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
-        comments {
-            _id
-            comment_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            event {
-                _id
-            }
-        }
-        date_created
         edited
     }
 }
@@ -1185,3 +1028,78 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
     }
 }
 `;
+
+
+//* OLD PIN_POST MUTATION
+// export const PIN_POST = gql`
+// mutation pinPost($threadId: ID!, $postId: ID!, $pinTitle: String!, $pinHash: String!) {
+//     pinPost(threadId: $threadId, postId: $postId, pinTitle: $pinTitle, pinHash: $pinHash) {
+//         _id
+//         title
+//         posts {
+//             _id
+//             post_text
+//             date_created
+//             author {
+//                 _id
+//             }
+//             reactions
+//             edited
+//             pinned
+//             pinHash
+//             pinTitle
+//             comments {
+//                 _id
+//             }
+//         }
+//         moderator {
+//             _id
+//             username
+//             picture
+//         }
+//         members {
+//             _id
+//             username
+//             picture
+//         }
+//         date_created
+//     }
+// }
+// `;
+
+//* OLD UNPIN_POST MUTATION
+// export const UNPIN_POST = gql`
+// mutation unpinPost($threadId: ID!, $postId: ID!) {
+//     unpinPost(threadId: $threadId, postId: $postId) {
+//         _id
+//         title
+//         posts {
+//             _id
+//             post_text
+//             date_created
+//             author {
+//                 _id
+//             }
+//             reactions
+//             edited
+//             pinned
+//             pinHash
+//             pinTitle
+//             comments {
+//                 _id
+//             }
+//         }
+//         moderator {
+//             _id
+//             username
+//             picture
+//         }
+//         members {
+//             _id
+//             username
+//             picture
+//         }
+//         date_created
+//     }
+// }
+// `;

@@ -15,6 +15,8 @@ function Dashboard(props) {
 
     const { threadId, postId } = useParams();
 
+    
+
     return (
         <React.Fragment>
             <NavBar userId={userId} />

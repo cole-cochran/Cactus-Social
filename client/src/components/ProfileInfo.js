@@ -1,19 +1,11 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
-// import Stack from '@mui/material/Stack';
-// import FaceIcon from '@mui/icons-material/Face';
 import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO } from '../utils/mutations';
-//* ADD_TECH needs: userId and technology args
-//* REMOVE_TECH needs: userId and technology args
-//* UPDATE_PHOTO needs: userId and picture args
-//* UPDATE_BIO needs: userId and bio args
-//* All of the above return the updated User
 
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
@@ -35,7 +27,6 @@ function ProfileInfo(props) {
 	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
 
 	const { specificUser } = props;
-	// console.log(specificUser);
 
     //* UPDATE_PHOTO needs: userId and picture args
 	const [ updatePhoto ] = useMutation(UPDATE_PHOTO);
@@ -172,7 +163,7 @@ function ProfileInfo(props) {
         height: "300px",
         width: "300px",
         borderRadius: "50%",
-        backgroundColor: "green",
+        backgroundColor: 'var(--cactus-green-1)',
         color: "white",
         alignContent: "center",
         textAlign: "center",
