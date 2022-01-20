@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Error from './pages/Error';
+import EventDisplay from './components/EventDisplay';
 // import EventCreation from './components/EventCreation';
 //*import browser router
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -82,6 +83,9 @@ function App() {
 						</Route>
 						<Route exact path="/subthread/:postId">
 							{AuthService.loggedIn() ? <Dashboard subThread={true} /> : <SplashPage />}
+						</Route>
+						<Route exact path="/events/:eventId">
+							{AuthService.loggedIn() ? <EventDisplay /> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />

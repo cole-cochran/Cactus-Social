@@ -54,6 +54,10 @@
 
 //*  Make pinning respond to click on "pin icon" from MUI instead of div body. 
 
+//* Allow users to unpin from their pinned posts
+
+//* Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting
+
 //! ----------------------------------------------------------------------------------------------- 
 
 //?  EVENT CREATOR MODAL  (after hash command is entered)
@@ -61,6 +65,10 @@
 //*  Start Time, End Time, Date, Title of Event, Event Category (TBD), Virtual/In-Person, Host, Badges (would be a cool addition), Event Description (limit them to a certain amount of characters? 1000?)
 
 //*  Automatically becomes a pin (tiers for pins), allow host to unpin if they choose
+
+//? EVENT DISPLAY PAGE
+
+//* make this beautiful
 
 //! ----------------------------------------------------------------------------------------------- 
 

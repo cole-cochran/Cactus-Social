@@ -4,7 +4,7 @@ import { CREATE_THREAD } from '../utils/mutations';
 import AuthService from '../utils/auth';
 
 export default function ThreadCreation() {
-	const [ createThread, { error } ] = useMutation(CREATE_THREAD);
+	const [ createThread ] = useMutation(CREATE_THREAD);
 
 	const [ threadData, setThreadData ] = React.useState({
 		title: '',
@@ -28,8 +28,7 @@ export default function ThreadCreation() {
 		try {
 			const res = await createThread({
 				variables: {
-					title: threadData.threadTitle,
-					// moderator: AuthService.getProfile().data._id
+					title: threadData.title,
 					moderator: AuthService.getProfile().data._id
 				}
 			});
