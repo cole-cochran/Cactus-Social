@@ -430,19 +430,6 @@ const resolvers = {
 				{ new: true }
 			).populate('posts').populate('moderator').populate('members');
 
-			await User.updateMany(
-				{
-					"pinned_posts.post._id": postId 
-				},
-				{
-					$pull: {
-						"pinned_posts.post._id": postId
-					}
-				},
-				{
-					new: true
-				}
-				).populate('pinned_posts');
 			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
