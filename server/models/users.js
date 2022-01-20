@@ -99,6 +99,18 @@ const userSchema = new Schema({
 			type: ObjectId,
 			ref: 'PinnedPost'
 		}
+	],
+	friend_requests: [
+		{
+			type: ObjectId,
+			ref: 'User'
+		}
+	],
+	sent_friend_requests: [
+		{
+			type: ObjectId,
+			ref: 'User'
+		}
 	]
 });
 

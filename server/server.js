@@ -57,10 +57,20 @@ const io = socketIo(httpServer, {
 //* on websocket connection console logs a user connected
 //* on websocket disconnect logs a user disconnected
 io.on('connection', (socket) => {
-	console.log('a user connected');
-	const count = io.engine.clientsCount;
-	console.log(`${count} users connected`);
-	console.log(socket.id);
+	// console.log('a user connected');
+	// const count = io.engine.clientsCount;
+	// console.log(`${count} users connected`);
+	// console.log(socket.id);
+
+	socket.on("join_thread", (data) => {
+		socket.join(data.room);
+		console.log(`User ${data.user} has joined ${data.room}`);
+	});
+
+	socket.on("send_post", (data) => {
+		socket.to(data.room).emit("recieve_post", data.post);
+	})
+
 	socket.on('disconnect', () => {
 		console.log('a user has disconnected');
 	});

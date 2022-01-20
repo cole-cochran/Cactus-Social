@@ -429,7 +429,21 @@ const resolvers = {
 				},
 				{ new: true }
 			).populate('posts').populate('moderator').populate('members');
-			return thread
+
+			await User.updateMany(
+				{
+					"pinned_posts.post._id": postId 
+				},
+				{
+					$pull: {
+						"pinned_posts.post._id": postId
+					}
+				},
+				{
+					new: true
+				}
+				).populate('pinned_posts');
+			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -460,7 +474,6 @@ const resolvers = {
 		updatePinnedPost: async (parent, args, context) => {
 			const {userId, postId, pinTitle, pinHash} = args;
 			const pinnedPost = await PinnedPost.create({pinTitle: pinTitle, pinHash: pinHash, post: postId});
-			console.log(pinnedPost);
 			const user = await User.findOneAndUpdate(
 				{_id: userId},
 				{
@@ -470,7 +483,6 @@ const resolvers = {
 				},
 				{new: true, populate: {path: 'pinned_posts'}}
 			);
-			console.log(user);
 			return user;
 		},
 

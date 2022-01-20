@@ -18,6 +18,8 @@ import { CREATE_POST, PIN_POST } from '../utils/mutations';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
+import { io } from 'socket.io-client';
+
 const style = {
 	position: 'absolute',
 	top: '50%',
@@ -65,24 +67,39 @@ function ThreadDisplay(props) {
         }
     );
 
+	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
+	const [postList, setPostList] = React.useState([]);
+
+    const socket = io.connect('localhost:3001');
+	socket.on('connect', () => {
+		console.log("I'm connected with the backend");
+		socket.emit("join_thread", {room: threadId, user: AuthService.getProfile().data.username});
+	});
+
 	const handlePostSubmit = async (event) => {
 		event.preventDefault();
 
 		try {
-			// const { data } = 
-			await createPost({
+			const post = await createPost({
 				variables: {
 					threadId: singleThread.data.threadDetails._id,
                     post_text: newPostText
 				}
 			});
-
+			await socket.emit("send_post", {post: post.data, room: threadId});
 			setNewPostText('');
             window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
 	};
+
+	React.useEffect(() => {
+		socket.on("recieve_post", (data) => {
+			setPostList((postList) => 
+			[...postList, data])
+		});
+	}, [socket]);
 
     // const handlePinSubmit = async (event) => {
 	// 	event.preventDefault();
