@@ -214,6 +214,9 @@ const resolvers = {
 				if(checkUsername) {
 					return new ApolloError('Username already taken', 422);
 				}
+				// if(password.length < 6 || password.length > 32) {
+				// 	return new ApolloError('Password must be at least 6 characters long')
+				// }
 				const newUser = await User.create({ first_name, last_name, username, email, password });
 	
 				const tokenData = {
@@ -226,7 +229,9 @@ const resolvers = {
 				return { token, newUser };
 			}
 			catch(err) {
-				return new ApolloError('Sign-up failed', '400');
+				console.log(Object.keys(err.errors));
+				if(err.errors.username) return new ApolloError(`${err.errors.username}`, '400');
+				if(err.errors.password) return new ApolloError(`${err.errors.password}`, '400');
 			}
 		},
 
@@ -482,7 +487,8 @@ const resolvers = {
 				},
 				{ new: true }
 			).populate('posts').populate('moderator').populate('members');
-			return thread
+
+			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},

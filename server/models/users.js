@@ -32,8 +32,8 @@ const userSchema = new Schema({
 		type: String,
 		trim: true,
 		lowercase: true,
-		minLength: [ 6, 'You need a longer password' ],
-		maxLength: [ 24, 'Your password is too long' ],
+		minLength: [ 6, 'You need a longer username' ],
+		maxLength: [ 24, 'Your username is too long' ],
 		required: 'Username is required',
 		unique: true
 	},
@@ -98,6 +98,18 @@ const userSchema = new Schema({
 		{
 			type: ObjectId,
 			ref: 'PinnedPost'
+		}
+	],
+	friend_requests: [
+		{
+			type: ObjectId,
+			ref: 'User'
+		}
+	],
+	sent_friend_requests: [
+		{
+			type: ObjectId,
+			ref: 'User'
 		}
 	]
 });
