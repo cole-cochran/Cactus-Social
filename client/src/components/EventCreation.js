@@ -66,7 +66,7 @@ export default function EventCreation() {
 			});
 
 			console.log(res.data);
-			window.location.replace(`events/${res.data.createEvent._id}`)
+			window.location.replace(`/events/${res.data.createEvent._id}`)
 		} catch (err) {
 			console.error(err);
 		}

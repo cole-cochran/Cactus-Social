@@ -716,33 +716,21 @@ export const REMOVE_EVENT = gql`
 mutation removeEvent($eventId: ID!, $userId: ID!) {
     removeEvent(eventId: $eventId, userId: $userId) {
         _id
-        title
-        start_date
-        end_date
-        start_time
-        end_time
-        owner {
-            _id
-        }
-        attendees {
-            _id
-        }
-        category
-        in_person
-        location
-        image
-        date_created
-        edited
-        comments {
-            _id
-        }
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        tech_stack
+        date_joined
     }
 }
 `;
 
 export const UPDATE_EVENT = gql`
-mutation updateEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
-    updateEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
+mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
+    updateEvent(eventId: $eventId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
         _id
         title
         description
@@ -750,38 +738,10 @@ mutation updateEvent($title: String!, $description: String!, $start_date: String
         end_date
         start_time
         end_time
-        owner {
-            _id
-            username
-            picture
-        }
-        attendees {
-            _id
-            username
-            picture
-        }
         category
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
-        comments {
-            _id
-            comment_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            event {
-                _id
-            }
-        }
-        date_created
         edited
     }
 }

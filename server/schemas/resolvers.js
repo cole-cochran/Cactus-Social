@@ -702,7 +702,6 @@ const resolvers = {
 		//* temporary owner until context set and mutations tested
 		createEvent: async (parent, args, context) => {
 			const {
-				threadId,
 				title,
 				description,
 				start_date,
@@ -729,8 +728,7 @@ const resolvers = {
 				category: category,
 				in_person: in_person,
 				location: location,
-				image: image,
-				thread: threadId
+				image: image
 			});
 
 			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner').populate('thread');
@@ -746,15 +744,15 @@ const resolvers = {
 			// 	{ new: true }
 			// )
 
-			await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$addToSet: {
-						events: newEvent._id
-					}
-				},
-				{ new: true }
-			);
+			// await Thread.findOneAndUpdate(
+			// 	{ _id: threadId },
+			// 	{
+			// 		$addToSet: {
+			// 			events: newEvent._id
+			// 		}
+			// 	},
+			// 	{ new: true }
+			// );
 			return returnedEvent;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
@@ -765,33 +763,35 @@ const resolvers = {
 			const { eventId, userId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			const event = await Event.findOne({ _id: eventId });
+			// const event = await Event.findOne({ _id: eventId });
 			//! use context to get userId and complete this
-			const user = await User.findOneAndUpdate(
-				// { _id: context.user._id },
-				{ _id: userId },
-				{
-					$pull: {
-						events: eventId
-						}
-				}, 
-				{ new: true }
-			)
+			// const user = await User.findOneAndUpdate(
+			// 	// { _id: context.user._id },
+			// 	{ _id: userId },
+			// 	{
+			// 		$pull: {
+			// 			events: eventId
+			// 			}
+			// 	}, 
+			// 	{ new: true }
+			// )
 
-			for (let attendee of event.attendees) {
-				await User.findOneAndUpdate(
-					// { _id: context.user._id },
-					{ _id: attendee },
-					{
-						$pull: {
-							events: eventId
-							}
-					},
-					{ new: true }
-				)
-			}
+			// for (let attendee of event.attendees) {
+			// 	await User.findOneAndUpdate(
+			// 		// { _id: context.user._id },
+			// 		{ _id: attendee },
+			// 		{
+			// 			$pull: {
+			// 				events: eventId
+			// 				}
+			// 		},
+			// 		{ new: true }
+			// 	)
+			// }
 
-			await Event.findOneAndDelete({ _id: eventId }, { new: true });
+			await Event.findOneAndDelete({ _id: eventId });
+
+			const user = await User.findOne({ _id: userId });
 
 			return user;
 			// const thread = await Thread.findOneAndUpdate(
@@ -843,7 +843,7 @@ const resolvers = {
 					edited: true
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			);
 
 			return updatedEvent;
 			// }
