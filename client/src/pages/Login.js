@@ -66,7 +66,7 @@ function Login(props) {
 					/>
 					<label for="password">Password</label>
 					<input 
-						type="text" 
+						type="password" 
 						id="password"
 						name="password"
 						value={formState.password}
@@ -80,7 +80,7 @@ function Login(props) {
 					>
 						Login
 					</button>
-					<p>Don't have an account?</p>
+					<p>Don't have an account?</p> <br></br>
 					<Link to="/sign-up">Sign Up Here!</Link>
 				</form>
 				)}
