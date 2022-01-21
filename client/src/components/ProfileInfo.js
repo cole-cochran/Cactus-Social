@@ -175,6 +175,10 @@ function ProfileInfo(props) {
 
 
 	return (
+		<React.Fragment>
+		<div className='loading-icon-box'>
+			<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+		</div>
 		<div className="profile-wrapper">
 			<div className="profile-content-container">
 				<div className="profile-header">
@@ -288,6 +292,7 @@ function ProfileInfo(props) {
 				</Box>
 			</Modal>
 		</div>
+		</React.Fragment>
 	);
 }
 

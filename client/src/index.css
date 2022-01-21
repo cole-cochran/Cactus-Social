@@ -42,6 +42,7 @@ html::-webkit-scrollbar {
     display: flex;
     height: calc(100vh - 90.39px);
     background-color: var(--dark-mode);
+    min-width: 100vw;
 }
 
 .thread-wrapper {
@@ -212,24 +213,34 @@ html::-webkit-scrollbar {
     right: 0;
     display: none;
     place-items: center;
-    background-color: var(--secondary-purple);
+    background-color: var(--cactus-purple-1);
     z-index: 10000;
 }
 
-@keyframes bounce{
+@keyframes mybounce{
     0% {
-        transform: translateY(0px) rotate(0deg); 
+        transform: rotateZ(0deg); 
+        /* margin-bottom: 0px; */
+        opacity: 100%;
+    }
+
+    50% {
+        transform: rotateZ(180deg);
+        /* margin-bottom: 300px; */
+        opacity: 50%;
     }
 
     100% {
-        transform: translateY(100px) rotate(90deg);
+        transform: rotateZ(360deg);
+        /* margin-bottom: 0px; */
+        opacity: 25%;
     }
 }
 
 .loading-icon {
-    width: 100%;
+    width: 80%;
     max-width: 400px;
-    animation: bounce 1.5s linear infinite;
+    animation: mybounce 1s linear infinite;
     /* opacity: 70%; */
 }
 

@@ -65,33 +65,6 @@ export default function EventDisplay() {
 	const errors = singleEvent.error || singleUser.error;
 	const loading = singleEvent.loading || singleUser.loading;
 
-	if (loading) {
-		return <div>Loading...</div>;
-	}
-
-	if (errors) {
-		return <div>ERROR: {errors}</div>
-	}
-
-	if (!singleEvent.data.eventDetails) {
-		return <h3>This event no longer exists!</h3>;
-	}
-
-	const eventData = singleEvent.data.eventDetails;
-
-	let attending = false;
-	for (let user of eventData.attendees) {
-		if (user._id === userId) {
-			attending = true;
-			break;
-		}
-	}
-
-	let owner = false;
-	if (eventData.owner._id === userId) {
-		owner = true;
-	}
-
 	const handleAttend = async () => {
 		await attendEvent({
 			variables: {
@@ -144,6 +117,49 @@ export default function EventDisplay() {
 		window.location.replace(`/profile/${userId}`);
 	}
 
+	if (loading) {
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
+	} else {
+		const loadingArr = document.getElementsByClassName('loading-icon-box');
+
+		const loadingIcon = loadingArr[0];
+
+		console.log(loadingIcon)
+		loadingIcon.style.display = "grid";
+
+		setTimeout(() => {
+			loadingIcon.style.display = "none"
+		}, 1000);
+	}
+
+	if (errors) {
+		return <div>ERROR: {errors}</div>
+	}
+
+	if (!singleEvent.data.eventDetails) {
+		return <h3>This event no longer exists!</h3>;
+	}
+
+	const eventData = singleEvent.data.eventDetails;
+
+	let attending = false;
+	for (let user of eventData.attendees) {
+		if (user._id === userId) {
+			attending = true;
+			break;
+		}
+	}
+
+	let owner = false;
+	if (eventData.owner._id === userId) {
+		owner = true;
+	}
+
 	const style = {
 		position: 'absolute',
 		top: '50%',
@@ -155,6 +171,10 @@ export default function EventDisplay() {
 	};
 
 	return (
+		<React.Fragment>
+		<div className='loading-icon-box'>
+			<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+		</div>
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
             <div className="app-content-container" >
@@ -298,5 +318,6 @@ export default function EventDisplay() {
 			</div>
 			<Footer/>
 		</div>
+		</React.Fragment>
 	);
 }

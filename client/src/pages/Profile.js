@@ -24,18 +24,40 @@ function Profile(props) {
         variables: { userId: userId }
     });
 
-    const specificUser = data?.userProfile || {};
-
     if (loading) {
-        return <p>loading...</p>;
-    }
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
+	} else {
+		const loadingArr = document.getElementsByClassName('loading-icon-box');
+
+		const loadingIcon = loadingArr[0];
+
+		console.log(loadingIcon)
+		loadingIcon.style.display = "grid";
+
+		setTimeout(() => {
+			loadingIcon.style.display = "none"
+		}, 1000);
+	}
+
+    const specificUser = data.userProfile;
 
     return (
         <React.Fragment>
             <NavBar userId={userId} />
             <div className="app-content-container">
                 <Sidebar />
-                <ProfileInfo specificUser={specificUser} />
+                <div>
+                    <div className='loading-icon-box'>
+				    <img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			    </div>
+            <ProfileInfo specificUser={specificUser} />
+                </div>
+                
                 <ProfileFriends />
             </div>
             <Footer/>
