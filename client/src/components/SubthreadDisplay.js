@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PostComment from './PostComment';
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
@@ -8,24 +9,24 @@ import AuthService from '../utils/auth';
 import { POST_DETAILS, ALL_POST_COMMENTS } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import { REMOVE_POST, UPDATE_POST, UNPIN_POST, ADD_POST_REACTION, REMOVE_POST_COMMENT, UPDATE_POST_COMMENT, ADD_POST_COMMENT_REACTION } from '../utils/mutations';
+import { CREATE_POST_COMMENT, UPDATE_POST_COMMENT, REMOVE_POST_COMMENT } from '../utils/mutations';
 
-import { CREATE_POST_COMMENT } from '../utils/mutations';
+// import { REMOVE_POST, UPDATE_POST, UNPIN_POST, ADD_POST_REACTION, REMOVE_POST_COMMENT, ADD_POST_COMMENT_REACTION } from '../utils/mutations';
 
-// import Box from '@mui/material/Box';
-// import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 // import Avatar from '@mui/material/Avatar';
 // import Chip from '@mui/material/Chip';
 
-// const style = {
-// 	position: 'absolute',
-// 	top: '50%',
-// 	left: '50%',
-// 	transform: 'translate(-50%, -50%)',
-// 	width: 400,
-// 	bgcolor: 'background.paper',
-// 	boxShadow: 24
-// };
+const style = {
+	position: 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: 'background.paper',
+	boxShadow: 24
+};
 
 function SubthreadDisplay(props) {
 	
@@ -35,21 +36,62 @@ function SubthreadDisplay(props) {
 
 	const { postId } = useParams();
 
-	const [ createPostComment ] = useMutation(CREATE_POST_COMMENT);
+	const owner = AuthService.getProfile().data._id;
+
+	const [ createPostComment ] = useMutation(CREATE_POST_COMMENT, {
+		refetchQueries: [
+			ALL_POST_COMMENTS,
+			'allPostComments'
+		]
+	});
+
+	const [ removePostComment ] = useMutation(REMOVE_POST_COMMENT, {
+		refetchQueries: [
+			ALL_POST_COMMENTS,
+			'allPostComments'
+		]
+	});
+
+	const [ updatePostComment ] = useMutation(UPDATE_POST_COMMENT, {
+		refetchQueries: [
+			ALL_POST_COMMENTS,
+			'allPostComments'
+		]
+	});
 
 	const singlePost = useQuery(POST_DETAILS, {
 		variables: { postId: postId }
 	});
 
-	const allComments = useQuery(ALL_POST_COMMENTS, {
+	const allPostComments = useQuery(ALL_POST_COMMENTS, {
 		variables: { postId: postId }
 	});
 
-	const errors = singlePost.error || allComments.error;
-	const loading = singlePost.loading || allComments.loading;
+	const errors = singlePost.error || allPostComments.error;
+	const loading = singlePost.loading || allPostComments.loading;
 
 	const [ newCommentText, setNewCommentText ] = React.useState('');
-	// const [editComment, setEditComment] = React.useState('');
+	const [editedComment, setEditedComment] = React.useState('');
+	const [openedEditor, setOpenedEditor] = React.useState(false);
+
+
+	const handleOpenDropdown = (event) => {
+		const commentData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+		console.log(commentData)
+		localStorage.setItem('commentId', JSON.stringify(commentData));
+		console.log(event.target.parentNode.childNodes[1]);
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseDropdown = (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const dropdowns = document.querySelectorAll('.dropdown-content');
+			for (let dropdown of dropdowns) {
+				dropdown.style.display = "none";
+			}
+		}
+	}
 
 	const handleCommentSubmit = async (event) => {
 		event.preventDefault();
@@ -64,18 +106,73 @@ function SubthreadDisplay(props) {
 			});
 
 			setNewCommentText('');
-			window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
 	};
+
+	const handleRemoveComment = async (event) => {
+		event.preventDefault();
+
+		const commentId = JSON.parse(localStorage.getItem('commentId'))
+
+		try {
+			await removePostComment({
+				variables: {
+					postId: postId,
+					commentId: commentId
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+
+		localStorage.removeItem('commentId');
+	}
+
+	const handleOpenEditor = async (event) => {
+		const currentText = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+
+		console.log(currentText);
+		setEditedComment(currentText);
+        setOpenedEditor(true);
+	}
+
+	const handleCloseEditor = async () => {
+		localStorage.removeItem('commentId');
+        setOpenedEditor(false);
+	}
+
+	const handleCommentUpdate = async (event) => {
+		event.preventDefault();
+
+		const commentId = JSON.parse(localStorage.getItem('commentId'))
+
+		try {
+			await updatePostComment({
+				variables: {
+					postId: postId,
+					commentId: commentId,
+					comment_text: editedComment
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+
+		setEditedComment("");
+		localStorage.removeItem('commentId');
+		handleCloseEditor();
+	}
 
     const handleChange = (event) => {
         const { name, value } = event.target;
     
         if (name === 'postCommentText') {
             setNewCommentText(value);
-        }
+        } else if (name === 'editedCommentText') {
+			setEditedComment(value)
+		}
     };
 
 	if (loading) {
@@ -83,7 +180,7 @@ function SubthreadDisplay(props) {
 	}
 
 	return (
-		<main className="thread-wrapper">
+		<main onClick={handleCloseDropdown} className="thread-wrapper">
 			<div className="thread-content-container">
 				<div className="top-panel">
 					<div className="thread-header">
@@ -103,14 +200,8 @@ function SubthreadDisplay(props) {
 							</div>
 							<p>{singlePost.data.postDetails.post_text}</p>
 						</div>
-						{allComments.data.allPostComments.map((comment) => (
-							<div key={comment._id} className="chat">
-								<div>
-									<span className="chat-name">{comment.author.username}</span>
-									<span className="chat-date">{comment.date_created}</span>
-								</div>
-								<p>{comment.comment_text}</p>
-							</div>
+						{allPostComments.data.allPostComments.map((comment) => (
+							<PostComment comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
 						))}
 					</div>
 					<form onSubmit={handleCommentSubmit} className="chat-input">
@@ -123,6 +214,26 @@ function SubthreadDisplay(props) {
 					</form>
 				</div>
 			</div>
+			<Modal
+				data-id="editor"
+				open={openedEditor}
+				onClose={handleCloseEditor}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<form className="modal-form" onSubmit={handleCommentUpdate}>
+						<div className="modal-header">
+							<h4>Edit Comment</h4>
+						</div>
+						<label>Comment Text</label>
+						<input value={editedComment} name="editedCommentText" onChange={handleChange} placeholder="e.g. Cactus Party" />
+						<button className="modal-button" type="submit">
+							Update
+						</button>
+					</form>
+				</Box>
+			</Modal>
 		</main>
 	);
 }

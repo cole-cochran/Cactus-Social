@@ -167,6 +167,28 @@ export const ALL_POSTS = gql`
 		}
 	}
 `;
+//* This is for internal use only
+export const ALL_COMMENTS = gql`
+query allComments {
+	allComments {
+		_id
+        comment_text
+        date_created
+        author {
+			_id
+			username
+		}
+        reactions
+        edited
+        post {
+			_id
+		}
+        event {
+			_id
+		}
+	}
+}
+`;
 
 export const ALL_THREAD_POSTS = gql`
 	query allThreadPosts($threadId: ID!) {
@@ -200,29 +222,6 @@ export const ALL_THREAD_POSTS = gql`
 			}
 		}
 	}
-`;
-
-//* This is for internal use only
-export const ALL_COMMENTS = gql`
-query allComments {
-	allComments {
-		_id
-        comment_text
-        date_created
-        author {
-			_id
-			username
-		}
-        reactions
-        edited
-        post {
-			_id
-		}
-        event {
-			_id
-		}
-	}
-}
 `;
 
 export const ALL_POST_COMMENTS = gql`

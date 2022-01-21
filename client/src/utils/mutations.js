@@ -414,8 +414,6 @@ mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
 }
 `;
 
-//!  NEED TO SET UP RESOLVER TO REMOVE THIS POST FROM THE USER'S PINNED POSTS
-
 export const REMOVE_POST = gql`
 mutation removePost($threadId: ID!, $postId: ID!) {
     removePost( threadId: $threadId, postId: $postId) {
