@@ -420,21 +420,26 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			//! get rid of userId when we can user the context to our advantage
-			const { title, moderator } = args;
-			const newThread = await Thread.create({
-				title: title,
-				moderator: moderator
-			});
-			await User.findOneAndUpdate(
-				{ _id: moderator },
-				{
-					$addToSet: {
-						threads: newThread._id
-					}
-				},
-				{ new: true }
-			);
-			return newThread;
+			try{
+				const { title, moderator } = args;
+				const newThread = await Thread.create({
+					title: title,
+					moderator: moderator
+				});
+				await User.findOneAndUpdate(
+					{ _id: moderator },
+					{
+						$addToSet: {
+							threads: newThread._id
+						}
+					},
+					{ new: true }
+				);
+				return newThread;
+			}catch(err) {
+				if(err.errors.title) return new ApolloError(`${err.errors.title}`, '400');
+			}
+			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -477,24 +482,29 @@ const resolvers = {
 		createPost: async (parent, args, context) => {
 			//! add user context to authenticate
 			// if (context.user) {
-			const { threadId, post_text, author } = args;
-			const { _id } = await Post.create(
-				{
-					thread: threadId,
-					post_text: post_text,
-					author: author
-				}
-			);
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$addToSet: {
-						posts: _id
+			try{
+				const { threadId, post_text, author } = args;
+				const { _id } = await Post.create(
+					{
+						thread: threadId,
+						post_text: post_text,
+						author: author
 					}
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
-			return thread;
+				);
+				const thread = await Thread.findOneAndUpdate(
+					{ _id: threadId },
+					{
+						$addToSet: {
+							posts: _id
+						}
+					},
+					{ new: true }
+				).populate('posts').populate('moderator').populate('members');
+				return thread;
+			}catch(err) {
+				if(err.errors.post_text) return new ApolloError(`${err.errors.post_text}`, '400');
+			}
+			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -780,61 +790,65 @@ const resolvers = {
 		//* create new event
 		//* temporary owner until context set and mutations tested
 		createEvent: async (parent, args, context) => {
-			const {
-				title,
-				description,
-				start_date,
-				end_date,
-				start_time,
-				end_time,
-				category,
-				in_person,
-				location,
-				image,
-				owner
-			} = args;
-			//! add user context to authenticate
-			// if (context.user) {
-			// owner: context.userId
-			const newEvent = await Event.create({
-				title: title,
-				description: description,
-				start_date: start_date,
-				end_date: end_date,
-				start_time: start_time,
-				end_time: end_time,
-				owner: owner,
-				category: category,
-				in_person: in_person,
-				location: location,
-				image: image
-			});
-
-			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner').populate('thread');
-
-			//! use context to get userId and complete this
-			// await User.findOneAndUpdate(
-			// 	{ _id: context.userId },
-			// 	{
-			// 		$addToSet: {
-			// 			events: newEvent._id
-			// 			}
-			// 	},
-			// 	{ new: true }
-			// )
-
-			// await Thread.findOneAndUpdate(
-			// 	{ _id: threadId },
-			// 	{
-			// 		$addToSet: {
-			// 			events: newEvent._id
-			// 		}
-			// 	},
-			// 	{ new: true }
-			// );
-			return returnedEvent;
-			// }
-			// throw new AuthenticationError('You need to be logged in to do that!');
+			try{
+				const {
+					title,
+					description,
+					start_date,
+					end_date,
+					start_time,
+					end_time,
+					category,
+					in_person,
+					location,
+					image,
+					owner
+				} = args;
+				//! add user context to authenticate
+				// if (context.user) {
+				// owner: context.userId
+				const newEvent = await Event.create({
+					title: title,
+					description: description,
+					start_date: start_date,
+					end_date: end_date,
+					start_time: start_time,
+					end_time: end_time,
+					owner: owner,
+					category: category,
+					in_person: in_person,
+					location: location,
+					image: image
+				});
+	
+				const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner');
+	
+				//! use context to get userId and complete this
+				// await User.findOneAndUpdate(
+				// 	{ _id: context.userId },
+				// 	{
+				// 		$addToSet: {
+				// 			events: newEvent._id
+				// 			}
+				// 	},
+				// 	{ new: true }
+				// )
+	
+				// await Thread.findOneAndUpdate(
+				// 	{ _id: threadId },
+				// 	{
+				// 		$addToSet: {
+				// 			events: newEvent._id
+				// 		}
+				// 	},
+				// 	{ new: true }
+				// );
+				return returnedEvent;
+			}catch(err) {
+				if(err.errors.description) return new ApolloError(`${err.errors.description}`, '400');
+				if(err.errors.title) return new ApolloError(`${err.errors.title}`, '400');
+			}
+			
 		},
 
 		//* remove the event

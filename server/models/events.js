@@ -66,10 +66,6 @@ const eventSchema = new Schema({
         type: String,
         default: ""
     },
-    thread: {
-        type: ObjectId,
-        ref:'Thread'
-    },
     comments: [
         {
             type: ObjectId,
