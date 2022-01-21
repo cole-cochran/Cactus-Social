@@ -219,13 +219,17 @@ export default function EventDisplay() {
 						</div>
 						<div className='event-desc-div'>
 							<p className='event-description'><span>Description: </span>{eventData.description}</p>
-							<div className='event-datetime'>
 							{eventData.start_date === eventData.end_date ? (
-								<p><span>Event Date: </span>{eventData.start_date}
+								<div className='event-datetime'>
+								<p>
+									<span>Event Date: </span>{eventData.start_date}
+								</p>
+								<p>
 									<span>Event Time: </span>{eventData.start_time} to {eventData.end_time}
 								</p>
+								</div>
 							) : (
-								<div>
+								<div className='event-datetime'>
 									<p>
 										<span>Begins: </span>
 										{eventData.start_date} @ {eventData.start_time}
@@ -235,7 +239,6 @@ export default function EventDisplay() {
 									</p>
 								</div>
 							)}
-							</div>
 						</div>
 						<div className='event-other-div'>
 							{eventData.in_person ? (

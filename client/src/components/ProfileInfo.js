@@ -147,22 +147,22 @@ function ProfileInfo(props) {
     //* handle the deletion of a technology from the user's tech stack
 	const handleDelete = async (event) => {
         console.log(event.target.parentNode.parentNode.firstChild.firstChild.textContent);
-        const jsSucks = event.target.parentNode.parentNode.firstChild.firstChild.textContent;
+        const deletedTech = event.target.parentNode.parentNode.firstChild.firstChild.textContent;
 		await removeTechnology({
             variables: {
                 userId: AuthService.getProfile().data._id,
-                technology: jsSucks
+                technology: deletedTech
             }
         });
 		const editedTech = [...techData].filter((techName) => 
-            techName !== jsSucks
+            techName !== deletedTech
         );
         setTechData(editedTech);
 	};
 
     const imageStyles = {
-        height: "300px",
-        width: "300px",
+        height: "200px",
+        width: "200px",
         borderRadius: "50%",
         backgroundColor: 'var(--cactus-green-1)',
         color: "white",
@@ -180,7 +180,7 @@ function ProfileInfo(props) {
 				<div className="profile-header">
                     <div className='profile-pic-div'>
                         <div style={imageStyles}>
-                            <InsertEmoticonIcon sx={{ width: "200px", height: "200px", alignSelf: "center" }} />
+                            <InsertEmoticonIcon sx={{ width: "150px", height: "150px", alignSelf: "center" }} />
                         </div>
                         {canEditProfile && 
                         <img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
@@ -190,7 +190,7 @@ function ProfileInfo(props) {
 						{specificUser.first_name} {specificUser.last_name}
 					</h3>
 				</div>
-				<div style={{}} className="profile-edit-container">
+				<div className="profile-edit-container">
 					<span className="join-date">Member Since: {specificUser.date_joined}</span>
 				</div>
                 <div style={{display: "flex"}}>
@@ -200,13 +200,11 @@ function ProfileInfo(props) {
                         <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
                     </div>}
                 </div>
-				
 				<div className="user-info">
 					<div style={{display: "flex"}} className="tech-stack">
 						<ul>
 							{techData.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
-									{/* <Chip label={tech} style={{backgroundColor:'white'}} variant="outlined" /> */}
 									<button className="tech-chip">
 										{tech}
 									</button>

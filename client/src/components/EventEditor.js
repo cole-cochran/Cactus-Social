@@ -16,17 +16,7 @@ export default function EventEditor(props) {
 		]
 	});
 
-    const [editedEvent, setEditedEvent] = React.useState({
-        ...eventData,
-        // start_date: editedEvent.start_date,
-        start_date: "2022-06-06",
-        // end_date: editedEvent.end_date,
-        end_date: "2022-06-06",
-        // start_time: editedEvent.start_time,
-        start_time: "12:15",
-        // end_time: editedEvent.end_time,
-        end_time: "12:30"
-    });
+    const [editedEvent, setEditedEvent] = React.useState({eventData});
 
     const handleEdit = async () => {
 		await updateEvent({
@@ -34,14 +24,10 @@ export default function EventEditor(props) {
 				eventId: eventId,
 				title: editedEvent.title,
 				description: editedEvent.description,
-				// start_date: editedEvent.start_date,
-				start_date: "2022-06-06",
-				// end_date: editedEvent.end_date,
-				end_date: "2022-06-06",
-				// start_time: editedEvent.start_time,
-				start_time: "12:15",
-				// end_time: editedEvent.end_time,
-				end_time: "12:30",
+				start_date: editedEvent.start_date,
+				end_date: editedEvent.end_date,
+				start_time: editedEvent.start_time,
+				end_time: editedEvent.end_time,
 				category: editedEvent.category,
 				in_person: editedEvent.in_person,
 				location: editedEvent.location,
