@@ -99,10 +99,8 @@ function Login(props) {
 					</h1>
 					<p>Login to see what your fellow developers are up to!</p>
 				</div>
-
-				{/* //! add the image of the cacti hanging out */}
 				<div className="login-banner-img-container">
-					<img className="login-banner-illustration" src="/assets/img/one-cacti-illustration.svg" alt="one cactus hanging out" />
+					<img className="login-banner-illustration" src="../../assets/img/new_logo.png" alt="one cactus hanging out" />
 				</div>
 
 			</div>
