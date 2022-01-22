@@ -50,14 +50,6 @@ query allThreads {
 			}
 			post_text
 		}
-		events {
-			title
-			owner {
-				_id
-			}
-			category
-			in_person
-		}
 		moderator {
 			username
 		}
@@ -111,10 +103,6 @@ export const ALL_EVENTS = gql`
 			in_person
 			location
 			image
-			thread {
-				_id
-				title
-			}
 			date_created
 			edited
 			comments {
@@ -282,9 +270,6 @@ query userThreads($userId: ID!) {
 				_id
 			}
 		}
-		events {
-			_id
-		}
 		moderator {
 			_id
 			username
@@ -353,32 +338,6 @@ export const THREAD_DETAILS = gql`
 					_id
 				}
 				reactions
-				edited
-				comments {
-					_id
-				}
-			}
-			events {
-				_id
-				title
-				start_date
-				end_date
-				start_time
-				end_time
-				owner {
-					_id
-				}
-				attendees {
-					_id
-				}
-				category
-				in_person
-				location
-				image
-				thread {
-					_id
-				}
-				date_created
 				edited
 				comments {
 					_id
@@ -502,16 +461,13 @@ export const EVENT_DETAILS = gql`
 			in_person
 			location
 			image
-			thread {
-				_id
-				title
-			}
 			comments {
 				_id
 				comment_text
 				date_created
 				author {
 					_id
+					username
 				}
 				reactions
 				edited

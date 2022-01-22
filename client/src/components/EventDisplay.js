@@ -5,12 +5,13 @@ import Footer from './Footer';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EventEditor from './EventEditor';
+import EventComment from './EventComment';
 
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
-// import { CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
-import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT } from '../utils/mutations';
+// import { ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
+import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
 //! ADD  DESCRIPTION OF EVENT_DETAILS
 
 import AuthService from '../utils/auth';
@@ -58,9 +59,26 @@ export default function EventDisplay() {
 		]
 	});
 
-	//* If the logged in user is event owner, let them update or delete the event
+	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
 
-	//* Otherwise, let the user attend or leave the event
+	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+
+	const [ updateEventComment ] = useMutation(UPDATE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
 	
 	const errors = singleEvent.error || singleUser.error;
 	const loading = singleEvent.loading || singleUser.loading;
@@ -81,6 +99,50 @@ export default function EventDisplay() {
 				attendee: userId
 			}
 		})
+	}
+
+	const [newCommentText, setNewCommentText] = React.useState("");
+
+	const [editedComment, setEditedComment] = React.useState("");
+
+	const handleCreateComment = async (event) => {
+		try {
+			await createEventComment({
+				variables: {
+					eventId: eventId, comment_text: newCommentText, author: userId
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
+	const handleChange = async (event) => {
+		
+		const { name, value } = event.target;
+
+		console.log(name)
+		if (name === 'eventCommentText') {
+			setNewCommentText(value);
+		} else if (name === 'editedCommentText') {
+			setEditedComment(value)
+		}
+	}
+
+	const handleUpdateComment = async (event) => {
+
+	}
+
+	const handleCommentDropdown = async (event) => {
+		
+	}
+
+	const handleOpenCommentEditor = async (event) => {
+
+	}
+
+	const handleRemoveComment = async (event) => {
+
 	}
 
 	const handleDropdown = async (event) => {
@@ -144,6 +206,10 @@ export default function EventDisplay() {
 	if (!singleEvent.data.eventDetails) {
 		return <h3>This event no longer exists!</h3>;
 	}
+
+	const eventComments = singleEvent.data.eventDetails.comments;
+
+	console.log(eventComments)
 
 	const eventData = singleEvent.data.eventDetails;
 
@@ -301,6 +367,19 @@ export default function EventDisplay() {
 							{/* <button>
 								Hide Comments
 							</button> */}
+						</div>
+						<div className='event-comment'>
+							{eventComments.map((comment) => (
+								<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
+							))}
+							<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
+								<input onChange={handleChange} name="eventCommentText" value={newCommentText} contentEditable autoComplete='off' />
+								<div className="chat-input-buttons">
+									<button type="submit" className="chat-input-send-button">
+										send
+									</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>

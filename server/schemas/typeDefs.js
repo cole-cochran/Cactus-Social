@@ -51,7 +51,6 @@ const typeDefs = gql`
         _id: ID!
         title: String!
         posts: [Post]
-        events: [Event]
         moderator: User
         members: [User]
         date_created: String
@@ -76,7 +75,6 @@ const typeDefs = gql`
         in_person: Boolean!
         location: String!
         image: String
-        thread: Thread
         comments: [Comment]
         date_created: String
         edited: Boolean
@@ -143,7 +141,7 @@ const typeDefs = gql`
         attendEvent(eventId: ID!, attendee: ID!): Event
         leaveEvent(eventId: ID!, attendee: ID!): Event
 
-        createEventComment(eventId: ID!, comment_text: String!): Event
+        createEventComment(eventId: ID!, comment_text: String!, author: ID!): Event
         removeEventComment(eventId: ID!, commentId: ID!): Event
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         

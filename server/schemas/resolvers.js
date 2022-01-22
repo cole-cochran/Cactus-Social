@@ -40,7 +40,7 @@ const resolvers = {
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
+			return await Thread.find({}).populate('posts').populate('members').populate('moderator');
 		},
 
 		allThreadPosts: async (parent, args, context) => {
@@ -60,7 +60,6 @@ const resolvers = {
 			// if (context.user) {
 			return await Thread.findById(args.threadId)
 				.populate('posts')
-				.populate('events')
 				.populate('members')
 				.populate('moderator');
 			// }
@@ -114,21 +113,21 @@ const resolvers = {
 		},
 
 		allEvents: async (parent, args, context) => {
-			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
+			return await Event.find({}).populate('owner').populate('attendees').populate('comments');
 		},
 
-		threadEvents: async (parent, args, context) => {
-			const { threadId } = args;
-			const allEvents = await Event.find(
-				{
-					where: {
-						thread: threadId
-					}
-				}
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+		// threadEvents: async (parent, args, context) => {
+		// 	const { threadId } = args;
+		// 	const allEvents = await Event.find(
+		// 		{
+		// 			where: {
+		// 				thread: threadId
+		// 			}
+		// 		}
+		// 	).populate('owner').populate('attendees').populate('thread').populate('comments');
 			
-			return allEvents;
-		},
+		// 	return allEvents;
+		// },
 
 		//* get all user threads
 		userThreads: async (parent, args, context) => {
@@ -139,7 +138,7 @@ const resolvers = {
 			const userThreads = [];
 
 			for (let thread of userData.threads) {
-				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('events').populate('moderator').populate('members');
+				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('moderator').populate('members');
 				userThreads.push(threadId);
 			}
 
@@ -157,7 +156,7 @@ const resolvers = {
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees').populate('thread');
+				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
 				userEvents.push(eventId);
 			}
 
@@ -181,8 +180,7 @@ const resolvers = {
 			return await Event.findById(args.eventId)
 				.populate('owner')
 				.populate('attendees')
-				.populate('thread')
-				.populate('comments');
+				.populate('comments').populate('comments.author');
 		}
 	},
 	Mutation: {
@@ -731,7 +729,7 @@ const resolvers = {
 				image: image
 			});
 
-			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner').populate('thread');
+			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner');
 
 			//! use context to get userId and complete this
 			// await User.findOneAndUpdate(
@@ -876,7 +874,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -907,7 +905,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -921,7 +919,7 @@ const resolvers = {
 			// if (context.user) {
 			const { eventId, comment_text, author } = args;
 			const newComment = await Comment.create({
-				event: eventId,
+				eventId: eventId,
 				comment_text: comment_text,
 				author: author
 				// author: context.user._id
@@ -934,7 +932,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments').populate('comments.author');
 
 			return commentedEvent;
 			// }
@@ -956,7 +954,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments').populate('comments.author');
 
 			return event;
 			// }
@@ -977,7 +975,7 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -998,7 +996,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }

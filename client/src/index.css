@@ -1506,6 +1506,16 @@ footer {
     box-shadow: -1px -1px 2px white, -1px 1px 2px white, 1px -1px 2px white, 1px 1px 2px white;
 }
 
+.event-comment {
+    width: 90%;
+    margin: 15px 0px;
+    height: 100%;
+}
+
+.event-comment-input {
+    margin-top: 30px;
+}
+
 @media screen and (min-width: 600px) {
     
     .event-main-div {

@@ -863,10 +863,6 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -910,10 +906,6 @@ mutation removeEventComment($eventId: ID!, $commentId: String!) {
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -957,10 +949,6 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
