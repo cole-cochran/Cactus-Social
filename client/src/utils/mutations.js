@@ -700,10 +700,6 @@ mutation createEvent($title: String!, $description: String!, $start_date: String
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         date_created
         edited
     }

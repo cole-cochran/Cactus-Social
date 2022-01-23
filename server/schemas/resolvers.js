@@ -180,7 +180,15 @@ const resolvers = {
 			return await Event.findById(args.eventId)
 				.populate('owner')
 				.populate('attendees')
-				.populate('comments').populate('comments.author');
+				.populate('comments')
+				.populate({
+					path: "comments",
+					model: "Comment",
+					populate: {
+						path: "author",
+						model: "User"
+					}
+				});
 		}
 	},
 	Mutation: {
@@ -636,7 +644,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('author').populate('thread').populate('comments');
+			).populate('author').populate('thread').populate('comments').populate('comments.author');
 
 			return thePost;
 		},

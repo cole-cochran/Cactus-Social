@@ -19,21 +19,11 @@ import AuthService from '../utils/auth';
 export default function EventDisplay() {
 
 	const userId = AuthService.getProfile().data._id;
-
-	// TODO (eventDisplay) add functionality for event owner to update, remove, or invite others to the event
-
-	// TODO (eventDisplay) allow others to attend, leave, comment on events as they please
-
-	// TODO (eventDisplay) create modal for users to update, delete their own comments
-
 	const { eventId } = useParams();
-
-	const [openEditor, setOpenEditor] = React.useState(false);
 
 	const singleEvent = useQuery(EVENT_DETAILS, {
 		variables: { eventId: eventId }
 	});
-
 	const singleUser = useQuery(USER_PROFILE, {
 		variables: { userId: AuthService.getProfile().data._id }
 	})
@@ -44,35 +34,30 @@ export default function EventDisplay() {
 			'eventDetails'
 		]
 	});
-
 	const [ attendEvent ] = useMutation(ATTEND_EVENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
-
 	const [ leaveEvent ] = useMutation(LEAVE_EVENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
-
 	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
-
 	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
-
 	const [ updateEventComment ] = useMutation(UPDATE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -82,6 +67,11 @@ export default function EventDisplay() {
 	
 	const errors = singleEvent.error || singleUser.error;
 	const loading = singleEvent.loading || singleUser.loading;
+
+	const [openEditor, setOpenEditor] = React.useState(false);
+	const [openCommentEditor, setOpenCommentEditor] = React.useState(false);
+	const [newCommentText, setNewCommentText] = React.useState("");
+	const [editedComment, setEditedComment] = React.useState("");
 
 	const handleAttend = async () => {
 		await attendEvent({
@@ -101,11 +91,8 @@ export default function EventDisplay() {
 		})
 	}
 
-	const [newCommentText, setNewCommentText] = React.useState("");
-
-	const [editedComment, setEditedComment] = React.useState("");
-
 	const handleCreateComment = async (event) => {
+		event.preventDefault();
 		try {
 			await createEventComment({
 				variables: {
@@ -115,6 +102,40 @@ export default function EventDisplay() {
 		} catch (err) {
 			console.error(err);
 		}
+	}
+
+	const handleRemoveComment = async (event) => {
+		const commentId = JSON.parse(localStorage.getItem('commentId'));
+		try {
+			await removeEventComment({
+				variables: {
+					eventId: eventId,
+					commentId: commentId
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+
+		localStorage.removeItem('commentId');
+	}
+
+	const handleUpdateComment = async (event) => {
+		event.preventDefault();
+		const commentId = JSON.parse(localStorage.getItem('commentId'));
+		try {
+			await createEventComment({
+				variables: {
+					eventId: eventId,
+					commentId: commentId, 
+					comment_text: editedComment
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+		localStorage.removeItem('commentId');
+		setOpenCommentEditor(false);
 	}
 
 	const handleChange = async (event) => {
@@ -129,20 +150,26 @@ export default function EventDisplay() {
 		}
 	}
 
-	const handleUpdateComment = async (event) => {
-
-	}
-
 	const handleCommentDropdown = async (event) => {
-		
+		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id')
+
+		localStorage.setItem('commentId', JSON.stringify(commentId));
+
+		console.log(event.target.parentNode.childNodes[1]);
+
+		event.target.parentNode.childNodes[1].style.display = "flex";
 	}
 
 	const handleOpenCommentEditor = async (event) => {
-
+		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+		console.log(currentComment)
+		setEditedComment(currentComment);
+		console.log(editedComment);
+		setOpenCommentEditor(true);
 	}
 
-	const handleRemoveComment = async (event) => {
-
+	const handleCloseCommentEditor = async (event) => {
+		setOpenCommentEditor(false);
 	}
 
 	const handleDropdown = async (event) => {
@@ -153,8 +180,10 @@ export default function EventDisplay() {
 
 	const handleCloseDropdown = (event) => {
 		if (event.target.className !== "dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
-			const content = document.querySelector('.dropdown-content');
-			content.style.display = "none";
+			const content = document.querySelectorAll('.dropdown-content');
+			for (let item of content) {
+				item.style.display = "none";
+			}
 		}
 		
 	}
@@ -186,17 +215,6 @@ export default function EventDisplay() {
 				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
 			</div>
 		)
-	} else {
-		const loadingArr = document.getElementsByClassName('loading-icon-box');
-
-		const loadingIcon = loadingArr[0];
-
-		console.log(loadingIcon)
-		loadingIcon.style.display = "grid";
-
-		setTimeout(() => {
-			loadingIcon.style.display = "none"
-		}, 1000);
 	}
 
 	if (errors) {
@@ -207,9 +225,11 @@ export default function EventDisplay() {
 		return <h3>This event no longer exists!</h3>;
 	}
 
+	console.log(singleEvent.data.eventDetails)
+
 	const eventComments = singleEvent.data.eventDetails.comments;
 
-	console.log(eventComments)
+	console.log(eventComments);
 
 	const eventData = singleEvent.data.eventDetails;
 
@@ -237,10 +257,6 @@ export default function EventDisplay() {
 	};
 
 	return (
-		<React.Fragment>
-		<div className='loading-icon-box'>
-			<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-		</div>
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
             <div className="app-content-container" >
@@ -384,19 +400,37 @@ export default function EventDisplay() {
 					</div>
 				</div>
 				<Modal
-                        data-id="editEvent"
-						open={openEditor}
-						onClose={handleCloseEditor}
-						aria-labelledby="modal-modal-title"
-						aria-describedby="modal-modal-description"
-					>
-						<Box sx={style}>
-							<EventEditor eventId={eventId} eventData={eventData} />
-						</Box>
-					</Modal>
+					data-id="editEvent"
+					open={openEditor}
+					onClose={handleCloseEditor}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<EventEditor eventId={eventId} eventData={eventData} />
+					</Box>
+				</Modal>
+				<Modal
+					data-id="editComment"
+					open={openCommentEditor}
+					onClose={handleCloseCommentEditor}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<form onSubmit={handleUpdateComment} className='edit-event-comment-form'>
+							<label htmlFor='editedCommentText'>Something</label>
+							<input type="text" value={editedComment} id="editedCommenText" name="editedCommentText"></input>
+							<button
+								type="submit"
+							>
+								Update
+							</button>
+						</form>
+					</Box>
+				</Modal>
 			</div>
 			<Footer/>
 		</div>
-		</React.Fragment>
 	);
 }

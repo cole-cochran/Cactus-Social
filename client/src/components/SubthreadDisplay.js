@@ -182,18 +182,19 @@ function SubthreadDisplay(props) {
 				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
 			</div>
 		)
-	} else {
-		const loadingArr = document.getElementsByClassName('loading-icon-box');
+	} 
+	// else {
+	// 	const loadingArr = document.getElementsByClassName('loading-icon-box');
 
-		const loadingIcon = loadingArr[0];
+	// 	const loadingIcon = loadingArr[0];
 
-		console.log(loadingIcon)
-		loadingIcon.style.display = "grid";
+	// 	console.log(loadingIcon)
+	// 	loadingIcon.style.display = "grid";
 
-		setTimeout(() => {
-			loadingIcon.style.display = "none"
-		}, 1000);
-	}
+	// 	setTimeout(() => {
+	// 		loadingIcon.style.display = "none"
+	// 	}, 1000);
+	// }
 
 	return (
 		<main onClick={handleCloseDropdown} className="thread-wrapper">

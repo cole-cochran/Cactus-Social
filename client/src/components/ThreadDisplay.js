@@ -285,20 +285,7 @@ function ThreadDisplay(props) {
 				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
 			</div>
 		)
-	} else {
-		const loadingArr = document.getElementsByClassName('loading-icon-box');
-
-		const loadingIcon = loadingArr[0];
-
-		// console.log(loadingIcon)
-		loadingIcon.style.display = "grid";
-
-		setTimeout(() => {
-			loadingIcon.style.display = "none"
-		}, 1000);
-	}
-
-	
+	} 
 
 	if (userData.data.userProfile.pinned_posts.length) {
 		const allUserPins = userData.data.userProfile.pinned_posts;
@@ -338,9 +325,6 @@ function ThreadDisplay(props) {
 
 	return (
 		<React.Fragment>
-		<div className='loading-icon-box'>
-			<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-		</div>
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
 			<div className="thread-content-container" onLoad={scroll}>
 				<div className='thread-top'>
