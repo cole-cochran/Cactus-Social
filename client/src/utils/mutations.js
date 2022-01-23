@@ -868,9 +868,6 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
             }
             reactions
             edited
-            event {
-                _id
-            }
         }
         date_created
         edited
@@ -879,7 +876,7 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
 `;
 
 export const REMOVE_EVENT_COMMENT = gql`
-mutation removeEventComment($eventId: ID!, $commentId: String!) {
+mutation removeEventComment($eventId: ID!, $commentId: ID!) {
     removeEventComment(eventId: $eventId, commentId: $commentId) {
         _id
         title
@@ -911,9 +908,6 @@ mutation removeEventComment($eventId: ID!, $commentId: String!) {
             }
             reactions
             edited
-            event {
-                _id
-            }
         }
         date_created
         edited
@@ -954,9 +948,6 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
             }
             reactions
             edited
-            event {
-                _id
-            }
         }
         date_created
         edited

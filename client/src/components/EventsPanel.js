@@ -15,11 +15,11 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    width: "100%",
+    maxWidth: "500px",
+    bgcolor: '#232323',
     boxShadow: 24,
-    p: 4,
+    border: '2px solid white'
 };
 
 function EventsPanel() {

@@ -72,6 +72,7 @@ export default function EventDisplay() {
 	const [openCommentEditor, setOpenCommentEditor] = React.useState(false);
 	const [newCommentText, setNewCommentText] = React.useState("");
 	const [editedComment, setEditedComment] = React.useState("");
+	const [toggleComments, setToggleComments] = React.useState(false);
 
 	const handleAttend = async () => {
 		await attendEvent({
@@ -96,12 +97,14 @@ export default function EventDisplay() {
 		try {
 			await createEventComment({
 				variables: {
-					eventId: eventId, comment_text: newCommentText, author: userId
+					eventId: eventId, 
+					comment_text: newCommentText, author: userId
 				}
 			})
 		} catch (err) {
 			console.error(err);
 		}
+		setNewCommentText("");
 	}
 
 	const handleRemoveComment = async (event) => {
@@ -123,8 +126,11 @@ export default function EventDisplay() {
 	const handleUpdateComment = async (event) => {
 		event.preventDefault();
 		const commentId = JSON.parse(localStorage.getItem('commentId'));
+		console.log(commentId);
+		console.log(eventId);
+		console.log(editedComment);
 		try {
-			await createEventComment({
+			await updateEventComment({
 				variables: {
 					eventId: eventId,
 					commentId: commentId, 
@@ -134,6 +140,7 @@ export default function EventDisplay() {
 		} catch (err) {
 			console.error(err);
 		}
+		setEditedComment("");
 		localStorage.removeItem('commentId');
 		setOpenCommentEditor(false);
 	}
@@ -142,7 +149,6 @@ export default function EventDisplay() {
 		
 		const { name, value } = event.target;
 
-		console.log(name)
 		if (name === 'eventCommentText') {
 			setNewCommentText(value);
 		} else if (name === 'editedCommentText') {
@@ -151,7 +157,7 @@ export default function EventDisplay() {
 	}
 
 	const handleCommentDropdown = async (event) => {
-		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id')
+		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
 
 		localStorage.setItem('commentId', JSON.stringify(commentId));
 
@@ -162,9 +168,7 @@ export default function EventDisplay() {
 
 	const handleOpenCommentEditor = async (event) => {
 		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
-		console.log(currentComment)
 		setEditedComment(currentComment);
-		console.log(editedComment);
 		setOpenCommentEditor(true);
 	}
 
@@ -208,6 +212,10 @@ export default function EventDisplay() {
 		window.location.replace(`/profile/${userId}`);
 	}
 
+	const handleToggleComments = async () => {
+		setToggleComments(!toggleComments);
+	}
+
 	if (loading) {
 
 		return (
@@ -225,11 +233,9 @@ export default function EventDisplay() {
 		return <h3>This event no longer exists!</h3>;
 	}
 
-	console.log(singleEvent.data.eventDetails)
+	// console.log(singleEvent.data.eventDetails)
 
 	const eventComments = singleEvent.data.eventDetails.comments;
-
-	console.log(eventComments);
 
 	const eventData = singleEvent.data.eventDetails;
 
@@ -252,9 +258,15 @@ export default function EventDisplay() {
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
 		width: 400,
-		bgcolor: 'background.paper',
-		boxShadow: 24
+		bgcolor: '#232323',
+		boxShadow: 24,
+		border: '2px solid white'
 	};
+
+	const scroll = () => {
+		var element = document.getElementsByClassName("event-comment");
+		element[0].scrollTop = element[0].scrollHeight;
+	}
 
 	return (
 		<div onClick={handleCloseDropdown}>
@@ -285,7 +297,7 @@ export default function EventDisplay() {
 									</div>
 								) : (
 									<div className='event-inperson'>
-										<img src="../../assets/img/laptop.svg" alt="laptop"/>
+										<img src="../../assets/img/laptop.png" alt="laptop"/>
 										<p>Virtual</p>
 									</div>
 								)}
@@ -348,7 +360,7 @@ export default function EventDisplay() {
 									{eventData.location}
 								</p>
 							) : (
-								<a className='event-virtual' href={eventData.location}>Link To Virtual Event</a>
+								<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
 							)}
 
 							<div className='event-attendees'>
@@ -375,28 +387,34 @@ export default function EventDisplay() {
 							<button>
 								Contact Host
 							</button>
-							{/* when see comments button is pressed, render the event comments component with the eventId passes into it as a prop */}
-							{/* if the comments are shown show new button that allows users to hide comments -- need a piece of state to track opening and closing status */}
-							<button>
-								See Comments
-							</button>
-							{/* <button>
-								Hide Comments
-							</button> */}
+							{toggleComments ? (
+								<button onClick={handleToggleComments}>
+									Hide Comments
+								</button>
+							) : (
+								<button onClick={handleToggleComments}>
+									See Comments
+								</button>
+							)}		
 						</div>
-						<div className='event-comment'>
-							{eventComments.map((comment) => (
-								<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
-							))}
-							<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
-								<input onChange={handleChange} name="eventCommentText" value={newCommentText} contentEditable autoComplete='off' />
-								<div className="chat-input-buttons">
-									<button type="submit" className="chat-input-send-button">
-										send
-									</button>
-								</div>
-							</form>
-						</div>
+						{toggleComments ? (
+							<div className='event-comment' onLoad={scroll}>
+								{eventComments.map((comment) => (
+									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
+								))}
+								<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
+									<input onChange={handleChange} name="eventCommentText" value={newCommentText} contentEditable autoComplete='off' />
+									<div className="chat-input-buttons">
+										<button type="submit" className="chat-input-send-button">
+											send
+										</button>
+									</div>
+								</form>
+							</div>
+						) : (
+							<React.Fragment />
+						)}
+						
 					</div>
 				</div>
 				<Modal
@@ -419,8 +437,16 @@ export default function EventDisplay() {
 				>
 					<Box sx={style}>
 						<form onSubmit={handleUpdateComment} className='edit-event-comment-form'>
-							<label htmlFor='editedCommentText'>Something</label>
-							<input type="text" value={editedComment} id="editedCommenText" name="editedCommentText"></input>
+							<div>
+								<label htmlFor='editedCommentText'>Comment</label>
+								<input 
+									type="text"
+									value={editedComment} 
+									id="editedCommentText" 
+									onChange={handleChange} 
+									name="editedCommentText"
+								/>
+							</div>
 							<button
 								type="submit"
 							>

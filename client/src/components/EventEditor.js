@@ -16,7 +16,7 @@ export default function EventEditor(props) {
 		]
 	});
 
-    const [editedEvent, setEditedEvent] = React.useState({eventData});
+    const [editedEvent, setEditedEvent] = React.useState(eventData);
 
     const handleEdit = async () => {
 		await updateEvent({
@@ -46,8 +46,8 @@ export default function EventEditor(props) {
 	}
 
     return (
-        <form onSubmit={handleEdit}>
-			<div className='event-creation-inputs'>
+        <form className="event-edit-form" onSubmit={handleEdit}>
+			<div className='event-edit-inputs'>
 				<div>
 					<label forhtml="title">Title</label>
 					<input type="text" value={editedEvent.title} onChange={handleChange} id="title" name="title"></input>
@@ -84,7 +84,7 @@ export default function EventEditor(props) {
 					<label forhtml="location">Event Location / URL</label>
 					<input type="text" value={editedEvent.location} onChange={handleChange} id="location" name="location"/>
 				</div>
-				<button type="submit">Update Event</button>
+				<button className="event-edit-button" type="submit">Update Event</button>
 			</div>
 		</form>
     )

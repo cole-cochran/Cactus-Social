@@ -86,7 +86,7 @@ export default function EventCreation() {
 	};
 
 	return (
-		<form onSubmit={handleEventFormSubmit}>
+		<form onSubmit={handleEventFormSubmit} className='event-creation-form'>
 			<div className='event-creation-inputs'>
 				<div>
 					<label forhtml="title">Title</label>
@@ -121,10 +121,10 @@ export default function EventCreation() {
 					<input type="checkbox" value={eventDetails.in_person} onChange={handleChange} id="in_person" name="in_person"/>
 				</div>
 				<div>
-					<label forhtml="location">Event Location / URL</label>
+					<label forhtml="location">Location / URL</label>
 					<input type="text" value={eventDetails.location} onChange={handleChange} id="location" name="location"/>
 				</div>
-				<button type="submit">Create Event</button>
+				<button className="event-creation-button" type="submit">Create Event</button>
 			</div>
 		</form>
 	);

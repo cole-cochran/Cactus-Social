@@ -644,7 +644,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('author').populate('thread').populate('comments').populate('comments.author');
+			).populate('author').populate('thread').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return thePost;
 		},
@@ -940,7 +947,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('comments').populate('comments.author');
+			).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return commentedEvent;
 			// }
@@ -952,7 +966,7 @@ const resolvers = {
 			const { commentId, eventId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			await Comment.findOneAndDelete({ _id: commentId }, { new: true });
+			await Comment.findOneAndDelete({ _id: commentId });
 			
 			const event = await Event.findOneAndUpdate(
 				{ _id: eventId },
@@ -962,7 +976,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('comments').populate('comments.author');
+			).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return event;
 			// }
@@ -983,7 +1004,14 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return event;
 			// }

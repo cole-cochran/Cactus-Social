@@ -1382,6 +1382,10 @@ footer {
     box-shadow: 1px 1px 3px white, -1px 1px 3px white, 1px -1px 3px white, -1px -1px 3px white, inset 2px 2px 2px white, inset -2px 2px 2px white, inset 2px -2px 2px white, inset -2px -2px 2px white;
 }
 
+.event-more p {
+    padding-right: 10px;
+}
+
 .event-option-div p {
     padding-top: 15px;
     color: var(--grey1);
@@ -1507,13 +1511,186 @@ footer {
 }
 
 .event-comment {
+    width: 100%;
+    /* padding: 15px 15px 15px 5px; */
+    min-height: 400px;
+    border-top: 5px solid var(--cactus-purple-1);
+    overflow-y: scroll;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-chat {
     width: 90%;
-    margin: 15px 0px;
-    height: 100%;
+    margin-right: 2%;
+}
+
+.event-comment::-webkit-scrollbar {
+    display: none;
 }
 
 .event-comment-input {
     margin-top: 30px;
+    width: 90%;
+    margin-right: 2%;
+}
+
+.edit-event-comment-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-event-comment-form div {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-event-comment-form label {
+    margin-right: 10px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.edit-event-comment-form input {
+    padding: 5px;
+    color: white;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+}
+
+.edit-event-comment-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.edit-event-comment-form button {
+    padding: 8px;
+    margin-top: 10px;
+    width: 100px;
+    font-weight: 600;
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    color: white;
+    border-radius: 10px;
+}
+
+.edit-event-comment-form button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
+.event-edit-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-edit-form label {
+    margin-right: 10px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.event-edit-form input {
+    padding: 5px;
+    color: white;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+}
+
+.event-edit-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.event-edit-form button {
+    padding: 8px;
+    margin-top: 10px;
+    width: 150px;
+    font-weight: 600;
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    color: white;
+    border-radius: 10px;
+}
+
+.event-edit-form #in_person {
+    height: 18px;
+    width: 18px;
+    margin-left: 6px;
+}
+
+.event-edit-form button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
+.event-edit-inputs div {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.event-creation-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-creation-form label {
+    margin-right: 10px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.event-creation-form input {
+    padding: 5px;
+    color: white;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+}
+
+.event-creation-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.event-creation-form button {
+    padding: 8px;
+    margin-top: 10px;
+    width: 150px;
+    font-weight: 600;
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    color: white;
+    border-radius: 10px;
+}
+
+.event-creation-form #in_person {
+    height: 16px;
+    width: 16px;
+    margin-left: 6px;
+}
+
+.event-creation-form button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
+.event-creation-inputs div {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 @media screen and (min-width: 600px) {

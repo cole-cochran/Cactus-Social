@@ -7,10 +7,8 @@ export default function EventComment(props) {
 
     const owner = AuthService.getProfile().data._id;
 
-    console.log(comment);
-
     return (
-        <div key={comment._id} data-id={comment._id} className="chat">
+        <div key={comment._id} data-id={comment._id} className="chat event-chat">
             <div className="pos post-bar">
                 <div>
                     <span className="chat-name">{comment.author.username}</span>
