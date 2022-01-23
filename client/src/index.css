@@ -416,22 +416,30 @@ html::-webkit-scrollbar {
 /*************LOGIN.HTML:MEDIA-QUERIES************/
 
 /*************SIGNUP.HTML:STYLES************/
+.signup-page {
+    height: calc(100% - 8rem);
+}
+
 .sign-up-header {
     background-color: var(--cactus-green-1);
     height: 4rem;
 }
+
 .signup-form-section {
-    padding-top: 5rem;
-    width: calc(100% - 1rem);
-    margin-left: 1rem;
+    padding: 5rem 1rem;
+    width: 100%;
     display: flex;
     justify-content: center;
-    padding-bottom: 5rem;
+    background-color: var(--ultra-dark);
+    height: 100%;
+    align-items: center;
 }
 
 .signup-form-section h3 {
     font-size: 1.5rem;
+    color: white;
 }
+
 .signup-footer {
     height: 4rem;
     background-color: #B945FF;
@@ -450,6 +458,9 @@ html::-webkit-scrollbar {
     display: block;
     width: calc(100% - 1rem);
     height: 2rem;
+    background-color: var(--cactus-purple-1);
+    border-radius: 8px;
+    border: 2px solid white;
 }
 
 .signup-form a {
@@ -480,30 +491,34 @@ html::-webkit-scrollbar {
     display: inline-block;
 }
 
-.signup-banner {
+/* .signup-banner {
    background-color: #501069;
     height: 100vh;
-    /* height: 100%; */
+    height: 100%;
     padding: 3rem;
-}
-.signup-banner h1 {
+} */
+/* .signup-banner h1 {
     font-size: 2rem;
 }
 .signup-banner p {
     font-size: 1rem;
-}
-.two-cacti-illustration {
+} */
+/* .two-cacti-illustration {
     width: 20rem;
     margin-left: 2rem;
-}
+} */
 
 .one-cacti-illustration {
-    width: 10rem;
+    width: 15rem;
     margin-right: 4rem;
 }
 .center-signup-form {
     display: flex;
     align-items: end;
+}
+
+@media screen and (max-width: 825px) {
+    
 }
 /*************SIGNUP.HTML:STYLES************/
 

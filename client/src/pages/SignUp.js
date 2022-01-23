@@ -131,17 +131,17 @@ function SignUp() {
 						</button>
 					</form>
 				)}
-				{error && <div className="my-3 p-3 bg-danger text-white">{error.message}</div>}
-					<div>
+				{error && <div className="my-3 p-3 bg-danger text-white">{error.message}	</div>}
+					{/* <div>
 						<img className="two-cacti-illustration" src="/assets/img/two-cacti-illustration.svg" alt="two cacti"/>
-					</div>
+					</div> */}
 				</div>
 			</div>
 			<div className="signup-footer">
 				<img src="#" alt="" />
 			</div>
-			<div className="signup-banner">
-			</div>  
+			{/* <div className="signup-banner">
+			</div>   */}
 		</div>
 	);
 }
