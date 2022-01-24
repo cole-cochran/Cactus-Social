@@ -126,9 +126,6 @@ export default function EventDisplay() {
 	const handleUpdateComment = async (event) => {
 		event.preventDefault();
 		const commentId = JSON.parse(localStorage.getItem('commentId'));
-		console.log(commentId);
-		console.log(eventId);
-		console.log(editedComment);
 		try {
 			await updateEventComment({
 				variables: {
@@ -160,8 +157,6 @@ export default function EventDisplay() {
 		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
 
 		localStorage.setItem('commentId', JSON.stringify(commentId));
-
-		console.log(event.target.parentNode.childNodes[1]);
 
 		event.target.parentNode.childNodes[1].style.display = "flex";
 	}
@@ -232,8 +227,6 @@ export default function EventDisplay() {
 	if (!singleEvent.data.eventDetails) {
 		return <h3>This event no longer exists!</h3>;
 	}
-
-	// console.log(singleEvent.data.eventDetails)
 
 	const eventComments = singleEvent.data.eventDetails.comments;
 

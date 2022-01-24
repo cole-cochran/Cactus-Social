@@ -77,9 +77,7 @@ function SubthreadDisplay(props) {
 
 	const handleOpenDropdown = (event) => {
 		const commentData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
-		console.log(commentData)
 		localStorage.setItem('commentId', JSON.stringify(commentData));
-		console.log(event.target.parentNode.childNodes[1]);
 		const content = event.target.parentNode.childNodes[1];
 		content.style.display = "flex";
 	}
@@ -133,7 +131,6 @@ function SubthreadDisplay(props) {
 	const handleOpenEditor = async (event) => {
 		const currentText = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
 
-		console.log(currentText);
 		setEditedComment(currentText);
         setOpenedEditor(true);
 	}
@@ -183,18 +180,6 @@ function SubthreadDisplay(props) {
 			</div>
 		)
 	} 
-	// else {
-	// 	const loadingArr = document.getElementsByClassName('loading-icon-box');
-
-	// 	const loadingIcon = loadingArr[0];
-
-	// 	console.log(loadingIcon)
-	// 	loadingIcon.style.display = "grid";
-
-	// 	setTimeout(() => {
-	// 		loadingIcon.style.display = "none"
-	// 	}, 1000);
-	// }
 
 	return (
 		<main onClick={handleCloseDropdown} className="thread-wrapper">

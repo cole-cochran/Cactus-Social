@@ -90,7 +90,6 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		try {
 			if (event.target.name === 'techInput') {
-                console.log(event.target.value)
 				setAddedTech(event.target.value);
 			} else if (event.target.name === 'bioInput') {
 				setBio(event.target.value);
@@ -132,7 +131,6 @@ function ProfileInfo(props) {
 
 			} else if (event.target.id === 'addTechStack') {
 				event.preventDefault();
-                console.log(addedTech)
 				await addTechnology({
                     variables: {
                         userId: AuthService.getProfile().data._id,
@@ -160,7 +158,6 @@ function ProfileInfo(props) {
 
     //* handle the deletion of a technology from the user's tech stack
 	const handleDelete = async (event) => {
-        console.log(event.target.parentNode.parentNode.firstChild.firstChild.textContent);
         const deletedTech = event.target.parentNode.parentNode.firstChild.firstChild.textContent;
 		await removeTechnology({
             variables: {

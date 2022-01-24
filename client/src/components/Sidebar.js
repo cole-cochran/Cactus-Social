@@ -29,7 +29,6 @@ const toggleSidebar = (e) => {
 };
 
 function toggleSidebarPanelDisplay(e) {
-	console.log('toggle sidebar panel ran');
 
 	const threadPanel = document.querySelector('#sidebar-thread-panel');
 	const eventsPanel = document.querySelector('#sidebar-events-panel');

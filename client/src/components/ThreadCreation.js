@@ -33,7 +33,6 @@ export default function ThreadCreation() {
 				}
 			});
 
-			console.log(res.data);
 			window.location.replace(`/threads/${res.data.createThread._id}`);
 		} catch (err) {
 			console.error(err);

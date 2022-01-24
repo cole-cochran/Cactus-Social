@@ -8,7 +8,7 @@ import { CREATE_EVENT } from '../utils/mutations';
 
 //! REDIRECT (AFTER SUBMISSION) TO THE EVENT DISPLAY
 
-// TODO MAKE A CONSOLE.LOG FOR AN ASCII CACTUS WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
+// TODO MAKE PRINT TO CONSOLE FOR AN ASCII CACTUS WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
 
 export default function EventCreation() {
 
@@ -28,15 +28,12 @@ export default function EventCreation() {
 	});
 
 	const handleChange = (event) => {
-		console.log(event.target.value)
 		const { name, value } = event.target;
 		if (name === 'in_person') {
 			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person})
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}
-		
-		console.log(eventDetails);
 	};
 
 	const handleEventFormSubmit = async (event) => {
@@ -65,7 +62,6 @@ export default function EventCreation() {
 				}
 			});
 
-			console.log(res.data);
 			window.location.replace(`/events/${res.data.createEvent._id}`)
 		} catch (err) {
 			console.error(err);

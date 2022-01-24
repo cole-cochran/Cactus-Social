@@ -7,8 +7,6 @@ export default function EventEditor(props) {
 
     const { eventData, eventId } = props;
 
-    console.log(eventData)
-
     const [ updateEvent ] = useMutation(UPDATE_EVENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -38,7 +36,6 @@ export default function EventEditor(props) {
 
     const handleChange = async (event) => {
 		const { name, value } = event.target;
-		console.log(name, value, typeof(value))
         setEditedEvent({
             ...editedEvent,
             [name]: value

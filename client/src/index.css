@@ -62,32 +62,38 @@ html::-webkit-scrollbar {
     padding-top: 1rem;
     background-color: black;
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
 }
 
 .splash-page-header button {
     position: relative;
     z-index: 2;
-    background-color: var(--primary-green);
-    color: black;
-    font-size: .75rem;
+    background-color: var(--cactus-green-1);
+    color: white;
+    font-size: 1.2rem;
     height: 2rem;
     border: none;
     width: 6rem;
     border-radius: 1rem;
     margin-right: 1rem;
     font-weight: 700;
+    cursor: pointer;
+    transition: box-shadow linear 0.3s;
 }
 
+.splash-page-header button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+}
 
 .splash-page-content {
     padding-top: 3rem;
     background-color: black;
     color: white;
-    padding-bottom: 12rem;
+    padding-bottom: 6rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .splash-page-content h1 {
@@ -98,9 +104,10 @@ html::-webkit-scrollbar {
 
 
 .splash-page-content p {
-    width: calc(100% - 2rem);
-    margin-left: 1rem;
-    font-size: .875rem;
+    width: 100%;
+    padding: 10px 25px 10px 25px;
+    /* margin-left: 1rem; */
+    font-size: 1.3rem;
     max-width: 40rem;
 }
 
@@ -108,8 +115,9 @@ html::-webkit-scrollbar {
 .splash-page-sign-up-button {
     position: relative;
     z-index: 2;
-    background-color: white;
-    font-size: .75rem;
+    background-color: var(--cactus-green-1);
+    color: white;
+    font-size: 1.5rem;
     height: 3rem;
     border: none;
     width: 12rem;
@@ -117,11 +125,17 @@ html::-webkit-scrollbar {
     margin-top: 1rem;
     margin-left: 1rem;
     font-weight: 700;
+    cursor: pointer;
+    transition: box-shadow linear 0.3s;
+}
+
+.splash-page-sign-up-button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
 }
 
 .splash-page-download-button {
     z-index: 100;
-    background-color: var(--primary-green);
+    background-color: var(--cactus-green-1);
     font-size: .875rem;
     font-weight: 700;
     height: 3rem;
@@ -133,9 +147,35 @@ html::-webkit-scrollbar {
 }
 
 .splash-page-video {
-    height: 30rem;
+    /* height: 30rem; */
+    object-position: right;
     /* height: 100%; */
+    width: 100vw;
+    object-fit: cover;
+    height: 100vh;
     /* width: 100%; */
+}
+
+.splash-page-content-overflow-wrapper {
+    overflow: hidden;
+    background-color: black;
+    height: 100vh;
+}
+
+.shift-content-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.splash-page-content {
+    width: 100%;
+    background-color: initial;
+    padding-top: 30vh;
+}
+.splash-page-header {
+    width: 100%;
+    background-color: initial;
 }
 
 
@@ -150,17 +190,19 @@ html::-webkit-scrollbar {
     }
     
     .splash-page-content {
-        padding-top: 10rem;
+        /* padding-top: 10rem; */
         text-align: center;
     }
 
-    .splash-page-video {
-        height: 40rem;
+    /* .splash-page-video {
+        height: 100%;
+        background-position: center;
+        background-size: cover;
     }
 
     .splash-page-content {
         padding-bottom: 0rem;
-    }
+    } */
 
 }
 

@@ -116,7 +116,6 @@ function ThreadDisplay(props) {
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
 		localStorage.setItem('postId', JSON.stringify(postData));
-		console.log(event.target.parentNode.childNodes[1]);
 		const content = event.target.parentNode.childNodes[1];
 		content.style.display = "flex";
 	}
@@ -289,7 +288,6 @@ function ThreadDisplay(props) {
 
 	if (userData.data.userProfile.pinned_posts.length) {
 		const allUserPins = userData.data.userProfile.pinned_posts;
-		console.log(allUserPins)
 
 		usersThreadPins = allUserPins.filter((pinnedPost) => (
 			pinnedPost.post.thread._id === threadId
