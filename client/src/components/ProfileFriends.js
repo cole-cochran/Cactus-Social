@@ -1,5 +1,7 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import Modal from '@mui/material/Modal';
+import UserSearchModal from './UserSearchModal';
+// import {Link} from 'react-router-dom';
 
 // import { USER_FRIENDS } from '../utils/queries.js';
 import { ALL_USERS } from '../utils/queries';
@@ -12,19 +14,31 @@ import { ALL_USERS } from '../utils/queries';
 import { useQuery } from '@apollo/client';
 // import AuthService from '../utils/auth';
 
+
 function ProfileFriends(props) {
-    // const [searchUsername, setSearchUsername] = React.useState('');
     // const friendsQuery = useQuery(USER_FRIENDS);
     const { loading, data } = useQuery(ALL_USERS);
     const allUsers = data?.allUsers || [];
-    console.log(allUsers);
+    const [openSearch, setOpenSearch] = React.useState(false);
 
+    const handleOpen = (e) => {
+        setOpenSearch(true);
+    }
+
+    const handleClose = (e) => {
+        setOpenSearch(false);
+    }
+    
     return (
         <React.Fragment>
             {loading ? (
                 <div>Loading...</div>
             ) : (
                 <div className="right-shelf">
+                <button onClick={handleOpen}>Search Users</button>
+                <Modal open={openSearch} onClose={handleClose}>
+                    <UserSearchModal allUsers={allUsers}/>
+                </Modal>
                 <h3>Friends</h3>
                 <ul>
                     {allUsers.map((user, index) => (

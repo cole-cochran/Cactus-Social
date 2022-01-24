@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 import ProfileInfo from "../components/ProfileInfo";
 import ProfileFriends from "../components/ProfileFriends";
 
-const SERVER = 'http://localhost:3001';
+// const SERVER = 'http://localhost:3001';
 
 function Profile(props) {
 

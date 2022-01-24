@@ -328,6 +328,15 @@ export const USER_EVENTS = gql`
 	}
 `;
 
+export const ONE_USER = gql`
+	query oneUser($username: String!) {
+		oneUser(username: $username) {
+			_id
+			username
+		}
+	}
+`
+
 export const USER_FRIENDS = gql`
 	query userFriends($userId: ID!) {
 		userFriends(userId: $userId) {
