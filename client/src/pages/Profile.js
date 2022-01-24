@@ -32,15 +32,24 @@ function Profile(props) {
 	// const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
 
     if (loading) {
-        return <p>loading...</p>;
-    }
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
+	} 
+
+    // const specificUser = data.userProfile;
 
     return (
         <React.Fragment>
-            <NavBar userId={userId} />
+            <NavBar />
             <div className="app-content-container">
                 <Sidebar />
-                <ProfileInfo specificUser={specificUser} />
+                <div>
+            <ProfileInfo specificUser={specificUser} />
+                </div>
                 <ProfileFriends />
             </div>
             <Footer/>

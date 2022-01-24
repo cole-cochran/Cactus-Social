@@ -51,7 +51,6 @@ const typeDefs = gql`
         _id: ID!
         title: String!
         posts: [Post]
-        events: [Event]
         moderator: User
         members: [User]
         date_created: String
@@ -76,7 +75,6 @@ const typeDefs = gql`
         in_person: Boolean!
         location: String!
         image: String
-        thread: Thread
         comments: [Comment]
         date_created: String
         edited: Boolean
@@ -139,14 +137,14 @@ const typeDefs = gql`
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID): Event
+        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID!): Event
         updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Event
         removeEvent(eventId: ID!, userId: ID!): User
 
         attendEvent(eventId: ID!, attendee: ID!): Event
         leaveEvent(eventId: ID!, attendee: ID!): Event
 
-        createEventComment(eventId: ID!, comment_text: String!): Event
+        createEventComment(eventId: ID!, comment_text: String!, author: ID!): Event
         removeEventComment(eventId: ID!, commentId: ID!): Event
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         

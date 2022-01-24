@@ -7,8 +7,6 @@ export default function EventEditor(props) {
 
     const { eventData, eventId } = props;
 
-    console.log(eventData)
-
     const [ updateEvent ] = useMutation(UPDATE_EVENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -16,17 +14,7 @@ export default function EventEditor(props) {
 		]
 	});
 
-    const [editedEvent, setEditedEvent] = React.useState({
-        ...eventData,
-        // start_date: editedEvent.start_date,
-        start_date: "2022-06-06",
-        // end_date: editedEvent.end_date,
-        end_date: "2022-06-06",
-        // start_time: editedEvent.start_time,
-        start_time: "12:15",
-        // end_time: editedEvent.end_time,
-        end_time: "12:30"
-    });
+    const [editedEvent, setEditedEvent] = React.useState(eventData);
 
     const handleEdit = async () => {
 		await updateEvent({
@@ -34,14 +22,10 @@ export default function EventEditor(props) {
 				eventId: eventId,
 				title: editedEvent.title,
 				description: editedEvent.description,
-				// start_date: editedEvent.start_date,
-				start_date: "2022-06-06",
-				// end_date: editedEvent.end_date,
-				end_date: "2022-06-06",
-				// start_time: editedEvent.start_time,
-				start_time: "12:15",
-				// end_time: editedEvent.end_time,
-				end_time: "12:30",
+				start_date: editedEvent.start_date,
+				end_date: editedEvent.end_date,
+				start_time: editedEvent.start_time,
+				end_time: editedEvent.end_time,
 				category: editedEvent.category,
 				in_person: editedEvent.in_person,
 				location: editedEvent.location,
@@ -52,7 +36,6 @@ export default function EventEditor(props) {
 
     const handleChange = async (event) => {
 		const { name, value } = event.target;
-		console.log(name, value, typeof(value))
         setEditedEvent({
             ...editedEvent,
             [name]: value
@@ -60,8 +43,8 @@ export default function EventEditor(props) {
 	}
 
     return (
-        <form onSubmit={handleEdit}>
-			<div className='event-creation-inputs'>
+        <form className="event-edit-form" onSubmit={handleEdit}>
+			<div className='event-edit-inputs'>
 				<div>
 					<label forhtml="title">Title</label>
 					<input type="text" value={editedEvent.title} onChange={handleChange} id="title" name="title"></input>
@@ -98,7 +81,7 @@ export default function EventEditor(props) {
 					<label forhtml="location">Event Location / URL</label>
 					<input type="text" value={editedEvent.location} onChange={handleChange} id="location" name="location"/>
 				</div>
-				<button type="submit">Update Event</button>
+				<button className="event-edit-button" type="submit">Update Event</button>
 			</div>
 		</form>
     )

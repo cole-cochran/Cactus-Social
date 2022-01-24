@@ -16,7 +16,7 @@ import AuthService from '../utils/auth';
 
 const ResponsiveAppBar = (props) => {
 
-  const { userId } = props;
+  const userId = AuthService.getProfile().data._id;
 
   const pages = [];
   const settings = [
@@ -50,27 +50,9 @@ const ResponsiveAppBar = (props) => {
     <AppBar position="static" elevation={0} style={{ background: 'var(--cactus-green-1' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          > */}
-            {/* <img className="logo" src="/assets/img/logo.svg" alt="logo"/> */}
-            <p className="logo">Cactus Social</p>
-          {/* </Typography> */}
+          <p className="logo">Cactus Social</p>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}

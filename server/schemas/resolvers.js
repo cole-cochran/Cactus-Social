@@ -40,7 +40,7 @@ const resolvers = {
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator');
+			return await Thread.find({}).populate('posts').populate('members').populate('moderator');
 		},
 
 		allThreadPosts: async (parent, args, context) => {
@@ -60,7 +60,6 @@ const resolvers = {
 			// if (context.user) {
 			return await Thread.findById(args.threadId)
 				.populate('posts')
-				.populate('events')
 				.populate('members')
 				.populate('moderator');
 			// }
@@ -126,21 +125,21 @@ const resolvers = {
 		},
 
 		allEvents: async (parent, args, context) => {
-			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
+			return await Event.find({}).populate('owner').populate('attendees').populate('comments');
 		},
 
-		threadEvents: async (parent, args, context) => {
-			const { threadId } = args;
-			const allEvents = await Event.find(
-				{
-					where: {
-						thread: threadId
-					}
-				}
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+		// threadEvents: async (parent, args, context) => {
+		// 	const { threadId } = args;
+		// 	const allEvents = await Event.find(
+		// 		{
+		// 			where: {
+		// 				thread: threadId
+		// 			}
+		// 		}
+		// 	).populate('owner').populate('attendees').populate('thread').populate('comments');
 			
-			return allEvents;
-		},
+		// 	return allEvents;
+		// },
 
 		//* get all user threads
 		userThreads: async (parent, args, context) => {
@@ -151,7 +150,7 @@ const resolvers = {
 			const userThreads = [];
 
 			for (let thread of userData.threads) {
-				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('events').populate('moderator').populate('members');
+				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('moderator').populate('members');
 				userThreads.push(threadId);
 			}
 
@@ -169,7 +168,7 @@ const resolvers = {
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees').populate('thread');
+				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
 				userEvents.push(eventId);
 			}
 
@@ -193,8 +192,15 @@ const resolvers = {
 			return await Event.findById(args.eventId)
 				.populate('owner')
 				.populate('attendees')
-				.populate('thread')
-				.populate('comments');
+				.populate('comments')
+				.populate({
+					path: "comments",
+					model: "Comment",
+					populate: {
+						path: "author",
+						model: "User"
+					}
+				});
 		}
 	},
 	Mutation: {
@@ -727,7 +733,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('author').populate('thread').populate('comments');
+			).populate('author').populate('thread').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return thePost;
 		},
@@ -790,65 +803,61 @@ const resolvers = {
 		//* create new event
 		//* temporary owner until context set and mutations tested
 		createEvent: async (parent, args, context) => {
-			try{
-				const {
-					title,
-					description,
-					start_date,
-					end_date,
-					start_time,
-					end_time,
-					category,
-					in_person,
-					location,
-					image,
-					owner
-				} = args;
-				//! add user context to authenticate
-				// if (context.user) {
-				// owner: context.userId
-				const newEvent = await Event.create({
-					title: title,
-					description: description,
-					start_date: start_date,
-					end_date: end_date,
-					start_time: start_time,
-					end_time: end_time,
-					owner: owner,
-					category: category,
-					in_person: in_person,
-					location: location,
-					image: image
-				});
-	
-				const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner');
-	
-				//! use context to get userId and complete this
-				// await User.findOneAndUpdate(
-				// 	{ _id: context.userId },
-				// 	{
-				// 		$addToSet: {
-				// 			events: newEvent._id
-				// 			}
-				// 	},
-				// 	{ new: true }
-				// )
-	
-				// await Thread.findOneAndUpdate(
-				// 	{ _id: threadId },
-				// 	{
-				// 		$addToSet: {
-				// 			events: newEvent._id
-				// 		}
-				// 	},
-				// 	{ new: true }
-				// );
-				return returnedEvent;
-			}catch(err) {
-				if(err.errors.description) return new ApolloError(`${err.errors.description}`, '400');
-				if(err.errors.title) return new ApolloError(`${err.errors.title}`, '400');
-			}
-			
+			const {
+				title,
+				description,
+				start_date,
+				end_date,
+				start_time,
+				end_time,
+				category,
+				in_person,
+				location,
+				image,
+				owner
+			} = args;
+			//! add user context to authenticate
+			// if (context.user) {
+			// owner: context.userId
+			const newEvent = await Event.create({
+				title: title,
+				description: description,
+				start_date: start_date,
+				end_date: end_date,
+				start_time: start_time,
+				end_time: end_time,
+				owner: owner,
+				category: category,
+				in_person: in_person,
+				location: location,
+				image: image
+			});
+
+			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner');
+
+			//! use context to get userId and complete this
+			// await User.findOneAndUpdate(
+			// 	{ _id: context.userId },
+			// 	{
+			// 		$addToSet: {
+			// 			events: newEvent._id
+			// 			}
+			// 	},
+			// 	{ new: true }
+			// )
+
+			// await Thread.findOneAndUpdate(
+			// 	{ _id: threadId },
+			// 	{
+			// 		$addToSet: {
+			// 			events: newEvent._id
+			// 		}
+			// 	},
+			// 	{ new: true }
+			// );
+			return returnedEvent;
+			// }
+			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
 		//* remove the event
@@ -969,7 +978,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -1000,7 +1009,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -1014,7 +1023,7 @@ const resolvers = {
 			// if (context.user) {
 			const { eventId, comment_text, author } = args;
 			const newComment = await Comment.create({
-				event: eventId,
+				eventId: eventId,
 				comment_text: comment_text,
 				author: author
 				// author: context.user._id
@@ -1027,7 +1036,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return commentedEvent;
 			// }
@@ -1039,7 +1055,7 @@ const resolvers = {
 			const { commentId, eventId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			await Comment.findOneAndDelete({ _id: commentId }, { new: true });
+			await Comment.findOneAndDelete({ _id: commentId });
 			
 			const event = await Event.findOneAndUpdate(
 				{ _id: eventId },
@@ -1049,7 +1065,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return event;
 			// }
@@ -1070,7 +1093,14 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return event;
 			// }
@@ -1091,7 +1121,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
