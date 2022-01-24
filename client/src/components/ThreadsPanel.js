@@ -10,6 +10,7 @@ import { useQuery } from '@apollo/client';
 
 import { ALL_THREADS } from '../utils/queries';
 
+
 const style = {
     position: 'absolute',
     top: '50%',

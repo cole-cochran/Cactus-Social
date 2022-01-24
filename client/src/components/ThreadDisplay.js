@@ -16,6 +16,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { PinnedPost } from './PinnedPost';
 
+import { io } from 'socket.io-client';
+
 const style = {
 	position: 'absolute',
 	top: '50%',
@@ -112,6 +114,14 @@ function ThreadDisplay(props) {
 
 		window.location.replace(`/profile/${userId}`);
 	}
+	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
+	const [postList, setPostList] = React.useState([]);
+
+    const socket = io.connect('localhost:3001');
+	socket.on('connect', () => {
+		console.log("I'm connected with the backend");
+		socket.emit("join_thread", {room: threadId, user: AuthService.getProfile().data.username});
+	});
 
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
@@ -410,42 +420,3 @@ function ThreadDisplay(props) {
 }
 
 export default ThreadDisplay;
-
-
-// 	<div className="chat subthread" data-id={post._id} key={post._id} >
-// 		<div className="pos">
-// 			<span className="chat-name">{post.author.username}</span>
-// 			<span className="chat-date">{post.date_created}</span>
-// 			{post.pinHash && (
-// 				<span className="subthread-title">{post.pinHash}</span>
-// 			)}
-// 		</div>
-// 		<p>{post.post_text}</p>
-// 		<div className='post-options'>
-// 		<button className='comments-chip'>
-// 			<div>{post.comments.length}</div>
-// 			<Link className='react-link' to={`/subthread/${post._id}`}>
-// 				{post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
-// 				</Link>
-// 		</button>
-// 		<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={handleUnpinPost}/>
-// 		</div>
-// 	</div>
-// ) : (
-// 	<div data-id={post._id} key={post._id} className="chat">
-// 		<div className="pos">
-// 			<span className="chat-name">{post.author.username}</span>
-// 			<span className="chat-date">{post.date_created}</span>
-// 		</div>
-// 		<p className="pos">{post.post_text}</p>
-// 		<div className='post-options'>
-// 			<button className='comments-chip'>
-// 			<div>{post.comments.length}</div>
-// 			<Link className='react-link' to={`/subthread/${post._id}`}>
-// 				{post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
-// 				</Link>
-// 			</button>
-// 			<img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={handleOpen}/>
-// 	</div>
-// 	</div>
-// )

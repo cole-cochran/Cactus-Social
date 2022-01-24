@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import ProfileInfo from "../components/ProfileInfo";
 import ProfileFriends from "../components/ProfileFriends";
 
+const SERVER = 'http://localhost:3001';
 
 function Profile(props) {
 
@@ -18,11 +19,17 @@ function Profile(props) {
 
     // TODO (profile) Potentially pass down userId into the sidebar to create a more personalized list of events/threads as well as the friends component to show only users friends and connections
 
+
     const { userId } = useParams();
 
     const { loading, data } = useQuery(USER_PROFILE, {
         variables: { userId: userId }
     });
+
+    const specificUser = data?.userProfile || {};
+    // console.log(specificUser);
+    // const [ addedTech, setAddedTech ] = React.useState('');
+	// const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
 
     if (loading) {
 
@@ -33,7 +40,7 @@ function Profile(props) {
 		)
 	} 
 
-    const specificUser = data.userProfile;
+    // const specificUser = data.userProfile;
 
     return (
         <React.Fragment>
