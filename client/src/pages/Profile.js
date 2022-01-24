@@ -32,33 +32,17 @@ function Profile(props) {
 			</div>
 		)
 	} 
-	// else {
-	// 	const loadingArr = document.getElementsByClassName('loading-icon-box');
-
-	// 	const loadingIcon = loadingArr[0];
-
-	// 	console.log(loadingIcon)
-	// 	loadingIcon.style.display = "grid";
-
-	// 	setTimeout(() => {
-	// 		loadingIcon.style.display = "none"
-	// 	}, 1000);
-	// }
 
     const specificUser = data.userProfile;
 
     return (
         <React.Fragment>
-            <NavBar userId={userId} />
+            <NavBar />
             <div className="app-content-container">
                 <Sidebar />
                 <div>
-                    {/* <div className='loading-icon-box'>
-				    <img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-			    </div> */}
             <ProfileInfo specificUser={specificUser} />
                 </div>
-                
                 <ProfileFriends />
             </div>
             <Footer/>

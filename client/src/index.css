@@ -36,6 +36,7 @@ html::-webkit-scrollbar {
 
 .App {
     height: 100%;
+    background-color: var(--dark-mode);
 }
 
 .app-content-container {
@@ -217,6 +218,39 @@ html::-webkit-scrollbar {
     z-index: 10000;
 }
 
+.MuiPopover-paper {
+    background-color: var(--ultra-dark);
+    border-radius: 10px !important;
+}
+
+.MuiList-root {
+    background-color: var(--ultra-dark);
+    padding: 0 !important;
+    border-radius: 10px !important;
+    border: 2px solid white;
+}
+
+.MuiMenuItem-root {
+    background-color: var(--dark-mode) !important;
+}
+
+.MuiMenuItem-root:nth-of-type(1) {
+    border-radius: 10px 10px 0px 0px !important;
+}
+
+.MuiMenuItem-root:nth-of-type(3) {
+    border-radius: 0px 0px 10px 10px !important;
+}
+
+.MuiMenuItem-root:hover {
+    background-color: var(--cactus-purple-highlight) !important;
+}
+
+.MuiTypography-root a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
 @keyframes mybounce{
     0% {
         transform: rotateZ(0deg); 
@@ -319,6 +353,7 @@ html::-webkit-scrollbar {
 
 .login-form button:hover {
     box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
 }
 
 .login-form button {
@@ -371,7 +406,10 @@ html::-webkit-scrollbar {
     filter: opacity(60%);
 }
 
-
+.success-msg {
+    color: white;
+    margin-right: 5px;
+}
 
 
 
@@ -423,10 +461,10 @@ html::-webkit-scrollbar {
 .sign-up-header {
     background-color: var(--cactus-green-1);
     height: 4rem;
+    width: 100%;
 }
 
 .signup-form-section {
-    padding: 5rem 1rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -436,31 +474,35 @@ html::-webkit-scrollbar {
 }
 
 .signup-form-section h3 {
-    font-size: 1.5rem;
+    font-size: 7vw;
     color: white;
+    margin-bottom: 25px;
 }
 
 .signup-footer {
     height: 4rem;
-    background-color: #B945FF;
+    background-color: var(--cactus-purple-1);
 }
 
 .signup-form {
-    width: 25rem;
+    width: 100%;
 }
+
 .signup-form label {
     margin-left: 0;
-    font-size: .75rem;
+    font-size: 1rem;
     display: block;
+    color: white;
 }
 
 .signup-form input {
     display: block;
-    width: calc(100% - 1rem);
+    width: 100%;
     height: 2rem;
     background-color: var(--cactus-purple-1);
     border-radius: 8px;
     border: 2px solid white;
+    color: white;
 }
 
 .signup-form a {
@@ -470,14 +512,27 @@ html::-webkit-scrollbar {
 .signup-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: #00720B;
+    background-color: var(--cactus-green-1);
+    font-size: 16px;
+    font-weight: 600;
     color: white;
     border: none;
-    font-size: .875rem;
     width: 6rem;
     padding-top: .5rem;
     padding-bottom: .5rem;
     border-radius: .25rem;
+    transition: box-shadow 0.6s linear;
+}
+
+.signup-form button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
+}
+
+.signup-form div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .signup-form p {
@@ -491,34 +546,50 @@ html::-webkit-scrollbar {
     display: inline-block;
 }
 
-/* .signup-banner {
-   background-color: #501069;
-    height: 100vh;
-    height: 100%;
-    padding: 3rem;
-} */
-/* .signup-banner h1 {
-    font-size: 2rem;
-}
-.signup-banner p {
-    font-size: 1rem;
-} */
-/* .two-cacti-illustration {
-    width: 20rem;
-    margin-left: 2rem;
-} */
-
-.one-cacti-illustration {
+.many-cacti-illustration {
     width: 15rem;
-    margin-right: 4rem;
+    margin-top: 25px;
 }
+
 .center-signup-form {
     display: flex;
-    align-items: end;
+    flex-direction: column-reverse;
+    align-items: center;
 }
 
-@media screen and (max-width: 825px) {
+@media screen and (min-width: 500px) {
     
+    .signup-form-section h3 {
+        font-size: 35px;
+    }
+
+    .signup-form {
+        width: 466px;
+    }
+
+    .many-cacti-illustration {
+        width: 48vw;
+    }
+}
+
+@media screen and (min-width: 650px) {
+    .many-cacti-illustration {
+        width: 312px;
+    }
+}
+
+@media screen and (min-width: 950px) {
+    .center-signup-form {
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .many-cacti-illustration {
+        max-width: 400px;
+        width: 100%;
+        margin-left: 5.25vw;
+    }
 }
 /*************SIGNUP.HTML:STYLES************/
 
@@ -684,7 +755,7 @@ header {
 /*************FOOTER:START************/
 
 footer {
-    height: 2rem;
+    height: 27px;
     /* background-color: var(--secondary-purple); */
     background-color: var(--cactus-green-1);
 }
@@ -1000,6 +1071,8 @@ footer {
 .right-shelf li {
     margin-top: .75rem;
     font-size: .75rem;
+    width: 100%;
+    padding-right: 15px;
 }
 
 .right-shelf li:hover {
@@ -1011,11 +1084,16 @@ footer {
     justify-content: left;
     align-items: center;
     padding-left: 5px;
+    margin-right: 5px;
     height: 35px;
-    width: 200px;
+    width: 100%;
     border-radius: 15px;
     background-color: var(--cactus-green-1);
     border: none;
+}
+
+.friend-chips:hover {
+    background-color: var(--hero-green);
 }
 
 .friend-chips p {
@@ -1046,7 +1124,7 @@ footer {
 @media only screen and (max-width: 925px) {
     
     .right-shelf {
-        display: none;
+        /* display: none; */
     }
 }
 
@@ -1071,7 +1149,7 @@ footer {
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding-left: 1rem;
+    /* padding-left: 1rem; */
     background-color: var(--dark-mode);
 }
 
@@ -1082,7 +1160,7 @@ footer {
 }
 
 .profile-content-container {
-    padding-left: 1.5rem;
+    /* padding-left: 1.5rem; */
     width: calc(100% - 2.5rem);
     /* max-width: 40rem; */
     height: 100%;
@@ -1120,19 +1198,34 @@ footer {
     display: inline-block;
 }
 .tech-stack ul li {
-    /* margin-right: 1rem; */
+
     font-size: .75rem;
     display: inline-block;
+}
+
+.MuiButtonBase-root {
+    background-color: var(--cactus-purple-1) !important;
 }
 
 .tech-chip {
     height: 30px;
     margin: 2px 0px 2px 8px;
-    border: none;
+    border: 1px solid white;
     border-radius: 15px;
     padding: 0px 15px 0px 15px;
     font-weight: 400;
     font-size: 18px;
+    color: white;
+    background-color: var(--cactus-purple-1);
+}
+
+.tech-stack-icons {
+    padding: 15px;
+}
+
+.tech-btns-div {
+    display: flex;
+    width: 100%;
 }
 
 .profile-edit-container {
@@ -1231,51 +1324,86 @@ footer {
 .modal-header {
     padding: 1rem;
     border-bottom: 1px solid grey;
+    width: 100%;
+    text-align: center;
 }
 .modal-form {
     padding-bottom: 2rem;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 .modal-header h4 {
     margin-top: .5rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 .modal-form label {
     margin-top: 1.5rem;
-    font-size: .875rem;
+    font-size: 1.2rem;
     font-weight: 500;
     display: block;
-    margin-left: 1rem;
+    margin-left: 5%;
+    width: 90%;
 }
 .modal-form input {
-    margin-top: .75rem;
-    margin-left: 1rem;
+    display: block;
+    width: 90%;
+    margin-left: 5%;
     height: 2rem;
-    width: calc(100% - 2rem);
+    background-color: var(--cactus-purple-1);
+    border: 1px solid white;
+    color: white;
+    border-radius: 8px;
+    padding-left: 6px;
 }
 .modal-form input::placeholder {
     font-size: .75rem;
 }
 
+.modal-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
 .modal-textarea {
-    font-size: .75rem;
+    /* font-size: .75rem;
     margin-left: 1rem;
     height: 3rem;
-    width: calc(100% - 2rem);
+    width: calc(100% - 2rem); */
+    display: block;
+    width: 90%;
+    margin-left: 5%;
+    min-height: 5rem;
+    background-color: var(--cactus-purple-1);
+    border: 1px solid white;
+    color: white;
+    border-radius: 8px;
+    padding-left: 6px;
 }
 
 .modal-button {
-    margin-top: 2rem;
-    font-size: .75rem;
+    display: block;
+    margin-top: 1.5rem;
+    background-color: var(--cactus-green-1);
+    font-size: 16px;
+    font-weight: 600;
     color: white;
-    background-color: #FF7600;
-    padding-top: .75rem;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    padding-bottom: .75rem;
     border: none;
+    width: 6rem;
+    margin-left: 5%;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
     border-radius: .25rem;
-    margin-left: 1rem;
+    transition: box-shadow 0.6s linear;
 }
+
+.modal-button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
+}
+
 /*************MODAL:STYLES************/
 /*******************THREAD:INPUT*******************/
 

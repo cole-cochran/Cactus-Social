@@ -6,20 +6,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO } from '../utils/mutations';
+import { USER_PROFILE } from '../utils/queries';
 
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
-
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	border: '2px solid #000',
-	boxShadow: 24
-};
 
 function ProfileInfo(props) {
 
@@ -30,12 +20,30 @@ function ProfileInfo(props) {
 	const { specificUser } = props;
 
     //* UPDATE_PHOTO needs: userId and picture args
-	const [ updatePhoto ] = useMutation(UPDATE_PHOTO);
-    //* ADD_TECH and REMOVE_TECH need: userId and technology args
-	const [ addTechnology ] = useMutation(ADD_TECH);
-	const [ removeTechnology ] = useMutation(REMOVE_TECH);
-    //* UPDATE_BIO needs: userId and bio args
-	const [ updateBio ] = useMutation(UPDATE_BIO);
+	const [ updatePhoto ] = useMutation(UPDATE_PHOTO, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+	const [ addTechnology ] = useMutation(ADD_TECH, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+	const [ removeTechnology ] = useMutation(REMOVE_TECH, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+	const [ updateBio ] = useMutation(UPDATE_BIO, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
 
     //* photo state
 	const [ photo, setPhoto ] = React.useState(specificUser.picture || '');
@@ -95,8 +103,8 @@ function ProfileInfo(props) {
 	};
 
 	const handleFormUpdate = async (event) => {
-		event.preventDefault();
 		try {
+			event.preventDefault();
 			if (event.target.id === 'userBio') {
 				// const updatedBio = 
 				await updateBio({
@@ -106,8 +114,11 @@ function ProfileInfo(props) {
 					}
 				});
 				setBio('');
-				window.location.reload(false);
+				setOpenBio(false);
+				// window.location.reload(false);
+				
 			} else if (event.target.id === 'userPhoto') {
+				event.preventDefault();
 				// const updatedPhoto = 
 				await updatePhoto({
 					variables: {
@@ -116,8 +127,11 @@ function ProfileInfo(props) {
 					}
 				});
 				setPhoto('');
-				window.location.reload(false);
+				setOpenImage(false);
+				// window.location.reload(false);
+
 			} else if (event.target.id === 'addTechStack') {
+				event.preventDefault();
                 console.log(addedTech)
 				await addTechnology({
                     variables: {
@@ -138,7 +152,7 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		try {
 			setOpenTech(false);
-			window.location.reload(false);
+			// window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
@@ -173,12 +187,21 @@ function ProfileInfo(props) {
         flexDirection: "column"
     }
 
+	const style = {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: "100%",
+		maxWidth: "500px",
+		bgcolor: 'background.paper',
+		border: '2px solid #000',
+		boxShadow: 24,
+	};
+
 
 	return (
 		<React.Fragment>
-		{/* <div className='loading-icon-box'>
-			<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-		</div> */}
 		<div className="profile-wrapper">
 			<div className="profile-content-container">
 				<div className="profile-header">
@@ -207,7 +230,7 @@ function ProfileInfo(props) {
 				<div className="user-info">
 					<div style={{display: "flex"}} className="tech-stack">
 						<ul>
-							{techData.map((tech, index) => (
+							{specificUser.tech_stack.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
 									<button className="tech-chip">
 										{tech}
@@ -254,19 +277,24 @@ function ProfileInfo(props) {
 						<div className="modal-header">
 							<h4>Update Tech Stack</h4>
 						</div>
+						<div className='tech-stack-icons'>
 						{techData.map((tech) => (
                             <span key={tech}>
-                                <Chip label={tech} variant="outlined" 
-                                onDelete={handleDelete} deleteIcon={<DeleteForeverIcon />}/>
+                                <Chip label={tech} variant="outlined"
+								style={{color: "white"}} 
+                                onDelete={handleDelete} deleteIcon={<DeleteForeverIcon style={{color: "white"}} />}/>
                             </span>
 						))}
+						</div>
 						<label htmlFor="techInput">New Tech</label>
 						<input id="techInput" name='techInput' value={addedTech} onChange={handleChange} placeholder="e.g. Javascript" />
+						<div className='tech-btns-div'>
 						<button className="modal-button" type="submit">
-							Add Technology
+							Add Tech
 						</button>
+						<button className="modal-button" onClick={handleUpdateTech}>Finish</button>
+						</div>
 					</form>
-					<button onClick={handleUpdateTech}>Finish</button>
 				</Box>
 			</Modal>
 			<Modal

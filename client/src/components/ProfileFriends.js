@@ -29,7 +29,7 @@ function ProfileFriends(props) {
                 <ul>
                     {allUsers.map((user, index) => (
                         <li key={`${user}-${index}`}>
-                            <Link to={`/profile/${user._id}`}>
+                            <Link style={{textDecoration: "none"}} to={`/profile/${user._id}`}>
                                 {/* <Chip color="success" avatar={<Avatar src="../../public/assets/img/profile.svg" />}
                                 label={user.username} /> */}
                                 <button className="friend-chips">

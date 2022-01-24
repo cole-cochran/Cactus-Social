@@ -48,7 +48,7 @@ function Login(props) {
 					<img className="logo" src="/assets/img/logo.svg" alt="cactus logo" />
 				</div>
 				{data ? (
-					<p>
+					<p className='success-msg'>
 						Success! You may now head{' '}
 						<Link to="/">back to the homepage.</Link>
 					</p>

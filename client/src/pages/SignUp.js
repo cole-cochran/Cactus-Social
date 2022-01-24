@@ -50,7 +50,7 @@ function SignUp() {
 			<div className="signup-form-section">
 				<div className="center-signup-form">
 					<div>
-						<img className="one-cacti-illustration" src="/assets/img/one-cacti-illustration.svg" alt="one cactus"/>
+						<img className="many-cacti-illustration" src="/assets/img/new_cacti_icon.svg" alt="one cactus"/>
 					</div>
 				{data ? (
 					<p>
