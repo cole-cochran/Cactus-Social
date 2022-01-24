@@ -414,8 +414,6 @@ mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
 }
 `;
 
-//!  NEED TO SET UP RESOLVER TO REMOVE THIS POST FROM THE USER'S PINNED POSTS
-
 export const REMOVE_POST = gql`
 mutation removePost($threadId: ID!, $postId: ID!) {
     removePost( threadId: $threadId, postId: $postId) {
@@ -702,10 +700,6 @@ mutation createEvent($title: String!, $description: String!, $start_date: String
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         date_created
         edited
     }
@@ -865,10 +859,6 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -878,9 +868,6 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
             }
             reactions
             edited
-            event {
-                _id
-            }
         }
         date_created
         edited
@@ -889,7 +876,7 @@ mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!)
 `;
 
 export const REMOVE_EVENT_COMMENT = gql`
-mutation removeEventComment($eventId: ID!, $commentId: String!) {
+mutation removeEventComment($eventId: ID!, $commentId: ID!) {
     removeEventComment(eventId: $eventId, commentId: $commentId) {
         _id
         title
@@ -912,10 +899,6 @@ mutation removeEventComment($eventId: ID!, $commentId: String!) {
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -925,9 +908,6 @@ mutation removeEventComment($eventId: ID!, $commentId: String!) {
             }
             reactions
             edited
-            event {
-                _id
-            }
         }
         date_created
         edited
@@ -959,10 +939,6 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -972,9 +948,6 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
             }
             reactions
             edited
-            event {
-                _id
-            }
         }
         date_created
         edited

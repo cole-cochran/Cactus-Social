@@ -18,18 +18,17 @@ const toggleSidebar = (e) => {
 		// e.target.style.transform = 'rotate(180deg)';
 		sidebar.style.left = '2.5rem';
 		sidebar.setAttribute('data-sidebardisplay', 'visible');
-		aside.style.width = '100%';
+		aside.style.minWidth = '22.5rem';
 	} else {
 		// e.target.style.transform = '';
 		sidebar.style.left = '-100%';
 		sidebar.setAttribute('data-sidebardisplay', 'hidden');
-		aside.style.width = '3rem';
+		aside.style.minWidth = '3rem';
 	}
 	toggleSidebarPanelDisplay(e);
 };
 
 function toggleSidebarPanelDisplay(e) {
-	console.log('toggle sidebar panel ran');
 
 	const threadPanel = document.querySelector('#sidebar-thread-panel');
 	const eventsPanel = document.querySelector('#sidebar-events-panel');

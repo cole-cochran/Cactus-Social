@@ -8,7 +8,7 @@ import { CREATE_EVENT } from '../utils/mutations';
 
 //! REDIRECT (AFTER SUBMISSION) TO THE EVENT DISPLAY
 
-// TODO MAKE A CONSOLE.LOG FOR AN ASCII CACTUS WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
+// TODO MAKE PRINT TO CONSOLE FOR AN ASCII CACTUS WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
 
 export default function EventCreation() {
 
@@ -28,15 +28,12 @@ export default function EventCreation() {
 	});
 
 	const handleChange = (event) => {
-		console.log(event.target.value)
 		const { name, value } = event.target;
 		if (name === 'in_person') {
 			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person})
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}
-		
-		console.log(eventDetails);
 	};
 
 	const handleEventFormSubmit = async (event) => {
@@ -65,7 +62,6 @@ export default function EventCreation() {
 				}
 			});
 
-			console.log(res.data);
 			window.location.replace(`/events/${res.data.createEvent._id}`)
 		} catch (err) {
 			console.error(err);
@@ -86,7 +82,7 @@ export default function EventCreation() {
 	};
 
 	return (
-		<form onSubmit={handleEventFormSubmit}>
+		<form onSubmit={handleEventFormSubmit} className='event-creation-form'>
 			<div className='event-creation-inputs'>
 				<div>
 					<label forhtml="title">Title</label>
@@ -121,10 +117,10 @@ export default function EventCreation() {
 					<input type="checkbox" value={eventDetails.in_person} onChange={handleChange} id="in_person" name="in_person"/>
 				</div>
 				<div>
-					<label forhtml="location">Event Location / URL</label>
+					<label forhtml="location">Location / URL</label>
 					<input type="text" value={eventDetails.location} onChange={handleChange} id="location" name="location"/>
 				</div>
-				<button type="submit">Create Event</button>
+				<button className="event-creation-button" type="submit">Create Event</button>
 			</div>
 		</form>
 	);

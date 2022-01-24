@@ -36,16 +36,19 @@ html::-webkit-scrollbar {
 
 .App {
     height: 100%;
+    background-color: var(--dark-mode);
 }
 
 .app-content-container {
     display: flex;
     height: calc(100vh - 90.39px);
+    background-color: var(--dark-mode);
+    min-width: 100vw;
 }
 
 .thread-wrapper {
     height: 100%;
-    background-color: #232323;
+    background-color: var(--dark-mode);
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -59,32 +62,38 @@ html::-webkit-scrollbar {
     padding-top: 1rem;
     background-color: black;
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
 }
 
 .splash-page-header button {
     position: relative;
     z-index: 2;
-    background-color: var(--primary-green);
-    color: black;
-    font-size: .75rem;
+    background-color: var(--cactus-green-1);
+    color: white;
+    font-size: 1.2rem;
     height: 2rem;
     border: none;
     width: 6rem;
     border-radius: 1rem;
     margin-right: 1rem;
     font-weight: 700;
+    cursor: pointer;
+    transition: box-shadow linear 0.3s;
 }
 
+.splash-page-header button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+}
 
 .splash-page-content {
     padding-top: 3rem;
     background-color: black;
     color: white;
-    padding-bottom: 12rem;
+    padding-bottom: 6rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .splash-page-content h1 {
@@ -95,9 +104,10 @@ html::-webkit-scrollbar {
 
 
 .splash-page-content p {
-    width: calc(100% - 2rem);
-    margin-left: 1rem;
-    font-size: .875rem;
+    width: 100%;
+    padding: 10px 25px 10px 25px;
+    /* margin-left: 1rem; */
+    font-size: 1.3rem;
     max-width: 40rem;
 }
 
@@ -105,8 +115,9 @@ html::-webkit-scrollbar {
 .splash-page-sign-up-button {
     position: relative;
     z-index: 2;
-    background-color: white;
-    font-size: .75rem;
+    background-color: var(--cactus-green-1);
+    color: white;
+    font-size: 1.5rem;
     height: 3rem;
     border: none;
     width: 12rem;
@@ -114,11 +125,17 @@ html::-webkit-scrollbar {
     margin-top: 1rem;
     margin-left: 1rem;
     font-weight: 700;
+    cursor: pointer;
+    transition: box-shadow linear 0.3s;
+}
+
+.splash-page-sign-up-button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
 }
 
 .splash-page-download-button {
     z-index: 100;
-    background-color: var(--primary-green);
+    background-color: var(--cactus-green-1);
     font-size: .875rem;
     font-weight: 700;
     height: 3rem;
@@ -130,9 +147,35 @@ html::-webkit-scrollbar {
 }
 
 .splash-page-video {
-    height: 30rem;
+    /* height: 30rem; */
+    object-position: right;
     /* height: 100%; */
+    width: 100vw;
+    object-fit: cover;
+    height: 100vh;
     /* width: 100%; */
+}
+
+.splash-page-content-overflow-wrapper {
+    overflow: hidden;
+    background-color: black;
+    height: 100vh;
+}
+
+.shift-content-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.splash-page-content {
+    width: 100%;
+    background-color: initial;
+    padding-top: 30vh;
+}
+.splash-page-header {
+    width: 100%;
+    background-color: initial;
 }
 
 
@@ -147,17 +190,19 @@ html::-webkit-scrollbar {
     }
     
     .splash-page-content {
-        padding-top: 10rem;
+        /* padding-top: 10rem; */
         text-align: center;
     }
 
-    .splash-page-video {
-        height: 40rem;
+    /* .splash-page-video {
+        height: 100%;
+        background-position: center;
+        background-size: cover;
     }
 
     .splash-page-content {
         padding-bottom: 0rem;
-    }
+    } */
 
 }
 
@@ -195,17 +240,86 @@ html::-webkit-scrollbar {
 /******************NAVBAR*******************/
 
 .logo {
-    /* margin-left: -3rem; */
-    /* width: 12rem; */
+    margin-left: 1rem;
     margin-top: 1rem;
     font-family: aglet-slab, sans-serif;
     font-weight: 800;
-    font-style: normal;
-    /* color: white;
-    font-size: 1.5rem; */
+    color: white;
     font-size: 21px;
-    color: var(--secondary-purple);
+    /* color: var(--secondary-purple); */
 }
+
+.loading-icon-box {
+    width: calc(100% - 3rem);
+    height: calc(100% - 5.7rem);
+    position: absolute;
+    right: 0;
+    display: none;
+    place-items: center;
+    background-color: var(--cactus-purple-1);
+    z-index: 10000;
+}
+
+.MuiPopover-paper {
+    background-color: var(--ultra-dark);
+    border-radius: 10px !important;
+}
+
+.MuiList-root {
+    background-color: var(--ultra-dark);
+    padding: 0 !important;
+    border-radius: 10px !important;
+    border: 2px solid white;
+}
+
+.MuiMenuItem-root {
+    background-color: var(--dark-mode) !important;
+}
+
+.MuiMenuItem-root:nth-of-type(1) {
+    border-radius: 10px 10px 0px 0px !important;
+}
+
+.MuiMenuItem-root:nth-of-type(3) {
+    border-radius: 0px 0px 10px 10px !important;
+}
+
+.MuiMenuItem-root:hover {
+    background-color: var(--cactus-purple-highlight) !important;
+}
+
+.MuiTypography-root a {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+@keyframes mybounce{
+    0% {
+        transform: rotateZ(0deg); 
+        /* margin-bottom: 0px; */
+        opacity: 100%;
+    }
+
+    50% {
+        transform: rotateZ(180deg);
+        /* margin-bottom: 300px; */
+        opacity: 50%;
+    }
+
+    100% {
+        transform: rotateZ(360deg);
+        /* margin-bottom: 0px; */
+        opacity: 25%;
+    }
+}
+
+.loading-icon {
+    width: 80%;
+    max-width: 400px;
+    animation: mybounce 1s linear infinite;
+    /* opacity: 70%; */
+}
+
 /******************NABBAR*******************/
 /*************LOGIN.HTML:STYLES************/
 
@@ -216,20 +330,24 @@ html::-webkit-scrollbar {
 }
 
 .login-form-section {
-    width: calc(100% - 1rem);
-    margin-left: 1rem;
+    width: 100%;
+    padding-left: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: calc(100vh - 4rem);
+    background-color: var(--ultra-dark);
 }
 
 .login-form-section h3 {
     padding-top: 3rem;
     font-size: 1.5rem;
+    color: white;
 }
 .login-banner-mobile {
     height: 4rem;
-    background-color: #B945FF;
+    /* background-color: #B945FF; */
+    background-color: var(--cactus-purple-1);
 }
 
 .login-form {
@@ -237,49 +355,75 @@ html::-webkit-scrollbar {
 }
 .login-form label {
     margin-left: 0;
-    font-size: .75rem;
+    font-size: 1rem;
     display: block;
+    color: white;
 }
 
 .login-form input {
     display: block;
     width: calc(100% - 1rem);
     height: 2rem;
+    background-color: var(--cactus-purple-1);
+    border: 1px solid white;
+    color: white;
+    border-radius: 8px;
+    padding-left: 6px;
+}
+
+.login-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
 }
 
 .login-form a {
     display: inline;
+    font-size: 16px;
+    background-color: var(--cactus-purple-1);
+    padding: 0.5rem;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: box-shadow 0.6s linear;
+    border-radius: .25rem;
+}
+
+.login-form a:hover {
+    text-decoration: none;
+    color: white;
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+}
+
+.login-form button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
 }
 
 .login-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: #00720b;
+    background-color: var(--cactus-green-1);
+    font-size: 16px;
+    font-weight: 600;
     color: white;
     border: none;
-    font-size: .875rem;
     width: 6rem;
     padding-top: .5rem;
     padding-bottom: .5rem;
     border-radius: .25rem;
+    transition: box-shadow 0.6s linear;
 }
 
 .login-form p {
     margin-top: 1rem;
     font-size: .875rem;
     display: inline-block;
-}
-
-.login-form a {
-    font-size: .875rem;
-    display: inline-block;
+    color: white;
 }
 
 .login-banner {
     background-color: var(--cactus-green-1);
     color: white;
     height: 100vh;
-    /* height: 100%; */
     padding: 3rem;
     display: flex;
     flex-direction: column;
@@ -294,14 +438,20 @@ html::-webkit-scrollbar {
 
 .login-banner-img-container {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
+    max-height: 100%;
 }
 
 .login-banner-illustration {
-    width:  16rem;
+    width: 100%;
+    max-width: 600px;
+    filter: opacity(60%);
 }
 
-
+.success-msg {
+    color: white;
+    margin-right: 5px;
+}
 
 
 
@@ -317,6 +467,10 @@ html::-webkit-scrollbar {
     }
 }
 
+.login-page-body {
+    background-color: var(--ultra-dark);
+}
+
 
 @media only screen and (min-width: 776px) {
 
@@ -329,7 +483,7 @@ html::-webkit-scrollbar {
     }
 
     .login-form-section {
-        /* padding-top: 2rem; */
+        padding-top: 2rem;
         width: 50%;
         max-width: 22rem;
     }
@@ -342,40 +496,55 @@ html::-webkit-scrollbar {
 /*************LOGIN.HTML:MEDIA-QUERIES************/
 
 /*************SIGNUP.HTML:STYLES************/
+.signup-page {
+    height: calc(100% - 8rem);
+}
+
 .sign-up-header {
     background-color: var(--cactus-green-1);
     height: 4rem;
+    width: 100%;
 }
+
 .signup-form-section {
-    padding-top: 5rem;
-    width: calc(100% - 1rem);
-    margin-left: 1rem;
+    width: 100%;
     display: flex;
     justify-content: center;
-    padding-bottom: 5rem;
+    background-color: var(--ultra-dark);
+    height: 100%;
+    align-items: center;
 }
 
 .signup-form-section h3 {
-    font-size: 1.5rem;
+    font-size: 7vw;
+    color: white;
+    margin-bottom: 25px;
 }
+
 .signup-footer {
     height: 4rem;
-    background-color: #B945FF;
+    background-color: var(--cactus-purple-1);
 }
 
 .signup-form {
-    width: 25rem;
+    width: 100%;
 }
+
 .signup-form label {
     margin-left: 0;
-    font-size: .75rem;
+    font-size: 1rem;
     display: block;
+    color: white;
 }
 
 .signup-form input {
     display: block;
-    width: calc(100% - 1rem);
+    width: 100%;
     height: 2rem;
+    background-color: var(--cactus-purple-1);
+    border-radius: 8px;
+    border: 2px solid white;
+    color: white;
 }
 
 .signup-form a {
@@ -385,14 +554,27 @@ html::-webkit-scrollbar {
 .signup-form button {
     display: block;
     margin-top: 1.5rem;
-    background-color: #00720B;;
+    background-color: var(--cactus-green-1);
+    font-size: 16px;
+    font-weight: 600;
     color: white;
     border: none;
-    font-size: .875rem;
     width: 6rem;
     padding-top: .5rem;
     padding-bottom: .5rem;
     border-radius: .25rem;
+    transition: box-shadow 0.6s linear;
+}
+
+.signup-form button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
+}
+
+.signup-form div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .signup-form p {
@@ -406,30 +588,50 @@ html::-webkit-scrollbar {
     display: inline-block;
 }
 
-.signup-banner {
-   background-color: #501069;
-    height: 100vh;
-    /* height: 100%; */
-    padding: 3rem;
-}
-.signup-banner h1 {
-    font-size: 2rem;
-}
-.signup-banner p {
-    font-size: 1rem;
-}
-.two-cacti-illustration {
-    width: 20rem;
-    margin-left: 2rem;
+.many-cacti-illustration {
+    width: 15rem;
+    margin-top: 25px;
 }
 
-.one-cacti-illustration {
-    width: 10rem;
-    margin-right: 4rem;
-}
 .center-signup-form {
     display: flex;
-    align-items: end;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+@media screen and (min-width: 500px) {
+    
+    .signup-form-section h3 {
+        font-size: 35px;
+    }
+
+    .signup-form {
+        width: 466px;
+    }
+
+    .many-cacti-illustration {
+        width: 48vw;
+    }
+}
+
+@media screen and (min-width: 650px) {
+    .many-cacti-illustration {
+        width: 312px;
+    }
+}
+
+@media screen and (min-width: 950px) {
+    .center-signup-form {
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .many-cacti-illustration {
+        max-width: 400px;
+        width: 100%;
+        margin-left: 5.25vw;
+    }
 }
 /*************SIGNUP.HTML:STYLES************/
 
@@ -444,7 +646,7 @@ html::-webkit-scrollbar {
 }
 
 
-@media only screen and (min-width: 776px) {
+/* @media only screen and (min-width: 776px) {
 
     .login-banner-mobile {
         display: none;
@@ -455,7 +657,7 @@ html::-webkit-scrollbar {
     }
 
     .login-form-section {
-        /* padding-top: 2rem; */
+        padding-top: 2rem;
         width: 50%;
         max-width: 22rem;
     }
@@ -463,7 +665,7 @@ html::-webkit-scrollbar {
         width: 100%;
     }
     
-}
+} */
 
 /*************LOGIN.HTML:MEDIA-QUERIES************/;
 /********HEADER:START************/
@@ -485,7 +687,7 @@ header {
     height: 100%;
     background-color: var(--ultra-dark);
     width: 3rem;
-    transition: width 0.6s;
+    transition: min-width 0.6s linear;
 }
 
 .sticky-dash {
@@ -523,14 +725,18 @@ header {
     position: absolute;
     left: -100%;
     background-color: var(--ultra-dark);
-    transition: left 0.6s;
+    transition: left 0.6s linear;
     padding-top: 2rem;
     height: calc(100vh - 6rem);
     width: calc(100% - 2.5rem);
-    overflow: hidden;
+    overflow: scroll;
     padding-left: 20px;
     padding-right: 20px;
     z-index:2;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar h3 {
@@ -591,8 +797,9 @@ header {
 /*************FOOTER:START************/
 
 footer {
-    height: 2rem;
-    background-color: var(--secondary-purple);
+    height: 27px;
+    /* background-color: var(--secondary-purple); */
+    background-color: var(--cactus-green-1);
 }
 
 /*************FOOTER:END************/
@@ -606,6 +813,18 @@ footer {
     justify-content: space-between;
     height: 100%;
     margin-right: 1rem;
+}
+
+.thread-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.thread-top img {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
 }
 
 .thread-title-container {
@@ -844,9 +1063,9 @@ footer {
 /*************THREEDDISPLAY-MEDIA-QUERIES:START****************/
 
 @media only screen and (min-width: 680px) {
-    .aside {
+    /* .aside {
         max-width: 20rem;
-    }
+    } */
     .sidebar {
         max-width: 20rem;
     }
@@ -894,6 +1113,8 @@ footer {
 .right-shelf li {
     margin-top: .75rem;
     font-size: .75rem;
+    width: 100%;
+    padding-right: 15px;
 }
 
 .right-shelf li:hover {
@@ -905,11 +1126,16 @@ footer {
     justify-content: left;
     align-items: center;
     padding-left: 5px;
+    margin-right: 5px;
     height: 35px;
-    width: 200px;
+    width: 100%;
     border-radius: 15px;
     background-color: var(--cactus-green-1);
     border: none;
+}
+
+.friend-chips:hover {
+    background-color: var(--hero-green);
 }
 
 .friend-chips p {
@@ -940,7 +1166,7 @@ footer {
 @media only screen and (max-width: 925px) {
     
     .right-shelf {
-        display: none;
+        /* display: none; */
     }
 }
 
@@ -964,8 +1190,9 @@ footer {
     display: flex;
     justify-content: center;
     width: 100%;
+    height: 100%;
     /* padding-left: 1rem; */
-    background-color: #232323;
+    background-color: var(--dark-mode);
 }
 
 .user-bio {
@@ -975,10 +1202,11 @@ footer {
 }
 
 .profile-content-container {
-    padding-left: 1.5rem;
+    /* padding-left: 1.5rem; */
     width: calc(100% - 2.5rem);
     /* max-width: 40rem; */
     height: 100%;
+    overflow: scroll;
 }
 
 .profile-content-container::-webkit-scrollbar {
@@ -1012,19 +1240,34 @@ footer {
     display: inline-block;
 }
 .tech-stack ul li {
-    /* margin-right: 1rem; */
+
     font-size: .75rem;
     display: inline-block;
+}
+
+.MuiButtonBase-root {
+    background-color: var(--cactus-purple-1) !important;
 }
 
 .tech-chip {
     height: 30px;
     margin: 2px 0px 2px 8px;
-    border: none;
+    border: 1px solid white;
     border-radius: 15px;
     padding: 0px 15px 0px 15px;
     font-weight: 400;
     font-size: 18px;
+    color: white;
+    background-color: var(--cactus-purple-1);
+}
+
+.tech-stack-icons {
+    padding: 15px;
+}
+
+.tech-btns-div {
+    display: flex;
+    width: 100%;
 }
 
 .profile-edit-container {
@@ -1048,10 +1291,10 @@ footer {
 /*************PROFILE.JS:END****************/
 /*************PROFILE.JS:MEDIA-QUERIES-START***************/
 
-.profile-wrapper {
+/* .profile-wrapper {
     position: static;
     width: 100%;
-}
+} */
 
 /*************PROFILE.JS:MEDIA-QUERIES-END***************/
 /*************404.HTML:STYLES************/
@@ -1123,51 +1366,86 @@ footer {
 .modal-header {
     padding: 1rem;
     border-bottom: 1px solid grey;
+    width: 100%;
+    text-align: center;
 }
 .modal-form {
     padding-bottom: 2rem;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 .modal-header h4 {
     margin-top: .5rem;
-    font-size: 1rem;
+    font-size: 1.5rem;
 }
 .modal-form label {
     margin-top: 1.5rem;
-    font-size: .875rem;
+    font-size: 1.2rem;
     font-weight: 500;
     display: block;
-    margin-left: 1rem;
+    margin-left: 5%;
+    width: 90%;
 }
 .modal-form input {
-    margin-top: .75rem;
-    margin-left: 1rem;
+    display: block;
+    width: 90%;
+    margin-left: 5%;
     height: 2rem;
-    width: calc(100% - 2rem);
+    background-color: var(--cactus-purple-1);
+    border: 1px solid white;
+    color: white;
+    border-radius: 8px;
+    padding-left: 6px;
 }
 .modal-form input::placeholder {
     font-size: .75rem;
 }
 
+.modal-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
 .modal-textarea {
-    font-size: .75rem;
+    /* font-size: .75rem;
     margin-left: 1rem;
     height: 3rem;
-    width: calc(100% - 2rem);
+    width: calc(100% - 2rem); */
+    display: block;
+    width: 90%;
+    margin-left: 5%;
+    min-height: 5rem;
+    background-color: var(--cactus-purple-1);
+    border: 1px solid white;
+    color: white;
+    border-radius: 8px;
+    padding-left: 6px;
 }
 
 .modal-button {
-    margin-top: 2rem;
-    font-size: .75rem;
+    display: block;
+    margin-top: 1.5rem;
+    background-color: var(--cactus-green-1);
+    font-size: 16px;
+    font-weight: 600;
     color: white;
-    background-color: #FF7600;
-    padding-top: .75rem;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    padding-bottom: .75rem;
     border: none;
+    width: 6rem;
+    margin-left: 5%;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
     border-radius: .25rem;
-    margin-left: 1rem;
+    transition: box-shadow 0.6s linear;
 }
+
+.modal-button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
+}
+
 /*************MODAL:STYLES************/
 /*******************THREAD:INPUT*******************/
 
@@ -1187,6 +1465,7 @@ footer {
 
 .event-card {
     margin: 10px;
+    width: 100%;
     border: 5px solid var(--cactus-purple-1);
     border-radius: 15px;
     background-color: var(--dark-mode);
@@ -1288,6 +1567,10 @@ footer {
     box-shadow: 1px 1px 3px white, -1px 1px 3px white, 1px -1px 3px white, -1px -1px 3px white, inset 2px 2px 2px white, inset -2px 2px 2px white, inset 2px -2px 2px white, inset -2px -2px 2px white;
 }
 
+.event-more p {
+    padding-right: 10px;
+}
+
 .event-option-div p {
     padding-top: 15px;
     color: var(--grey1);
@@ -1315,13 +1598,15 @@ footer {
     font-weight: 500;
 }
 
-.event-datetime span {
+.event-datetime p span {
     margin-right: 5px;
     font-size: 1.5rem;
     font-weight: 500;
 }
 
 .event-datetime {
+    display: flex;
+    flex-direction: column;
     width: 90%;
     border-bottom: 2px solid var(--cactus-green-1);
 }
@@ -1410,6 +1695,189 @@ footer {
     box-shadow: -1px -1px 2px white, -1px 1px 2px white, 1px -1px 2px white, 1px 1px 2px white;
 }
 
+.event-comment {
+    width: 100%;
+    /* padding: 15px 15px 15px 5px; */
+    min-height: 400px;
+    border-top: 5px solid var(--cactus-purple-1);
+    overflow-y: scroll;
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-chat {
+    width: 90%;
+    margin-right: 2%;
+}
+
+.event-comment::-webkit-scrollbar {
+    display: none;
+}
+
+.event-comment-input {
+    margin-top: 30px;
+    width: 90%;
+    margin-right: 2%;
+}
+
+.edit-event-comment-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-event-comment-form div {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-event-comment-form label {
+    margin-right: 10px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.edit-event-comment-form input {
+    padding: 5px;
+    color: white;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+}
+
+.edit-event-comment-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.edit-event-comment-form button {
+    padding: 8px;
+    margin-top: 10px;
+    width: 100px;
+    font-weight: 600;
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    color: white;
+    border-radius: 10px;
+}
+
+.edit-event-comment-form button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
+.event-edit-form {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-edit-form label {
+    margin-right: 10px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.event-edit-form input {
+    padding: 5px;
+    color: white;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+}
+
+.event-edit-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.event-edit-form button {
+    padding: 8px;
+    margin-top: 10px;
+    width: 150px;
+    font-weight: 600;
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    color: white;
+    border-radius: 10px;
+}
+
+.event-edit-form #in_person {
+    height: 18px;
+    width: 18px;
+    margin-left: 6px;
+}
+
+.event-edit-form button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
+.event-edit-inputs div {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.event-creation-form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-creation-form label {
+    margin-right: 10px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.event-creation-form input {
+    padding: 5px;
+    color: white;
+    background-color: var(--ultra-dark);
+    border: 2px solid white;
+}
+
+.event-creation-form input:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.event-creation-form button {
+    padding: 8px;
+    margin-top: 10px;
+    width: 150px;
+    font-weight: 600;
+    background-color: var(--cactus-green-1);
+    border: 2px solid white;
+    color: white;
+    border-radius: 10px;
+}
+
+.event-creation-form #in_person {
+    height: 16px;
+    width: 16px;
+    margin-left: 6px;
+}
+
+.event-creation-form button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
+.event-creation-inputs div {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 @media screen and (min-width: 600px) {
     
     .event-main-div {
@@ -1465,6 +1933,11 @@ footer {
         justify-content: left;
     }
 
+    .event-meta {
+        align-items: flex-start;
+        margin-left: 7vw;
+    }
+
     .event-inperson p {
         padding-top: 15px;
     }
@@ -1474,7 +1947,7 @@ footer {
     }
 }
 
-@media screen and (min-width: 820px) {
+@media screen and (min-width: 1000px) {
     .event-img {
         max-width: 100%;
         min-width: 18%;
@@ -1482,37 +1955,40 @@ footer {
         margin-left: 5vmax;
     }
 
-    .event-meta {
-        align-items: flex-start;
-        margin-left: 7vw;
-    }
-
     .event-title {
         font-size: 4vw;
     }
 
     .event-host {
-        font-size: 2.5vw;
+        font-size: 1.8vw;
     }
 
     .event-type p, .event-type button {
-        font-size: 2vw;
+        font-size: 1.7vw;
     }
 
     .event-inperson p {
-        font-size: 2.3vw;
+        font-size: 1.7vw;
     }
 
     .event-inperson img {
-        height: 3.6vw;
+        height: 2.7vw;
     }
 
     .event-attend p {
-        font-size: 2.3vw;
+        font-size: 1.7vw;
     }
 
     .event-attend img {
-        height: 3.6vw;
+        height: 2.7vw;
+    }
+
+    .event-more p {
+        font-size: 1.7vw;
+    }
+
+    .event-more img {
+        height: 2.7vw;
     }
 
     .event-attendees {

@@ -8,7 +8,6 @@ function SplashPage() {
 		<div class="splash-page-content-overflow-wrapper">
 			<div class="shift-content-wrapper">
 				<header class="splash-page-header">
-					<img src="" alt="" />
 					<Link to="/login">
 						<button>Login</button>
 					</Link>

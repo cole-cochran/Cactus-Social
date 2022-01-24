@@ -64,15 +64,21 @@
 
 //! ----------------------------------------------------------------------------------------------- 
 
-//?  EVENT CREATOR MODAL  (after hash command is entered)
+//?  EVENT CREATOR MODAL 
 
 //*  Start Time, End Time, Date, Title of Event, Event Category (TBD), Virtual/In-Person, Host, Badges (would be a cool addition), Event Description (limit them to a certain amount of characters? 1000?)
 
-//*  Automatically becomes a pin (tiers for pins), allow host to unpin if they choose
+// // *  Automatically becomes a pin (tiers for pins), allow host to unpin if they choose
 
 //? EVENT DISPLAY PAGE
 
 //* make this beautiful
+
+//* add functionality for event owner to update, remove, or invite others to the event
+
+//* allow others to attend, leave, comment on events as they please
+
+//* create modal for users to update, delete their own comments
 
 //! ----------------------------------------------------------------------------------------------- 
 

@@ -23,7 +23,6 @@ function Login(props) {
 	// submit form
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
-		console.log(formState);
 		try {
 			const { data } = await loginUser({
 				variables: { ...formState }
@@ -48,7 +47,7 @@ function Login(props) {
 					<img className="logo" src="/assets/img/logo.svg" alt="cactus logo" />
 				</div>
 				{data ? (
-					<p>
+					<p className='success-msg'>
 						Success! You may now head{' '}
 						<Link to="/">back to the homepage.</Link>
 					</p>
@@ -99,10 +98,8 @@ function Login(props) {
 					</h1>
 					<p>Login to see what your fellow developers are up to!</p>
 				</div>
-
-				{/* //! add the image of the cacti hanging out */}
 				<div className="login-banner-img-container">
-					<img className="login-banner-illustration" src="/assets/img/one-cacti-illustration.svg" alt="one cactus hanging out" />
+					<img className="login-banner-illustration" src="../../assets/img/new_logo.png" alt="one cactus hanging out" />
 				</div>
 
 			</div>

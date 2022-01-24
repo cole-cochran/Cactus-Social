@@ -9,8 +9,8 @@ import AuthService from '../utils/auth';
 import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-// import { ADD_POST_REACTION, REMOVE_THREAD } from '../utils/mutations';
-import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST } from '../utils/mutations';
+// import { ADD_POST_REACTION } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -32,12 +32,13 @@ const style = {
 function ThreadDisplay(props) {
 
 	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
-
 	// TODO (threadDisplay) Allow only thread owners to delete thread
 
 	let updatedThreadPosts;
 
 	const { threadId } = useParams();
+
+	const userId = AuthService.getProfile().data._id;
 
 	const [ createPost ] = useMutation(CREATE_POST, {
 		refetchQueries: [
@@ -67,6 +68,8 @@ function ThreadDisplay(props) {
 		],
 	});
 
+	const [ removeThread ] = useMutation(REMOVE_THREAD);
+
 	const [ removePinnedPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
@@ -84,8 +87,6 @@ function ThreadDisplay(props) {
 	const errors = singleThread.error || threadPosts.error || userData.error;
 	const loading = singleThread.loading || threadPosts.loading || userData.loading;
 
-	// const [state, dispatch] = React.useReducer(reducer, initialState, init);
-
 	const [ open, setOpen ] = React.useState(false);
 	const [ openEditor, setOpenEditor ] = React.useState(false);
 
@@ -100,6 +101,19 @@ function ThreadDisplay(props) {
         }
     );
 
+	const handleRemoveThread = () => {
+		try {
+			removeThread({
+				variables: {
+					threadId: threadId
+				}
+			})
+		} catch(err) {
+			console.error(err);
+		}
+
+		window.location.replace(`/profile/${userId}`);
+	}
 	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
 	const [postList, setPostList] = React.useState([]);
 
@@ -112,7 +126,6 @@ function ThreadDisplay(props) {
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
 		localStorage.setItem('postId', JSON.stringify(postData));
-		console.log(event.target.parentNode.childNodes[1]);
 		const content = event.target.parentNode.childNodes[1];
 		content.style.display = "flex";
 	}
@@ -176,7 +189,6 @@ function ThreadDisplay(props) {
 					author: AuthService.getProfile().data._id
 				}
 			});
-            // window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
@@ -224,7 +236,8 @@ function ThreadDisplay(props) {
 		} catch (err) {
 			console.error(err);
 		}
-		setEditPost({ post_text: "" })
+		setEditPost({ post_text: "" });
+		localStorage.removeItem('postId');
 		handleCloseEditor();
 	}
 
@@ -275,12 +288,16 @@ function ThreadDisplay(props) {
     };
 
 	if (loading) {
-		return <img src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-	}
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
+	} 
 
 	if (userData.data.userProfile.pinned_posts.length) {
 		const allUserPins = userData.data.userProfile.pinned_posts;
-		console.log(allUserPins)
 
 		usersThreadPins = allUserPins.filter((pinnedPost) => (
 			pinnedPost.post.thread._id === threadId
@@ -312,15 +329,27 @@ function ThreadDisplay(props) {
 		element.scrollTop = element.scrollHeight;
 	}
 
+	const threadOwner = singleThread.data.threadDetails.moderator._id === userId;
+
 	return (
+		<React.Fragment>
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
 			<div className="thread-content-container" onLoad={scroll}>
-				<div className="thread-header">
-					<h3>{singleThread.data.threadDetails.title}</h3>
-					<div>
-						<p>M: {singleThread.data.threadDetails.moderator.username}</p>
+				<div className='thread-top'>
+					<div className="thread-header">
+						<h3>{singleThread.data.threadDetails.title}</h3>
+						<div>
+							<p>M: {singleThread.data.threadDetails.moderator.username}</p>
+						</div>
 					</div>
+					{threadOwner ? (
+						<img src="../../assets/img/remove_icon.png" alt="delete thread" onClick={handleRemoveThread}/>
+					) : (
+						<React.Fragment />
+					)}
+					
 				</div>
+				
 				<div id="chats-container" className="chats-container">
 					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
 					{updatedThreadPosts.map(
@@ -386,6 +415,7 @@ function ThreadDisplay(props) {
 				</form>
 			</div>
 		</main>
+		</React.Fragment>
 	);
 }
 
