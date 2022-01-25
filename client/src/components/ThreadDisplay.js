@@ -38,6 +38,8 @@ function ThreadDisplay(props) {
 
 	const { threadId } = useParams();
 
+	const {activeThread, socket} = props;
+
 	const userId = AuthService.getProfile().data._id;
 
 	const [ createPost ] = useMutation(CREATE_POST, {
@@ -117,11 +119,21 @@ function ThreadDisplay(props) {
 	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
 	const [postList, setPostList] = React.useState([]);
 
-    const socket = io.connect('localhost:3001');
-	socket.on('connect', () => {
-		console.log("I'm connected with the backend");
-		socket.emit("join_thread", {room: threadId, user: AuthService.getProfile().data.username});
-	});
+	React.useEffect(() => {
+		// if(socket) {
+		// 	socket.emit('end');
+		// 	socket = io.connect('localhost:3001');
+		// }else {
+		// 	socket = io.connect('localhost:3001');
+		// }
+		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
+	}, [activeThread]);
+
+	React.useEffect(() => {
+		socket.on('recieve_post', (data) => {
+			setPostList([...postList, data]);
+		})
+	}, [socket]);
 
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
@@ -181,14 +193,18 @@ function ThreadDisplay(props) {
 	
 	const handlePostSubmit = async (event) => {
 		event.preventDefault();
-		try { 
-			await createPost({
-				variables: {
-					threadId: singleThread.data.threadDetails._id,
-                    post_text: newPostText,
-					author: AuthService.getProfile().data._id
-				}
-			});
+		try {
+			if(socket) {
+				const postData = await createPost({
+					variables: {
+						threadId: singleThread.data.threadDetails._id,
+						post_text: newPostText,
+						author: AuthService.getProfile().data._id
+					}
+				});
+				console.log(postData.data.createPost);
+				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
+			}
 		} catch (err) {
 			console.error(err);
 		}
@@ -323,7 +339,7 @@ function ThreadDisplay(props) {
 	} else {
 		updatedThreadPosts = threadPosts.data.allThreadPosts;
 	}
-
+	// setPostList(updatedThreadPosts);
 	const scroll = () => {
 		var element = document.getElementById("chats-container");
 		element.scrollTop = element.scrollHeight;
@@ -331,6 +347,9 @@ function ThreadDisplay(props) {
 
 	const threadOwner = singleThread.data.threadDetails.moderator._id === userId;
 
+	// console.log(socket);
+
+	// console.log(postList);
 	return (
 		<React.Fragment>
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
@@ -361,6 +380,13 @@ function ThreadDisplay(props) {
 								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
 								dropdown={handleOpenDropdown} remove={handleRemovePost} />
 							)
+						)
+					)}
+					{postList.map(
+						(post) => (
+							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+							dropdown={handleOpenDropdown} 
+							remove={handleRemovePost} />
 						)
 					)}
 					<Modal

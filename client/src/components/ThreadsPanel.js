@@ -25,14 +25,21 @@ const style = {
 
 function ThreadsPanel(props) {
 
-    const {toggle} = props;
+    const {toggle, setActiveThread} = props;
+    console.log(props);
 
     const { loading, data } = useQuery(ALL_THREADS);
     const allThreads = data?.allThreads || [];
 
     const [open, setOpen] = React.useState(false);
+    
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleThreadChange = (thread, e) => {
+        setActiveThread(thread);
+        toggle(e);
+    }
 
     if (loading) {
         return <h2>LOADING...</h2>;
@@ -48,7 +55,9 @@ function ThreadsPanel(props) {
                 {allThreads.map((individualThread) => (
                     <li key={individualThread._id}>
                         <Link
-                        onClick={toggle}
+                        onClick={(e) => {
+                            handleThreadChange(individualThread._id, e);
+                        }}
                             to={`/threads/${individualThread._id}`}
                         >
                             {individualThread.title}

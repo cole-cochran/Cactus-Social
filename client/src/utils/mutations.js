@@ -385,31 +385,32 @@ export const CREATE_POST = gql`
 mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
     createPost( threadId: $threadId, post_text: $post_text, author: $author) {
         _id
-        title
-        posts {
-            _id
-            post_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            comments {
-                _id
-            }
-        }
-        moderator {
-            _id
-            username
-            picture
-        }
-        members {
-            _id
-            username
-            picture
-        }
-        date_created
+			post_text
+			date_created
+			author {
+				_id
+				username
+				picture
+			}
+			reactions
+			edited
+			thread {
+				_id
+				title
+			}
+			comments {
+				_id
+				comment_text
+				date_created
+				author {
+					_id
+				}
+				reactions
+				edited
+				post {
+					_id
+				}
+			}
     }
 }
 `;

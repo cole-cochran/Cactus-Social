@@ -490,24 +490,28 @@ const resolvers = {
 			// if (context.user) {
 			try{
 				const { threadId, post_text, author } = args;
-				const { _id } = await Post.create(
+				console.log(post_text);
+				const post = await Post.create(
 					{
 						thread: threadId,
 						post_text: post_text,
 						author: author
 					}
 				);
+				const postPopulatedData = await Post.findOne({_id: post._id}).populate('author').populate('thread').populate('comments');
 				const thread = await Thread.findOneAndUpdate(
 					{ _id: threadId },
 					{
 						$addToSet: {
-							posts: _id
+							posts: post._id
 						}
 					},
 					{ new: true }
 				).populate('posts').populate('moderator').populate('members');
-				return thread;
+				// console.log(thread);
+				return postPopulatedData;
 			}catch(err) {
+				console.log(err);
 				if(err.errors.post_text) return new ApolloError(`${err.errors.post_text}`, '400');
 			}
 			
