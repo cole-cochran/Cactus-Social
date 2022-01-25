@@ -72,6 +72,11 @@ io.on('connection', (socket) => {
 		console.log(`User ${socket.id} has joined ${data.room}`);
 	});
 
+	socket.on("leave_existing_thread", (socket) => {
+		console.log("leave existing thread");
+		socket.leaveAll();
+	})
+
 	socket.on("send_post", (data) => {
 		console.log(socket.id);
 		console.log(`${data.user} has sent post ${data.post} to room ${data.room}`);

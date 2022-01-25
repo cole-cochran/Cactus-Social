@@ -42,12 +42,7 @@ function ThreadDisplay(props) {
 
 	const userId = AuthService.getProfile().data._id;
 
-	const [ createPost ] = useMutation(CREATE_POST, {
-		refetchQueries: [
-			ALL_THREAD_POSTS,
-			'allThreadPosts'
-		],
-	});
+	const [ createPost ] = useMutation(CREATE_POST);
 
 	const [ removePost ] = useMutation(REMOVE_POST, {
 		refetchQueries: [
@@ -103,6 +98,8 @@ function ThreadDisplay(props) {
         }
     );
 
+	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
 	const handleRemoveThread = () => {
 		try {
 			removeThread({
@@ -126,6 +123,7 @@ function ThreadDisplay(props) {
 		// }else {
 		// 	socket = io.connect('localhost:3001');
 		// }
+		socket.emit("leave_exising_thread");
 		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
 	}, [activeThread]);
 
@@ -204,6 +202,9 @@ function ThreadDisplay(props) {
 				});
 				console.log(postData.data.createPost);
 				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
+				setMessageTimeout(true);
+				setTimeout(() => {setMessageTimeout(false);}, 2000);
+				
 			}
 		} catch (err) {
 			console.error(err);
@@ -436,8 +437,9 @@ function ThreadDisplay(props) {
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
                     <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/>
 					<div className="chat-input-buttons">
-						<button type="submit" className="chat-input-send-button">Send</button>
+						<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Send</button>
 					</div>
+					{messageTimeout && newPostText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
 				</form>
 			</div>
 		</main>

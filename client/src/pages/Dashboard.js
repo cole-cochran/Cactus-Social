@@ -10,6 +10,8 @@ import AuthService from '../utils/auth';
 
 import {io} from 'socket.io-client';
 
+const socket = io.connect('localhost:3001');
+
 function Dashboard(props) {
 
     const userId = AuthService.getProfile().data._id
@@ -18,8 +20,7 @@ function Dashboard(props) {
 
     const [activeThread, setActiveThread] = React.useState('');
 
-    const socket = io.connect('localhost:3001');
-    // console.log('threadId, postId',threadId, postId);
+    const [activeComment, setActiveComment] = React.useState('');
 
     return (
         <React.Fragment>
@@ -27,9 +28,9 @@ function Dashboard(props) {
             <div className="app-content-container">
                 <Sidebar setActiveThread={setActiveThread}/>
                 { props.subThread ? (
-                    <SubthreadDisplay />
+                    <SubthreadDisplay activeComment={activeComment}/>
                 ) : (
-                    <ThreadDisplay activeThread={activeThread} socket={socket}/>
+                    <ThreadDisplay activeThread={activeThread} socket={socket} setActiveComment={setActiveComment}/>
                 )}
                 
             </div>
