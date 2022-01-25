@@ -87,8 +87,8 @@ io.on('connection', (socket) => {
 
 	socket.on("send_post", (data) => {
 		console.log(socket.id);
-		console.log(`${data.user} has sent post ${data.comment} to room ${data.room}`);
-		socket.to(data.room).emit("receive_comment", data.comment);
+		console.log(`${data.user} has sent post ${data.post} to room ${data.room}`);
+		socket.to(data.room).emit("receive_post", data.post);
 	});
 
 	socket.on("send_comment", (data) => {

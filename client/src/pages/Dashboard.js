@@ -11,8 +11,6 @@ import AuthService from '../utils/auth';
 import {io} from 'socket.io-client';
 const socket = io.connect('localhost:3001');
 
-const socket = io.connect('localhost:3001');
-
 function Dashboard(props) {
 
     const userId = AuthService.getProfile().data._id
