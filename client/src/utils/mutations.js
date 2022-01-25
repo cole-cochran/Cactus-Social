@@ -312,6 +312,14 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
             _id
             username
         }
+        friend_request {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
     }
 }
 `;
@@ -347,6 +355,54 @@ mutation updateBio($userId: ID!, $bio: String!) {
     }
 }
 `;
+
+export const SEND_FRIEND_REQUEST = gql`
+mutation sendFriendRequest($userId: ID!, $friend: ID!) {
+    sendFriendRequest(userId: $userId, friend: $friend) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        tech_stack
+        date_joined
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
+    }
+}
+`
+
+export const DENY_FRIEND_REQUEST = gql`
+mutation denyFriendRequest($userId: ID!, $friend: ID!) {
+    denyFriendRequest(userId: $userId, friend: $friend) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        tech_stack
+        date_joined
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
+    }
+}
+`
 
 //*  THREAD STUFF
 

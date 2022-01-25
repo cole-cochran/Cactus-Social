@@ -259,6 +259,54 @@ export const USER_PROFILE = gql`
 	}
 `;
 
+export const FRIEND_REQUESTS = gql`
+query friendRequests($userId: ID!) {
+	friendRequests(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		bio
+		tech_stack
+		date_joined
+		friend_requests {
+			_id
+			username
+		}
+		sent_friend_requests {
+			_id
+			username
+		}
+	}
+}
+`
+
+export const SENT_FRIEND_REQUESTS = gql`
+query sentFriendRequests($userId: ID!) {
+	sentFriendRequests(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		bio
+		tech_stack
+		date_joined
+		friend_requests {
+			_id
+			username
+		}
+		sent_friend_requests {
+			_id
+			username
+		}
+	}
+}
+`
+
 export const USER_THREADS = gql`
 query userThreads($userId: ID!) {
 	userThreads(userId: $userId) {

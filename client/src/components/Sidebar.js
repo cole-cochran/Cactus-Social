@@ -4,7 +4,7 @@ import ThreadsPanel from './ThreadsPanel';
 import EventsPanel from './EventsPanel';
 
 import AuthService from '../utils/auth';
-import SidebarPanel from './SidebarPanel';
+// import SidebarPanel from './SidebarPanel';
 
 // const threadIcon = document.querySelector('#thread-icon');
 // const eventIcon = document.querySelector('#event-icon');

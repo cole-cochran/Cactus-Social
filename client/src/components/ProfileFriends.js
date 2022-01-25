@@ -2,35 +2,55 @@ import React from "react";
 import {Link} from 'react-router-dom';
 
 // import { USER_FRIENDS } from '../utils/queries.js';
-import { ALL_USERS } from '../utils/queries';
-//* USER_FRIENDS accepts userId and returns the user's _id and friends which contains the friend's _id, username, and picture
-// import { ADD_FRIEND, REMOVE_FRIEND } from '../utils/mutations';
-//* ADD_FRIENDS accepts: userId and friend (which corresponds to the friend's _id)
-//* REMOVE FRIENDS accepts: userId and friend (which corresponds to the friend's id)
-//* Both return the updated User
+import { ALL_USERS, FRIEND_REQUESTS, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
+import { ADD_FRIEND, REMOVE_FRIEND, SEND_FRIEND_REQUEST, DENY_FRIEND_REQUEST } from '../utils/mutations';
 
-import { useQuery } from '@apollo/client';
-// import AuthService from '../utils/auth';
+import { useQuery, useMutation } from '@apollo/client';
+import AuthService from '../utils/auth';
 
 function ProfileFriends(props) {
+
+    const userId = AuthService.getProfile().data._id;
     // const [searchUsername, setSearchUsername] = React.useState('');
     // const friendsQuery = useQuery(USER_FRIENDS);
-    const { loading, data } = useQuery(ALL_USERS);
-    const allUsers = data?.allUsers || [];
+    const getAllUsers = useQuery(ALL_USERS);
+    const allFriendRequests = useQuery(FRIEND_REQUESTS, {
+        variables: {
+            userId: userId
+        }
+    });
+    const allSentFriendRequests = useQuery(SENT_FRIEND_REQUESTS, {
+        variables: {
+            userId: userId
+        }
+    });
+    const getAllFriends = useQuery(USER_FRIENDS, {
+        variables: {
+            userId: userId
+        }
+    });
+
+    const loading = getAllUsers.loading || allFriendRequests.loading || allSentFriendRequests.loading;
+
+    const errors = getAllUsers.error || allSentFriendRequests.error || allSentFriendRequests.error;
+
+    if (loading) {
+        return <div>Loading...</div>
+    }
+
+    const allUsers = getAllUsers.data?.allUsers || [];
+    const friendRequests = allFriendRequests.data?.friendRequests || [];
+    const sentFriendRequests = allSentFriendRequests.data?.sentFriendRequests || [];
+    const allFriends = getAllFriends.data?.userFriends || [];
 
     return (
-        <React.Fragment>
-            {loading ? (
-                <div>Loading...</div>
-            ) : (
-                <div className="right-shelf">
-                <h3>Friends</h3>
-                <ul>
+        <div className="right-shelf">
+            <div className="community-div">
+                <h3>Cactus Community</h3>
+                <ul className="community-dropdown">
                     {allUsers.map((user, index) => (
                         <li key={`${user}-${index}`}>
                             <a href = {`/profile/${user._id}`}>
-                                {/* <Chip color="success" avatar={<Avatar src="../../public/assets/img/profile.svg" />}
-                                label={user.username} /> */}
                                 <button className="friend-chips">
                                     <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                     <p>{user.username}</p>
@@ -39,9 +59,35 @@ function ProfileFriends(props) {
                         </li>
                     ))}
                 </ul>
-                </div>
-            )}
-        </React.Fragment>
+            </div>
+            <div className="all-friends-div">
+                <h3>Friends</h3>
+                <ul>
+                    {allFriends.friends && allFriends.friends.map((user, index) => (
+                        <li key={`${user}-${index}`}>
+                            <a href = {`/profile/${user._id}`}>
+                                <button className="friend-chips">
+                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    <p>{user.username}</p>
+                                </button>
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="friend-requests-div">
+                <button className='friend-request-chip'>
+                    Friend Requests
+                    <div>{friendRequests.friend_requests && friendRequests.friend_requests.length}</div>
+                </button>
+            </div>
+            <div className="sent-requests-div">
+                <button className='friend-request-chip'>
+                    Sent Requests
+                    <div>{sentFriendRequests.sent_friend_requests && sentFriendRequests.sent_friend_requests.length}</div>
+                </button>
+            </div>
+        </div>
     )
 }
 

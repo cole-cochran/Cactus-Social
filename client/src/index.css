@@ -1125,6 +1125,44 @@ footer {
     background-color: var(--ultra-dark);
 }
 
+.community-div, all-friends-div {
+    margin-bottom: 15px;
+}
+
+.friend-requests-div {
+    margin-top: 30px;
+}
+
+.sent-requests-div {
+    margin-top: 15px;
+}
+
+.friend-request-chip {
+    display: flex;
+    align-items: center;
+    height: 35px;
+    padding: 16px 8px 16px 8px;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--cactus-purple-1);
+    cursor: pointer;
+    color: white;
+}
+
+.friend-request-chip div {
+    background-color: var(--grey1);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    padding-top: 1px;
+    justify-content: center;
+    align-items: center;
+    color: var(--ultra-dark);
+    font-weight: 700;
+    margin-left: 5px;
+}
+
 .right-shelf h3 {
     margin-top: 2rem;
     font-weight: 500;
