@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
+const timeFormat = require('../utils/timeFormat');
 
 const Schema = mongoose.Schema;
 
@@ -18,28 +19,26 @@ const eventSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        minLength: [ 10, 'Provide a description with at least 3 characters' ],
+        minLength: [ 10, 'Provide a description with at least 10 characters' ],
 		maxLength: [ 600, 'Provide a description with less than 128 characters' ] 
     },
     start_date: {
         type: String,
         required: true,
-        get: (timestamp) => dateFormat(timestamp)
     },
     end_date: {
         type: String,
         required: true,
-        get: (timestamp) => dateFormat(timestamp)
     },
     start_time: {
         type: String,
         required: true,
-        get: (timestamp) => dateFormat(timestamp)
+        get: (time) => timeFormat(time)
     },
     end_time: {
         type: String,
         required: true,
-        get: (timestamp) => dateFormat(timestamp)
+        get: (time) => timeFormat(time)
     },
     owner: {
         type: ObjectId,
@@ -66,10 +65,6 @@ const eventSchema = new Schema({
     image: {
         type: String,
         default: ""
-    },
-    thread: {
-        type: ObjectId,
-        ref:'Thread'
     },
     comments: [
         {

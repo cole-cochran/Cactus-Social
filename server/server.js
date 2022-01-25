@@ -49,7 +49,7 @@ app.get('*', (req, res) => {
 const httpServer = http.createServer(app);
 const io = socketIo(httpServer, {
 	cors: {
-		origin: "http://localhost:3000",
+		origin: "*",
 		methods: ['GET', 'POST']
 	}
 });
@@ -58,22 +58,53 @@ const io = socketIo(httpServer, {
 //* on websocket disconnect logs a user disconnected
 io.on('connection', (socket) => {
 	console.log(`user ${socket.id} connected`);
-	// const count = io.engine.clientsCount;
-	// console.log(`${count} users connected`);
+	const count = io.engine.clientsCount;
+	console.log(`${count} users connected`);
 	// console.log(socket.id);
 
 	socket.on("join_thread", (data) => {
+		socket.rooms.forEach(room => {
+			socket.leave(room);
+			console.log(`User ${socket.id} leaving room ${room} to join thread`);
+		});
 		socket.join(data.room);
-		console.log(`User ${data.user} has joined ${data.room}`);
+		console.log(`User ${socket.id} has joined thread ${data.room}`);
 	});
 
+	socket.on("join_post", (data) => {
+		socket.rooms.forEach(room => {
+			socket.leave(room);
+			console.log(`User ${socket.id} leaving room ${room} to join post`);
+		});
+		socket.join(data.room);
+		console.log(`User ${socket.id} has joined post ${data.room}`);
+	});
+
+	// socket.on("leave_existing_thread", (socket) => {
+	// 	console.log("leave existing thread");
+	// 	socket.leaveAll();
+	// })
+
 	socket.on("send_post", (data) => {
-		socket.to(data.room).emit("recieve_post", data.post);
+		console.log(socket.id);
+		console.log(`${data.user} has sent post ${data.comment} to room ${data.room}`);
+		socket.to(data.room).emit("receive_comment", data.comment);
+	});
+
+	socket.on("send_comment", (data) => {
+		console.log(socket.id);
+		console.log(`${data.user} has sent comment ${data.comment} to room ${data.room}`);
+		socket.to(data.room).emit("receive_comment", data.comment);
 	})
 
 	socket.on('disconnect', () => {
 		console.log(`user ${socket.id} has disconnected`);
 	});
+
+	socket.on('end', () => {
+		socket.disconnect();
+		console.log(io.engine.clientsCount);
+	})
 });
 
 //* set up server to listen on port and open connection to graphql

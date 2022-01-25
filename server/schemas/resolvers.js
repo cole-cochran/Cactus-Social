@@ -83,6 +83,18 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
+		friendRequests: async (parent, args, context) => {
+			const {userId} = args;
+			const user = await User.findOne({_id: userId}).populate('friend_requests');
+			return user;
+		},
+
+		sentFriendRequests: async (parent, args, context) => {
+			const { userId } = args;
+			const user = await User.findOne({_id: userId}).populate('sent_friend_requests');
+			return user;
+		},
+
 		allPosts: async (parent, args, context) => {
 			return await Post.find({}).populate('author').populate('thread').populate('comments');
 		},
@@ -295,10 +307,25 @@ const resolvers = {
 				{
 					$addToSet: {
 						friends: friend
+					},
+					$pull: {
+						friend_requests: friend
 					}
 				},
 				{ new: true }
 			).populate('friends');
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$addToSet: {
+						friends: userId
+					},
+					$pull: {
+						friend_requests: userId
+					}
+				},
+				{new: true}
+			);
 			return user;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
@@ -322,6 +349,52 @@ const resolvers = {
 			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
+		},
+
+		sendFriendRequest: async (parent, args, context) => {
+			const {userId, friend} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$addToSet: {
+						sent_friend_requests: friend
+					}
+				},
+				{new: true}
+			);
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$addToSet: {
+						friend_requests: userId
+					}
+				},
+				{new: true}
+			);
+			return user;
+		},
+
+		denyFriendRequest: async (parent, args, context) => {
+			const {userId, friend} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$pull: {
+						friend_requests: friend
+					}
+				},
+				{new: true}
+			);
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$pull: {
+						sent_friend_requests: userId
+					}
+				},
+				{new: true}
+			);
+			return user;
 		},
 
 		//* update the user's profile photo
@@ -353,21 +426,26 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			//! get rid of userId when we can user the context to our advantage
-			const { title, moderator } = args;
-			const newThread = await Thread.create({
-				title: title,
-				moderator: moderator
-			});
-			await User.findOneAndUpdate(
-				{ _id: moderator },
-				{
-					$addToSet: {
-						threads: newThread._id
-					}
-				},
-				{ new: true }
-			);
-			return newThread;
+			try{
+				const { title, moderator } = args;
+				const newThread = await Thread.create({
+					title: title,
+					moderator: moderator
+				});
+				await User.findOneAndUpdate(
+					{ _id: moderator },
+					{
+						$addToSet: {
+							threads: newThread._id
+						}
+					},
+					{ new: true }
+				);
+				return newThread;
+			}catch(err) {
+				if(err.errors.title) return new ApolloError(`${err.errors.title}`, '400');
+			}
+			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -410,24 +488,33 @@ const resolvers = {
 		createPost: async (parent, args, context) => {
 			//! add user context to authenticate
 			// if (context.user) {
-			const { threadId, post_text, author } = args;
-			const { _id } = await Post.create(
-				{
-					thread: threadId,
-					post_text: post_text,
-					author: author
-				}
-			);
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$addToSet: {
-						posts: _id
+			try{
+				const { threadId, post_text, author } = args;
+				console.log(post_text);
+				const post = await Post.create(
+					{
+						thread: threadId,
+						post_text: post_text,
+						author: author
 					}
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
-			return thread;
+				);
+				const postPopulatedData = await Post.findOne({_id: post._id}).populate('author').populate('thread').populate('comments');
+				const thread = await Thread.findOneAndUpdate(
+					{ _id: threadId },
+					{
+						$addToSet: {
+							posts: post._id
+						}
+					},
+					{ new: true }
+				).populate('posts').populate('moderator').populate('members');
+				// console.log(thread);
+				return postPopulatedData;
+			}catch(err) {
+				console.log(err);
+				if(err.errors.post_text) return new ApolloError(`${err.errors.post_text}`, '400');
+			}
+			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -642,6 +729,8 @@ const resolvers = {
 				post: postId
 			});
 
+			const comment = await Comment.findOne({_id}).populate('author').populate('post');
+
 			const thePost = await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
@@ -659,7 +748,7 @@ const resolvers = {
 				}
 			});
 
-			return thePost;
+			return comment;
 		},
 
 		//* remove post comment

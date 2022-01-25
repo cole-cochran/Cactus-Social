@@ -101,6 +101,9 @@ const typeDefs = gql`
         threadDetails(threadId: ID!): Thread
         eventDetails(eventId: ID!): Event
         postDetails(postId: ID!): Post
+
+        friendRequests(userId: ID!): User
+        sentFriendRequests(userId: ID!): User
     }
 
     type Mutation {
@@ -122,14 +125,14 @@ const typeDefs = gql`
         createThread(title: String!, moderator: ID!): Thread
         removeThread(threadId: ID!): User
 
-        createPost(threadId: ID!, post_text: String!, author: ID!): Thread
+        createPost(threadId: ID!, post_text: String!, author: ID!): Post
         removePost(threadId: ID!, postId: ID!): Thread
         
         updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
 
-        createPostComment(postId: ID!, comment_text: String!, author: ID!): Post
+        createPostComment(postId: ID!, comment_text: String!, author: ID!): Comment
         removePostComment(postId: ID!, commentId: ID!): Post
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
@@ -146,6 +149,9 @@ const typeDefs = gql`
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
+
+        sendFriendRequest(userId: ID!, friend: ID!): User
+        denyFriendRequest(userId: ID!, friend: ID!): User
     }
 `;
 
