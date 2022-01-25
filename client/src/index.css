@@ -1189,7 +1189,7 @@ footer {
 .profile-wrapper {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: calc(100vw - 304px);
     height: 100%;
     /* padding-left: 1rem; */
     background-color: var(--dark-mode);
