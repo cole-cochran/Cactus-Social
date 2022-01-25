@@ -292,6 +292,14 @@ mutation addFriend($userId: ID!, $friend: ID!) {
             _id
             username
         }
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
     }
 }
 `;
@@ -312,7 +320,7 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
             _id
             username
         }
-        friend_request {
+        friend_requests {
             _id
             username
         }
@@ -368,6 +376,10 @@ mutation sendFriendRequest($userId: ID!, $friend: ID!) {
         bio
         tech_stack
         date_joined
+        friends {
+            _id
+            username
+        }
         friend_requests {
             _id
             username
@@ -392,6 +404,10 @@ mutation denyFriendRequest($userId: ID!, $friend: ID!) {
         bio
         tech_stack
         date_joined
+        friends {
+            _id
+            username
+        }
         friend_requests {
             _id
             username

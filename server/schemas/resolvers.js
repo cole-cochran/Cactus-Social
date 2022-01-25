@@ -313,15 +313,16 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('friends');
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+
 			await User.findOneAndUpdate(
-				{_id: friend},
+				{ _id: friend },
 				{
 					$addToSet: {
 						friends: userId
 					},
 					$pull: {
-						friend_requests: userId
+						sent_friend_requests: userId
 					}
 				},
 				{new: true}
@@ -331,7 +332,7 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
-		//* remove friend from user tech stack
+		//* remove friend from friends array
 		removeFriend: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
 			const { userId, friend } = args;
@@ -345,7 +346,18 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('friends');
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+
+			await User.findOneAndUpdate(
+				{ _id: friend },
+				{
+					$pull: {
+						friends: userId
+					}
+				},
+				{ new: true }
+			);
+
 			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
@@ -361,7 +373,7 @@ const resolvers = {
 					}
 				},
 				{new: true}
-			).populate('sent_friend_requests').populate('friend_requests');
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
 			
 			await User.findOneAndUpdate(
 				{_id: friend},
@@ -385,8 +397,8 @@ const resolvers = {
 					}
 				},
 				{new: true}
-			).populate('sent_friend_requests').populate('friend_requests');
-			
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+
 			await User.findOneAndUpdate(
 				{_id: friend},
 				{

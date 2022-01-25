@@ -83,10 +83,16 @@ function ProfileInfo(props) {
 	const loading = getAllUsers.loading || getAllFriends.loading;
 
 	const handleRemoveFriend = async (event) => {
+		event.preventDefault();
+
+		console.log(specificUser._id)
+
 		try {
 			await removeFriend({
-				userId: userId,
-				friend: specificUser._id
+				variables: {
+					userId: userId,
+					friend: specificUser._id
+				}
 			})
 		} catch (err) {
 			console.log(err);
@@ -96,8 +102,10 @@ function ProfileInfo(props) {
 	const handleSendFriendRequest = async (event) => {
 		try {
 			await sendFriendRequest({
-				userId: userId,
-				friend: specificUser._id
+				variables: {
+					userId: userId,
+					friend: specificUser._id
+				}
 			})
 		} catch (err) {
 			console.log(err);
@@ -307,10 +315,16 @@ function ProfileInfo(props) {
                         </div>}
 					</div>
 				</div>
-				{userFriendChecker ? (
-					<button onClick={handleRemoveFriend}>Remove Friend</button>
+				{!canEditProfile ? (
+					<div className='friend-options-div'>
+						{userFriendChecker ? (
+							<button className='remove-friend-btn' onClick={handleRemoveFriend}>Remove Friend</button>
+						) : (
+							<button className="send-request-btn" onClick={handleSendFriendRequest}>Send Friend Request</button>
+						)}
+					</div>
 				) : (
-					<button onClick={handleSendFriendRequest}>Send Friend Request</button>
+					<React.Fragment />
 				)}
 			</div>
 			<Modal

@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 import UserSearchModal from './UserSearchModal';
 // import {Link} from 'react-router-dom';
 
@@ -55,16 +56,30 @@ function ProfileFriends(props) {
     const handleClose = (e) => {
         setOpenSearch(false);
     }
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: "100%",
+        maxWidth: "500px",
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+    };
     
     return (
         <div className="right-shelf">
             <div className="search-users-div">
-                <button onClick={handleOpen}>Search Users</button>
+                <button className="search-users-btn" onClick={handleOpen}>Search Users</button>
                 <Modal 
                     open={openSearch} 
                     onClose={handleClose}
                 >
-                    <UserSearchModal allUsers={allUsers}/>
+                    <Box sx={style}>
+                        <UserSearchModal allUsers={allUsers}/>
+                    </Box>
                 </Modal>
             </div>
             <div className="community-div">
