@@ -42,6 +42,10 @@ const ResponsiveAppBar = (props) => {
     setAnchorElUser(null);
   };
 
+  const handleSearchFriendSubmit = (username) => {
+
+  }
+
   return (
     <AppBar position="static" elevation={0} style={{ background: 'var(--cactus-green-1' }}>
       <Container maxWidth="xl">

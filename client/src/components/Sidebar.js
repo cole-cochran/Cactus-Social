@@ -54,7 +54,7 @@ function toggleSidebarPanelDisplay(e) {
 }
 
 function Sidebar(props) {
-
+	const { setActiveThread } = props;
     const userId = AuthService.getProfile().data._id;
 
 	return (
@@ -103,7 +103,7 @@ function Sidebar(props) {
 				</ul>
 			</div>
 			<div className="sidebar" id="sidebar" data-sidebardisplay="hidden">
-				<ThreadsPanel toggle={toggleSidebar}/>
+				<ThreadsPanel toggle={toggleSidebar} setActiveThread={setActiveThread}/>
 				<EventsPanel toggle={toggleSidebar}/>
 				{/* <SidebarPanel /> */}
 			</div>

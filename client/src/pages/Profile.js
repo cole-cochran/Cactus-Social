@@ -11,14 +11,14 @@ import Footer from "../components/Footer";
 import ProfileInfo from "../components/ProfileInfo";
 import ProfileFriends from "../components/ProfileFriends";
 
-const SERVER = 'http://localhost:3001';
+// const SERVER = 'http://localhost:3001';
 
 function Profile(props) {
 
     // TODO (profile) Create a way for users to toggle between a list of friends and a list of connections they have through common events or threads. We can probably do a dynamic display of the ProfileFriends component with a prop to differentiate the two.
 
     // TODO (profile) Potentially pass down userId into the sidebar to create a more personalized list of events/threads as well as the friends component to show only users friends and connections
-
+    const [activeThread, setActiveThread] = React.useState('');
 
     const { userId } = useParams();
 
@@ -46,7 +46,7 @@ function Profile(props) {
         <React.Fragment>
             <NavBar />
             <div className="app-content-container">
-                <Sidebar />
+                <Sidebar setActiveThread={setActiveThread}/>
                 <div>
             <ProfileInfo specificUser={specificUser} />
                 </div>

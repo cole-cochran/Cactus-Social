@@ -1,12 +1,14 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import Modal from '@mui/material/Modal';
+import UserSearchModal from './UserSearchModal';
+// import {Link} from 'react-router-dom';
 
-// import { USER_FRIENDS } from '../utils/queries.js';
 import { ALL_USERS, FRIEND_REQUESTS, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
-import { ADD_FRIEND, REMOVE_FRIEND, SEND_FRIEND_REQUEST, DENY_FRIEND_REQUEST } from '../utils/mutations';
+// import { ADD_FRIEND, REMOVE_FRIEND, SEND_FRIEND_REQUEST, DENY_FRIEND_REQUEST } from '../utils/mutations';
 
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
+
 
 function ProfileFriends(props) {
 
@@ -30,6 +32,9 @@ function ProfileFriends(props) {
         }
     });
 
+    // const friendsQuery = useQuery(USER_FRIENDS);
+    const [openSearch, setOpenSearch] = React.useState(false);
+
     const loading = getAllUsers.loading || allFriendRequests.loading || allSentFriendRequests.loading;
 
     const errors = getAllUsers.error || allSentFriendRequests.error || allSentFriendRequests.error;
@@ -43,8 +48,25 @@ function ProfileFriends(props) {
     const sentFriendRequests = allSentFriendRequests.data?.sentFriendRequests || [];
     const allFriends = getAllFriends.data?.userFriends || [];
 
+    const handleOpen = (e) => {
+        setOpenSearch(true);
+    }
+
+    const handleClose = (e) => {
+        setOpenSearch(false);
+    }
+    
     return (
         <div className="right-shelf">
+            <div className="search-users-div">
+                <button onClick={handleOpen}>Search Users</button>
+                <Modal 
+                    open={openSearch} 
+                    onClose={handleClose}
+                >
+                    <UserSearchModal allUsers={allUsers}/>
+                </Modal>
+            </div>
             <div className="community-div">
                 <h3>Cactus Community</h3>
                 <ul className="community-dropdown">

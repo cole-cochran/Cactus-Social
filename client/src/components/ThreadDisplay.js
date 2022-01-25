@@ -16,8 +16,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { PinnedPost } from './PinnedPost';
 
-import { io } from 'socket.io-client';
-
 const style = {
 	position: 'absolute',
 	top: '50%',
@@ -38,14 +36,11 @@ function ThreadDisplay(props) {
 
 	const { threadId } = useParams();
 
+	const {activeThread, socket, setActiveComment} = props;
+
 	const userId = AuthService.getProfile().data._id;
 
-	const [ createPost ] = useMutation(CREATE_POST, {
-		refetchQueries: [
-			ALL_THREAD_POSTS,
-			'allThreadPosts'
-		],
-	});
+	const [ createPost ] = useMutation(CREATE_POST);
 
 	const [ removePost ] = useMutation(REMOVE_POST, {
 		refetchQueries: [
@@ -101,6 +96,9 @@ function ThreadDisplay(props) {
         }
     );
 
+	const [postList, setPostList] = React.useState([]);
+	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
 	const handleRemoveThread = () => {
 		try {
 			removeThread({
@@ -115,15 +113,15 @@ function ThreadDisplay(props) {
 		window.location.replace(`/profile/${userId}`);
 	}
 
-	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
-	
-	const [postList, setPostList] = React.useState([]);
+	React.useEffect(() => {
+		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
+	}, [activeThread]);
 
-    const socket = io.connect('localhost:3001');
-	socket.on('connect', () => {
-		console.log("I'm connected with the backend");
-		socket.emit("join_thread", {room: threadId, user: AuthService.getProfile().data.username});
-	});
+	React.useEffect(() => {
+		socket.on('receive_post', (data) => {
+			setPostList([...postList, data]);
+		})
+	}, [socket]);
 
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
@@ -183,14 +181,21 @@ function ThreadDisplay(props) {
 	
 	const handlePostSubmit = async (event) => {
 		event.preventDefault();
-		try { 
-			await createPost({
-				variables: {
-					threadId: singleThread.data.threadDetails._id,
-                    post_text: newPostText,
-					author: AuthService.getProfile().data._id
-				}
-			});
+		try {
+			if(socket) {
+				const postData = await createPost({
+					variables: {
+						threadId: singleThread.data.threadDetails._id,
+						post_text: newPostText,
+						author: AuthService.getProfile().data._id
+					}
+				});
+				console.log(postData.data.createPost);
+				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
+				setMessageTimeout(true);
+				setTimeout(() => {setMessageTimeout(false);}, 2000);
+				
+			}
 		} catch (err) {
 			console.error(err);
 		}
@@ -358,11 +363,18 @@ function ThreadDisplay(props) {
 						(post) => (
 							post.pinned ? (
 								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} />
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
 							) : (
 								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} />
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
 							)
+						)
+					)}
+					{postList.map(
+						(post) => (
+							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+							dropdown={handleOpenDropdown} 
+							remove={handleRemovePost} />
 						)
 					)}
 					<Modal
@@ -412,8 +424,9 @@ function ThreadDisplay(props) {
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
                     <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/>
 					<div className="chat-input-buttons">
-						<button type="submit" className="chat-input-send-button">Send</button>
+						<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Send</button>
 					</div>
+					{messageTimeout && newPostText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
 				</form>
 			</div>
 		</main>
