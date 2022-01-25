@@ -80,7 +80,7 @@ function SubthreadDisplay(props) {
 
 	React.useEffect(() => {
 		socket.on('receive_comment', (data) => {
-			setCommentList([...commentList, data]);
+			setCommentList(commentList => [...commentList, data]);
 		})
 	}, [socket]);
 

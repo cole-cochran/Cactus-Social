@@ -22,7 +22,9 @@ const style = {
     border: '2px solid white'
 };
 
-function EventsPanel() {
+function EventsPanel(props) {
+
+    const { socket } = props;
 
     const {loading, data} = useQuery(ALL_EVENTS);
 

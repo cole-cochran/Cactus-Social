@@ -18,6 +18,8 @@ import { setContext } from '@apollo/client/link/context';
 import AuthService from './utils/auth';
 import Sendbird from './pages/Sendbird/Sendbird';
 
+import {io} from 'socket.io-client';
+
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({
 	uri: '/graphql'
@@ -41,6 +43,8 @@ const client = new ApolloClient({
 	link: authLink.concat(httpLink),
 	cache: new InMemoryCache()
 });
+
+const socket = io.connect('localhost:3001');
 
 function App() {
 
@@ -73,7 +77,7 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/threads/:threadId">
-							{AuthService.loggedIn() ? <Dashboard /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
 							{AuthService.loggedIn() ? <Profile /> : <SplashPage />}
@@ -82,10 +86,10 @@ function App() {
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
-							{AuthService.loggedIn() ? <Dashboard subThread={true} /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
-							{AuthService.loggedIn() ? <EventDisplay /> : <SplashPage />}
+							{AuthService.loggedIn() ? <EventDisplay socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />
