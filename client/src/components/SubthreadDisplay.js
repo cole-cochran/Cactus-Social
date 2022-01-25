@@ -36,14 +36,11 @@ function SubthreadDisplay(props) {
 
 	const { postId } = useParams();
 
+	const { socket, activeComment, setActiveThread } = props;
+
 	const owner = AuthService.getProfile().data._id;
 
-	const [ createPostComment ] = useMutation(CREATE_POST_COMMENT, {
-		refetchQueries: [
-			ALL_POST_COMMENTS,
-			'allPostComments'
-		]
-	});
+	const [ createPostComment ] = useMutation(CREATE_POST_COMMENT);
 
 	const [ removePostComment ] = useMutation(REMOVE_POST_COMMENT, {
 		refetchQueries: [
@@ -74,6 +71,18 @@ function SubthreadDisplay(props) {
 	const [editedComment, setEditedComment] = React.useState('');
 	const [openedEditor, setOpenedEditor] = React.useState(false);
 
+	const [commentList, setCommentList] = React.useState([]);
+	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+	React.useEffect(() => {
+		socket.emit("join_post", {room: postId, user: AuthService.getProfile().data.username})
+	}, [activeComment]);
+
+	React.useEffect(() => {
+		socket.on('receive_comment', (data) => {
+			setCommentList([...commentList, data]);
+		})
+	}, [socket]);
 
 	const handleOpenDropdown = (event) => {
 		const commentData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
@@ -95,15 +104,18 @@ function SubthreadDisplay(props) {
 		event.preventDefault();
 
 		try {
-			await createPostComment({
+			const commentData = await createPostComment({
 				variables: {
 					postId: postId,
 					comment_text: newCommentText,
                     author: AuthService.getProfile().data._id
 				}
 			});
-
+			console.log(commentData.data.createPostComment);
+			socket.emit("send_comment", {room: postId, user: AuthService.getProfile().data.username, comment: commentData.data.createPostComment});
 			setNewCommentText('');
+			setMessageTimeout(true);
+			setTimeout(() => {setMessageTimeout(false)});
 		} catch (err) {
 			console.error(err);
 		}
@@ -172,6 +184,11 @@ function SubthreadDisplay(props) {
 		}
     };
 
+	const scroll = () => {
+		var element = document.getElementsByClassName("chats-container")[0];
+		element.scrollTop = element.scrollHeight;
+	}
+
 	if (loading) {
 
 		return (
@@ -183,7 +200,7 @@ function SubthreadDisplay(props) {
 
 	return (
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
-			<div className="thread-content-container">
+			<div className="thread-content-container" onLoad={scroll}>
 				<div className="top-panel">
 					<div className="thread-header">
 						<h3>{singlePost.data.postDetails.pinTitle}</h3>
@@ -205,6 +222,10 @@ function SubthreadDisplay(props) {
 						{allPostComments.data.allPostComments.map((comment) => (
 							<PostComment comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
 						))}
+						{commentList.map(
+							(comment) => (
+								<PostComment comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
+							))}
 					</div>
 					<form onSubmit={handleCommentSubmit} className="chat-input">
 						<input onChange={handleChange} name="postCommentText" value={newCommentText} contentEditable autoComplete='off' />

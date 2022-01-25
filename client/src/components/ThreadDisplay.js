@@ -16,8 +16,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { PinnedPost } from './PinnedPost';
 
-import { io } from 'socket.io-client';
-
 const style = {
 	position: 'absolute',
 	top: '50%',
@@ -38,7 +36,7 @@ function ThreadDisplay(props) {
 
 	const { threadId } = useParams();
 
-	const {activeThread, socket} = props;
+	const {activeThread, socket, setActiveComment} = props;
 
 	const userId = AuthService.getProfile().data._id;
 
@@ -98,6 +96,7 @@ function ThreadDisplay(props) {
         }
     );
 
+	const [postList, setPostList] = React.useState([]);
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
 
 	const handleRemoveThread = () => {
@@ -113,22 +112,13 @@ function ThreadDisplay(props) {
 
 		window.location.replace(`/profile/${userId}`);
 	}
-	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
-	const [postList, setPostList] = React.useState([]);
 
 	React.useEffect(() => {
-		// if(socket) {
-		// 	socket.emit('end');
-		// 	socket = io.connect('localhost:3001');
-		// }else {
-		// 	socket = io.connect('localhost:3001');
-		// }
-		socket.emit("leave_exising_thread");
 		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
 	}, [activeThread]);
 
 	React.useEffect(() => {
-		socket.on('recieve_post', (data) => {
+		socket.on('receive_post', (data) => {
 			setPostList([...postList, data]);
 		})
 	}, [socket]);
@@ -340,7 +330,7 @@ function ThreadDisplay(props) {
 	} else {
 		updatedThreadPosts = threadPosts.data.allThreadPosts;
 	}
-	// setPostList(updatedThreadPosts);
+
 	const scroll = () => {
 		var element = document.getElementById("chats-container");
 		element.scrollTop = element.scrollHeight;
@@ -348,9 +338,6 @@ function ThreadDisplay(props) {
 
 	const threadOwner = singleThread.data.threadDetails.moderator._id === userId;
 
-	// console.log(socket);
-
-	// console.log(postList);
 	return (
 		<React.Fragment>
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
@@ -376,10 +363,10 @@ function ThreadDisplay(props) {
 						(post) => (
 							post.pinned ? (
 								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} />
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
 							) : (
 								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} />
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
 							)
 						)
 					)}

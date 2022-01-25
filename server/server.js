@@ -63,24 +63,38 @@ io.on('connection', (socket) => {
 	// console.log(socket.id);
 
 	socket.on("join_thread", (data) => {
-		console.log(socket.rooms);
 		socket.rooms.forEach(room => {
 			socket.leave(room);
-			console.log(`User ${socket.id} leaving ${room}`);
+			console.log(`User ${socket.id} leaving room ${room} to join thread`);
 		});
 		socket.join(data.room);
-		console.log(`User ${socket.id} has joined ${data.room}`);
+		console.log(`User ${socket.id} has joined thread ${data.room}`);
 	});
 
-	socket.on("leave_existing_thread", (socket) => {
-		console.log("leave existing thread");
-		socket.leaveAll();
-	})
+	socket.on("join_post", (data) => {
+		socket.rooms.forEach(room => {
+			socket.leave(room);
+			console.log(`User ${socket.id} leaving room ${room} to join post`);
+		});
+		socket.join(data.room);
+		console.log(`User ${socket.id} has joined post ${data.room}`);
+	});
+
+	// socket.on("leave_existing_thread", (socket) => {
+	// 	console.log("leave existing thread");
+	// 	socket.leaveAll();
+	// })
 
 	socket.on("send_post", (data) => {
 		console.log(socket.id);
-		console.log(`${data.user} has sent post ${data.post} to room ${data.room}`);
-		socket.to(data.room).emit("recieve_post", data.post);
+		console.log(`${data.user} has sent post ${data.comment} to room ${data.room}`);
+		socket.to(data.room).emit("receive_comment", data.comment);
+	});
+
+	socket.on("send_comment", (data) => {
+		console.log(socket.id);
+		console.log(`${data.user} has sent comment ${data.comment} to room ${data.room}`);
+		socket.to(data.room).emit("receive_comment", data.comment);
 	})
 
 	socket.on('disconnect', () => {

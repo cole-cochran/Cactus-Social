@@ -46,7 +46,6 @@ function toggleSidebarPanelDisplay(e) {
 }
 
 function Sidebar(props) {
-	console.log(props);
 	const { setActiveThread } = props;
     const userId = AuthService.getProfile().data._id;
 

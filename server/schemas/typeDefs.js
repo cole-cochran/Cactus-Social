@@ -132,7 +132,7 @@ const typeDefs = gql`
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
 
-        createPostComment(postId: ID!, comment_text: String!, author: ID!): Post
+        createPostComment(postId: ID!, comment_text: String!, author: ID!): Comment
         removePostComment(postId: ID!, commentId: ID!): Post
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post

@@ -28,7 +28,7 @@ function Dashboard(props) {
             <div className="app-content-container">
                 <Sidebar setActiveThread={setActiveThread}/>
                 { props.subThread ? (
-                    <SubthreadDisplay activeComment={activeComment}/>
+                    <SubthreadDisplay activeComment={activeComment} socket={socket} setActiveThread={setActiveThread}/>
                 ) : (
                     <ThreadDisplay activeThread={activeThread} socket={socket} setActiveComment={setActiveComment}/>
                 )}

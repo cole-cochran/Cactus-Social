@@ -26,7 +26,6 @@ const style = {
 function ThreadsPanel(props) {
 
     const {toggle, setActiveThread} = props;
-    console.log(props);
 
     const { loading, data } = useQuery(ALL_THREADS);
     const allThreads = data?.allThreads || [];

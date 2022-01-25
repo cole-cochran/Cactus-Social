@@ -548,32 +548,18 @@ export const CREATE_POST_COMMENT = gql`
 mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
     createPostComment(postId: $postId, comment_text: $comment_text, author: $author) {
         _id
-        post_text
+        comment_text
         date_created
         author {
-            _id
-            username
-            picture
-        }
+			_id
+			username
+			picture
+		}
         reactions
         edited
-        thread {
-            _id
-            title
-        }
-        comments {
-            _id
-            comment_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-            post {
-                _id
-            }
-        }
+        post {
+			_id
+		}
     }
 }
 `;

@@ -4,7 +4,7 @@ import AuthService from "../utils/auth";
 
 export function PinnedPost(props) {
 
-    const { post, unpin, openEditor, dropdown, remove } = props;
+    const { post, unpin, openEditor, dropdown, remove, setActiveComment } = props;
 
     const owner = AuthService.getProfile().data._id;
     
@@ -35,7 +35,7 @@ export function PinnedPost(props) {
             <div className='post-options'>
                 <button className='comments-chip'>
                     <div>{post.comments.length}</div>
-                    <Link className='react-link' to={`/subthread/${post._id}`}>
+                    <Link className='react-link' to={`/subthread/${post._id}`} onClick={setActiveComment}>
                         {post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
                         </Link>
                 </button>

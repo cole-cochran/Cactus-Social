@@ -729,6 +729,8 @@ const resolvers = {
 				post: postId
 			});
 
+			const comment = await Comment.findOne({_id}).populate('author').populate('post');
+
 			const thePost = await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
@@ -746,7 +748,7 @@ const resolvers = {
 				}
 			});
 
-			return thePost;
+			return comment;
 		},
 
 		//* remove post comment
