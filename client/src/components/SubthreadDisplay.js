@@ -234,6 +234,7 @@ function SubthreadDisplay(props) {
 								send
 							</button>
 						</div>
+						{messageTimeout && newCommentText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
 					</form>
 				</div>
 			</div>
