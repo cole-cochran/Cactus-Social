@@ -114,7 +114,9 @@ function ThreadDisplay(props) {
 
 		window.location.replace(`/profile/${userId}`);
 	}
+
 	//! Change this to the threadPosts as initial state, I'm pretty sure it'll run an error though so might need to send this state down as a prop to a post component to avoid such issues, I'll test this further when I have the socket implemented - Ethan
+	
 	const [postList, setPostList] = React.useState([]);
 
     const socket = io.connect('localhost:3001');

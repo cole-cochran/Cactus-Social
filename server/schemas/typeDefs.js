@@ -45,6 +45,8 @@ const typeDefs = gql`
         date_joined: String
         friends: [User]
         pinned_posts: [PinnedPost]
+        friend_requests: [User]
+        sent_friend_requests: [User]
     }
 
     type Thread {
@@ -101,6 +103,9 @@ const typeDefs = gql`
         threadDetails(threadId: ID!): Thread
         eventDetails(eventId: ID!): Event
         postDetails(postId: ID!): Post
+
+        friendRequests(userId: ID!): User
+        sentFriendRequests(userId: ID!): User
     }
 
     type Mutation {
@@ -146,6 +151,9 @@ const typeDefs = gql`
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
+
+        sendFriendRequest(userId: ID!, friend: ID!): User
+        denyFriendRequest(userId: ID!, friend: ID!): User
     }
 `;
 

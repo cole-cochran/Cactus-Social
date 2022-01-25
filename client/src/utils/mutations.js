@@ -765,10 +765,6 @@ mutation attendEvent($eventId: ID!, $attendee: ID!) {
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -812,10 +808,6 @@ mutation leaveEvent($eventId: ID!, $attendee: ID!) {
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -979,10 +971,6 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text

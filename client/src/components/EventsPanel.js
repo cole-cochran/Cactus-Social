@@ -32,17 +32,54 @@ function EventsPanel() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const [droppedEvents, setDroppedEvents] = React.useState(false);
+
+    const handleOpenDropdown = (event) => {
+        const eventInfo = document.getElementById("events-dropdown");
+
+        setDroppedEvents(true);
+        eventInfo.style.display = "block";
+    }
+
+    const handleCloseDropdown = (event) => {
+        const eventInfo = document.getElementById("events-dropdown");
+
+        setDroppedEvents(false);
+        eventInfo.style.display = "none";
+    }
+
     if (loading) {
-        <h2>Loading...</h2>
+        return <h2>Loading...</h2>
     }
     
     return (
         <div id="sidebar-events-panel">
             <div className="thread-sidebar-header">
-                <h3>Events</h3> 
-                <img className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
+                <div>
+                    <img
+                        src="/assets/img/google-calendar.svg"
+                        alt="events icon"
+                    />
+                    <h3>Events</h3>
+                    {droppedEvents ? (
+                        <img
+                            src="/assets/img/up_btn.png"
+                            alt="threads icon"
+                            onClick={handleCloseDropdown}
+                        />
+                    ) : (
+                        <img
+                            src="/assets/img/down_btn.png"
+                            alt="threads icon"
+                            onClick={handleOpenDropdown}
+                        />
+                    )}
+                    
+                </div>
+                <img id="event-create-btn" className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>
-            <ul>
+            <ul
+            id="events-dropdown">
                 {allEvents.map((event) => (
                     <li key={event._id}>
                         <Link to={`/events/${event._id}`}>

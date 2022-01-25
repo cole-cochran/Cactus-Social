@@ -186,7 +186,7 @@ html::-webkit-scrollbar {
 
     .app-content-container {
         display: flex;
-        height: calc(100vh - 96.39px);
+        height: calc(100vh - 91px);
     }
     
     .splash-page-content {
@@ -223,16 +223,17 @@ html::-webkit-scrollbar {
         width: 100%;
         background-color: initial;
     }
+
     .splash-page-header {
         width: 100%;
         background-color: initial;
     }
+
     .splash-page-video {
         width: 100vw;
         object-fit: cover;
         height: 100vh;
     }
-
     
     }
 
@@ -780,18 +781,42 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px;
+}
+
+.thread-sidebar-header div {
+    display: flex;
+    align-items: center;
+}
+
+.thread-sidebar-header img {
+    height: 30px;
+    width: 30px;
+}
+
+.thread-sidebar-header img:nth-of-type(2) {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#threads-dropdown {
+    display: none;
+}
+
+#events-dropdown {
+    display: none;
 }
 
 /*************SIDEBAR.JS:END************/
 /*************PANELS.JS:START************/
 
-#sidebar-thread-panel {
+/* #sidebar-thread-panel {
     display: none;
 }
 
 #sidebar-events-panel {
     display: none;
-}
+} */
 
 /*************PANELS.JS:END************/
 /*************FOOTER:START************/
@@ -812,7 +837,7 @@ footer {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    margin-right: 1rem;
+    /* margin-right: 1rem; */
 }
 
 .thread-top {
@@ -871,7 +896,8 @@ footer {
     margin-top: .5rem;
     /* margin-left: .875rem; */
     margin-left: 2%;
-    width: 98%;
+    width: 96%;
+    margin-right: 2%;
     border: 1px solid white;
     transition: background-color 0.25s ease-in;
 }
@@ -1018,7 +1044,8 @@ footer {
     flex-direction: column;
     justify-content: space-between;
     margin-left: 2%;
-    width: 98%;
+    width: 96%;
+    margin-right: 2%;
     margin-bottom: 10px;
     padding: 0px 5px 5px 5px;
     font-size: .75rem !important;
@@ -1138,6 +1165,10 @@ footer {
     background-color: var(--hero-green);
 }
 
+.right-shelf ul a {
+    text-decoration: none;
+}
+
 .friend-chips p {
     height: 25px;
     margin: 0;
@@ -1189,7 +1220,7 @@ footer {
 .profile-wrapper {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: calc(100vw - 304px);
     height: 100%;
     /* padding-left: 1rem; */
     background-color: var(--dark-mode);

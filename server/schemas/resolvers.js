@@ -14,7 +14,7 @@ const resolvers = {
 				.populate('events.owner')
 				.populate('friends')
 				.populate('pinned_posts')
-				.populate('pinned_posts.post');
+				.populate('pinned_posts.post').populate('friend_requests').populate('sent_friend_requests');
 		},
 
 		//* get single user
@@ -81,6 +81,18 @@ const resolvers = {
 			return await User.findOne({ _id: args.userId }).populate('friends');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		friendRequests: async (parent, args, context) => {
+			const {userId} = args;
+			const user = await User.findOne({_id: userId}).populate('friend_requests');
+			return user;
+		},
+
+		sentFriendRequests: async (parent, args, context) => {
+			const { userId } = args;
+			const user = await User.findOne({_id: userId}).populate('sent_friend_requests');
+			return user;
 		},
 
 		allPosts: async (parent, args, context) => {
@@ -322,6 +334,52 @@ const resolvers = {
 			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
+		},
+
+		sendFriendRequest: async (parent, args, context) => {
+			const {userId, friend} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$addToSet: {
+						sent_friend_requests: friend
+					}
+				},
+				{new: true}
+			).populate('sent_friend_requests').populate('friend_requests');
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$addToSet: {
+						friend_requests: userId
+					}
+				},
+				{new: true}
+			);
+			return user;
+		},
+
+		denyFriendRequest: async (parent, args, context) => {
+			const {userId, friend} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$pull: {
+						friend_requests: friend
+					}
+				},
+				{new: true}
+			).populate('sent_friend_requests').populate('friend_requests');
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$pull: {
+						sent_friend_requests: userId
+					}
+				},
+				{new: true}
+			);
+			return user;
 		},
 
 		//* update the user's profile photo

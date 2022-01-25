@@ -57,7 +57,7 @@ const io = socketIo(httpServer, {
 //* on websocket connection console logs a user connected
 //* on websocket disconnect logs a user disconnected
 io.on('connection', (socket) => {
-	console.log(`user ${socket.id} connected`);
+	// console.log(`user ${socket.id} connected`);
 	// const count = io.engine.clientsCount;
 	// console.log(`${count} users connected`);
 	// console.log(socket.id);
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on("send_post", (data) => {
-		socket.to(data.room).emit("recieve_post", data.post);
+		socket.to(data.room).emit("receive_post", data.post);
 	})
 
 	socket.on('disconnect', () => {
