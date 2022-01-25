@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import AuthService from '../utils/auth';
 
 import {io} from 'socket.io-client';
+const socket = io.connect('localhost:3001');
 
 function Dashboard(props) {
 
@@ -18,7 +19,7 @@ function Dashboard(props) {
 
     const [activeThread, setActiveThread] = React.useState('');
 
-    const socket = io.connect('localhost:3001');
+    
     // console.log('threadId, postId',threadId, postId);
 
     return (
