@@ -13,18 +13,29 @@ import AuthService from '../utils/auth';
 const toggleSidebar = (e) => {
 	const sidebar = document.querySelector('#sidebar');
 	const aside = document.querySelector('#aside');
+	const openArrowBtn = document.querySelector('#open-arrow-btn');
 	let sidebarDisplay = sidebar.getAttribute('data-sidebardisplay');
+	const rightShelf = document.querySelector('.right-shelf');
+
 
 	if (sidebarDisplay === 'hidden') {
+		if (rightShelf) {
+			rightShelf.style.display = 'none';
+		}
 		// e.target.style.transform = 'rotate(180deg)';
 		sidebar.style.left = '2.5rem';
 		sidebar.setAttribute('data-sidebardisplay', 'visible');
 		aside.style.minWidth = '22.5rem';
+		openArrowBtn.style.transform = 'rotate(0deg)';
 	} else {
+		if (rightShelf) {
+			rightShelf.style.display = 'block';
+		}
 		// e.target.style.transform = '';
 		sidebar.style.left = '-100%';
 		sidebar.setAttribute('data-sidebardisplay', 'hidden');
 		aside.style.minWidth = '3rem';
+		openArrowBtn.style.transform = 'rotate(180deg)';
 	}
 	toggleSidebarPanelDisplay(e);
 };
@@ -48,6 +59,7 @@ function toggleSidebarPanelDisplay(e) {
 	// } else 
 	// if (panelAttribute === 'sidebar-main-panel') {
 		// sidebarMainPanel.style.display = 'block';
+
 		threadPanel.style.display = 'block';
 		eventsPanel.style.display = 'block';
 	// }
@@ -64,7 +76,9 @@ function Sidebar(props) {
 					<li>
 						<img
 							onClick={toggleSidebar}
-							src="/assets/img/white-cactus.svg"
+							id="open-arrow-btn"
+							style={{width: "25px", transform: "rotate(180deg)"}}
+							src="/assets/img/cactus_opener.png"
 							data-panel="threads-panel"
 							alt="click to open sidebar"
 						/>

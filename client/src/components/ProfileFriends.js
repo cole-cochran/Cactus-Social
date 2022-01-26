@@ -126,6 +126,32 @@ function ProfileFriends(props) {
         setOpenFriendRequests(false);
     }
 
+    const toggleRightShelf = (e) => {
+        const rightShelf = document.querySelector(".right-shelf");
+        const profileWrapper = document.querySelector(".profile-wrapper");
+
+        if (rightShelf.getAttribute("data-id") === "closed") {
+            for (let i = 1; i < rightShelf.childNodes.length; i++) {
+                rightShelf.childNodes[i].style.display = "block"
+            }
+            rightShelf.setAttribute("data-id", "opened");
+            rightShelf.style.width = "16rem";
+            rightShelf.style.minWidth = "16rem";
+            profileWrapper.style.width = "calc(100vw - 304px)";
+            rightShelf.style.paddingLeft = "1rem";
+        } else {
+            for (let i = 1; i < rightShelf.childNodes.length; i++) {
+                rightShelf.childNodes[i].style.display = "none"
+            }
+            rightShelf.setAttribute("data-id", "closed");
+            rightShelf.style.width = "6rem"
+            rightShelf.style.minWidth = "6rem"
+            profileWrapper.style.width = "calc(100vw - 144px)";
+            rightShelf.style.paddingLeft = "0rem";
+        }
+        
+    }
+
     const style = {
         position: 'absolute',
         top: '50%',
@@ -139,7 +165,8 @@ function ProfileFriends(props) {
     };
     
     return (
-        <div className="right-shelf">
+        <div data-id="closed" className="right-shelf">
+            <img onClick={toggleRightShelf} id="friends-bar-toggle" style={{width: "60px", margin: "10px 10px", cursor: "pointer"}} src="../../assets/img/new_cacti_icon.svg" alt="friends toggle"/>
             <div className="search-users-div">
                 <button className="search-users-btn" onClick={handleOpen}>Search Users</button>
                 <Modal 
