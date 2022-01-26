@@ -276,19 +276,52 @@ function ProfileInfo(props) {
 		<div className="profile-wrapper">
 			<div className="profile-content-container">
 				<div className="profile-header">
-                    <div className='profile-pic-div'>
-                        <div style={imageStyles}>
-                            <InsertEmoticonIcon sx={{ width: "150px", height: "150px", alignSelf: "center" }} />
-                        </div>
-                        {canEditProfile && 
-                        <img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
-						}
-                    </div>
-					<h3>
+					<div className='profile-top'>
+						<h3>
 						{specificUser.first_name} {specificUser.last_name}
-					</h3>
+						</h3>
+						{!canEditProfile ? (
+						<div className='friend-options-div'>
+							{userFriendChecker ? (
+								<button className='remove-friend-btn' onClick={handleRemoveFriend}><img src="../../assets/img/minus_sign.png" alt="minus sign"/>Remove Friend</button>
+							) : (
+								<button className="send-request-btn" onClick={handleSendFriendRequest}><img src="../../assets/img/plus-sign.svg" alt="plus sign"/>Send Friend Request</button>
+							)}
+						</div>
+					) : (
+						<React.Fragment />
+					)}
+					</div>
+
+					<div className='profile-bio-block'>
+						<div className='profile-pic-div'>
+							{/* <div style={imageStyles}>
+								<InsertEmoticonIcon sx={{ width: "150px", height: "150px", alignSelf: "center" }} />
+							</div> */}
+							<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
+							{/* {canEditProfile && 
+							<img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
+							} */}
+						</div>
+						<div className='profile-bio-section'>
+							<h5>Bio</h5>
+							<div className='user-bio-box'>
+								<div className="user-bio">{specificUser.bio}</div>
+								{canEditProfile && 
+								<div style={{marginLeft: "10px"}}>
+									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+								</div>}
+							</div>
+							
+							<div className="profile-edit-container">
+								<span className="join-date">Member Since: {specificUser.date_joined}</span>
+							</div>
+						</div>
+							
+					</div>
+                    
 				</div>
-				<div className="profile-edit-container">
+				{/* <div className="profile-edit-container">
 					<span className="join-date">Member Since: {specificUser.date_joined}</span>
 				</div>
                 <div style={{display: "flex"}}>
@@ -297,35 +330,25 @@ function ProfileInfo(props) {
                     <div style={{marginLeft: "10px"}}>
                         <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
                     </div>}
-                </div>
+                </div> */}
 				<div className="user-info">
 					<div style={{display: "flex"}} className="tech-stack">
+						{canEditProfile && 
+                        <div>
+                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
+                        </div>}
 						<ul>
 							{specificUser.tech_stack.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
 									<button className="tech-chip">
+										{/* <div>{index}</div> */}
 										{tech}
 									</button>
 								</li>
 							))}
                         </ul>
-                        {canEditProfile && 
-                        <div>
-                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
-                        </div>}
 					</div>
 				</div>
-				{!canEditProfile ? (
-					<div className='friend-options-div'>
-						{userFriendChecker ? (
-							<button className='remove-friend-btn' onClick={handleRemoveFriend}>Remove Friend</button>
-						) : (
-							<button className="send-request-btn" onClick={handleSendFriendRequest}>Send Friend Request</button>
-						)}
-					</div>
-				) : (
-					<React.Fragment />
-				)}
 			</div>
 			<Modal
 				open={openImage}

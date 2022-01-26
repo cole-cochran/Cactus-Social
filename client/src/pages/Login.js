@@ -54,7 +54,7 @@ function Login(props) {
 				) : (
 				<form className="login-form" onSubmit={handleFormSubmit}>
 					<h3>Log in to your account</h3>
-					<label for="username">Username</label>
+					{/* <label for="username">Username</label> */}
 					<input 
 						type="text" 
 						id="username"
@@ -63,7 +63,7 @@ function Login(props) {
 						onChange={handleChange}
 						placeholder="Username"
 					/>
-					<label for="password">Password</label>
+					{/* <label for="password">Password</label> */}
 					<input 
 						type="password" 
 						id="password"
@@ -99,7 +99,7 @@ function Login(props) {
 					<p>Login to see what your fellow developers are up to!</p>
 				</div>
 				<div className="login-banner-img-container">
-					<img className="login-banner-illustration" src="../../assets/img/new_logo.png" alt="one cactus hanging out" />
+					<img className="login-banner-illustration" src="../../assets/img/login_cactus_logo.png" alt="one cactus hanging out" />
 				</div>
 
 			</div>

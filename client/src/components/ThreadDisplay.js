@@ -346,7 +346,7 @@ function ThreadDisplay(props) {
 					<div className="thread-header">
 						<h3>{singleThread.data.threadDetails.title}</h3>
 						<div>
-							<p>M: {singleThread.data.threadDetails.moderator.username}</p>
+							<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
 						</div>
 					</div>
 					{threadOwner ? (
@@ -422,9 +422,10 @@ function ThreadDisplay(props) {
 				</div>
 				<form onSubmit={handlePostSubmit} className="chat-input">
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
-                    <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/>
+					<textarea onChange={handleChange} name="postText" value={newPostText} contentEditable  autoComplete='off' />
+                    {/* <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/> */}
 					<div className="chat-input-buttons">
-						<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Send</button>
+						<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Submit</button>
 					</div>
 					{messageTimeout && newPostText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
 				</form>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import CACTUSVIDEO from './CACTUSVIDEO.mp4';
+// import CACTUSVIDEO from './CACTUSVIDEO.mp4';
+import CACTUSVIDEO from './Cactus_Splashpage_Video.mp4';
 
 
 function SplashPage() {

@@ -65,7 +65,8 @@ function ThreadsPanel(props) {
             <div className="thread-sidebar-header">
                 <div>
                     <img
-                        src="/assets/img/google-docs.svg"
+                        style={{width: "45px", height: "auto", marginRight: "15px", marginLeft: "3px"}}
+                        src="/assets/img/cactus_threads_icon.png"
                         alt="threads icon"
                     />
                     <h3>Threads</h3>
@@ -84,7 +85,7 @@ function ThreadsPanel(props) {
                     )}
                 </div>
                 
-                <img id="thread-create-btn" className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
+                <img id="thread-create-btn" className="sidebar-add-icon" src="../assets/img/new_cactus_plus.png" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul id="threads-dropdown">
                 {allThreads.map((individualThread) => (
