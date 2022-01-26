@@ -1043,7 +1043,7 @@ const resolvers = {
 			// if (context.user) {
 			const { eventId, comment_text, author } = args;
 			const newComment = await Comment.create({
-				eventId: eventId,
+				event: eventId,
 				comment_text: comment_text,
 				author: author
 				// author: context.user._id
@@ -1065,7 +1065,9 @@ const resolvers = {
 				}
 			});
 
-			return commentedEvent;
+			const comment = await Comment.findOne({_id: newComment._id}).populate('event').populate('author');
+
+			return comment;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},

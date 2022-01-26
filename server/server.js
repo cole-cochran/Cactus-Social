@@ -81,6 +81,15 @@ io.on('connection', (socket) => {
 		console.log(`User ${socket.id} has joined post ${data.room}`);
 	});
 
+	socket.on("join_event", (data) => {
+		socket.rooms.forEach(room => {
+			socket.leave(room);
+			console.log(`User ${socket.id} leaving room ${room} to join event`);
+		});
+		socket.join(data.room);
+		console.log(`User ${socket.id} has joined event ${data.room}`);
+	});
+
 	// socket.on("leave_existing_thread", (socket) => {
 	// 	console.log("leave existing thread");
 	// 	socket.leaveAll();
@@ -88,8 +97,8 @@ io.on('connection', (socket) => {
 
 	socket.on("send_post", (data) => {
 		console.log(socket.id);
-		console.log(`${data.user} has sent post ${data.comment} to room ${data.room}`);
-		socket.to(data.room).emit("receive_comment", data.comment);
+		console.log(`${data.user} has sent post ${data.post} to room ${data.room}`);
+		socket.to(data.room).emit("receive_post", data.post);
 	});
 
 	socket.on("send_comment", (data) => {

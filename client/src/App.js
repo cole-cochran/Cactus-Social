@@ -1,3 +1,4 @@
+import React from 'react';
 //*import pages
 import SplashPage from './pages/Splashpage/Splashpage';
 import SignUp from './pages/SignUp';
@@ -17,6 +18,8 @@ import { setContext } from '@apollo/client/link/context';
 //*import authService middleware
 import AuthService from './utils/auth';
 import Sendbird from './pages/Sendbird/Sendbird';
+
+import {io} from 'socket.io-client';
 
 //* Construct GraphQL endpoint
 const httpLink = createHttpLink({
@@ -42,6 +45,8 @@ const client = new ApolloClient({
 	cache: new InMemoryCache()
 });
 
+const socket = io.connect('localhost:3001');
+
 function App() {
 
 	// TODO (app) Consider global state, reducers, and custom hooks
@@ -55,6 +60,9 @@ function App() {
 	// TODO (app) Need to add the ability for people to send and accept/deny friend requests. Maybe 
 
 	// console.log(AuthService.getProfile())
+	const [activeEvent, setActiveEvent] = React.useState('');
+	const [activeThread, setActiveThread] = React.useState('');
+
 	return (
 		// <ThreadCreation/>
 		// <SplashPage/>
@@ -73,19 +81,19 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/threads/:threadId">
-							{AuthService.loggedIn() ? <Dashboard /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard socket={socket} setActiveEvent={setActiveEvent} setActiveThread={setActiveThread} activeThread={activeThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
-							{AuthService.loggedIn() ? <Profile /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Profile setActiveEvent={setActiveEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/chat">
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
-							{AuthService.loggedIn() ? <Dashboard subThread={true} /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
-							{AuthService.loggedIn() ? <EventDisplay /> : <SplashPage />}
+							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />

@@ -146,7 +146,7 @@ const typeDefs = gql`
         attendEvent(eventId: ID!, attendee: ID!): Event
         leaveEvent(eventId: ID!, attendee: ID!): Event
 
-        createEventComment(eventId: ID!, comment_text: String!, author: ID!): Event
+        createEventComment(eventId: ID!, comment_text: String!, author: ID!): Comment
         removeEventComment(eventId: ID!, commentId: ID!): Event
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         

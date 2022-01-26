@@ -5,19 +5,16 @@ import Footer from "../components/Footer";
 import ThreadDisplay from "../components/ThreadDisplay";
 import SubthreadDisplay from "../components/SubthreadDisplay";
 
-import { useParams } from 'react-router-dom';
 import AuthService from '../utils/auth';
 
-import {io} from 'socket.io-client';
-const socket = io.connect('localhost:3001');
+// import {io} from 'socket.io-client';
+// const socket = io.connect('localhost:3001');
 
 function Dashboard(props) {
 
     const userId = AuthService.getProfile().data._id
 
-    // const { threadId, postId } = useParams();
-
-    const [activeThread, setActiveThread] = React.useState('');
+    const { socket, setActiveEvent, setActiveThread, activeThread } = props;
 
     const [activeComment, setActiveComment] = React.useState('');
 
@@ -25,7 +22,7 @@ function Dashboard(props) {
         <React.Fragment>
             <NavBar userId={userId} />
             <div className="app-content-container">
-                <Sidebar setActiveThread={setActiveThread}/>
+                <Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
                 { props.subThread ? (
                     <SubthreadDisplay activeComment={activeComment} socket={socket} setActiveThread={setActiveThread}/>
                 ) : (

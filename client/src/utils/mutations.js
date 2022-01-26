@@ -914,38 +914,20 @@ export const CREATE_EVENT_COMMENT = gql`
 mutation createEventComment($eventId: ID!, $comment_text: String!, $author: ID!) {
     createEventComment(eventId: $eventId, comment_text: $comment_text, author: $author) {
         _id
-        title
-        description
-        start_date
-        end_date
-        start_time
-        end_time
-        owner {
-            _id
-            username
-            picture
-        }
-        attendees {
-            _id
-            username
-            picture
-        }
-        category
-        in_person
-        location
-        image
-        comments {
-            _id
-            comment_text
-            date_created
-            author {
-                _id
-            }
-            reactions
-            edited
-        }
+        comment_text
         date_created
+        author {
+			_id
+			username
+		}
+        reactions
         edited
+        post {
+			_id
+		}
+        event {
+			_id
+		}
     }
 }
 `;

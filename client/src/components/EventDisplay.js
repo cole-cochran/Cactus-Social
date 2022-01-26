@@ -16,10 +16,11 @@ import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_E
 
 import AuthService from '../utils/auth';
 
-export default function EventDisplay() {
+export default function EventDisplay(props) {
 
 	const userId = AuthService.getProfile().data._id;
 	const { eventId } = useParams();
+	const { socket, activeEvent, setActiveThread } = props;
 
 	const singleEvent = useQuery(EVENT_DETAILS, {
 		variables: { eventId: eventId }
@@ -46,12 +47,7 @@ export default function EventDisplay() {
 			'eventDetails'
 		]
 	});
-	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT, {
-		refetchQueries: [
-			EVENT_DETAILS,
-			'eventDetails'
-		]
-	});
+	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT);
 	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -73,6 +69,19 @@ export default function EventDisplay() {
 	const [newCommentText, setNewCommentText] = React.useState("");
 	const [editedComment, setEditedComment] = React.useState("");
 	const [toggleComments, setToggleComments] = React.useState(false);
+	const [commentsList, setCommentsList] = React.useState([]);
+	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+	React.useEffect(() => {
+		socket.emit("join_event", {room: eventId, user: AuthService.getProfile().data.username})
+	}, [activeEvent]);
+
+	React.useEffect(() => {
+		socket.on('receive_comment', (data) => {
+			// console.log(data);
+			setCommentsList(commentsList => [...commentsList, data]);
+		});
+	}, [socket]);
 
 	const handleAttend = async () => {
 		await attendEvent({
@@ -95,16 +104,20 @@ export default function EventDisplay() {
 	const handleCreateComment = async (event) => {
 		event.preventDefault();
 		try {
-			await createEventComment({
+			const commentData = await createEventComment({
 				variables: {
 					eventId: eventId, 
 					comment_text: newCommentText, author: userId
 				}
-			})
+			});
+			socket.emit('send_comment', {room: eventId, user: AuthService.getProfile().data.username, comment: commentData.data.createEventComment});
+			setNewCommentText("");
+			setMessageTimeout(true);
+			setTimeout(() => {setMessageTimeout(false)});
 		} catch (err) {
 			console.error(err);
 		}
-		setNewCommentText("");
+		
 	}
 
 	const handleRemoveComment = async (event) => {
@@ -264,7 +277,7 @@ export default function EventDisplay() {
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
             <div className="app-content-container" >
-				<Sidebar />
+				<Sidebar setActiveThread={setActiveThread}/>
 				<div className='event-container'>
 					<div className='event-card'>
 						<div className='event-main-div'>
@@ -394,6 +407,9 @@ export default function EventDisplay() {
 								{eventComments.map((comment) => (
 									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
 								))}
+								{commentsList.map((comment) => (
+									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
+								))}
 								<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
 									<input onChange={handleChange} name="eventCommentText" value={newCommentText} contentEditable autoComplete='off' />
 									<div className="chat-input-buttons">
@@ -401,6 +417,7 @@ export default function EventDisplay() {
 											send
 										</button>
 									</div>
+									{messageTimeout && newCommentText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
 								</form>
 							</div>
 						) : (

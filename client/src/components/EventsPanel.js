@@ -22,7 +22,9 @@ const style = {
     border: '2px solid white'
 };
 
-function EventsPanel() {
+function EventsPanel(props) {
+
+    const { setActiveEvent } = props;
 
     const {loading, data} = useQuery(ALL_EVENTS);
 
@@ -32,6 +34,9 @@ function EventsPanel() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const handleEventChange = (event) => {
+        setActiveEvent(event);
+    }
     const [droppedEvents, setDroppedEvents] = React.useState(false);
 
     const handleOpenDropdown = (event) => {
@@ -82,7 +87,7 @@ function EventsPanel() {
             id="events-dropdown">
                 {allEvents.map((event) => (
                     <li key={event._id}>
-                        <Link to={`/events/${event._id}`}>
+                        <Link onClick={(e) => {handleEventChange(event._id)}} to={`/events/${event._id}`} >
                             {event.title}
                         </Link>
                     </li>
