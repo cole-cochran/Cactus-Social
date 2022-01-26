@@ -20,12 +20,11 @@ function UserSearchModal(props) {
 
     return (
         <React.Fragment>
-            <form onSubmit={handleSubmit}>
+            <form className="modal-form" onSubmit={handleSubmit}>
                 <label forhtml="friend_search">Search For Friends:</label>
                 <input id="friend_search" value={searchFriend} onChange={handleChange}></input>
-            </form>
-            {foundFriend._id ? (
-                <li>
+                {foundFriend._id ? (
+                <li className='user-search-result'>
                     <a href = {`/profile/${foundFriend._id}`}>
                         <button className="friend-chips">
                             <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
@@ -34,6 +33,17 @@ function UserSearchModal(props) {
                     </a>
                 </li>
             ) : (<React.Fragment />)}
+            </form>
+            {/* {foundFriend._id ? (
+                <li>
+                    <a href = {`/profile/${foundFriend._id}`}>
+                        <button className="friend-chips">
+                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                            <p>{foundFriend.username}</p>
+                        </button>
+                    </a>
+                </li>
+            ) : (<React.Fragment />)} */}
         </React.Fragment>
     )
 }

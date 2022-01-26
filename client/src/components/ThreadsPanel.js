@@ -35,6 +35,22 @@ function ThreadsPanel(props) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const [droppedThreads, setDroppedThreads] = React.useState(false);
+
+    const handleOpenDropdown = (event) => {
+        const eventInfo = document.getElementById("threads-dropdown");
+
+        setDroppedThreads(true);
+        eventInfo.style.display = "block";
+    }
+
+    const handleCloseDropdown = (event) => {
+        const eventInfo = document.getElementById("threads-dropdown");
+
+        setDroppedThreads(false);
+        eventInfo.style.display = "none";
+    }
+    
     const handleThreadChange = (thread, e) => {
         setActiveThread(thread);
         toggle(e);
@@ -47,10 +63,30 @@ function ThreadsPanel(props) {
     return (
         <div id="sidebar-thread-panel">
             <div className="thread-sidebar-header">
-                <h3>Threads</h3> 
-                <img className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
+                <div>
+                    <img
+                        src="/assets/img/google-docs.svg"
+                        alt="threads icon"
+                    />
+                    <h3>Threads</h3>
+                    {droppedThreads ? (
+                        <img
+                            src="/assets/img/up_btn.png"
+                            alt="threads icon"
+                            onClick={handleCloseDropdown}
+                        />
+                    ) : (
+                        <img
+                            src="/assets/img/down_btn.png"
+                            alt="threads icon"
+                            onClick={handleOpenDropdown}
+                        />
+                    )}
+                </div>
+                
+                <img id="thread-create-btn" className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
             </div>
-            <ul>
+            <ul id="threads-dropdown">
                 {allThreads.map((individualThread) => (
                     <li key={individualThread._id}>
                         <Link

@@ -305,17 +305,19 @@ Nathan Delman: [Nathan's GitHub](https://github.com/Delmanat3)
 <br>
 
 
-- Allow users to send and accept friend requests
+- ~~Allow users to send and accept friend requests~~
+- ~~Allow users to create, attend (or leave), delete, update~~
+- ~~Add functionality to delete a thread and to update and/or delete posts and comments~~
+- ~~Add more artwork and logos to application~~
+
 - Restrict users to only see threads they have joined or created 
 - Let users further personalize their profile page 
-- Allow users to create, attend (or leave), delete, update, make public (or private), and post about events.
-- Add functionality to delete a thread and to update and/or delete posts and comments
+- Allow users to make events public (or private), and post about events.
 - Allow users to add emoji reactions to posts and comments
 - Set up proper user access to direct messenger
-- Add more artwork and logos to application
 - Add additional layers of security
 - Add slash commands and formatting options for posts and comments
-- Get the image part of everything working - for 
+- Get the image part of everything working for profile page and events display
 
 <br>
 

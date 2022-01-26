@@ -45,6 +45,8 @@ const typeDefs = gql`
         date_joined: String
         friends: [User]
         pinned_posts: [PinnedPost]
+        friend_requests: [User]
+        sent_friend_requests: [User]
     }
 
     type Thread {
