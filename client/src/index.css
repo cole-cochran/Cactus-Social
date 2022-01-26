@@ -468,7 +468,7 @@ html::-webkit-scrollbar {
 .login-banner-illustration {
     width: 100%;
     max-width: 600px;
-    filter: opacity(60%);
+    /* filter: opacity(60%); */
 }
 
 .success-msg {
@@ -706,7 +706,7 @@ html::-webkit-scrollbar {
 
 header {
   background-color: var(--primary-green);
-} */
+}
 
 .mobile-nav img {
   width: 2rem;
@@ -762,7 +762,7 @@ header {
     transition: left 0.6s linear;
     padding-top: 2rem;
     /* height: calc(100vh - 6rem); */
-    height: 100vh;
+    height: calc(100vh - 67px);
     width: calc(100% - 2.5rem);
     overflow: scroll;
     padding-left: 20px;
@@ -774,6 +774,44 @@ header {
     display: none;
 }
 
+.main-sidebar-navs {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    margin-left: 5px;
+}
+
+.main-sidebar-navs a, .main-sidebar-navs div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    width: 100%;
+    height: 60px;
+    padding-left: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main-sidebar-navs a:hover {
+    background-color: rgba(255, 255, 255, 0.068);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main-sidebar-navs div:hover {
+    background-color: rgba(255, 255, 255, 0.068);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.main-sidebar-navs a img, .main-sidebar-navs div img {
+    margin-right: 15px;
+}
+
+.main-sidebar-navs a h3, .main-sidebar-navs div h3 {
+    text-decoration: none;
+}
+
 .sidebar h3 {
     font-size: 1.375rem;
     font-weight: 600;
@@ -783,8 +821,8 @@ header {
 }
 
 .sidebar-add-icon {
-    width: 2rem;
-    height: 2rem;
+    max-width: 25px;
+    max-height: 25px;
     cursor: pointer;
 }
 
@@ -816,6 +854,13 @@ header {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 10px;
+    height: 60px;
+}
+
+.thread-sidebar-header:hover {
+    background-color: rgba(255, 255, 255, 0.068);
 }
 
 .thread-sidebar-header div {
@@ -837,8 +882,18 @@ header {
     display: none;
 }
 
+#threads-dropdown li:hover {
+    background-color: var(--hero-green);
+    cursor: pointer;
+}
+
 #events-dropdown {
     display: none;
+}
+
+#events-dropdown li:hover {
+    background-color: var(--hero-green);
+    cursor: pointer;
 }
 
 /*************SIDEBAR.JS:END************/
@@ -1615,6 +1670,55 @@ footer {
     box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
 }
 
+.modal-list {
+    list-style: none;
+    margin-top: 10px;
+    padding-left: 0px;
+}
+
+#modal-friends {
+    padding-bottom: 0px;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-request {
+    display: flex;
+    width: 100%;
+}
+
+.modal-request div {
+    margin-left: 20px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.modal-request div button {
+    margin-top: 5px;
+    height: 30px;
+    border-radius: 0px;
+    border: 2px solid white;
+    margin-right: 10px;
+    width: 80px;
+    background-color: var(--ultra-dark);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.5s;
+}
+
+.modal-request div button:nth-of-type(1):hover {
+    background-color: var(--cactus-green-1);
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.modal-request div button:nth-of-type(2):hover {
+    background-color: rgba(255, 0, 0, 0.596);
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+
 .modal-textarea {
     /* font-size: .75rem;
     margin-left: 1rem;
@@ -1662,12 +1766,28 @@ footer {
 }
 
 .remove-friend-btn {
-    display: block;
+    /* display: block;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
-    margin-left: 0.5rem;
-    background-color: rgba(255, 0, 0, 0.596);
+    margin-left: 0.5rem; */
+    /* background-color: rgba(255, 0, 0, 0.596); */
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    /* margin-top: 1.5rem; */
+    /* margin-bottom: 1.5rem; */
+    margin-left: 1.5rem;
+    background-color: transparent;
     font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 0, 0, 0.596);
+    border: none;
+    width: 100%;
+    height: 60px;
+    padding: .5rem;
+    border-radius: .25rem;
+    transition: box-shadow 0.5s linear;
+    /* font-size: 16px;
     font-weight: 600;
     color: white;
     border: none;
@@ -1675,7 +1795,7 @@ footer {
     padding-top: .5rem;
     padding-bottom: .5rem;
     border-radius: .25rem;
-    transition: box-shadow 0.5s linear;
+    transition: box-shadow 0.5s linear; */
 }
 
 .remove-friend-btn:hover {
@@ -1751,6 +1871,9 @@ footer {
 .event-card {
     /* margin: 10px; */
     width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
     /* border: 5px solid var(--cactus-purple-1); */
     /* border-radius: 15px; */
     background-color: var(--dark-mode);
@@ -1778,7 +1901,9 @@ footer {
     background-color: var(--ultra-dark);
     width: 100%;
     display: flex;
-    ;
+    /* border-left: 1px solid white; */
+    /* border-right: 1px solid white; */
+    /* border-bottom: 1px solid white; */
     flex-direction: column;
     align-items: center;
     padding-bottom: 10px;

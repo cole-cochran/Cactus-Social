@@ -19,7 +19,7 @@ export function ThreadPost(props) {
                 {
                 owner === post.author._id ? 
                 <div className="dropdown">
-                    <img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={dropdown}/>
+                    <img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={dropdown}/>
                     <div className="dropdown-content">
                         <div className="dropdown-option" onClick={openEditor}>
                             Update
@@ -42,7 +42,7 @@ export function ThreadPost(props) {
                 </button>
                 {/* {owner === post.author._id ? 
                 (null) : ( */}
-                <img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={pin}/>
+                <img src="../../assets/img/purple_pin.png" alt="pin" style={{width: "30px", height: "auto", cursor:"pointer"}} onClick={pin}/>
                 {/* )} */}
             </div>
         </div>
