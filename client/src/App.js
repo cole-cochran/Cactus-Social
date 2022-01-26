@@ -93,7 +93,7 @@ function App() {
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
-							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />
