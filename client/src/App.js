@@ -45,7 +45,7 @@ const client = new ApolloClient({
 	cache: new InMemoryCache()
 });
 
-const socket = io("https://cactus-social.herokuapp.com");
+const socket = io();
 
 function App() {
 
