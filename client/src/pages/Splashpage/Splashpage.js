@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import CACTUSVIDEO from './CACTUSVIDEO.mp4';
+// import CACTUSVIDEO from './CACTUSVIDEO.mp4';
+import CACTUSVIDEO from './Cactus_Splashpage_Video.mp4';
 
 
 function SplashPage() {
@@ -8,7 +9,6 @@ function SplashPage() {
 		<div class="splash-page-content-overflow-wrapper">
 			<div class="shift-content-wrapper">
 				<header class="splash-page-header">
-					<img src="" alt="" />
 					<Link to="/login">
 						<button>Login</button>
 					</Link>
@@ -32,7 +32,6 @@ function SplashPage() {
 				autoPlay
 				loop
 				muted
-
 			>
 				<source src={CACTUSVIDEO} type="video/mp4" />
 			</video>

@@ -36,6 +36,7 @@ export const ALL_USERS = gql`
 		}
 	}
 `;
+
 //* This is for internal use only
 export const ALL_THREADS = gql`
 query allThreads {
@@ -48,22 +49,6 @@ query allThreads {
 				_id
 			}
 			post_text
-		}
-		pinned_posts {
-			_id
-			author {
-				_id
-			}
-			pinTitle
-			pinHash
-		}
-		events {
-			title
-			owner {
-				_id
-			}
-			category
-			in_person
 		}
 		moderator {
 			username
@@ -118,10 +103,6 @@ export const ALL_EVENTS = gql`
 			in_person
 			location
 			image
-			thread {
-				_id
-				title
-			}
 			date_created
 			edited
 			comments {
@@ -154,7 +135,6 @@ export const ALL_POSTS = gql`
 			}
 			reactions
 			edited
-			pinned
 			thread {
 				_id
 				title
@@ -175,44 +155,6 @@ export const ALL_POSTS = gql`
 		}
 	}
 `;
-
-export const ALL_THREAD_POSTS = gql`
-	query allThreadPosts($threadId: ID!) {
-		allThreadPosts(threadId: $threadId) {
-			_id
-			post_text
-			date_created
-			author {
-				_id
-				username
-				picture
-			}
-			reactions
-			edited
-			pinned
-			pinHash
-			pinTitle
-			thread {
-				_id
-				title
-			}
-			comments {
-				_id
-				comment_text
-				date_created
-				author {
-					_id
-				}
-				reactions
-				edited
-				post {
-					_id
-				}
-			}
-		}
-	}
-`;
-
 //* This is for internal use only
 export const ALL_COMMENTS = gql`
 query allComments {
@@ -234,6 +176,40 @@ query allComments {
 		}
 	}
 }
+`;
+
+export const ALL_THREAD_POSTS = gql`
+	query allThreadPosts($threadId: ID!) {
+		allThreadPosts(threadId: $threadId) {
+			_id
+			post_text
+			date_created
+			author {
+				_id
+				username
+				picture
+			}
+			reactions
+			edited
+			thread {
+				_id
+				title
+			}
+			comments {
+				_id
+				comment_text
+				date_created
+				author {
+					_id
+				}
+				reactions
+				edited
+				post {
+					_id
+				}
+			}
+		}
+	}
 `;
 
 export const ALL_POST_COMMENTS = gql`
@@ -268,9 +244,60 @@ export const USER_PROFILE = gql`
 			bio
 			tech_stack
 			date_joined
+			pinned_posts {
+				_id
+				pinTitle
+				pinHash
+				post {
+					_id
+					thread {
+						_id
+					}
+				}
+			}
 		}
 	}
 `;
+
+export const FRIEND_REQUESTS = gql`
+query friendRequests($userId: ID!) {
+	friendRequests(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		bio
+		tech_stack
+		date_joined
+		friend_requests {
+			_id
+			username
+		}
+	}
+}
+`
+
+export const SENT_FRIEND_REQUESTS = gql`
+query sentFriendRequests($userId: ID!) {
+	sentFriendRequests(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		bio
+		tech_stack
+		date_joined
+		sent_friend_requests {
+			_id
+			username
+		}
+	}
+}
+`
 
 export const USER_THREADS = gql`
 query userThreads($userId: ID!) {
@@ -282,9 +309,6 @@ query userThreads($userId: ID!) {
 			author {
 				_id
 			}
-		}
-		events {
-			_id
 		}
 		moderator {
 			_id
@@ -328,6 +352,15 @@ export const USER_EVENTS = gql`
 	}
 `;
 
+export const ONE_USER = gql`
+	query oneUser($username: String!) {
+		oneUser(username: $username) {
+			_id
+			username
+		}
+	}
+`
+
 export const USER_FRIENDS = gql`
 	query userFriends($userId: ID!) {
 		userFriends(userId: $userId) {
@@ -354,33 +387,6 @@ export const THREAD_DETAILS = gql`
 					_id
 				}
 				reactions
-				edited
-				pinned
-				comments {
-					_id
-				}
-			}
-			events {
-				_id
-				title
-				start_date
-				end_date
-				start_time
-				end_time
-				owner {
-					_id
-				}
-				attendees {
-					_id
-				}
-				category
-				in_person
-				location
-				image
-				thread {
-					_id
-				}
-				date_created
 				edited
 				comments {
 					_id
@@ -459,9 +465,6 @@ export const POST_DETAILS = gql`
 			}
 			reactions
 			edited
-			pinned
-			pinTitle
-			pinHash
 			thread {
 				_id
 				title
@@ -507,16 +510,13 @@ export const EVENT_DETAILS = gql`
 			in_person
 			location
 			image
-			thread {
-				_id
-				title
-			}
 			comments {
 				_id
 				comment_text
 				date_created
 				author {
 					_id
+					username
 				}
 				reactions
 				edited
@@ -529,3 +529,6 @@ export const EVENT_DETAILS = gql`
 		}
 	}
 `;
+
+
+//!  USERNAME IS NESTED IN AUTHOR - FIX RESOLVERS TO POPULATE THAT DATA

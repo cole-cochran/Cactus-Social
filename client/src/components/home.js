@@ -1,9 +1,9 @@
-import GitHubIcon from "@mui/icons-material/GitHub";
+// import GitHubIcon from "@mui/icons-material/GitHub";
 
-import ArticleIcon from "@mui/icons-material/Article";
-import AudiotrackIcon from "@mui/icons-material/Audiotrack";
+// import ArticleIcon from "@mui/icons-material/Article";
+// import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 import { useState } from "react";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
+// import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import MenuIcon from "@mui/icons-material/LinkedIn";
 import { Tab } from "../components/Customs";
 import { FadeBtn } from "../components/Customs";
@@ -30,9 +30,9 @@ import { IconButton } from "@mui/material";
 // import  Card from './Cards';
 // import MediaQuery from './mediaQueries';
 
-const projectOne = "./images/imgs/projectOne.png";
-const plannerPic = "./images/imgs/plannerpic.png";
-const weatherPic = "./images/imgs/weatherpic.png";
+// const projectOne = "./images/imgs/projectOne.png";
+// const plannerPic = "./images/imgs/plannerpic.png";
+// const weatherPic = "./images/imgs/weatherpic.png";
 
 const theme = createTheme(
 );

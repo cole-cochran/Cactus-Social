@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -16,11 +16,12 @@ import AuthService from '../utils/auth';
 
 const ResponsiveAppBar = (props) => {
 
-  const { userId } = props;
+  const userId = AuthService.getProfile().data._id;
+
+  // {name: "DM's", url: "/chat"},
 
   const pages = [];
   const settings = [
-    {name: "DM's", url: "/chat"},
     {name: 'Profile', url: `/profile/${userId}`}
   ];
 
@@ -42,31 +43,17 @@ const ResponsiveAppBar = (props) => {
     setAnchorElUser(null);
   };
 
+  const handleSearchFriendSubmit = (username) => {
+
+  }
+
   return (
-    <AppBar position="static" elevation={0} style={{ background: '#2FB65E' }}>
+    <AppBar position="static" elevation={0} style={{ background: 'var(--alt-dark-mode)', borderBottom: "1px solid white" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          > */}
-            {/* <img className="logo" src="/assets/img/logo.svg" alt="logo"/> */}
-            <p className="logo">Cactus</p>
-          {/* </Typography> */}
+          <p className="logo">Cactus Social</p>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -104,10 +91,10 @@ const ResponsiveAppBar = (props) => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, bgcolor: "#9200bb", p: 1 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar className="avatar" alt="Remy Sharp" src="/assets/img/avatar.svg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, borderRadius: "0" }}>
+                <Avatar className="avatar" alt="Remy Sharp" sx={{ width: 50, height: 50, borderRadius: "0px" }} src="/assets/img/cactus_nav_icon.png" />
               </IconButton>
             </Tooltip>
             <Menu

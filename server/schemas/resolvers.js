@@ -1,6 +1,6 @@
-const { User, Comment, Post, Thread, Event } = require('../models/index');
+const { User, Comment, Post, Thread, Event, PinnedPost } = require('../models/index');
 const { signToken } = require('../utils/auth');
-const { AuthenticationError } = require('apollo-server-express');
+const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
 //! ADD ARRAY OF PIN STRINGS TO THREADS MODEL 
 
@@ -12,21 +12,35 @@ const resolvers = {
 				.populate('threads')
 				.populate('events')
 				.populate('events.owner')
-				.populate('friends');
+				.populate('friends')
+				.populate('pinned_posts')
+				.populate('pinned_posts.post').populate('friend_requests').populate('sent_friend_requests');
 		},
 
 		//* get single user
 		userProfile: async (parent, args, context) => {
 			//! add user to the context when we create it and refer to the id as "_id"
 			// if (context.user) {
-			return await User.findOne({ _id: args.userId });
+			return await User.findOne({ _id: args.userId }).populate("pinned_posts").populate("pinned_posts.post")
+			.populate({
+				path: "pinned_posts",
+				model: "PinnedPost",
+				populate: {
+					path: "post",
+					model: "Post",
+					populate: {
+						path: "thread",
+						model: "Thread"
+					}
+				}
+			});
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
 		//* get all threads
 		allThreads: async (parent, args, context) => {
-			return await Thread.find({}).populate('posts').populate('events').populate('members').populate('moderator').populate('pinned_posts');
+			return await Thread.find({}).populate('posts').populate('members').populate('moderator');
 		},
 
 		allThreadPosts: async (parent, args, context) => {
@@ -46,18 +60,18 @@ const resolvers = {
 			// if (context.user) {
 			return await Thread.findById(args.threadId)
 				.populate('posts')
-				.populate('events')
 				.populate('members')
 				.populate('moderator');
-				// .populate({ 
-				// 	path: 'posts',
-				// 	populate: {
-				// 		path: 'author',
-				// 		model: 'User'
-				// 	} 
-				// })
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		oneUser: async (parent, args) => {
+			const user = await User.findOne({username: args.username});
+			if(!user) {
+				return new ApolloError('No user found with that username', '404');
+			}
+			return user;
 		},
 
 		//* find user's friends
@@ -69,23 +83,40 @@ const resolvers = {
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
+		friendRequests: async (parent, args, context) => {
+			const {userId} = args;
+			const user = await User.findOne({_id: userId}).populate('friend_requests');
+			return user;
+		},
+
+		sentFriendRequests: async (parent, args, context) => {
+			const { userId } = args;
+			const user = await User.findOne({_id: userId}).populate('sent_friend_requests');
+			return user;
+		},
+
 		allPosts: async (parent, args, context) => {
 			return await Post.find({}).populate('author').populate('thread').populate('comments');
 		},
+		//* Old pinnedPosts
+		// pinnedPosts: async (parent, args, context) => {
+		// 	const { threadId } = args;
+		// 	const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
 
-		pinnedPosts: async (parent, args, context) => {
-			const { threadId } = args;
-			const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
+		// 	const allPins = [];
 
-			const allPins = [];
-
-			for (let pinnedPost of thread.pinned_posts) {
-				let post = await Post.findOne({ _id: pinnedPost }).populate('author');
+		// 	for (let pinnedPost of thread.pinned_posts) {
+		// 		let post = await Post.findOne({ _id: pinnedPost }).populate('author');
 				
-				allPins.push(post);
-			}
+		// 		allPins.push(post);
+		// 	}
 
-			return allPins;
+		// 	return allPins;
+		// },
+		pinnedPosts: async (parent, args, context) => {
+			const user = await User.findOne({_id: args.userId}).populate('pinned_posts').populate('pinned_posts.post');
+			const pinnedPosts = user.pinned_posts;
+			return pinnedPosts;
 		},
 
 		allComments: async (parent, args, context) => {
@@ -94,21 +125,21 @@ const resolvers = {
 		},
 
 		allEvents: async (parent, args, context) => {
-			return await Event.find({}).populate('owner').populate('attendees').populate('thread').populate('comments');
+			return await Event.find({}).populate('owner').populate('attendees').populate('comments');
 		},
 
-		threadEvents: async (parent, args, context) => {
-			const { threadId } = args;
-			const allEvents = await Event.find(
-				{
-					where: {
-						thread: threadId
-					}
-				}
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+		// threadEvents: async (parent, args, context) => {
+		// 	const { threadId } = args;
+		// 	const allEvents = await Event.find(
+		// 		{
+		// 			where: {
+		// 				thread: threadId
+		// 			}
+		// 		}
+		// 	).populate('owner').populate('attendees').populate('thread').populate('comments');
 			
-			return allEvents;
-		},
+		// 	return allEvents;
+		// },
 
 		//* get all user threads
 		userThreads: async (parent, args, context) => {
@@ -119,7 +150,7 @@ const resolvers = {
 			const userThreads = [];
 
 			for (let thread of userData.threads) {
-				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('events').populate('moderator').populate('members');
+				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('moderator').populate('members');
 				userThreads.push(threadId);
 			}
 
@@ -137,7 +168,7 @@ const resolvers = {
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees').populate('thread');
+				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
 				userEvents.push(eventId);
 			}
 
@@ -161,8 +192,15 @@ const resolvers = {
 			return await Event.findById(args.eventId)
 				.populate('owner')
 				.populate('attendees')
-				.populate('thread')
-				.populate('comments');
+				.populate('comments')
+				.populate({
+					path: "comments",
+					model: "Comment",
+					populate: {
+						path: "author",
+						model: "User"
+					}
+				});
 		}
 	},
 	Mutation: {
@@ -188,17 +226,31 @@ const resolvers = {
 
 		//* create a new user
 		createUser: async (parent, args) => {
-			const { first_name, last_name, username, email, password } = args;
-			const newUser = await User.create({ first_name, last_name, username, email, password });
-
-			const tokenData = {
-				username: newUser.username, 
-				email: newUser.email, 
-				_id: newUser._id
+			try{
+				const { first_name, last_name, username, email, password } = args;
+				const checkUsername = await User.findOne({ username });
+				if(checkUsername) {
+					return new ApolloError('Username already taken', 422);
+				}
+				// if(password.length < 6 || password.length > 32) {
+				// 	return new ApolloError('Password must be at least 6 characters long')
+				// }
+				const newUser = await User.create({ first_name, last_name, username, email, password });
+	
+				const tokenData = {
+					username: newUser.username, 
+					email: newUser.email, 
+					_id: newUser._id
+				}
+	
+				const token = signToken(tokenData);
+				return { token, newUser };
 			}
-
-			const token = signToken(tokenData);
-			return { token, newUser };
+			catch(err) {
+				console.log(Object.keys(err.errors));
+				if(err.errors.username) return new ApolloError(`${err.errors.username}`, '400');
+				if(err.errors.password) return new ApolloError(`${err.errors.password}`, '400');
+			}
 		},
 
 		//* add a new technology to user tech stack
@@ -221,8 +273,6 @@ const resolvers = {
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
-
-		//! FIX THIS MO FO ASAP
 
 		//* remove technology from user tech stack
 		removeTechnology: async (parent, args, context) => {
@@ -257,16 +307,32 @@ const resolvers = {
 				{
 					$addToSet: {
 						friends: friend
+					},
+					$pull: {
+						friend_requests: friend
 					}
 				},
 				{ new: true }
-			).populate('friends');
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+
+			await User.findOneAndUpdate(
+				{ _id: friend },
+				{
+					$addToSet: {
+						friends: userId
+					},
+					$pull: {
+						sent_friend_requests: userId
+					}
+				},
+				{new: true}
+			);
 			return user;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
 
-		//* remove friend from user tech stack
+		//* remove friend from friends array
 		removeFriend: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
 			const { userId, friend } = args;
@@ -280,25 +346,70 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('friends');
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+
+			await User.findOneAndUpdate(
+				{ _id: friend },
+				{
+					$pull: {
+						friends: userId
+					}
+				},
+				{ new: true }
+			);
+
 			return user;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
 
-		// updateProfile: async (parent, args, context) => {
-		// 	const {userId, picture, bio, techArray} = args;
-		// 	const updatedUser = await User.findOneAndUpdate(
-		// 		{ _id: userId },
-		// 		{
-		// 			bio: bio,
-		// 			picture: picture,
-		// 			tech_stack: techArray
-		// 		},
-		// 		{ new: true }
-		// 	);
-		// 	return updatedUser;
-		// },
+		sendFriendRequest: async (parent, args, context) => {
+			const {userId, friend} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$addToSet: {
+						sent_friend_requests: friend
+					}
+				},
+				{new: true}
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+			
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$addToSet: {
+						friend_requests: userId
+					}
+				},
+				{new: true}
+			);
+			return user;
+		},
+
+		denyFriendRequest: async (parent, args, context) => {
+			const {userId, friend} = args;
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$pull: {
+						friend_requests: friend
+					}
+				},
+				{new: true}
+			).populate('friends').populate('sent_friend_requests').populate('friend_requests');
+
+			await User.findOneAndUpdate(
+				{_id: friend},
+				{
+					$pull: {
+						sent_friend_requests: userId
+					}
+				},
+				{new: true}
+			);
+			return user;
+		},
 
 		//* update the user's profile photo
 		updatePhoto: async (parent, args, context) => {
@@ -329,26 +440,29 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			//! get rid of userId when we can user the context to our advantage
-			const { title, moderator } = args;
-			const newThread = await Thread.create({
-				title: title,
-				moderator: moderator
-			});
-			await User.findOneAndUpdate(
-				{ _id: moderator },
-				{
-					$addToSet: {
-						threads: newThread._id
-					}
-				},
-				{ new: true }
-			);
-			return newThread;
+			try{
+				const { title, moderator } = args;
+				const newThread = await Thread.create({
+					title: title,
+					moderator: moderator
+				});
+				await User.findOneAndUpdate(
+					{ _id: moderator },
+					{
+						$addToSet: {
+							threads: newThread._id
+						}
+					},
+					{ new: true }
+				);
+				return newThread;
+			}catch(err) {
+				if(err.errors.title) return new ApolloError(`${err.errors.title}`, '400');
+			}
+			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
-
-		//! CANT TEST UNTIL CONTEXT IS READY BECAUSE IT RETURNS THE USER WHO REMOVED THE THREAD
 
 		//* remove thread
 		removeThread: async (parent, args, context) => {
@@ -388,24 +502,33 @@ const resolvers = {
 		createPost: async (parent, args, context) => {
 			//! add user context to authenticate
 			// if (context.user) {
-			const { threadId, post_text, author } = args;
-			const { _id } = await Post.create(
-				{
-					thread: threadId,
-					post_text: post_text,
-					author: context.user._id
-				}
-			);
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$addToSet: {
-						posts: _id
+			try{
+				const { threadId, post_text, author } = args;
+				console.log(post_text);
+				const post = await Post.create(
+					{
+						thread: threadId,
+						post_text: post_text,
+						author: author
 					}
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
-			return thread;
+				);
+				const postPopulatedData = await Post.findOne({_id: post._id}).populate('author').populate('thread').populate('comments');
+				const thread = await Thread.findOneAndUpdate(
+					{ _id: threadId },
+					{
+						$addToSet: {
+							posts: post._id
+						}
+					},
+					{ new: true }
+				).populate('posts').populate('moderator').populate('members');
+				// console.log(thread);
+				return postPopulatedData;
+			}catch(err) {
+				console.log(err);
+				if(err.errors.post_text) return new ApolloError(`${err.errors.post_text}`, '400');
+			}
+			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -416,6 +539,52 @@ const resolvers = {
 			//! add user context to authenticate
 			// if (context.user) {
 			await Post.findOneAndDelete({ _id: postId }, { new: true });
+
+			await PinnedPost.deleteMany(
+				{ post: postId },
+				{ new: true }
+			);
+
+			// const relatedPins = await PinnedPost.find(
+			// 	{ post: postId }
+			// );
+
+			// for (let pin of relatedPins) {
+			// 	await PinnedPost.findOneAndDelete(
+			// 		{ _id: pin._id },
+			// 		{ new: true }
+			// 	)
+			// }
+
+			// await User.updateMany(
+			// 	{ 
+			// 		pinned_posts: {
+			// 			post: postId 
+			// 		}
+			// 	},
+			// 	{
+			// 		$pull: {
+			// 			pinned_posts: {
+			// 				post: postId
+			// 			}
+			// 		}
+			// 	}
+			// )
+
+			// const allUsers = await User.find({}).populate('pinned_posts').populate('pinned_posts.post');
+			// for (let user of allUsers) {
+			// 	for (let pin of allPinsOfPost) {
+			// 		await User.findOneAndUpdate(
+			// 			{_id: user._id}, 
+			// 			{
+			// 				$pull: {
+			// 					pinned_posts: pin._id
+			// 				}
+			// 			},
+			// 			{ new: true }
+			// 		)
+			// 	}
+			// }			
 			const thread = await Thread.findOneAndUpdate(
 				{ _id: threadId },
 				{
@@ -425,7 +594,8 @@ const resolvers = {
 				},
 				{ new: true }
 			).populate('posts').populate('moderator').populate('members');
-			return thread
+
+			return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -452,69 +622,100 @@ const resolvers = {
 			// throw new AuthenticationError('Could not find User!');
 		},
 
-		//* give user ability to pin posts
-		pinPost: async (parent, args, context) => {
-			//! probably need to add user context here as well to make sure they have permission
-			// if (context.user) {
-			const { threadId, postId, pinTitle, pinHash } = args;
-			await Post.findOneAndUpdate(
-				{ _id: postId },
+		//* New Pin Post Mutation
+		updatePinnedPost: async (parent, args, context) => {
+			const {userId, postId, pinTitle, pinHash} = args;
+			const pinnedPost = await PinnedPost.create({pinTitle: pinTitle, pinHash: pinHash, post: postId});
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
 				{
-					pinTitle: pinTitle,
-					pinHash: pinHash,
-					pinned: true
+					$push: {
+						pinned_posts: pinnedPost._id
+					}
 				},
-				{ new: true }
-			);
-
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{ 
-					$addToSet: 
-						{
-							pinned_posts: postId
-						} 
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
-
-			return thread;
-			// }
-			// throw new AuthenticationError('Could not find User!');
+				{new: true}
+			).populate('pinned_posts');
+			return user;
 		},
 
-		//* give user ability to unpin posts
-		unpinPost: async (parent, args, context) => {
-			//! probably need to add user context here as well to make sure they have permission
-			const { threadId, postId } = args;
-			await Post.findOneAndUpdate(
-				{ _id: postId },
+		removePinnedPost: async (parent, args, context) => {
+			const { userId, pinnedId } = args;
+			await PinnedPost.deleteOne({_id: pinnedId});
+			const updatedUser = await User.findOneAndUpdate(
+				{_id: userId},
 				{
-					pinTitle: '',
-					pinHash: '',
-					pinned: false
+					$pull: {
+						pinned_posts: pinnedId
+					}
 				},
-				{ new: true }
-			);
-
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{ 
-					$pull: 
-						{
-							pinned_posts: postId
-						} 
-				},
-				{ new: true }
-			).populate('posts').populate('moderator').populate('members');
-
-			return thread;
-			// }
-			// throw new AuthenticationError('Could not find User!');
+				{new: true}
+			).populate('pinned_posts');
+			return updatedUser;
 		},
+
+		// pinPost: async (parent, args, context) => {
+		// 	//! probably need to add user context here as well to make sure they have permission
+		// 	// if (context.user) {
+		// 	const { threadId, postId, pinTitle, pinHash } = args;
+		// 	await Post.findOneAndUpdate(
+		// 		{ _id: postId },
+		// 		{
+		// 			pinTitle: pinTitle,
+		// 			pinHash: pinHash,
+		// 			pinned: true
+		// 		},
+		// 		{ new: true }
+		// 	);
+
+		// 	const thread = await Thread.findOneAndUpdate(
+		// 		{ _id: threadId },
+		// 		{ 
+		// 			$addToSet: 
+		// 				{
+		// 					pinned_posts: postId
+		// 				} 
+		// 		},
+		// 		{ new: true }
+		// 	).populate('posts').populate('moderator').populate('members');
+
+		// 	return thread;
+		// 	// }
+		// 	// throw new AuthenticationError('Could not find User!');
+		// },
+
+		// //* give user ability to unpin posts
+		// unpinPost: async (parent, args, context) => {
+		// 	//! probably need to add user context here as well to make sure they have permission
+		// 	const { threadId, postId } = args;
+		// 	await Post.findOneAndUpdate(
+		// 		{ _id: postId },
+		// 		{
+		// 			pinTitle: '',
+		// 			pinHash: '',
+		// 			pinned: false
+		// 		},
+		// 		{ new: true }
+		// 	);
+
+		// 	const thread = await Thread.findOneAndUpdate(
+		// 		{ _id: threadId },
+		// 		{ 
+		// 			$pull: 
+		// 				{
+		// 					pinned_posts: postId
+		// 				} 
+		// 		},
+		// 		{ new: true }
+		// 	).populate('posts').populate('moderator').populate('members');
+
+		// 	return thread;
+		// 	// }
+		// 	// throw new AuthenticationError('Could not find User!');
+		// },
 
 		//! PROBABLY HOLD THIS OFF UNTIL LAST BECAUSE REACTIONS NEED TO BE AN OBJECT WITH USERNAME INCLUDED OR THEY COULD JUST BE ANONYMOUS
 		//* let users react to a post
+		
 		addPostReaction: async (parent, args, context) => {
 			const { threadId, postId, reaction } = args;
 			await Post.findOneAndUpdate(
@@ -542,6 +743,8 @@ const resolvers = {
 				post: postId
 			});
 
+			const comment = await Comment.findOne({_id}).populate('author').populate('post');
+
 			const thePost = await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
@@ -550,9 +753,16 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('author').populate('thread').populate('comments');
+			).populate('author').populate('thread').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
-			return thePost;
+			return comment;
 		},
 
 		//* remove post comment
@@ -614,7 +824,6 @@ const resolvers = {
 		//* temporary owner until context set and mutations tested
 		createEvent: async (parent, args, context) => {
 			const {
-				threadId,
 				title,
 				description,
 				start_date,
@@ -641,11 +850,10 @@ const resolvers = {
 				category: category,
 				in_person: in_person,
 				location: location,
-				image: image,
-				thread: threadId
+				image: image
 			});
 
-			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner').populate('thread');
+			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner');
 
 			//! use context to get userId and complete this
 			// await User.findOneAndUpdate(
@@ -658,15 +866,15 @@ const resolvers = {
 			// 	{ new: true }
 			// )
 
-			await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$addToSet: {
-						events: newEvent._id
-					}
-				},
-				{ new: true }
-			);
+			// await Thread.findOneAndUpdate(
+			// 	{ _id: threadId },
+			// 	{
+			// 		$addToSet: {
+			// 			events: newEvent._id
+			// 		}
+			// 	},
+			// 	{ new: true }
+			// );
 			return returnedEvent;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
@@ -674,46 +882,51 @@ const resolvers = {
 
 		//* remove the event
 		removeEvent: async (parent, args, context) => {
-			const { eventId, threadId, userId } = args;
+			const { eventId, userId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			const event = await Event.findOneAndDelete({ _id: eventId }, { new: true });
+			// const event = await Event.findOne({ _id: eventId });
 			//! use context to get userId and complete this
-			await User.findOneAndUpdate(
-				// { _id: context.user._id },
-				{ _id: userId },
-				{
-					$pull: {
-						events: eventId
-						}
-				}, 
-				{ new: true }
-			)
+			// const user = await User.findOneAndUpdate(
+			// 	// { _id: context.user._id },
+			// 	{ _id: userId },
+			// 	{
+			// 		$pull: {
+			// 			events: eventId
+			// 			}
+			// 	}, 
+			// 	{ new: true }
+			// )
 
-			for (let attendee of event.attendees) {
-				await User.findOneAndUpdate(
-					// { _id: context.user._id },
-					{ _id: attendee },
-					{
-						$pull: {
-							events: eventId
-							}
-					},
-					{ new: true }
-				)
-			}
+			// for (let attendee of event.attendees) {
+			// 	await User.findOneAndUpdate(
+			// 		// { _id: context.user._id },
+			// 		{ _id: attendee },
+			// 		{
+			// 			$pull: {
+			// 				events: eventId
+			// 				}
+			// 		},
+			// 		{ new: true }
+			// 	)
+			// }
 
-			const thread = await Thread.findOneAndUpdate(
-				{ _id: threadId },
-				{
-					$pull: {
-						events: eventId
-					}
-				},
-				{ new: true }
-			);
+			await Event.findOneAndDelete({ _id: eventId });
 
-			return thread;
+			const user = await User.findOne({ _id: userId });
+
+			return user;
+			// const thread = await Thread.findOneAndUpdate(
+			// 	{ _id: threadId },
+			// 	{
+			// 		$pull: {
+			// 			events: eventId
+			// 		}
+			// 	},
+			// 	{ new: true }
+			// );
+
+			// return thread;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -752,7 +965,7 @@ const resolvers = {
 					edited: true
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return updatedEvent;
 			// }
@@ -785,7 +998,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -816,7 +1029,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }
@@ -843,9 +1056,18 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
-			return commentedEvent;
+			const comment = await Comment.findOne({_id: newComment._id}).populate('event').populate('author');
+
+			return comment;
 			// }
 			// throw new AuthenticationError('Could not find User!');
 		},
@@ -855,7 +1077,7 @@ const resolvers = {
 			const { commentId, eventId } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			await Comment.findOneAndDelete({ _id: commentId }, { new: true });
+			await Comment.findOneAndDelete({ _id: commentId });
 			
 			const event = await Event.findOneAndUpdate(
 				{ _id: eventId },
@@ -865,7 +1087,14 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('owner').populate('attendees').populate('thread').populate('comments');
+			).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return event;
 			// }
@@ -886,7 +1115,14 @@ const resolvers = {
 				{ new: true }
 			);
 
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments').populate({
+				path: "comments",
+				model: "Comment",
+				populate: {
+					path: "author",
+					model: "User"
+				}
+			});
 
 			return event;
 			// }
@@ -907,7 +1143,7 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('thread').populate('comments');
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments');
 
 			return event;
 			// }

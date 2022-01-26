@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useQuery } from '@apollo/client';
 import { USER_PROFILE } from '../utils/queries'; 
@@ -11,8 +11,14 @@ import Footer from "../components/Footer";
 import ProfileInfo from "../components/ProfileInfo";
 import ProfileFriends from "../components/ProfileFriends";
 
+// const SERVER = 'http://localhost:3001';
 
 function Profile(props) {
+
+    // TODO (profile) Create a way for users to toggle between a list of friends and a list of connections they have through common events or threads. We can probably do a dynamic display of the ProfileFriends component with a prop to differentiate the two.
+
+    // TODO (profile) Potentially pass down userId into the sidebar to create a more personalized list of events/threads as well as the friends component to show only users friends and connections
+    const {setActiveThread, setActiveEvent} = props;
 
     const { userId } = useParams();
 
@@ -21,19 +27,29 @@ function Profile(props) {
     });
 
     const specificUser = data?.userProfile || {};
+    // console.log(specificUser);
+    // const [ addedTech, setAddedTech ] = React.useState('');
+	// const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
 
     if (loading) {
-        return <p>loading...</p>;
-    } else {
-        console.log(specificUser.data)
-    }
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
+	} 
+
+    // const specificUser = data.userProfile;
 
     return (
         <React.Fragment>
-            <NavBar userId={userId} />
+            <NavBar />
             <div className="app-content-container">
-                <Sidebar />
-                <ProfileInfo specificUser={specificUser} />
+                <Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
+                <div>
+            <ProfileInfo specificUser={specificUser} />
+                </div>
                 <ProfileFriends />
             </div>
             <Footer/>

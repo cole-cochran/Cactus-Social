@@ -1,165 +1,511 @@
-import React, { useState } from 'react';
-
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import React from 'react';
+import Sidebar from './Sidebar';
+import NavBar from './NavBar';
+import Footer from './Footer';
 import Box from '@mui/material/Box';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Modal from '@mui/material/Modal';
+import EventEditor from './EventEditor';
+import EventComment from './EventComment';
 
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { EVENT_DETAILS } from '../utils/queries';
-import { REMOVE_EVENT, UPDATE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT, ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
-
+import { useMutation, useQuery } from '@apollo/client';
+import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
+// import { ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
+import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
 //! ADD  DESCRIPTION OF EVENT_DETAILS
 
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
-export default function EventDisplay() {
-	// for when we get the routes going
+export default function EventDisplay(props) {
+
+	const userId = AuthService.getProfile().data._id;
 	const { eventId } = useParams();
+	const { socket, activeEvent, setActiveThread, setActiveEvent } = props;
 
-	const { loading, data } = useQuery(EVENT_DETAILS, {
-		variables: {
-			eventId: eventId
-		}
+	const singleEvent = useQuery(EVENT_DETAILS, {
+		variables: { eventId: eventId }
+	});
+	const singleUser = useQuery(USER_PROFILE, {
+		variables: { userId: AuthService.getProfile().data._id }
 	});
 
-	const singleEvent = data?.event || {};
+	const [ removeEvent ] = useMutation(REMOVE_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+	const [ attendEvent ] = useMutation(ATTEND_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+	const [ leaveEvent ] = useMutation(LEAVE_EVENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
 
-	if (!singleEvent) {
-		return <h3>This event no longer exists!</h3>;
+	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT);
+
+	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+
+	const [ updateEventComment ] = useMutation(UPDATE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
+	
+	const errors = singleEvent.error || singleUser.error;
+	const loading = singleEvent.loading || singleUser.loading;
+
+	const [openEditor, setOpenEditor] = React.useState(false);
+	const [openCommentEditor, setOpenCommentEditor] = React.useState(false);
+	const [newCommentText, setNewCommentText] = React.useState("");
+	const [editedComment, setEditedComment] = React.useState("");
+	const [toggleComments, setToggleComments] = React.useState(false);
+	const [commentsList, setCommentsList] = React.useState([]);
+	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+	React.useEffect(() => {
+		socket.emit("join_event", {room: eventId, user: AuthService.getProfile().data.username})
+	}, [activeEvent]);
+
+	React.useEffect(() => {
+		socket.on('receive_comment', (data) => {
+			// console.log(data);
+			setCommentsList(commentsList => [...commentsList, data]);
+		});
+	}, [socket]);
+
+	const handleAttend = async () => {
+		await attendEvent({
+			variables: {
+				eventId: eventId,
+				attendee: userId
+			}
+		})
+	}
+
+	const handleLeave = async () => {
+		await leaveEvent({
+			variables: {
+				eventId: eventId,
+				attendee: userId
+			}
+		})
+	}
+
+	const handleCreateComment = async (event) => {
+		event.preventDefault();
+		try {
+			const commentData = await createEventComment({
+				variables: {
+					eventId: eventId, 
+					comment_text: newCommentText, author: userId
+				}
+			});
+			socket.emit('send_comment', {room: eventId, user: AuthService.getProfile().data.username, comment: commentData.data.createEventComment});
+			setNewCommentText("");
+			setMessageTimeout(true);
+			setTimeout(() => {setMessageTimeout(false)});
+		} catch (err) {
+			console.error(err);
+		}
+		
+	}
+
+	const handleRemoveComment = async (event) => {
+		const commentId = JSON.parse(localStorage.getItem('commentId'));
+		try {
+			await removeEventComment({
+				variables: {
+					eventId: eventId,
+					commentId: commentId
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+
+		localStorage.removeItem('commentId');
+	}
+
+	const handleUpdateComment = async (event) => {
+		event.preventDefault();
+		const commentId = JSON.parse(localStorage.getItem('commentId'));
+		try {
+			await updateEventComment({
+				variables: {
+					eventId: eventId,
+					commentId: commentId, 
+					comment_text: editedComment
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+		setEditedComment("");
+		localStorage.removeItem('commentId');
+		setOpenCommentEditor(false);
+	}
+
+	const handleChange = async (event) => {
+		
+		const { name, value } = event.target;
+
+		if (name === 'eventCommentText') {
+			setNewCommentText(value);
+		} else if (name === 'editedCommentText') {
+			setEditedComment(value)
+		}
+	}
+
+	const handleCommentDropdown = async (event) => {
+		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+
+		localStorage.setItem('commentId', JSON.stringify(commentId));
+
+		event.target.parentNode.childNodes[1].style.display = "flex";
+	}
+
+	const handleOpenCommentEditor = async (event) => {
+		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+		setEditedComment(currentComment);
+		setOpenCommentEditor(true);
+	}
+
+	const handleCloseCommentEditor = async (event) => {
+		setOpenCommentEditor(false);
+	}
+
+	const handleDropdown = async (event) => {
+		const content = event.target.parentNode.parentNode.childNodes[1].childNodes[0];
+		console.log(content);
+
+		content.style.display = "flex";
+	}
+
+	const handleCloseDropdown = (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
+			const content = document.querySelectorAll('.dropdown-content');
+			for (let item of content) {
+				item.style.display = "none";
+			}
+		}
+		
+	}
+
+	const handleOpenEditor = async () => {
+		setOpenEditor(true);
+	}
+
+	const handleCloseEditor = async () => {
+		setOpenEditor(false);
+	}
+
+	const handleDelete = async () => {
+		await removeEvent({
+			variables: {
+				eventId: eventId,
+				userId: userId
+			}
+		});
+
+		window.location.replace(`/profile/${userId}`);
+	}
+
+	const handleToggleComments = async () => {
+		setToggleComments(!toggleComments);
 	}
 
 	if (loading) {
-		return <div>Loading...</div>;
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
 	}
 
-	const event = {
-		title: 'Post-Bootcamp Party',
-		description:
-			"Come party at Chuck's house to celebrate the end of bootcamp. Damien is making pizza for everyone!",
-		start_date: 'December 10th, 2021',
-		end_date: 'December 10th, 2021',
-		start_time: '5:00 PM',
-		end_time: '9:00 PM',
-		owner: 'Damien',
-		attendees: [ 'Chuck', 'Cole', 'Fox', 'Sue', 'Ethan', 'Jayla' ],
-		category: 'Party',
-		in_person: true,
-		location: 'Austin, Texas',
-		image:
-			'https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80',
-		thread: 'UTA Bootcamp',
-		// comments: [],
-		date_created: '11/30/2021'
+	if (errors) {
+		return <div>ERROR: {errors}</div>
+	}
+
+	if (!singleEvent.data.eventDetails) {
+		return <h3>This event no longer exists!</h3>;
+	}
+
+	const eventComments = singleEvent.data.eventDetails.comments;
+
+	const eventData = singleEvent.data.eventDetails;
+
+	let attending = false;
+	for (let user of eventData.attendees) {
+		if (user._id === userId) {
+			attending = true;
+			break;
+		}
+	}
+
+	let owner = false;
+	if (eventData.owner._id === userId) {
+		owner = true;
+	}
+
+	const style = {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		width: 400,
+		bgcolor: '#232323',
+		boxShadow: 24,
+		border: '2px solid white'
 	};
 
-	const styles = {
-		card: {
-			margin: '20px auto',
-			textAlign: 'center'
-		},
-		chips: {
-			margin: '25px',
-			textAlign: 'center',
-			justifyContent: 'center'
-		},
-		links: {
-			margin: '20px',
-			textAlign: 'center',
-			justifyContent: 'center'
-		},
-		box: {
-			margin: '30px'
-		},
-		button: {
-			marginBottom: '10px'
-		}
-	};
+	const scroll = () => {
+		var element = document.getElementsByClassName("event-comment");
+		element[0].scrollTop = element[0].scrollHeight;
+	}
 
 	return (
-		<div>
-			<Card style={styles.card} sx={{ maxWidth: 750 }}>
-				<CardMedia component="img" height="345" image={event.image} alt={event.title} />
-				<CardContent>
-					<Typography gutterBottom variant="h5" component="div">
-						{event.title}
-					</Typography>
-					<Typography variant="body2" color="text.secondary">
-						{event.description}
-					</Typography>
-					{event.start_date === event.end_date ? (
-						<Typography variant="body2" color="text.secondary">
-							Event Date: {event.start_date}
-							Event Time: {event.start_time} to {event.end_time}
-						</Typography>
-					) : (
-						<div>
-							<Typography variant="body2" color="text.secondary">
-								Begins: {event.start_date} @ {event.start_time}
-							</Typography>
-							<Typography variant="body2" color="text.secondary">
-								Ends: {event.end_date} @ {event.end_time}
-							</Typography>
+		<div onClick={handleCloseDropdown}>
+			<NavBar userId={userId} />
+            <div className="app-content-container" >
+				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
+				<div className='event-container'>
+					<div className='event-card'>
+						<div className='event-main-div'>
+							<div className='event-img-div'>
+								<img className='event-img' src="../../assets/img/cactus_event.png" alt="event icon" />
+							</div>
+							<div className="event-main-top">
+							<div className='event-meta'>
+								<div>
+									<h2 className='event-title'>{eventData.title}</h2>
+									<h5 className='event-host'>Host: {eventData.owner.username}</h5>
+								</div>
+								<div className='event-type'>
+									<p>Event Type: </p>
+									<button>
+										{eventData.category}
+									</button>
+								</div>
+							</div>
+							<div className='event-secondary'>
+								<div className='event-datetime'>
+									<div className='event-start'>
+										<div>
+											<span>Start: </span>
+										</div>
+										<div>
+											<p>{eventData.start_date}</p>
+											<p>at {eventData.start_time}</p>
+										</div>
+									</div>
+									<div className='event-end'>
+										<div>
+											<span>End: </span>
+										</div>
+										<div>
+											<p>{eventData.start_date}</p>
+											<p>at {eventData.end_time}</p>
+										</div>
+									</div>
+								</div>
+								<div className='event-option-div'>
+									{eventData.in_person ? (
+										<div className='event-inperson'>
+											<img src="../../assets/img/place_marker.svg" alt="place marker"/>
+											<p>In-Person</p>
+										</div>
+									) : (
+										<div className='event-inperson'>
+											<img src="../../assets/img/laptop.png" alt="laptop"/>
+											<p>Virtual</p>
+										</div>
+									)}
+									{!attending ? (
+										<div className='event-attend'>
+											<img src="../../assets/img/plus-sign.svg" alt="plus sign" onClick={handleAttend} />
+											<p>Attend</p>
+										</div>
+									) : (
+										<div className='event-attend'>
+											<img src="../../assets/img/minus_sign.png" alt="minus sign" onClick={handleLeave} />
+											<p>Leave</p>
+										</div>
+									)}
+									{owner &&
+										<div className='event-more'>
+											<div>
+												<img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" onClick={handleDropdown}/>
+												<p>More</p>
+											</div>
+											<div className="dropdown">
+												<div className="dropdown-content">
+													<div className="dropdown-option event-update-option" onClick={handleOpenEditor}>
+														Update
+													</div>
+													<div className='event-delete' onClick={handleDelete} >
+														Delete
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
+							</div>
 						</div>
-					)}
-					{event.in_person ? (
-						<Stack style={styles.chips} direction="row" spacing={1}>
-							<Chip label="In Person Event" variant="outlined" />
-							<Chip label={event.category} variant="outlined" />
-						</Stack>
-					) : (
-						<Stack style={styles.chips} direction="row" spacing={1}>
-							<Chip label="Virtual Event" variant="outlined" />
-							<Chip label={event.category} variant="outlined" />
-						</Stack>
-					)}
-					{event.in_person ? (
-						<Typography variant="body2" color="text.secondary">
-							{event.location}
-						</Typography>
-					) : (
-						<Typography variant="body2" color="text.secondary">
-							<a href={event.location}>Line to virtual event</a>
-						</Typography>
-					)}
-					{/* <AvatarGroup max={4}> */}
-					{/* <Avatar alt={event.attendees[0]} src="/static/images/avatar/1.jpg" /> */}
-					{/* </AvatarGroup> */}
-					<Box
-						style={styles.box}
-						sx={{
-							'& > :not(style)': {
-								m: 1
-							}
-						}}
-					>
-						<Typography variant="body2" color="text.secondary">
-							Attendees:
-						</Typography>
-						{event.attendees.map((attendee, index) => <AccountCircleIcon key={index} />)}
+						<div className="event-location-div">
+								{eventData.in_person ? (
+									<p className='event-location'><span>Location: </span>
+										{eventData.location}
+									</p>
+								) : (
+									<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
+								)}
+							</div>
+						<div className='event-desc-div'>
+							<p className='event-description'><span>Description: </span>{eventData.description}</p>
+							{/* {eventData.start_date === eventData.end_date ? (
+								<div className='event-datetime'>
+								<p>
+									<span>Start: </span>{eventData.start_date} at {eventData.start_time}
+								</p>
+								<p>
+									<span>End: </span>{eventData.start_date} at {eventData.end_time}
+								</p>
+								</div>
+							) : (
+								<div className='event-datetime'>
+									<p>
+										<span>Begins: </span>
+										{eventData.start_date} @ {eventData.start_time}
+									</p>
+									<p>
+										<span>Ends: </span>{eventData.end_date} @ {eventData.end_time}
+									</p>
+								</div>
+							)} */}
+						</div>
+						<div className='event-other-div'>
+							{/* {eventData.in_person ? (
+								<p className='event-location'><span>Location: </span>
+									{eventData.location}
+								</p>
+							) : (
+								<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
+							)} */}
+
+							<div className='event-attendees'>
+								<h5>
+									Attendees
+								</h5>
+								<div className='event-attendees-div'>
+								{eventData.attendees.map((attendee) => (
+									<div className='event-attendee' key={attendee._id}>
+										<img src="../../assets/img/test_account.png" alt="user profile pic"/>
+										<p>{attendee.username}</p>
+									</div>
+									)
+								)}
+								</div>
+							</div>
+							{/* <div className='event-creation-info'>
+								<p>
+									Created on {eventData.date_created} by {eventData.owner.username}
+								</p>
+							</div> */}
+						</div>
+						<div className='event-actions'>
+							{/* <button>
+								Contact Host
+							</button> */}
+							{toggleComments ? (
+								<button onClick={handleToggleComments}>
+									Hide Comments
+								</button>
+							) : (
+								<button onClick={handleToggleComments}>
+									See Comments
+								</button>
+							)}		
+						</div>
+						{toggleComments ? (
+							<div className='event-comment' onLoad={scroll}>
+								{eventComments.map((comment) => (
+									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
+								))}
+								{commentsList.map((comment) => (
+									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
+								))}
+								<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
+									<input onChange={handleChange} name="eventCommentText" value={newCommentText} contentEditable autoComplete='off' />
+									<div className="chat-input-buttons">
+										<button type="submit" className="chat-input-send-button">
+											send
+										</button>
+									</div>
+									{messageTimeout && newCommentText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
+								</form>
+							</div>
+						) : (
+							<React.Fragment />
+						)}
+						
+					</div>
+				</div>
+				<Modal
+					data-id="editEvent"
+					open={openEditor}
+					onClose={handleCloseEditor}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<EventEditor eventId={eventId} eventData={eventData} />
 					</Box>
-					<Typography variant="body2" color="text.secondary">
-						Created on {event.date_created} by {event.owner} in the {event.thread} thread
-					</Typography>
-				</CardContent>
-				<CardActions style={styles.links}>
-					{/* Dynamically display "attend" or "leave" based on if user events list contains this event or if user is owner/attendee */}
-					<Button style={styles.button} variant="contained" size="small">
-						Attend Event
-					</Button>
-					{/* DO WE WANT TO POP OUT COMMENT WHEN CLICKED OR HAVE THAT OPTION ALREADY PRESENT ? */}
-					<Button style={styles.button} variant="contained" size="small">
-						See Comments
-					</Button>
-				</CardActions>
-			</Card>
+				</Modal>
+				<Modal
+					data-id="editComment"
+					open={openCommentEditor}
+					onClose={handleCloseCommentEditor}
+					aria-labelledby="modal-modal-title"
+					aria-describedby="modal-modal-description"
+				>
+					<Box sx={style}>
+						<form onSubmit={handleUpdateComment} className='edit-event-comment-form'>
+							<div>
+								<label htmlFor='editedCommentText'>Comment</label>
+								<input 
+									type="text"
+									value={editedComment} 
+									id="editedCommentText" 
+									onChange={handleChange} 
+									name="editedCommentText"
+								/>
+							</div>
+							<button
+								type="submit"
+							>
+								Update
+							</button>
+						</form>
+					</Box>
+				</Modal>
+			</div>
+			<Footer/>
 		</div>
 	);
 }

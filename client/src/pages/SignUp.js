@@ -46,21 +46,21 @@ function SignUp() {
 
 	return (
 		<div className="signup-page">
-			<div className="sign-up-header"></div>
+			{/* <div className="sign-up-header"></div> */}
 			<div className="signup-form-section">
 				<div className="center-signup-form">
 					<div>
-						<img className="one-cacti-illustration" src="/assets/img/one-cacti-illustration.svg"/>
+						<img className="many-cacti-illustration" src="../../assets/img/signup_cactus_logo.png" alt="many cacti hanging out"/>
 					</div>
 				{data ? (
 					<p>
-						Success! You may now head <Link to="/">back to the homepage.</Link>
+						Success! You may now head <Link to="/">Back to the homepage</Link>
 					</p>
 				) : (
 					<form class="signup-form" onSubmit={handleFormSubmit}>
-						<h3>Sign up for Cactus Social!</h3>
+						<h3>Join Cactus Social!</h3>
 
-						<label for="first_name">First Name</label>
+						{/* <label for="first_name">First Name</label> */}
 						<input
 							type="text"
 							id="first_name"
@@ -71,7 +71,7 @@ function SignUp() {
 							required
 						/>
 
-						<label for="last_name">Last Name</label>
+						{/* <label for="last_name">Last Name</label> */}
 						<input
 							type="text"
 							id="last_name"
@@ -82,7 +82,7 @@ function SignUp() {
 							required
 						/>
 
-						<label for="username">Username</label>
+						{/* <label for="username">Username</label> */}
 						<input
 							type="text"
 							id="username"
@@ -93,7 +93,7 @@ function SignUp() {
 							required
 						/>
 
-						<label for="email">Email Address</label>
+						{/* <label for="email">Email Address</label> */}
 						<input
 							type="email"
 							id="email"
@@ -104,7 +104,7 @@ function SignUp() {
 							required
 						/>
 
-						<label for="password">Password</label>
+						{/* <label for="password">Password</label> */}
 						<input
 							type="password"
 							id="password"
@@ -131,17 +131,17 @@ function SignUp() {
 						</button>
 					</form>
 				)}
-				{error && <div className="my-3 p-3 bg-danger text-white">{error.message}</div>}
-					<div>
-						<img className="two-cacti-illustration" src="/assets/img/two-cacti-illustration.svg"/>
-					</div>
+				{error && <div className="my-3 p-3 bg-danger text-white">{error.message}	</div>}
+					{/* <div>
+						<img className="two-cacti-illustration" src="/assets/img/two-cacti-illustration.svg" alt="two cacti"/>
+					</div> */}
 				</div>
 			</div>
-			<div className="signup-footer">
+			{/* <div className="signup-footer">
 				<img src="#" alt="" />
-			</div>
-			<div className="signup-banner">
-			</div>  
+			</div> */}
+			{/* <div className="signup-banner">
+			</div>   */}
 		</div>
 	);
 }

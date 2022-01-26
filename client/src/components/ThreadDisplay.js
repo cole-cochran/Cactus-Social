@@ -1,31 +1,20 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
-import ReactDOM from 'react-dom'
+// import { Link } from 'react-router-dom';
+import { ThreadPost } from "../components/ThreadPost";
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import Auth from '../utils/auth';
+import AuthService from '../utils/auth';
 
-import { ALL_THREAD_POSTS, THREAD_DETAILS, PINNED_POSTS } from '../utils/queries';
+import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
-import {
-	CREATE_POST,
-	REMOVE_POST,
-	UPDATE_POST,
-	PIN_POST,
-	UNPIN_POST,
-	ADD_POST_REACTION,
-	REMOVE_THREAD
-} from '../utils/mutations';
-//! Give description of imported mutations
+// import { ADD_POST_REACTION } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
+import { PinnedPost } from './PinnedPost';
 
 const style = {
 	position: 'absolute',
@@ -37,13 +26,46 @@ const style = {
 	boxShadow: 24
 };
 
+
 function ThreadDisplay(props) {
+
+	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
+	// TODO (threadDisplay) Allow only thread owners to delete thread
+
+	let updatedThreadPosts;
+
 	const { threadId } = useParams();
 
+	const {activeThread, socket, setActiveComment} = props;
+
+	const userId = AuthService.getProfile().data._id;
+
 	const [ createPost ] = useMutation(CREATE_POST);
-	const [ removePost ] = useMutation(REMOVE_POST);
-	const [ pinPost ] = useMutation(PIN_POST);
-	const [ unpinPost ] = useMutation(UNPIN_POST);
+
+	const [ removePost ] = useMutation(REMOVE_POST, {
+		refetchQueries: [
+			ALL_THREAD_POSTS,
+			'allThreadPosts'
+		],
+	});
+
+	const [ updatePost ] = useMutation(UPDATE_POST, {
+		refetchQueries: [
+			ALL_THREAD_POSTS,
+			'allThreadPosts'
+		],
+	});
+
+	const [ updatePinnedPost ] = useMutation(PIN_POST, {
+		refetchQueries: [
+			USER_PROFILE,
+			'userProfile'
+		],
+	});
+
+	const [ removeThread ] = useMutation(REMOVE_THREAD);
+
+	const [ removePinnedPost ] = useMutation(UNPIN_POST);
 
 	const singleThread = useQuery(THREAD_DETAILS, {
 		variables: { threadId: threadId }
@@ -53,11 +75,20 @@ function ThreadDisplay(props) {
 		variables: { threadId: threadId }
 	});
 
-	const errors = singleThread.error || threadPosts.error;
-	const loading = singleThread.loading || threadPosts.loading;
+	const userData = useQuery(USER_PROFILE, {
+		variables: { userId: AuthService.getProfile().data._id }
+	});
+
+	const errors = singleThread.error || threadPosts.error || userData.error;
+	const loading = singleThread.loading || threadPosts.loading || userData.loading;
+
+	const [ open, setOpen ] = React.useState(false);
+	const [ openEditor, setOpenEditor ] = React.useState(false);
 
 	const [ newPostText, setNewPostText ] = React.useState('');
-	// const [editPost, setEditPost] = React.useState('');
+	const [editPost, setEditPost] = React.useState({
+		post_text: ""
+	});
 	const [ pinnedPost, setPinnedPost ] = React.useState(
         {
             pinTitle: '',
@@ -65,47 +96,181 @@ function ThreadDisplay(props) {
         }
     );
 
-	const handlePostSubmit = async (event) => {
+	const [postList, setPostList] = React.useState([]);
+	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+	const handleRemoveThread = () => {
+		try {
+			removeThread({
+				variables: {
+					threadId: threadId
+				}
+			})
+		} catch(err) {
+			console.error(err);
+		}
+
+		window.location.replace(`/profile/${userId}`);
+	}
+
+	React.useEffect(() => {
+		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
+	}, [activeThread]);
+
+	React.useEffect(() => {
+		socket.on('receive_post', (data) => {
+			setPostList([...postList, data]);
+		})
+	}, [socket]);
+
+	const handleOpenDropdown = (event) => {
+		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+		localStorage.setItem('postId', JSON.stringify(postData));
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseDropdown = (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const dropdowns = document.querySelectorAll('.dropdown-content');
+			for (let dropdown of dropdowns) {
+				dropdown.style.display = "none";
+			}
+		}
+	}
+
+	const handleOpenEditor = (event) => {
+		const currentText = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+		setEditPost({
+			post_text: currentText
+		})
+        setOpenEditor(true);
+	}
+
+	const handleCloseEditor = (event) => {
+		localStorage.removeItem('postId');
+        setOpenEditor(false);
+	}
+
+	const handleOpen = (event) => {
+        localStorage.setItem('postId', JSON.stringify(event.target.parentNode.parentNode.getAttribute('data-id')));
+        setOpen(true);
+    }
+	const handleClose = (event) => {
+        localStorage.removeItem('postId');
+        setOpen(false);
+    }
+
+	const handleRemovePost = (event) => {
 		event.preventDefault();
+        const postId = JSON.parse(localStorage.getItem('postId'))
 
 		try {
-			const { data } = await createPost({
+			removePost({
 				variables: {
-					threadId: singleThread.data.threadDetails._id,
-                    post_text: newPostText
+					threadId: threadId,
+					postId: postId
 				}
-			});
+			})
+		} catch(err) {
+			console.error(err);
+		}
 
-			setNewPostText('');
-            window.location.reload(false);
+		localStorage.removeItem('postId');
+	}
+	
+	const handlePostSubmit = async (event) => {
+		event.preventDefault();
+		try {
+			if(socket) {
+				const postData = await createPost({
+					variables: {
+						threadId: singleThread.data.threadDetails._id,
+						post_text: newPostText,
+						author: AuthService.getProfile().data._id
+					}
+				});
+				console.log(postData.data.createPost);
+				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
+				setMessageTimeout(true);
+				setTimeout(() => {setMessageTimeout(false);}, 2000);
+				
+			}
 		} catch (err) {
 			console.error(err);
 		}
+
+		setNewPostText('');
 	};
 
-    const handlePinSubmit = async (event) => {
+    const handlePinPost = async (event) => {
 		event.preventDefault();
         const postId = JSON.parse(localStorage.getItem('postId'))
-        console.log(threadId) 
-        console.log(pinnedPost.pinTitle) 
-        console.log(pinnedPost.pinHash) 
+
 		try {
-			const { data } = await pinPost({
+			await updatePinnedPost({
 				variables: {
-                    threadId: threadId,
+                    userId: AuthService.getProfile().data._id,
                     postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash
 				}
 			});
 
-			setNewPostText('');
-            handleClose();
-            // window.location.assign(`/threads/${threadId}`);
+			setPinnedPost({
+				pinTitle: '',
+				pinHash: ''
+			});
+
+			handleClose();
+
 		} catch (err) {
 			console.error(err);
 		}
 	};
+
+	const handleEditPost = async (event) => {
+		event.preventDefault();
+		const postId = JSON.parse(localStorage.getItem('postId'));
+		try {
+			await updatePost({
+				variables: {
+					threadId: singleThread.data.threadDetails._id,
+					postId: postId,
+					post_text: editPost.post_text
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+		setEditPost({ post_text: "" });
+		localStorage.removeItem('postId');
+		handleCloseEditor();
+	}
+
+	let usersThreadPins;
+
+	const handleUnpinPost = async (event) => {
+		event.preventDefault();
+		const postId = event.target.parentNode.parentNode.getAttribute('data-id');
+
+		const foundPinArr = usersThreadPins.filter((post) => (
+			post.post._id === postId ? post : null
+		));
+
+		const foundPin = foundPinArr[0];
+
+		try {
+			await removePinnedPost({
+				variables: {
+					userId: AuthService.getProfile().data._id,
+					pinnedId: foundPin._id
+				}
+			})
+		} catch (err) {
+			console.error(err);
+		}
+	}
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -122,87 +287,96 @@ function ThreadDisplay(props) {
                 ...pinnedPost,
                 pinHash: value
             })
-        }
+        } else if (name === 'editedPost') {
+			setEditPost({
+				post_text: value
+			})
+		}
     };
 
-	const [ open, setOpen ] = React.useState(false);
-
-	const handleOpen = (event) => {
-        console.log(event.target.getAttribute('data-id'))
-        
-        localStorage.setItem('postId', JSON.stringify(event.target.getAttribute('data-id')));
-
-        // event.stopPropagation();
-        setOpen(true);
-    }
-	const handleClose = (event) => {
-        localStorage.removeItem('postId');
-        setOpen(false);
-    }
-
 	if (loading) {
-		return <p>loading...</p>;
+
+		return (
+			<div className='loading-icon-box'>
+				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
+			</div>
+		)
+	} 
+
+	if (userData.data.userProfile.pinned_posts.length) {
+		const allUserPins = userData.data.userProfile.pinned_posts;
+
+		usersThreadPins = allUserPins.filter((pinnedPost) => (
+			pinnedPost.post.thread._id === threadId
+		));
+
+		const userPinIds = usersThreadPins.map((pin) => {
+			return pin.post._id
+		});
+
+		updatedThreadPosts = threadPosts.data.allThreadPosts.map((threadPost) => {
+			if (userPinIds.indexOf(threadPost._id) !== -1) {
+				return {
+					...threadPost,
+					pinned: true
+				}
+			} else {
+				return {
+					...threadPost,
+					pinned: false
+				}
+			}
+		});
 	} else {
-		console.log(threadPosts.data);
-		console.log(singleThread.data);
+		updatedThreadPosts = threadPosts.data.allThreadPosts;
 	}
 
+	const scroll = () => {
+		var element = document.getElementById("chats-container");
+		element.scrollTop = element.scrollHeight;
+	}
+
+	const threadOwner = singleThread.data.threadDetails.moderator._id === userId;
+
 	return (
-		<main className="thread-wrapper">
-			<div className="thread-content-container">
-				{/* <div className="top-panel"> */}
-				<div className="thread-header">
-					{/* <h3>Austin Code Bootcamp Students</h3> */}
-					<h3>{singleThread.data.threadDetails.title}</h3>
-					<div>
-						{/* <p>M: Damien</p> */}
-						<p>M: {singleThread.data.threadDetails.moderator.username}</p>
+		<React.Fragment>
+		<main onClick={handleCloseDropdown} className="thread-wrapper">
+			<div className="thread-content-container" onLoad={scroll}>
+				<div className='thread-top'>
+					<div className="thread-header">
+						<h3>{singleThread.data.threadDetails.title}</h3>
+						<div>
+							<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
+						</div>
 					</div>
+					{threadOwner ? (
+						<img src="../../assets/img/remove_icon.png" alt="delete thread" onClick={handleRemoveThread}/>
+					) : (
+						<React.Fragment />
+					)}
+					
 				</div>
-				<div className="chats-container">
+				
+				<div id="chats-container" className="chats-container">
 					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
-					<div>
-						{threadPosts.data.allThreadPosts.map(
-							(post) => (
-								post.pinned ? (
-									<div className="chat subthread" data-id={post._id} key={post._id} onClick={handleOpen} >
-										<div className="pos">
-											<span className="chat-name">{post.author.username}</span>
-											<span className="chat-date">{post.date_created}</span>
-											{post.pinHash && (
-												<Link to={`/subthread/${post._id}`}>
-													<span className="subthread-title">{post.pinHash}</span>
-												</Link>
-											)}
-										</div>
-										<p>{post.post_text}</p>
-										<Link to={`/subthread/${post._id}`}>
-											<Chip
-												label="Comments"
-												size="small"
-												avatar={<Avatar>{post.comments.length}</Avatar>}
-											/>
-										</Link>
-									</div>
-								) : (
-									<div data-id={post._id} key={post._id} className="chat" onClick={handleOpen}>
-										<div className="pos">
-											<span className="chat-name">{post.author.username}</span>
-											<span className="chat-date">{post.date_created}</span>
-										</div>
-										<p className="pos">{post.post_text}</p>
-										<Link to={`/subthread/${post._id}`}>
-											<Chip
-												label="Comments"
-												size="small"
-												avatar={<Avatar>{post.comments.length}</Avatar>}
-											/>
-										</Link>
-									</div>
-								)
-                            )
-						)}
-					</div>
+					{updatedThreadPosts.map(
+						(post) => (
+							post.pinned ? (
+								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
+							) : (
+								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
+							)
+						)
+					)}
+					{postList.map(
+						(post) => (
+							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+							dropdown={handleOpenDropdown} 
+							remove={handleRemovePost} />
+						)
+					)}
 					<Modal
                         data-id="pinning"
 						open={open}
@@ -211,7 +385,7 @@ function ThreadDisplay(props) {
 						aria-describedby="modal-modal-description"
 					>
 						<Box sx={style}>
-							<form className="modal-form" onSubmit={handlePinSubmit}>
+							<form className="modal-form" onSubmit={handlePinPost}>
 								<div className="modal-header">
 									<h4>Add Subthread</h4>
 								</div>
@@ -225,20 +399,39 @@ function ThreadDisplay(props) {
 							</form>
 						</Box>
 					</Modal>
+					<Modal
+                        data-id="editor"
+						open={openEditor}
+						onClose={handleCloseEditor}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<form className="modal-form" onSubmit={handleEditPost}>
+								<div className="modal-header">
+									<h4>Update Post</h4>
+								</div>
+								<label>Post Text</label>
+								<input value={editPost.post_text} name="editedPost" onChange={handleChange} placeholder="e.g. Cactus Party" />
+								<button className="modal-button" type="submit">
+									Update
+								</button>
+							</form>
+						</Box>
+					</Modal>
 				</div>
-				{/* </div> */}
-				{/* <div> */}
-				{/* <div className="chat-input"> */}
 				<form onSubmit={handlePostSubmit} className="chat-input">
 					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
-                    <input onChange={handleChange} name="postText" value={newPostText} contentEditable></input>
+					<textarea onChange={handleChange} name="postText" value={newPostText} contentEditable  autoComplete='off' />
+                    {/* <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/> */}
 					<div className="chat-input-buttons">
-						<button type="submit" className="chat-input-send-button">send</button>
+						<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Submit</button>
 					</div>
+					{messageTimeout && newPostText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
 				</form>
-				{/* </div> */}
 			</div>
 		</main>
+		</React.Fragment>
 	);
 }
 
