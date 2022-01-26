@@ -203,7 +203,6 @@ export default function EventDisplay() {
 			}
 		});
 
-
 		window.location.replace(`/profile/${userId}`);
 	}
 

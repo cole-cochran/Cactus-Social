@@ -965,7 +965,7 @@ const resolvers = {
 					edited: true
 				},
 				{ new: true }
-			);
+			).populate('owner').populate('attendees').populate('comments');
 
 			return updatedEvent;
 			// }

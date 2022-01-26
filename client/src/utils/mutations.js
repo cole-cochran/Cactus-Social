@@ -791,10 +791,34 @@ mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $sta
         end_date
         start_time
         end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
         category
         in_person
         location
         image
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
+        date_created
         edited
     }
 }
