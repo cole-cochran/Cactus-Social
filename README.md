@@ -1,12 +1,12 @@
 # Cactus Social
 
-Version 1.1.0
+Version 2.0.1
 
 [Link To Deployed Application](https://cactus-social.herokuapp.com/)
 
 Original Deployment Date : December 8, 2021
 
-Current Version Deployment Date: December 12th, 2021
+Current Version Deployment Date: January 26th, 2022
 
 <br>
 
@@ -181,12 +181,12 @@ That is all there is to it. Enjoy your time on Cactus Social!
 
 <br>
 
-- MongoDB 
+- MongoDB
 - Express.js 
 - React.js
 - Node.js 
-- Weavy
-- Mongoose 
+- Socket.io
+- Mongoose
 - React Router
 - GraphQL
 - Apollo
@@ -207,12 +207,15 @@ That is all there is to it. Enjoy your time on Cactus Social!
 ### Users can:
 
 - Create and update their profile information including their bio and tech-stack
-- See all threads and create a new thread
+- See all threads and create a new thread, and delete created threads
 - Access thread posts, pin posts, and create new posts
 - View all comments for a given post and add their own comments
 - Access the direct messenger, start new chats, and post in chats
 - View the profiles of other users in their network
 - Sign up, login, and logout of the application
+- Send, accept, and deny friend requests, and remove existing friends
+- Create, attend (or leave), delete, update events
+- Update, pin, delete posts and update and delete comments
 
 <br>
 
@@ -304,20 +307,18 @@ Nathan Delman: [Nathan's GitHub](https://github.com/Delmanat3)
 
 <br>
 
-
-- ~~Allow users to send and accept friend requests~~
-- ~~Allow users to create, attend (or leave), delete, update~~
-- ~~Add functionality to delete a thread and to update and/or delete posts and comments~~
-- ~~Add more artwork and logos to application~~
-
 - Restrict users to only see threads they have joined or created 
-- Let users further personalize their profile page 
+- Let users further personalize their profile page even more
 - Allow users to make events public (or private), and post about events.
 - Allow users to add emoji reactions to posts and comments
 - Set up proper user access to direct messenger
 - Add additional layers of security
-- Add slash commands and formatting options for posts and comments
-- Get the image part of everything working for profile page and events display
+- Add slash commands and formatting options for posts and comments 
+- Get the image submission working for profile page and events display
+- Prevent users from sending multiple friend requests
+- Prevent users from sending each other independent friend requests at the same time
+- Allow users to invite other users to threads or events that aren't public
+- Set up display and searching of user's pinned posts
 
 <br>
 
