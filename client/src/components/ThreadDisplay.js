@@ -119,7 +119,7 @@ function ThreadDisplay(props) {
 
 	React.useEffect(() => {
 		socket.on('receive_post', (data) => {
-			setPostList([...postList, data]);
+			setPostList(postList => [...postList, data]);
 		})
 	}, [socket]);
 
