@@ -24,7 +24,7 @@ const style = {
 
 function EventsPanel(props) {
 
-    const { socket } = props;
+    const { setActiveEvent } = props;
 
     const {loading, data} = useQuery(ALL_EVENTS);
 
@@ -33,6 +33,10 @@ function EventsPanel(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleEventChange = (event) => {
+        setActiveEvent(event);
+    }
 
     if (loading) {
         <h2>Loading...</h2>
@@ -47,7 +51,7 @@ function EventsPanel(props) {
             <ul>
                 {allEvents.map((event) => (
                     <li key={event._id}>
-                        <Link to={`/events/${event._id}`}>
+                        <Link onClick={(e) => {handleEventChange(event._id)}} to={`/events/${event._id}`} >
                             {event.title}
                         </Link>
                     </li>

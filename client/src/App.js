@@ -1,3 +1,4 @@
+import React from 'react';
 //*import pages
 import SplashPage from './pages/Splashpage/Splashpage';
 import SignUp from './pages/SignUp';
@@ -59,6 +60,9 @@ function App() {
 	// TODO (app) Need to add the ability for people to send and accept/deny friend requests. Maybe 
 
 	// console.log(AuthService.getProfile())
+	const [activeEvent, setActiveEvent] = React.useState('');
+	const [activeThread, setActiveThread] = React.useState('');
+
 	return (
 		// <ThreadCreation/>
 		// <SplashPage/>
@@ -77,7 +81,7 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/threads/:threadId">
-							{AuthService.loggedIn() ? <Dashboard socket={socket}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard socket={socket} setActiveEvent={setActiveEvent} setActiveThread={setActiveThread} activeThread={activeThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
 							{AuthService.loggedIn() ? <Profile /> : <SplashPage />}
@@ -89,7 +93,7 @@ function App() {
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
-							{AuthService.loggedIn() ? <EventDisplay socket={socket}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />

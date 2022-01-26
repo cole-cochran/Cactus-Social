@@ -80,6 +80,13 @@ io.on('connection', (socket) => {
 		console.log(`User ${socket.id} has joined post ${data.room}`);
 	});
 
+	socket.on("join_event", (data) => {
+		socket.rooms.forEach(room => {
+			socket.leave(room);
+		});
+		socket.join(data.room);
+	})
+
 	// socket.on("leave_existing_thread", (socket) => {
 	// 	console.log("leave existing thread");
 	// 	socket.leaveAll();
