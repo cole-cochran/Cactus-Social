@@ -45,7 +45,7 @@ const client = new ApolloClient({
 	cache: new InMemoryCache()
 });
 
-const socket = io.connect('localhost:3001');
+const socket = io();
 
 function App() {
 
