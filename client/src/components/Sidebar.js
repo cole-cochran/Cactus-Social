@@ -4,6 +4,7 @@ import ThreadsPanel from './ThreadsPanel';
 import EventsPanel from './EventsPanel';
 
 import AuthService from '../utils/auth';
+// import SidebarPanel from './SidebarPanel';
 
 // const threadIcon = document.querySelector('#thread-icon');
 // const eventIcon = document.querySelector('#event-icon');
@@ -32,17 +33,24 @@ function toggleSidebarPanelDisplay(e) {
 
 	const threadPanel = document.querySelector('#sidebar-thread-panel');
 	const eventsPanel = document.querySelector('#sidebar-events-panel');
+	// const sidebarMainPanel = document.querySelector('#sidebar-main-panel');
+	// console.log(sidebarMainPanel);
+	// eventsPanel.style.display = 'none';
+	// threadPanel.style.display = 'none';
+	// sidebarMainPanel.style.display = 'none';
 
-	eventsPanel.style.display = 'none';
-	threadPanel.style.display = 'none';
+	// let panelAttribute = e.target.getAttribute('data-panel');
 
-	let panelAttribute = e.target.getAttribute('data-panel');
-
-	if (panelAttribute === 'events-panel') {
-		eventsPanel.style.display = 'block';
-	} else if (panelAttribute === 'threads-panel') {
+	// if (panelAttribute === 'events-panel') {
+	// 	eventsPanel.style.display = 'block';
+	// } else if (panelAttribute === 'threads-panel') {
+	// 	threadPanel.style.display = 'block';
+	// } else 
+	// if (panelAttribute === 'sidebar-main-panel') {
+		// sidebarMainPanel.style.display = 'block';
 		threadPanel.style.display = 'block';
-	}
+		eventsPanel.style.display = 'block';
+	// }
 }
 
 function Sidebar(props) {
@@ -61,12 +69,12 @@ function Sidebar(props) {
 							alt="click to open sidebar"
 						/>
 					</li>
-					<li>
+					{/* <li>
 						<img
 							onClick={toggleSidebarPanelDisplay}
 							src="/assets/img/google-docs.svg"
 							data-panel="threads-panel"
-							alt="click to open sidebar"
+							alt="click to open threads"
 						/>
 					</li>
 					<li>
@@ -74,9 +82,9 @@ function Sidebar(props) {
 							onClick={toggleSidebarPanelDisplay}
 							src="/assets/img/google-calendar.svg"
 							data-panel="events-panel"
-							alt="click to open profile"
+							alt="click to open events"
 						/>
-					</li>
+					</li> */}
 					<li>
 						{/* <Link to="/chat"> */}
 							<img src="/assets/img/speech-bubble.svg" alt="click to open profile" />

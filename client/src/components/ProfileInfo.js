@@ -5,10 +5,10 @@ import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
-import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO } from '../utils/mutations';
-import { USER_PROFILE } from '../utils/queries';
+import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND } from '../utils/mutations';
+import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
 
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
 
 function ProfileInfo(props) {
@@ -17,6 +17,8 @@ function ProfileInfo(props) {
 	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
 
 	const { specificUser } = props;
+
+	const userId = AuthService.getProfile().data._id;
 
     //* UPDATE_PHOTO needs: userId and picture args
 	const [ updatePhoto ] = useMutation(UPDATE_PHOTO, {
@@ -44,6 +46,20 @@ function ProfileInfo(props) {
 		]
 	});
 
+	const [ sendFriendRequest ] = useMutation(SEND_FRIEND_REQUEST, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+
+	const [ removeFriend ] = useMutation(REMOVE_FRIEND, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+
     //* photo state
 	const [ photo, setPhoto ] = React.useState(specificUser.picture || '');
     //* tech stack states for adding and updating tech data
@@ -56,6 +72,45 @@ function ProfileInfo(props) {
 	const [ openTech, setOpenTech ] = React.useState(false);
 	const [ openBio, setOpenBio ] = React.useState(false);
 	const [ openImage, setOpenImage ] = React.useState(false);
+
+	const getAllUsers = useQuery(ALL_USERS);
+	const getAllFriends = useQuery(USER_FRIENDS, {
+		variables: {
+			userId: userId
+		}
+	});
+
+	const loading = getAllUsers.loading || getAllFriends.loading;
+
+	const handleRemoveFriend = async (event) => {
+		event.preventDefault();
+
+		console.log(specificUser._id)
+
+		try {
+			await removeFriend({
+				variables: {
+					userId: userId,
+					friend: specificUser._id
+				}
+			})
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	const handleSendFriendRequest = async (event) => {
+		try {
+			await sendFriendRequest({
+				variables: {
+					userId: userId,
+					friend: specificUser._id
+				}
+			})
+		} catch (err) {
+			console.log(err);
+		}
+	}
 
     //* conditional modal openers
     const handleOpen = async (event) => {
@@ -195,6 +250,26 @@ function ProfileInfo(props) {
 		boxShadow: 24,
 	};
 
+	if (loading) {
+		return <div>Loading...</div>
+	}
+
+	const allUsers = getAllUsers.data?.allUsers;
+
+	console.log(allUsers);
+
+	const allFriends = getAllFriends.data?.userFriends.friends;
+
+	console.log(allFriends)
+
+	let userFriendChecker = false;
+
+	for (let friend of allFriends) {
+		if (friend._id === specificUser._id) {
+			userFriendChecker = true;
+			break;
+		}
+	}
 
 	return (
 		<React.Fragment>
@@ -240,6 +315,17 @@ function ProfileInfo(props) {
                         </div>}
 					</div>
 				</div>
+				{!canEditProfile ? (
+					<div className='friend-options-div'>
+						{userFriendChecker ? (
+							<button className='remove-friend-btn' onClick={handleRemoveFriend}>Remove Friend</button>
+						) : (
+							<button className="send-request-btn" onClick={handleSendFriendRequest}>Send Friend Request</button>
+						)}
+					</div>
+				) : (
+					<React.Fragment />
+				)}
 			</div>
 			<Modal
 				open={openImage}

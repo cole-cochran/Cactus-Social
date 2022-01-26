@@ -215,7 +215,6 @@ export default function EventDisplay(props) {
 			}
 		});
 
-
 		window.location.replace(`/profile/${userId}`);
 	}
 

@@ -292,6 +292,14 @@ mutation addFriend($userId: ID!, $friend: ID!) {
             _id
             username
         }
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
     }
 }
 `;
@@ -309,6 +317,14 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
         tech_stack
         date_joined
         friends {
+            _id
+            username
+        }
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
             _id
             username
         }
@@ -347,6 +363,62 @@ mutation updateBio($userId: ID!, $bio: String!) {
     }
 }
 `;
+
+export const SEND_FRIEND_REQUEST = gql`
+mutation sendFriendRequest($userId: ID!, $friend: ID!) {
+    sendFriendRequest(userId: $userId, friend: $friend) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
+    }
+}
+`
+
+export const DENY_FRIEND_REQUEST = gql`
+mutation denyFriendRequest($userId: ID!, $friend: ID!) {
+    denyFriendRequest(userId: $userId, friend: $friend) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        tech_stack
+        date_joined
+        friends {
+            _id
+            username
+        }
+        friend_requests {
+            _id
+            username
+        }
+        sent_friend_requests {
+            _id
+            username
+        }
+    }
+}
+`
 
 //*  THREAD STUFF
 
@@ -719,10 +791,34 @@ mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $sta
         end_date
         start_time
         end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
         category
         in_person
         location
         image
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
+        date_created
         edited
     }
 }
@@ -752,10 +848,6 @@ mutation attendEvent($eventId: ID!, $attendee: ID!) {
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -799,10 +891,6 @@ mutation leaveEvent($eventId: ID!, $attendee: ID!) {
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
@@ -966,10 +1054,6 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
         in_person
         location
         image
-        thread {
-            _id
-            title
-        }
         comments {
             _id
             comment_text
