@@ -54,7 +54,7 @@ function Login(props) {
 				) : (
 				<form className="login-form" onSubmit={handleFormSubmit}>
 					<h3>Log in to your account</h3>
-					<label for="username">Username</label>
+					{/* <label for="username">Username</label> */}
 					<input 
 						type="text" 
 						id="username"
@@ -63,7 +63,7 @@ function Login(props) {
 						onChange={handleChange}
 						placeholder="Username"
 					/>
-					<label for="password">Password</label>
+					{/* <label for="password">Password</label> */}
 					<input 
 						type="password" 
 						id="password"
