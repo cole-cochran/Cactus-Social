@@ -62,7 +62,8 @@ function EventsPanel(props) {
             <div className="thread-sidebar-header">
                 <div>
                     <img
-                        src="/assets/img/google-calendar.svg"
+                        style={{width: "35px", height: "auto", marginRight: "20px", marginLeft: "8px"}}
+                        src="/assets/img/cactus_events_alt.png"
                         alt="events icon"
                     />
                     <h3>Events</h3>
@@ -81,7 +82,7 @@ function EventsPanel(props) {
                     )}
                     
                 </div>
-                <img id="event-create-btn" className="sidebar-add-icon" src="../assets/img/plus-sign.svg" alt="click to add thread" onClick={handleOpen}/>
+                <img id="event-create-btn" className="sidebar-add-icon" src="../assets/img/new_cactus_plus.png" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul
             id="events-dropdown">

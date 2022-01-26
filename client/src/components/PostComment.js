@@ -14,7 +14,7 @@ export default function PostComment (props) {
                 </div>
                 { owner === comment.author._id ? 
                 <div className="dropdown">
-                    <img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
+                    <img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
                     <div className="dropdown-content">
                         <div className="dropdown-option" onClick={handleOpenEditor}>
                             Update

@@ -275,10 +275,6 @@ query friendRequests($userId: ID!) {
 			_id
 			username
 		}
-		sent_friend_requests {
-			_id
-			username
-		}
 	}
 }
 `
@@ -295,10 +291,6 @@ query sentFriendRequests($userId: ID!) {
 		bio
 		tech_stack
 		date_joined
-		friend_requests {
-			_id
-			username
-		}
 		sent_friend_requests {
 			_id
 			username

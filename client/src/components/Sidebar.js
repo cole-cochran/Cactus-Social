@@ -85,24 +85,35 @@ function Sidebar(props) {
 							alt="click to open events"
 						/>
 					</li> */}
-					<li>
+					{/* <li> */}
 						{/* <Link to="/chat"> */}
-							<img src="/assets/img/speech-bubble.svg" alt="click to open profile" />
+							{/* <img src="/assets/img/speech-bubble.svg" alt="click to open chat" /> */}
 						{/* </Link> */}
-					</li>
-					<li>
+					{/* </li> */}
+					{/* <li>
 						<Link to={`/profile/${userId}`}>
-							<img src="/assets/img/home-page.svg" alt="click to open profile" />
+							<img style={{width: "30px"}} src="/assets/img/cactus_home_icon.png" alt="click to open profile" />
 						</Link>
 					</li>
 					<li>
 						<div onClick={AuthService.logout}>
-							<img src="/assets/img/log-out.svg" alt="click to open profile" />
+							<img style={{width: "30px"}} src="/assets/img/cactus_logout.png" alt="click to logout" />
 						</div>
-					</li>
+					</li> */}
 				</ul>
 			</div>
 			<div className="sidebar" id="sidebar" data-sidebardisplay="hidden">
+				<div className='main-sidebar-navs'>
+					<Link to={`/profile/${userId}`}>
+						<img style={{width: "40px", height: "45px", marginRight: "18px"}} src="/assets/img/cactus_home_icon.png" alt="click to open profile" />
+						<h3>Home</h3>
+					</Link>
+					<div onClick={AuthService.logout}>
+						<img style={{width: "35px", height: "35px", marginLeft: "5px"}} src="/assets/img/cactus_logout.png" alt="click to logout" />
+						<h3>Logout</h3>
+					</div>
+				</div>
+						
 				<ThreadsPanel toggle={toggleSidebar} setActiveThread={setActiveThread}/>
 				<EventsPanel toggle={toggleSidebar} setActiveEvent={setActiveEvent}/>
 			</div>

@@ -27,7 +27,7 @@ export default function EventDisplay(props) {
 	});
 	const singleUser = useQuery(USER_PROFILE, {
 		variables: { userId: AuthService.getProfile().data._id }
-	})
+	});
 
 	const [ removeEvent ] = useMutation(REMOVE_EVENT, {
 		refetchQueries: [
@@ -47,13 +47,16 @@ export default function EventDisplay(props) {
 			'eventDetails'
 		]
 	});
+
 	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT);
+
 	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
+
 	const [ updateEventComment ] = useMutation(UPDATE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -185,7 +188,8 @@ export default function EventDisplay(props) {
 	}
 
 	const handleDropdown = async (event) => {
-		const content = event.target.parentNode.parentNode.childNodes[1];
+		const content = event.target.parentNode.parentNode.childNodes[1].childNodes[0];
+		console.log(content);
 
 		content.style.display = "flex";
 	}
@@ -281,7 +285,10 @@ export default function EventDisplay(props) {
 				<div className='event-container'>
 					<div className='event-card'>
 						<div className='event-main-div'>
-							<img className='event-img' src="../../assets/img/camping_trip.png" alt="event icon" />
+							<div className='event-img-div'>
+								<img className='event-img' src="../../assets/img/cactus_event.png" alt="event icon" />
+							</div>
+							<div className="event-main-top">
 							<div className='event-meta'>
 								<div>
 									<h2 className='event-title'>{eventData.title}</h2>
@@ -294,57 +301,90 @@ export default function EventDisplay(props) {
 									</button>
 								</div>
 							</div>
-							<div className='event-option-div'>
-								{eventData.in_person ? (
-									<div className='event-inperson'>
-										<img src="../../assets/img/place_marker.svg" alt="place marker"/>
-										<p>In-Person</p>
-									</div>
-								) : (
-									<div className='event-inperson'>
-										<img src="../../assets/img/laptop.png" alt="laptop"/>
-										<p>Virtual</p>
-									</div>
-								)}
-								{!attending ? (
-									<div className='event-attend'>
-										<img src="../../assets/img/plus-sign.svg" alt="plus sign" onClick={handleAttend} />
-										<p>Attend</p>
-									</div>
-								) : (
-									<div className='event-attend'>
-										<img src="../../assets/img/minus_sign.png" alt="minus sign" onClick={handleLeave} />
-										<p>Leave</p>
-									</div>
-								)}
-								{owner &&
-									<div className="dropdown">
-										<div className='event-more'>
-											<img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" onClick={handleDropdown}/>
-											<p>More</p>
+							<div className='event-secondary'>
+								<div className='event-datetime'>
+									<div className='event-start'>
+										<div>
+											<span>Start: </span>
 										</div>
-									<div className="dropdown-content">
-										<div className="dropdown-option" onClick={handleOpenEditor}>
-											Update
+										<div>
+											<p>{eventData.start_date}</p>
+											<p>at {eventData.start_time}</p>
 										</div>
-										<div onClick={handleDelete} >
-											Delete
+									</div>
+									<div className='event-end'>
+										<div>
+											<span>End: </span>
+										</div>
+										<div>
+											<p>{eventData.start_date}</p>
+											<p>at {eventData.end_time}</p>
 										</div>
 									</div>
 								</div>
-								}
-								
+								<div className='event-option-div'>
+									{eventData.in_person ? (
+										<div className='event-inperson'>
+											<img src="../../assets/img/place_marker.svg" alt="place marker"/>
+											<p>In-Person</p>
+										</div>
+									) : (
+										<div className='event-inperson'>
+											<img src="../../assets/img/laptop.png" alt="laptop"/>
+											<p>Virtual</p>
+										</div>
+									)}
+									{!attending ? (
+										<div className='event-attend'>
+											<img src="../../assets/img/plus-sign.svg" alt="plus sign" onClick={handleAttend} />
+											<p>Attend</p>
+										</div>
+									) : (
+										<div className='event-attend'>
+											<img src="../../assets/img/minus_sign.png" alt="minus sign" onClick={handleLeave} />
+											<p>Leave</p>
+										</div>
+									)}
+									{owner &&
+										<div className='event-more'>
+											<div>
+												<img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" onClick={handleDropdown}/>
+												<p>More</p>
+											</div>
+											<div className="dropdown">
+												<div className="dropdown-content">
+													<div className="dropdown-option event-update-option" onClick={handleOpenEditor}>
+														Update
+													</div>
+													<div className='event-delete' onClick={handleDelete} >
+														Delete
+													</div>
+												</div>
+											</div>
+										</div>
+									}
+								</div>
+							</div>
 							</div>
 						</div>
+						<div className="event-location-div">
+								{eventData.in_person ? (
+									<p className='event-location'><span>Location: </span>
+										{eventData.location}
+									</p>
+								) : (
+									<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
+								)}
+							</div>
 						<div className='event-desc-div'>
 							<p className='event-description'><span>Description: </span>{eventData.description}</p>
-							{eventData.start_date === eventData.end_date ? (
+							{/* {eventData.start_date === eventData.end_date ? (
 								<div className='event-datetime'>
 								<p>
-									<span>Event Date: </span>{eventData.start_date}
+									<span>Start: </span>{eventData.start_date} at {eventData.start_time}
 								</p>
 								<p>
-									<span>Event Time: </span>{eventData.start_time} to {eventData.end_time}
+									<span>End: </span>{eventData.start_date} at {eventData.end_time}
 								</p>
 								</div>
 							) : (
@@ -357,20 +397,20 @@ export default function EventDisplay(props) {
 										<span>Ends: </span>{eventData.end_date} @ {eventData.end_time}
 									</p>
 								</div>
-							)}
+							)} */}
 						</div>
 						<div className='event-other-div'>
-							{eventData.in_person ? (
+							{/* {eventData.in_person ? (
 								<p className='event-location'><span>Location: </span>
 									{eventData.location}
 								</p>
 							) : (
 								<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
-							)}
+							)} */}
 
 							<div className='event-attendees'>
 								<h5>
-									Attendees:
+									Attendees
 								</h5>
 								<div className='event-attendees-div'>
 								{eventData.attendees.map((attendee) => (
@@ -382,16 +422,16 @@ export default function EventDisplay(props) {
 								)}
 								</div>
 							</div>
-							<div className='event-creation-info'>
+							{/* <div className='event-creation-info'>
 								<p>
 									Created on {eventData.date_created} by {eventData.owner.username}
 								</p>
-							</div>
+							</div> */}
 						</div>
 						<div className='event-actions'>
-							<button>
+							{/* <button>
 								Contact Host
-							</button>
+							</button> */}
 							{toggleComments ? (
 								<button onClick={handleToggleComments}>
 									Hide Comments
@@ -405,10 +445,10 @@ export default function EventDisplay(props) {
 						{toggleComments ? (
 							<div className='event-comment' onLoad={scroll}>
 								{eventComments.map((comment) => (
-									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
+									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
 								))}
 								{commentsList.map((comment) => (
-									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} />
+									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
 								))}
 								<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
 									<input onChange={handleChange} name="eventCommentText" value={newCommentText} contentEditable autoComplete='off' />

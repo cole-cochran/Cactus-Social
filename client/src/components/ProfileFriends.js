@@ -5,7 +5,7 @@ import UserSearchModal from './UserSearchModal';
 // import {Link} from 'react-router-dom';
 
 import { ALL_USERS, FRIEND_REQUESTS, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
-// import { ADD_FRIEND, REMOVE_FRIEND, SEND_FRIEND_REQUEST, DENY_FRIEND_REQUEST } from '../utils/mutations';
+import { ADD_FRIEND, DENY_FRIEND_REQUEST } from '../utils/mutations';
 
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
@@ -33,8 +33,24 @@ function ProfileFriends(props) {
         }
     });
 
+    const [ addFriend ] = useMutation(ADD_FRIEND, {
+        refetchQueries: [
+            USER_FRIENDS,
+            "userFriends"
+        ]
+    });
+
+    const [ denyFriendRequest ] = useMutation(DENY_FRIEND_REQUEST, {
+        refetchQueries: [
+            FRIEND_REQUESTS,
+            "friendRequests"
+        ]
+    });
+
     // const friendsQuery = useQuery(USER_FRIENDS);
     const [openSearch, setOpenSearch] = React.useState(false);
+    const [openFriendRequests, setOpenFriendRequests] = React.useState(false);
+    const [openSentFriendRequests, setOpenSentFriendRequests] = React.useState(false);
 
     const loading = getAllUsers.loading || allFriendRequests.loading || allSentFriendRequests.loading;
 
@@ -49,12 +65,65 @@ function ProfileFriends(props) {
     const sentFriendRequests = allSentFriendRequests.data?.sentFriendRequests || [];
     const allFriends = getAllFriends.data?.userFriends || [];
 
+    console.log(sentFriendRequests);
+
     const handleOpen = (e) => {
         setOpenSearch(true);
     }
 
     const handleClose = (e) => {
         setOpenSearch(false);
+    }
+
+    const handleOpenFriendRequests = (e) => {
+        setOpenFriendRequests(true);
+    }
+
+    const handleCloseFriendRequests = (e) => {
+        setOpenFriendRequests(false);
+    }
+
+    const handleOpenSentFriendRequests = (e) => {
+        setOpenSentFriendRequests(true);
+    }
+
+    const handleCloseSentFriendRequests = (e) => {
+        setOpenSentFriendRequests(false);
+    }
+
+    const handleAddNewFriend = async (e) => {
+        e.preventDefault();
+        const friendId = e.target.parentNode.id;
+        console.log(friendId);
+        console.log(userId);
+        try {
+            await addFriend({
+                variables: {
+                    userId: userId,
+                    friend: friendId
+                }
+            })
+        } catch (err) {
+            console.log(err);
+        }
+        setOpenFriendRequests(false);
+    }
+
+    const handleDenyFriendRequest = async (e) => {
+        e.preventDefault();
+        console.log(e.target.parentNode.id);
+        const friendId = e.target.parentNode.id;
+        try {
+            await denyFriendRequest({
+                variables: {
+                    userId: userId,
+                    friend: friendId
+                }
+            })
+        } catch (err) {
+            console.log(err);
+        }
+        setOpenFriendRequests(false);
     }
 
     const style = {
@@ -113,17 +182,72 @@ function ProfileFriends(props) {
                 </ul>
             </div>
             <div className="friend-requests-div">
-                <button className='friend-request-chip'>
+                <button onClick={handleOpenFriendRequests} className='friend-request-chip'>
                     Friend Requests
                     <div>{friendRequests.friend_requests && friendRequests.friend_requests.length}</div>
                 </button>
             </div>
             <div className="sent-requests-div">
-                <button className='friend-request-chip'>
+                <button onClick={handleOpenSentFriendRequests} className='friend-request-chip'>
                     Sent Requests
                     <div>{sentFriendRequests.sent_friend_requests && sentFriendRequests.sent_friend_requests.length}</div>
                 </button>
             </div>
+            <Modal 
+                open={openFriendRequests} 
+                onClose={handleCloseFriendRequests}
+            >
+                <Box sx={style}>
+                    <div className="modal-form" id="modal-friends">
+                        <div className="modal-header">
+                            <h3>Friend Requests</h3>
+                        </div>
+                        <ul className="modal-list">
+                            {friendRequests.friend_requests.map((user, index) => (
+                                <li className="modal-request" key={`${user}-${index}`}>
+                                    <a href = {`/profile/${user._id}`}>
+                                        <button className="friend-chips">
+                                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                            <p>{user.username}</p>
+                                        </button>
+                                    </a>
+                                    <div id={user._id}>
+                                        <button onClick={handleAddNewFriend}>Accept</button>
+                                        <button onClick={handleDenyFriendRequest}>Deny</button>
+                                    </div>
+                                    
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    
+                    
+                </Box>
+            </Modal>
+            <Modal 
+                open={openSentFriendRequests} 
+                onClose={handleCloseSentFriendRequests}
+            >
+                <Box sx={style}>
+                <div className="modal-form" id="modal-friends">
+                    <div className="modal-header">
+                        <h3>Sent Friend Requests</h3>
+                    </div>
+                    <ul className="modal-list">
+                        {sentFriendRequests.sent_friend_requests.map((user,index) => (
+                            <li key={`${user}-${index}`}>
+                                <a href = {`/profile/${user._id}`}>
+                                    <button className="friend-chips">
+                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                        <p>{user.username}</p>
+                                    </button>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                </Box>
+            </Modal>
         </div>
     )
 }

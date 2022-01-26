@@ -19,7 +19,7 @@ export function PinnedPost(props) {
                 {
                 owner === post.author._id && 
                 <div className="dropdown">
-                    <img className="dots" src="../../assets/img/dotdotdot.svg" alt="pin" style={{width: "24px", height: "24px", marginRight: "5px", cursor: "pointer"}} onClick={dropdown}/>
+                    <img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={dropdown}/>
                     <div className="dropdown-content">
                         <div className="dropdown-option" onClick={openEditor}>
                             Update
@@ -36,10 +36,10 @@ export function PinnedPost(props) {
                 <button className='comments-chip'>
                     <div>{post.comments.length}</div>
                     <Link className='react-link' to={`/subthread/${post._id}`} onClick={setActiveComment}>
-                        {post.comments.length === 1 ? (<p>Comment</p>) : (<p>Comments</p>)}
+                        {post.comments.length === 1 ? (<span>Comment</span>) : (<span>Comments</span>)}
                         </Link>
                 </button>
-                <img src="../../assets/img/tac-pin.svg" alt="pin" style={{width: "24px", height: "24px", cursor:"pointer"}} onClick={unpin}/>
+                <img src="../../assets/img/pink_pin.png" alt="pin" style={{width: "30px", height: "auto", cursor:"pointer"}} onClick={unpin}/>
             </div>
         </div>
     )
