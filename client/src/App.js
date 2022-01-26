@@ -45,7 +45,7 @@ const client = new ApolloClient({
 	cache: new InMemoryCache()
 });
 
-const socket = io.connect('localhost:3001');
+const socket = io();
 
 function App() {
 
@@ -93,7 +93,7 @@ function App() {
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
-							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />

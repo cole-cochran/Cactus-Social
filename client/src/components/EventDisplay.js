@@ -20,7 +20,7 @@ export default function EventDisplay(props) {
 
 	const userId = AuthService.getProfile().data._id;
 	const { eventId } = useParams();
-	const { socket, activeEvent, setActiveThread } = props;
+	const { socket, activeEvent, setActiveThread, setActiveEvent } = props;
 
 	const singleEvent = useQuery(EVENT_DETAILS, {
 		variables: { eventId: eventId }
@@ -281,7 +281,7 @@ export default function EventDisplay(props) {
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
             <div className="app-content-container" >
-				<Sidebar setActiveThread={setActiveThread}/>
+				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
 				<div className='event-container'>
 					<div className='event-card'>
 						<div className='event-main-div'>
