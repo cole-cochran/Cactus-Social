@@ -73,12 +73,13 @@ export default function EventDisplay(props) {
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
 
 	React.useEffect(() => {
-		socket.emit("join_event", {room: activeEvent, user: AuthService.getProfile().data.username})
+		socket.emit("join_event", {room: eventId, user: AuthService.getProfile().data.username})
 	}, [activeEvent]);
 
 	React.useEffect(() => {
-		socket.emit('receive_comment', (data) => {
-			setCommentsList((commentsList) => [...commentsList, data]);
+		socket.on('receive_comment', (data) => {
+			// console.log(data);
+			setCommentsList(commentsList => [...commentsList, data]);
 		});
 	}, [socket]);
 
@@ -109,7 +110,7 @@ export default function EventDisplay(props) {
 					comment_text: newCommentText, author: userId
 				}
 			});
-			socket.emit('send_comment', {room: activeEvent, user: AuthService.getProfile().data.username, comment: commentData.data.createEventComment});
+			socket.emit('send_comment', {room: eventId, user: AuthService.getProfile().data.username, comment: commentData.data.createEventComment});
 			setNewCommentText("");
 			setMessageTimeout(true);
 			setTimeout(() => {setMessageTimeout(false)});

@@ -84,7 +84,7 @@ function App() {
 							{AuthService.loggedIn() ? <Dashboard socket={socket} setActiveEvent={setActiveEvent} setActiveThread={setActiveThread} activeThread={activeThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
-							{AuthService.loggedIn() ? <Profile /> : <SplashPage />}
+							{AuthService.loggedIn() ? <Profile setActiveEvent={setActiveEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/chat">
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
