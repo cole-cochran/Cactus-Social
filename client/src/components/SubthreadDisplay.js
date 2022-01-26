@@ -213,7 +213,7 @@ function SubthreadDisplay(props) {
 									<span className="chat-name">{singlePost.data.postDetails.author.username}</span>
 									<span className="chat-date">{singlePost.data.postDetails.date_created}</span>
 								</div>
-								<Link className='back-button' to={`/threads/${singlePost.data.postDetails.thread._id}`}>
+								<Link className='back-button' to={`/threads/${singlePost.data.postDetails.thread._id}`} onClick={() => setActiveThread(thread._id)}>
 									<img src="../../assets/img/undo.png" alt="go back" />
 								</Link>
 							</div>
