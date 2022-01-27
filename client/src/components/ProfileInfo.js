@@ -225,19 +225,6 @@ function ProfileInfo(props) {
         setTechData(editedTech);
 	};
 
-    const imageStyles = {
-        height: "200px",
-        width: "200px",
-        borderRadius: "50%",
-        backgroundColor: 'var(--cactus-green-1)',
-        color: "white",
-        alignContent: "center",
-        textAlign: "center",
-        justifyContent: "center",
-        display: "flex",
-        flexDirection: "column"
-    }
-
 	const style = {
 		position: 'absolute',
 		top: '50%',

@@ -144,9 +144,9 @@ function ProfileFriends(props) {
                 rightShelf.childNodes[i].style.display = "none"
             }
             rightShelf.setAttribute("data-id", "closed");
-            rightShelf.style.width = "6rem"
-            rightShelf.style.minWidth = "6rem"
-            profileWrapper.style.width = "calc(100vw - 144px)";
+            rightShelf.style.width = "4.5rem"
+            rightShelf.style.minWidth = "4.5rem"
+            profileWrapper.style.width = "calc(100vw - 128px)";
             rightShelf.style.paddingLeft = "0rem";
         }
         
