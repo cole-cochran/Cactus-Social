@@ -111,6 +111,12 @@ const userSchema = new Schema({
 			type: ObjectId,
 			ref: 'User'
 		}
+	],
+	chats: [
+		{
+			type: ObjectId,
+			ref: 'Chat'
+		}
 	]
 });
 

@@ -30,6 +30,23 @@ const typeDefs = gql`
         event: Event
     }
 
+    type Chat {
+        _id: ID!
+        users: [User]
+        creator: User
+        messages: [ChatMessage]
+        date_created: String
+    }
+
+    type ChatMessage {
+        _id: ID!
+        sender: User
+        message: String!
+        edited: Boolean
+        chat: Chat
+        date_created: String
+    }
+
     type User {
         _id: ID!
         first_name: String!
@@ -47,6 +64,7 @@ const typeDefs = gql`
         pinned_posts: [PinnedPost]
         friend_requests: [User]
         sent_friend_requests: [User]
+        chats: [Chat]
     }
 
     type Thread {
@@ -106,6 +124,8 @@ const typeDefs = gql`
 
         friendRequests(userId: ID!): User
         sentFriendRequests(userId: ID!): User
+
+        chatDetails(chatId: ID!): Chat
     }
 
     type Mutation {
@@ -154,6 +174,13 @@ const typeDefs = gql`
 
         sendFriendRequest(userId: ID!, friend: ID!): User
         denyFriendRequest(userId: ID!, friend: ID!): User
+
+        createChatMessage(chatId: ID!, sender: ID!, message: String!): Chat
+        deleteChatMessage(chatId: ID!, messageId: ID!): Chat
+        updateChatMessage(chatId: ID!, messageId: ID!, message: String!): Chat
+
+        createChat(creator: ID!, participants: [ID!]!): Chat
+        removeChat(chatId: ID!): User
     }
 `;
 
