@@ -197,8 +197,11 @@ const typeDefs = gql`
         sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!) User
         sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!) User
 
-        acceptEventInvite(user: ID!, eventId: ID!): Event
-        acceptThreadInvite(user: ID!, threadId: ID!): Thread
+        acceptEventInvite(userId: ID!, senderId: ID!, eventId: ID!): Event
+        acceptThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): Thread
+
+        rejectEventInvite(userId: ID!, senderId: ID!, eventID: ID!): User
+        rejectThreadInvite(userId: ID!, senderId: ID!, threadID: ID!): User
     }
 `;
 

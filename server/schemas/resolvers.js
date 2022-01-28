@@ -1111,6 +1111,212 @@ const resolvers = {
 			const updatedChat = Chat.findById(chatId).populate("messages").populate("users");;
 			return updatedChat;
 		},
+
+		sendEventInvite: async (parent, args, context) => {
+			const { sender, receiver, eventId } = args;
+			const sendingUser = await User.findOneAndUpdate(
+				{ _id: sender },
+				{
+					$addToSet: {
+						sent_invites: {
+							user: receiver,
+							event: eventId
+						}
+					}
+				},
+				{ new: true }
+			).populate("sent_invites");
+			await User.findOneAndUpdate(
+				{ _id: receiver },
+				{
+					$addToSet: {
+						received_invites: {
+							user: sender,
+							event: eventId
+						}
+					}
+				},
+				{ new: true }
+			).populate("received_invites");
+			return sendingUser;
+		},
+
+		sendThreadInvites: async (parent, args, context) => {
+			const { sender, receiver, threadId } = args;
+			const sendingUser = await User.findOneAndUpdate(
+				{ _id: sender },
+				{
+					$addToSet: {
+						sent_invites: {
+							user: receiver,
+							event: threadId
+						}
+					}
+				},
+				{ new: true }
+			).populate("sent_invites");
+			await User.findOneAndUpdate(
+				{ _id: receiver },
+				{
+					$addToSet: {
+						received_invites: {
+							user: sender,
+							event: threadId
+						}
+					}
+				},
+				{ new: true }
+			).populate("received_invites");
+			return sendingUser;
+		},
+
+		acceptEventInvite: async (parent, args, context) => {
+			const { userId, senderId, eventId } = args;
+			await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$pull: {
+						received_invites: {
+							event: eventId
+						}
+					}
+				},
+				{ new: true }
+			).populate("received_invites");
+			await User.findOneAndUpdate(
+				{ _id: senderId },
+				{
+					$pull: {
+						sent_invites: {
+							user: userId,
+							event: eventId
+						}
+					}
+				},
+				{ new: true }
+			).populate("sent_invites");
+			await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$addToSet: {
+						events: eventId
+					}
+				},
+				{ new: true }
+			).populate("events");
+			const updatedEvent = await Event.findOneAndUpdate(
+				{ _id: eventId },
+				{
+					$addToSet: {
+						attendees: userId
+					}
+				},
+				{ new: true }
+			).populate("attendees");
+			return updatedEvent;
+		},
+
+		acceptThreadInvite: async (parent, args, context) => {
+			const { userId, senderId, threadId } = args;
+			await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$pull: {
+						received_invites: {
+							thread: threadId
+						}
+					}
+				},
+				{ new: true }
+			).populate("received_invites");
+			await User.findOneAndUpdate(
+				{ _id: senderId },
+				{
+					$pull: {
+						sent_invites: {
+							user: userId,
+							thread: threadId
+						}
+					}
+				},
+				{ new: true }
+			).populate("sent_invites");
+			await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$addToSet: {
+						threads: threadId
+					}
+				},
+				{ new: true }
+			).populate("threads");
+			const updatedThread = await Thread.findOneAndUpdate(
+				{ _id: threadId },
+				{
+					$addToSet: {
+						members: userId
+					}
+				},
+				{ new: true }
+			).populate("members");
+			return updatedThread;
+		},
+
+		rejectEventInvite = async (parent, args, context) => {
+			const { userId, senderId, eventId } = args;
+			const updatedUser = await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$pull: {
+						received_invites: {
+							event: eventId
+						}
+					}
+				},
+				{ new: true }
+			).populate("received_invites");
+			await User.findOneAndUpdate(
+				{ _id: senderId },
+				{
+					$pull: {
+						sent_invites: {
+							user: userId,
+							event: eventId
+						}
+					}
+				},
+				{ new: true }
+			).populate("sent_invites");
+			return updatedUser;
+		},
+
+		rejectThreadInvite = async (parent, args, context) => {
+			const { userId, senderId, threadId } = args;
+			const updatedUser = await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$pull: {
+						received_invites: {
+							thread: threadId
+						}
+					}
+				},
+				{ new: true }
+			).populate("received_invites");
+			await User.findOneAndUpdate(
+				{ _id: senderId },
+				{
+					$pull: {
+						sent_invites: {
+							user: userId,
+							thread: threadId
+						}
+					}
+				},
+				{ new: true }
+			).populate("sent_invites");
+			return updatedUser;
+		},
 	}
 };
 
