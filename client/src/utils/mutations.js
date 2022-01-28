@@ -1055,6 +1055,50 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
 }
 `;
 
+export const CREATE_CHAT = gql`
+mutation createChat($participants: [ID!]!) {
+    createChat(participants: $participants) {
+        _id
+        users {
+            _id
+        }
+        messages {
+            _id
+        }
+        date_created
+    }
+}
+`
+
+export const REMOVE_CHAT = gql`
+mutation removeChat($chatId: ID!, $userId: ID!) {
+    removeChat(chatId: $chatId, userId: $userId) {
+        _id
+        first_name
+        last_name
+        username
+        chats {
+            _id
+        }
+    }
+}
+`
+
+export const CREATE_CHAT_MESSAGE = gql`
+mutation createChatMessage($chatId: ID!, $sender:ID!, $message: String!) {
+    createChatMessage(chatId: $chatId, sender: $sender, message: $message) {
+        _id
+        users {
+            _id
+        }
+        messages {
+            _id
+            message
+        }
+        date_created
+    }
+}
+`
 
 //* OLD PIN_POST MUTATION
 // export const PIN_POST = gql`

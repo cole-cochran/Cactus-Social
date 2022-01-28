@@ -194,8 +194,8 @@ const typeDefs = gql`
         createChat(participants: [ID!]!): Chat
         removeChat(chatId: ID!, userId: ID!): User
 
-        sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!) User
-        sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!) User
+        sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!): User
+        sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!): User
 
         acceptEventInvite(userId: ID!, senderId: ID!, eventId: ID!): Event
         acceptThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): Thread

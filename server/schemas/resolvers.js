@@ -191,8 +191,7 @@ const resolvers = {
 
 		receivedInvites: async (parent, args, context) => {
 			const { userId } = args;
-			const user = await User.findById(userId)
-			.populate("received_invites");
+			const user = await User.findById(userId).populate("received_invites");
 			return user;
 		},
 
@@ -1027,7 +1026,8 @@ const resolvers = {
 
 		createChat: async (parent, args, context) => {
 			const { participants } = args;
-			const newChat = await Chat.create({ users: participants }).populate("users");
+			const createdChat = await Chat.create({ users: participants });
+			const newChat = Chat.findById(createdChat._id).populate("users");
 			for (let user of participants) {
 				await User.findOneAndUpdate(
 					{ _id: user._id },
@@ -1141,7 +1141,7 @@ const resolvers = {
 			return sendingUser;
 		},
 
-		sendThreadInvites: async (parent, args, context) => {
+		sendThreadInvite: async (parent, args, context) => {
 			const { sender, receiver, threadId } = args;
 			const sendingUser = await User.findOneAndUpdate(
 				{ _id: sender },
@@ -1262,7 +1262,7 @@ const resolvers = {
 			return updatedThread;
 		},
 
-		rejectEventInvite = async (parent, args, context) => {
+		rejectEventInvite: async (parent, args, context) => {
 			const { userId, senderId, eventId } = args;
 			const updatedUser = await User.findOneAndUpdate(
 				{ _id: userId },
@@ -1290,7 +1290,7 @@ const resolvers = {
 			return updatedUser;
 		},
 
-		rejectThreadInvite = async (parent, args, context) => {
+		rejectThreadInvite: async (parent, args, context) => {
 			const { userId, senderId, threadId } = args;
 			const updatedUser = await User.findOneAndUpdate(
 				{ _id: userId },

@@ -530,5 +530,74 @@ export const EVENT_DETAILS = gql`
 	}
 `;
 
+export const CHAT_DETAILS = gql`
+query chatDetails($chatId: ID!) {
+	chatDetails(chatId: $chatId) {
+		_id
+		users {
+			_id
+		}
+		messages {
+			_id
+		}
+		date_created
+		}
+	}
+`;
+
+export const SENT_INVITES = gql`
+query sentInvites($userId: ID!) {
+	sentInvites(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		bio
+		sent_invites {
+			_id
+			user {
+			_id
+			}
+			event {
+			_id
+			}
+			thread {
+			_id
+			}
+			date_created
+		}
+	}
+}
+`;
+
+export const RECEIVED_INVITES = gql`
+query receivedInvites($userId: ID!) {
+	receivedInvites(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		bio
+		received_invites {
+			_id
+			user {
+			_id
+			}
+			event {
+			_id
+			}
+			thread {
+			_id
+			}
+			date_created
+		}
+	}
+}
+`;
+
 
 //!  USERNAME IS NESTED IN AUTHOR - FIX RESOLVERS TO POPULATE THAT DATA
