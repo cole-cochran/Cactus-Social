@@ -18,10 +18,6 @@ const chatSchema = new Schema({
             ref: "ChatMessage"
         }
     ],
-    creator: {
-        type: ObjectId,
-        ref: "User"
-    },
     date_created: {
         type: Date,
         default: Date.now,

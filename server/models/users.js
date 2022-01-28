@@ -117,7 +117,45 @@ const userSchema = new Schema({
 			type: ObjectId,
 			ref: 'Chat'
 		}
-	]
+	],
+	received_invites: [{
+		user: {
+			type: ObjectId,
+			ref: "User"
+		},
+		event: {
+			type: ObjectId,
+			ref: "Event"
+		},
+		thread: {
+			type: ObjectId,
+			ref: "Thread"
+		},
+		date_created: {
+			type: Date,
+			default: Date.now,
+			get: (timestamp) => dateFormat(timestamp)
+		}
+	}],
+	sent_invites: [{
+		user: {
+			type: ObjectId,
+			ref: "User"
+		},
+		event: {
+			type: ObjectId,
+			ref: "Event"
+		},
+		thread: {
+			type: ObjectId,
+			ref: "Thread"
+		},
+		date_created: {
+			type: Date,
+			default: Date.now,
+			get: (timestamp) => dateFormat(timestamp)
+		}
+	}]
 });
 
 userSchema.pre('save', async function(next) {

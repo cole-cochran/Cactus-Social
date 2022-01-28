@@ -1,4 +1,4 @@
-const { User, Comment, Post, Thread, Event, PinnedPost } = require('../models/index');
+const { User, Comment, Post, Thread, Event, PinnedPost, Chat, ChatMessage } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
@@ -98,21 +98,6 @@ const resolvers = {
 		allPosts: async (parent, args, context) => {
 			return await Post.find({}).populate('author').populate('thread').populate('comments');
 		},
-		//* Old pinnedPosts
-		// pinnedPosts: async (parent, args, context) => {
-		// 	const { threadId } = args;
-		// 	const thread = await Thread.findOne({ _id: threadId }).populate('pinned_posts');
-
-		// 	const allPins = [];
-
-		// 	for (let pinnedPost of thread.pinned_posts) {
-		// 		let post = await Post.findOne({ _id: pinnedPost }).populate('author');
-				
-		// 		allPins.push(post);
-		// 	}
-
-		// 	return allPins;
-		// },
 		pinnedPosts: async (parent, args, context) => {
 			const user = await User.findOne({_id: args.userId}).populate('pinned_posts').populate('pinned_posts.post');
 			const pinnedPosts = user.pinned_posts;
@@ -127,19 +112,6 @@ const resolvers = {
 		allEvents: async (parent, args, context) => {
 			return await Event.find({}).populate('owner').populate('attendees').populate('comments');
 		},
-
-		// threadEvents: async (parent, args, context) => {
-		// 	const { threadId } = args;
-		// 	const allEvents = await Event.find(
-		// 		{
-		// 			where: {
-		// 				thread: threadId
-		// 			}
-		// 		}
-		// 	).populate('owner').populate('attendees').populate('thread').populate('comments');
-			
-		// 	return allEvents;
-		// },
 
 		//* get all user threads
 		userThreads: async (parent, args, context) => {
@@ -201,7 +173,30 @@ const resolvers = {
 						model: "User"
 					}
 				});
-		}
+		},
+
+		chatDetails: async (parent, args, context) => {
+			const { chatId } = args;
+			const chat = await Chat.findById(chatId)
+			.populate("users");
+			return chat;
+		},
+
+		sentInvites: async (parent, args, context) => {
+			const { userId } = args;
+			const user = await User.findById(userId)
+			.populate("sent_invites");
+			return user;
+		},
+
+		receivedInvites: async (parent, args, context) => {
+			const { userId } = args;
+			const user = await User.findById(userId)
+			.populate("received_invites");
+			return user;
+		},
+
+
 	},
 	Mutation: {
 		//* log the user in
@@ -544,47 +539,7 @@ const resolvers = {
 				{ post: postId },
 				{ new: true }
 			);
-
-			// const relatedPins = await PinnedPost.find(
-			// 	{ post: postId }
-			// );
-
-			// for (let pin of relatedPins) {
-			// 	await PinnedPost.findOneAndDelete(
-			// 		{ _id: pin._id },
-			// 		{ new: true }
-			// 	)
-			// }
-
-			// await User.updateMany(
-			// 	{ 
-			// 		pinned_posts: {
-			// 			post: postId 
-			// 		}
-			// 	},
-			// 	{
-			// 		$pull: {
-			// 			pinned_posts: {
-			// 				post: postId
-			// 			}
-			// 		}
-			// 	}
-			// )
-
-			// const allUsers = await User.find({}).populate('pinned_posts').populate('pinned_posts.post');
-			// for (let user of allUsers) {
-			// 	for (let pin of allPinsOfPost) {
-			// 		await User.findOneAndUpdate(
-			// 			{_id: user._id}, 
-			// 			{
-			// 				$pull: {
-			// 					pinned_posts: pin._id
-			// 				}
-			// 			},
-			// 			{ new: true }
-			// 		)
-			// 	}
-			// }			
+			
 			const thread = await Thread.findOneAndUpdate(
 				{ _id: threadId },
 				{
@@ -652,66 +607,6 @@ const resolvers = {
 			).populate('pinned_posts');
 			return updatedUser;
 		},
-
-		// pinPost: async (parent, args, context) => {
-		// 	//! probably need to add user context here as well to make sure they have permission
-		// 	// if (context.user) {
-		// 	const { threadId, postId, pinTitle, pinHash } = args;
-		// 	await Post.findOneAndUpdate(
-		// 		{ _id: postId },
-		// 		{
-		// 			pinTitle: pinTitle,
-		// 			pinHash: pinHash,
-		// 			pinned: true
-		// 		},
-		// 		{ new: true }
-		// 	);
-
-		// 	const thread = await Thread.findOneAndUpdate(
-		// 		{ _id: threadId },
-		// 		{ 
-		// 			$addToSet: 
-		// 				{
-		// 					pinned_posts: postId
-		// 				} 
-		// 		},
-		// 		{ new: true }
-		// 	).populate('posts').populate('moderator').populate('members');
-
-		// 	return thread;
-		// 	// }
-		// 	// throw new AuthenticationError('Could not find User!');
-		// },
-
-		// //* give user ability to unpin posts
-		// unpinPost: async (parent, args, context) => {
-		// 	//! probably need to add user context here as well to make sure they have permission
-		// 	const { threadId, postId } = args;
-		// 	await Post.findOneAndUpdate(
-		// 		{ _id: postId },
-		// 		{
-		// 			pinTitle: '',
-		// 			pinHash: '',
-		// 			pinned: false
-		// 		},
-		// 		{ new: true }
-		// 	);
-
-		// 	const thread = await Thread.findOneAndUpdate(
-		// 		{ _id: threadId },
-		// 		{ 
-		// 			$pull: 
-		// 				{
-		// 					pinned_posts: postId
-		// 				} 
-		// 		},
-		// 		{ new: true }
-		// 	).populate('posts').populate('moderator').populate('members');
-
-		// 	return thread;
-		// 	// }
-		// 	// throw new AuthenticationError('Could not find User!');
-		// },
 
 		//! PROBABLY HOLD THIS OFF UNTIL LAST BECAUSE REACTIONS NEED TO BE AN OBJECT WITH USERNAME INCLUDED OR THEY COULD JUST BE ANONYMOUS
 		//* let users react to a post
@@ -866,15 +761,6 @@ const resolvers = {
 			// 	{ new: true }
 			// )
 
-			// await Thread.findOneAndUpdate(
-			// 	{ _id: threadId },
-			// 	{
-			// 		$addToSet: {
-			// 			events: newEvent._id
-			// 		}
-			// 	},
-			// 	{ new: true }
-			// );
 			return returnedEvent;
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
@@ -916,18 +802,7 @@ const resolvers = {
 			const user = await User.findOne({ _id: userId });
 
 			return user;
-			// const thread = await Thread.findOneAndUpdate(
-			// 	{ _id: threadId },
-			// 	{
-			// 		$pull: {
-			// 			events: eventId
-			// 		}
-			// 	},
-			// 	{ new: true }
-			// );
-
-			// return thread;
-			// }
+			
 			// throw new AuthenticationError('Could not find User!');
 		},
 
@@ -1148,7 +1023,94 @@ const resolvers = {
 			return event;
 			// }
 			// throw new AuthenticationError('Could not find User!');
-		}
+		},
+
+		createChat: async (parent, args, context) => {
+			const { participants } = args;
+			const newChat = await Chat.create({ users: participants }).populate("users");
+			for (let user of participants) {
+				await User.findOneAndUpdate(
+					{ _id: user._id },
+					{
+						$addToSet: {
+							chats: newChat._id
+						}
+					},
+					{ new: true }
+				).populate("chats");
+			};
+			return newChat;
+		},
+
+		removeChat: async (parent, args, context) => {
+			const { chatId, userId } = args;
+			const user = await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$pull: {
+						chats: chatId
+					}
+				},
+				{ new: true }
+			).populate("chats");
+			await Chat.findOneAndUpdate(
+				{ _id: chatId },
+				{
+					$pull: {
+						users: userId
+					}
+				},
+				{ new: true }
+			).populate('messages').populate('users');
+			return user;
+		},
+
+		createChatMessage: async (parent, args, context) => {
+			const { chatId, sender, message } = args;
+			const newMsg = await ChatMessage.create({
+				sender: sender,
+				message: message,
+				chat: chatId
+			});
+			const updatedChat = await Chat.findOneAndUpdate(
+				{ _id: chatId },
+				{
+					$addToSet: {
+						messages: newMsg._id
+					}
+				},
+				{ new: true }
+			).populate("messages").populate("users");
+			return updatedChat;
+		},
+
+		deleteChatMessage: async (parent, args, context) => {
+			const { chatId, messageId } = args;
+			await ChatMessage.findOneAndDelete({ _id: messageId });
+			const updatedChat = await Chat.findOneAndUpdate(
+				{ _id: chatId },
+				{
+					$pull: {
+						messages: messageId
+					}
+				},
+				{ new: true }
+			).populate("messages").populate("users");
+			return updatedChat;
+		},
+
+		updateChatMessage: async (parent, args, context) => {
+			const { chatId, messageId, message } = args;
+			await ChatMessage.findOneAndUpdate(
+				{ _id: messageId },
+				{
+					message: message
+				},
+				{ new: true }
+			);
+			const updatedChat = Chat.findById(chatId).populate("messages").populate("users");;
+			return updatedChat;
+		},
 	}
 };
 

@@ -33,7 +33,6 @@ const typeDefs = gql`
     type Chat {
         _id: ID!
         users: [User]
-        creator: User
         messages: [ChatMessage]
         date_created: String
     }
@@ -44,6 +43,14 @@ const typeDefs = gql`
         message: String!
         edited: Boolean
         chat: Chat
+        date_created: String
+    }
+
+    type Invites {
+        _id: ID!
+        user: User
+        thread: Thread
+        event: Event
         date_created: String
     }
 
@@ -65,6 +72,8 @@ const typeDefs = gql`
         friend_requests: [User]
         sent_friend_requests: [User]
         chats: [Chat]
+        received_invites: [Invites]
+        sent_invites: [Invites]
     }
 
     type Thread {
@@ -126,6 +135,9 @@ const typeDefs = gql`
         sentFriendRequests(userId: ID!): User
 
         chatDetails(chatId: ID!): Chat
+        
+        sentInvites(userId: ID!): User
+        receivedInvites(userId: ID!): User
     }
 
     type Mutation {
@@ -179,8 +191,14 @@ const typeDefs = gql`
         deleteChatMessage(chatId: ID!, messageId: ID!): Chat
         updateChatMessage(chatId: ID!, messageId: ID!, message: String!): Chat
 
-        createChat(creator: ID!, participants: [ID!]!): Chat
-        removeChat(chatId: ID!): User
+        createChat(participants: [ID!]!): Chat
+        removeChat(chatId: ID!, userId: ID!): User
+
+        sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!) User
+        sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!) User
+
+        acceptEventInvite(user: ID!, eventId: ID!): Event
+        acceptThreadInvite(user: ID!, threadId: ID!): Thread
     }
 `;
 

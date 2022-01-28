@@ -12,9 +12,7 @@ const chatMessagesSchema = new Schema({
     },
     message: {
         type: String,
-        required: true,
-        minLength: [ 1, 'Your message should be longer than that!' ],
-        maxLength: [ 5000, 'Your message is too long!' ]
+        required: true
     },
     edited: {
         type: Boolean,
