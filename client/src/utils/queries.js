@@ -539,6 +539,7 @@ query chatDetails($chatId: ID!) {
 		}
 		messages {
 			_id
+			message
 		}
 		date_created
 		}

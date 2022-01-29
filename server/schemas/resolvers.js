@@ -178,7 +178,7 @@ const resolvers = {
 		chatDetails: async (parent, args, context) => {
 			const { chatId } = args;
 			const chat = await Chat.findById(chatId)
-			.populate("users");
+			.populate("users").populate("messages");
 			return chat;
 		},
 
@@ -1065,6 +1065,14 @@ const resolvers = {
 			return user;
 		},
 
+		deleteChat: async (parent, args, context) => {
+			const { chatId } = args;
+			await Chat.findOneAndDelete({ _id: chatId }, {new: true});
+			const allChats = await Chat.find({}).populate("users").populate("messages");
+			return allChats;
+		}
+		,
+
 		createChatMessage: async (parent, args, context) => {
 			const { chatId, sender, message } = args;
 			const newMsg = await ChatMessage.create({
@@ -1149,7 +1157,7 @@ const resolvers = {
 					$addToSet: {
 						sent_invites: {
 							user: receiver,
-							event: threadId
+							thread: threadId
 						}
 					}
 				},
@@ -1161,7 +1169,7 @@ const resolvers = {
 					$addToSet: {
 						received_invites: {
 							user: sender,
-							event: threadId
+							thread: threadId
 						}
 					}
 				},
@@ -1212,7 +1220,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate("attendees");
+			).populate("attendees").populate("owner").populate("comments");
 			return updatedEvent;
 		},
 
@@ -1223,6 +1231,7 @@ const resolvers = {
 				{
 					$pull: {
 						received_invites: {
+							user: userId,
 							thread: threadId
 						}
 					}
@@ -1234,7 +1243,6 @@ const resolvers = {
 				{
 					$pull: {
 						sent_invites: {
-							user: userId,
 							thread: threadId
 						}
 					}
@@ -1258,7 +1266,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate("members");
+			).populate("members").populate("moderator").populate("posts");
 			return updatedThread;
 		},
 

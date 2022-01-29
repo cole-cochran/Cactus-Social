@@ -193,6 +193,7 @@ const typeDefs = gql`
 
         createChat(participants: [ID!]!): Chat
         removeChat(chatId: ID!, userId: ID!): User
+        deleteChat(chatId: ID!): [Chat]
 
         sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!): User
         sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!): User
@@ -200,8 +201,8 @@ const typeDefs = gql`
         acceptEventInvite(userId: ID!, senderId: ID!, eventId: ID!): Event
         acceptThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): Thread
 
-        rejectEventInvite(userId: ID!, senderId: ID!, eventID: ID!): User
-        rejectThreadInvite(userId: ID!, senderId: ID!, threadID: ID!): User
+        rejectEventInvite(userId: ID!, senderId: ID!, eventId: ID!): User
+        rejectThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): User
     }
 `;
 

@@ -1068,7 +1068,7 @@ mutation createChat($participants: [ID!]!) {
         date_created
     }
 }
-`
+`;
 
 export const REMOVE_CHAT = gql`
 mutation removeChat($chatId: ID!, $userId: ID!) {
@@ -1082,7 +1082,7 @@ mutation removeChat($chatId: ID!, $userId: ID!) {
         }
     }
 }
-`
+`;
 
 export const CREATE_CHAT_MESSAGE = gql`
 mutation createChatMessage($chatId: ID!, $sender:ID!, $message: String!) {
@@ -1098,7 +1098,230 @@ mutation createChatMessage($chatId: ID!, $sender:ID!, $message: String!) {
         date_created
     }
 }
-`
+`;
+
+export const DELETE_CHAT_MESSAGE = gql`
+mutation deleteChatMessage($chatId: ID!, $messageId: ID!) {
+    deleteChatMessage(chatId: $chatId, messageId: $messageId) {
+        _id
+        users {
+            _id
+        }
+        messages {
+            _id
+            message
+        }
+        date_created
+    }
+}
+`;
+
+export const UPDATE_CHAT_MESSAGE = gql`
+mutation updateChatMessage($chatId: ID!, $messageId: ID!, $message: String!) {
+    updateChatMessage(chatId: $chatId, messageId: $messageId, message: $message) {
+        _id
+        users {
+            _id
+        }
+        messages {
+            _id
+            message
+        }
+        date_created
+    }
+}
+`;
+
+export const DELETE_CHAT = gql`
+mutation deleteChat($chatId: ID!) {
+    deleteChat(chatId: $chatId) {
+        _id
+        users {
+            _id
+        }
+        messages {
+            _id
+            message
+        }
+        date_created
+    }
+}
+`;
+
+export const SEND_EVENT_INVITE = gql`
+mutation sendEventInvite($sender: ID!, $receiver: ID!, $eventId: ID!) {
+    sendEventInvite(sender: $sender, receiver: $receiver, eventId: $eventId) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        sent_invites {
+            _id
+            user {
+            _id
+            }
+            event {
+            _id
+            }
+            thread {
+            _id
+            }
+            date_created
+        }
+    }
+}
+`;
+
+export const SEND_THREAD_INVITE = gql`
+mutation sendThreadInvite($sender: ID!, $receiver: ID!, $threadId: ID!) {
+    sendThreadInvite(sender: $sender, receiver: $receiver, threadId: $threadId) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        sent_invites {
+            _id
+            user {
+            _id
+            }
+            event {
+            _id
+            }
+            thread {
+            _id
+            }
+            date_created
+        }
+    }
+}
+`;
+
+export const ACCEPT_EVENT_INVITE = gql`
+mutation acceptEventInvite($userId: ID!, $senderId: ID!, $eventId: ID!) {
+    acceptEventInvite(userId: $userId, senderId: $senderId, eventId: $eventId) {
+        _id
+        title
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+        }
+        attendees {
+            _id
+            username
+        }
+        category
+        in_person
+        location
+        image
+        date_created
+        edited
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
+    }
+}
+`;
+
+export const ACCEPT_THREAD_INVITE = gql`
+mutation acceptThreadInvite($threadId:ID!, $userId:ID!, $senderId: ID!) {
+    acceptThreadInvite(userId: $userId, senderId: $senderId, threadId: $threadId) {
+        _id
+        title
+        posts {
+            _id
+            author {
+                _id
+            }
+            post_text
+        }
+        moderator {
+            _id
+            username
+        }
+        members {
+            _id
+            username
+        }
+        date_created
+    }
+}
+`;
+
+export const REJECT_EVENT_INVITE = gql`
+mutation rejectEventInvite($userId: ID!, $senderId: ID!, $eventId: ID!) {
+    rejectEventInvite(userId: $userId, senderId: $senderId, eventId: $eventId) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        received_invites {
+            _id
+            user {
+            _id
+            }
+            event {
+            _id
+            }
+            thread {
+            _id
+            }
+            date_created
+        }
+    }
+}
+`;
+
+export const REJECT_THREAD_INVITE = gql`
+mutation rejectThreadInvite($userId: ID!, $senderId: ID!, $threadId: ID!) {
+    rejectThreadInvite(userId: $userId, senderId: $senderId, threadId: $threadId) {
+        _id
+        first_name
+        last_name
+        username
+        email
+        picture
+        bio
+        received_invites {
+            _id
+            user {
+            _id
+            }
+            event {
+            _id
+            }
+            thread {
+            _id
+            }
+            date_created
+        }
+    }
+}
+`;
+
+
 
 //* OLD PIN_POST MUTATION
 // export const PIN_POST = gql`
