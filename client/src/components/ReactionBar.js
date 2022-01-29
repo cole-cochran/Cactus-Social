@@ -33,7 +33,7 @@ export default function ReactionBar(props) {
             {updatedReactions.map((reaction) => (
                 <div className="emoji-box">
                     <Emoji emoji={{ id: `${reaction.emoji}` }} size={16} />
-                    <div>
+                    <div className="emoji-count">
                         {reaction.count}
                     </div>
                 </div>

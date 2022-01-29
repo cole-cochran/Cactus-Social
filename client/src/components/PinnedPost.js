@@ -1,14 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
+import ReactionBar from "./ReactionBar";
+import EmojiPicker from "./EmojiPicker";
+import { Modal, Box } from "@mui/material";
 
 export function PinnedPost(props) {
 
     const { post, unpin, openEditor, dropdown, remove, setActiveComment } = props;
 
+    const [emojiModal, setEmojiModal] = React.useState(false);
+
+    const openEmojiMart = async () => {
+        setEmojiModal(true);
+    }
+
+    const closeEmojiMart = async () => {
+        setEmojiModal(false);
+    }
+
     const owner = AuthService.getProfile().data._id;
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24
+    };
     
     return (
+        <React.Fragment>
         <div className="chat subthread" data-id={post._id} key={post._id} >
             <div className="pos post-bar">
                 <div>
@@ -32,6 +56,10 @@ export function PinnedPost(props) {
                 }
             </div>
             <p>{post.post_text}</p>
+            <div className="reaction-bar">
+                <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction"/>
+                <ReactionBar reactions={post.reactions}/>
+            </div>
             <div className='post-options'>
                 <button className='comments-chip'>
                     <div>{post.comments.length}</div>
@@ -42,5 +70,17 @@ export function PinnedPost(props) {
                 <img src="../../assets/img/pink_pin.png" alt="pin" style={{width: "30px", height: "auto", cursor:"pointer"}} onClick={unpin}/>
             </div>
         </div>
+        <Modal
+            data-id="emoji-mart"
+            open={emojiModal}
+            onClose={closeEmojiMart}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <EmojiPicker elementId={post._id} parentId={post.thread._id} elementType="post"/>
+            </Box>
+        </Modal>
+        </React.Fragment>
     )
 }

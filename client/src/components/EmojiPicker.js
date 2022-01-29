@@ -36,10 +36,6 @@ export default function EmojiPicker(props) {
         ]
     });
 
-    // const handleEmojiSelect = (event, emoji) => {
-    //     console.log(emoji.native);
-    //     handleAddReaction(event.target, emoji.naive);
-    // };
 
     const handleAddReaction = async (emoji) => {
         console.log(emoji.native);
