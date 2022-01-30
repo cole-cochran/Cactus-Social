@@ -5,7 +5,7 @@ import ReactionBar from "./ReactionBar";
 import EmojiPicker from "./EmojiPicker";
 import { Modal, Box } from "@mui/material";
 
-export function ThreadPost(props) {
+export default function ThreadPost(props) {
 
     const { post, pin, openEditor, dropdown, remove, setActiveComment } = props;
 

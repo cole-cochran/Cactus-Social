@@ -13,7 +13,7 @@ export default function EmojiPicker(props) {
 
     const userId = AuthService.getProfile().data._id;
 
-    const { elementId, elementType, parentId } = props;
+    const { elementId, elementType, parentId, closeEmojiMart } = props;
 
     const [ addEventCommentReaction ] = useMutation(ADD_EVENT_COMMENT_REACTION, {
         refetchQueries: [
@@ -79,6 +79,7 @@ export default function EmojiPicker(props) {
             }
             console.log("event comment reaction");
         }
+        closeEmojiMart();
     };
 
     return (

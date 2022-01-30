@@ -55,11 +55,8 @@ export function PinnedPost(props) {
                 </div>
                 }
             </div>
-            <p>{post.post_text}</p>
-            <div className="reaction-bar">
-                <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction"/>
-                <ReactionBar reactions={post.reactions}/>
-            </div>
+            <p className="pos post-text">{post.post_text}</p>
+            <div className="post-bottom">
             <div className='post-options'>
                 <button className='comments-chip'>
                     <div>{post.comments.length}</div>
@@ -67,8 +64,13 @@ export function PinnedPost(props) {
                         {post.comments.length === 1 ? (<span>Comment</span>) : (<span>Comments</span>)}
                         </Link>
                 </button>
-                <img src="../../assets/img/pink_pin.png" alt="pin" style={{width: "30px", height: "auto", cursor:"pointer"}} onClick={unpin}/>
+                <div className="reaction-bar">
+                    <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
+                    <ReactionBar reactions={post.reactions}/>
+                </div>
             </div>
+            <img src="../../assets/img/pink_pin.png" alt="pin" style={{width: "30px", height: "30px", cursor:"pointer"}} onClick={unpin}/>
+        </div>
         </div>
         <Modal
             data-id="emoji-mart"
@@ -78,7 +80,7 @@ export function PinnedPost(props) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <EmojiPicker elementId={post._id} parentId={post.thread._id} elementType="post"/>
+                <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={post._id} parentId={post.thread._id} elementType="post"/>
             </Box>
         </Modal>
         </React.Fragment>

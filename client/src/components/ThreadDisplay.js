@@ -1,16 +1,17 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
-import { ThreadPost } from "../components/ThreadPost";
+import ThreadPost from "./ThreadPost";
+import InvitationModal from "./InvitationModal";
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
-import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
+import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE, SENT_INVITES } from '../utils/queries';
 //* THREAD_DETAILS requires threadId and gives us access to
 
 // import { ADD_POST_REACTION } from '../utils/mutations';
-import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD, SEND_THREAD_INVITE } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -41,6 +42,13 @@ function ThreadDisplay(props) {
 	const userId = AuthService.getProfile().data._id;
 
 	const [ createPost ] = useMutation(CREATE_POST);
+
+	const [ sendThreadInvite ] = useMutation(SEND_THREAD_INVITE, {
+		refetchQueries: [
+			SENT_INVITES,
+			"sentInvites"
+		]
+	})
 
 	const [ removePost ] = useMutation(REMOVE_POST, {
 		refetchQueries: [
@@ -79,8 +87,12 @@ function ThreadDisplay(props) {
 		variables: { userId: AuthService.getProfile().data._id }
 	});
 
-	const errors = singleThread.error || threadPosts.error || userData.error;
-	const loading = singleThread.loading || threadPosts.loading || userData.loading;
+	const threadInvites = useQuery(SENT_INVITES, {
+		variables: { userId: AuthService.getProfile().data._id }
+	})
+
+	const errors = singleThread.error || threadPosts.error || userData.error || threadInvites.error;
+	const loading = singleThread.loading || threadPosts.loading || userData.loading || threadInvites.loading;
 
 	const [ open, setOpen ] = React.useState(false);
 	const [ openEditor, setOpenEditor ] = React.useState(false);
@@ -95,6 +107,7 @@ function ThreadDisplay(props) {
             pinHash: ''
         }
     );
+	const [openInvite, setOpenInvite] = React.useState(false);
 
 	const [postList, setPostList] = React.useState([]);
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
@@ -137,6 +150,26 @@ function ThreadDisplay(props) {
 				dropdown.style.display = "none";
 			}
 		}
+	}
+
+	const handleOpenThreadDropdown = (event) => {
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseThreadDropdown = (event) => {
+		if (event.target.className !== "thread-dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const threadDrop = document.querySelector('.thread-dropdown-content');
+			threadDrop.style.display = "none";
+		}
+	}
+
+	const handleOpenInvite = (event) => {
+		setOpenInvite(true);
+	}
+
+	const handleCloseInvite = (event) => {
+		setOpenInvite(false);
 	}
 
 	const handleOpenEditor = (event) => {
@@ -341,7 +374,7 @@ function ThreadDisplay(props) {
 	return (
 		<React.Fragment>
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
-			<div className="thread-content-container" onLoad={scroll}>
+			<div onClick={handleCloseThreadDropdown} className="thread-content-container" onLoad={scroll}>
 				<div className='thread-top'>
 					<div className="thread-header">
 						<h3>{singleThread.data.threadDetails.title}</h3>
@@ -349,12 +382,20 @@ function ThreadDisplay(props) {
 							<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
 						</div>
 					</div>
-					{threadOwner ? (
-						<img src="../../assets/img/remove_icon.png" alt="delete thread" onClick={handleRemoveThread}/>
-					) : (
-						<React.Fragment />
-					)}
-					
+					{threadOwner ? 
+					<div className="dropdown">
+						<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
+						<div className="thread-dropdown-content">
+							<div className="dropdown-option" onClick={handleOpenInvite}>
+								Invite Friends
+							</div>
+							<div onClick={handleRemoveThread} >
+								Delete
+							</div>
+						</div>
+					</div>
+					: <React.Fragment />
+					}
 				</div>
 				
 				<div id="chats-container" className="chats-container">
@@ -417,6 +458,17 @@ function ThreadDisplay(props) {
 									Update
 								</button>
 							</form>
+						</Box>
+					</Modal>
+					<Modal
+                        data-id="invite"
+						open={openInvite}
+						onClose={handleCloseInvite}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<InvitationModal threadId={threadId} handleCloseInvite={handleCloseInvite} />
 						</Box>
 					</Modal>
 				</div>

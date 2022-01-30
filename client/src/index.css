@@ -1037,6 +1037,28 @@ footer {
     z-index: 1;
 }
 
+.dropdown .thread-dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    right: 0px;
+    background-color: var(--ultra-dark);
+    min-width: 150px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.thread-dropdown-content div {
+    text-align: center;
+    color: white;
+    padding: 8px 12px;
+    border: 1px solid white;
+    text-decoration: none;
+    display: block;
+    transition: border background-color 0.7s linear;
+}
+
 .dropdown-content div {
     text-align: center;
     color: white;
@@ -1047,13 +1069,13 @@ footer {
     transition: border background-color 0.7s linear;
 }
 
-.dropdown-content div:nth-of-type(1):hover {
+.dropdown-content div:nth-of-type(1):hover, .thread-dropdown-content div:nth-of-type(1):hover {
     background-color: var(--hero-green);
     border: 1px solid white;
     cursor: pointer;
 }
 
-.dropdown-content div:nth-of-type(2):hover {
+.dropdown-content div:nth-of-type(2):hover, .thread-dropdown-content div:nth-of-type(2):hover {
     background-color: red;
     border: 1px solid white;
     cursor: pointer;
@@ -1539,6 +1561,26 @@ footer {
 }
 
 /*************MODAL:STYLES************/
+
+.exit-modal-box {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: var(--cactus-purple-1);
+}
+
+.exit-modal {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+
+.exit-modal-box:hover {
+    background-color: var(--cactus-purple-highlight);
+    cursor: pointer;
+}
 
 .modal-header {
     padding: 1rem;
@@ -2328,6 +2370,16 @@ footer {
     margin-left: 20px;
     flex-wrap: wrap;
     align-items: center;
+}
+
+@media screen and (max-width: 500px) {
+    .post-options {
+        flex-direction: column;
+    }
+
+    .reaction-bar {
+        margin-left: 0px;
+    }
 }
 
 .emoji-box {
