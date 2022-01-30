@@ -2317,3 +2317,43 @@ footer {
         max-width: 300px;
     }
 }
+
+.post-bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reaction-bar {
+    display: flex;
+    margin-left: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.emoji-box {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    background-color: var(--dark-mode);
+    margin-right: 5px;
+    padding: 5px;
+    height: 20px;
+    border-radius: 15px;
+    /* border: 1px solid white; */
+    box-shadow: 1px 1px 2px white, -1px 1px 2px white;
+}
+
+.emoji-count {
+    font-weight: 600;
+    color: white;
+    /* padding-bottom: 5px; */
+    margin: 0px 5px 0px 5px;
+    font-size: 16px;
+}
+
+.add-emoji {
+    margin-right: 20px;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}

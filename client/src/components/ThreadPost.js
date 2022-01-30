@@ -57,22 +57,25 @@ export function ThreadPost(props) {
                 }
             </div>
             <p className="pos post-text">{post.post_text}</p>
-            <div className="reaction-bar">
-                <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction"/>
-                <ReactionBar reactions={post.reactions}/>
+            <div className="post-bottom">
+                <div className='post-options'>
+                    <button className='comments-chip'>
+                        <div>{post.comments.length}</div>
+                        <Link className='react-link' to={`/subthread/${post._id}`} onClick={setActiveComment}>
+                            {post.comments.length === 1 ? (<span>Comment</span>) : (<span>Comments</span>)}
+                        </Link>
+                    </button>
+                    {/* {owner === post.author._id ? 
+                    (null) : ( */}
+                    {/* )} */}
+                    <div className="reaction-bar">
+                        <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
+                        <ReactionBar reactions={post.reactions}/>
+                    </div>
+                </div>
+                <img src="../../assets/img/purple_pin.png" alt="pin" style={{width: "30px", height: "30px", cursor:"pointer"}} onClick={pin}/>
             </div>
-            <div className='post-options'>
-                <button className='comments-chip'>
-                <div>{post.comments.length}</div>
-                <Link className='react-link' to={`/subthread/${post._id}`} onClick={setActiveComment}>
-                    {post.comments.length === 1 ? (<span>Comment</span>) : (<span>Comments</span>)}
-                    </Link>
-                </button>
-                {/* {owner === post.author._id ? 
-                (null) : ( */}
-                <img src="../../assets/img/purple_pin.png" alt="pin" style={{width: "30px", height: "auto", cursor:"pointer"}} onClick={pin}/>
-                {/* )} */}
-            </div>
+            
         </div>
         <Modal
             data-id="emoji-mart"
@@ -82,7 +85,7 @@ export function ThreadPost(props) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <EmojiPicker elementId={post._id} parentId={post.thread._id} elementType="post"/>
+                <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={post._id} parentId={post.thread._id} elementType="post"/>
             </Box>
         </Modal>
         </React.Fragment>

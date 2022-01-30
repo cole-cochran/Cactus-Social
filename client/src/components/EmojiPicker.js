@@ -38,14 +38,14 @@ export default function EmojiPicker(props) {
 
 
     const handleAddReaction = async (emoji) => {
-        console.log(emoji.native);
+        console.log(emoji);
         if (elementType === "post") {
             try {
                 await addPostReaction({
                 variables: {
                         threadId: parentId,
                         postId: elementId,
-                        reaction: emoji.native
+                        reaction: emoji.id
                     }
                 })
             } catch (err) {
@@ -58,7 +58,7 @@ export default function EmojiPicker(props) {
                 variables: {
                         postId: parentId,
                         commentId: elementId,
-                        reaction: emoji.native
+                        reaction: emoji.id
                     }
                 })
             } catch (err) {
@@ -71,7 +71,7 @@ export default function EmojiPicker(props) {
                 variables: {
                         eventId: parentId,
                         commentId: elementId,
-                        reaction: emoji.native
+                        reaction: emoji.id
                     }
                 })
             } catch (err) {

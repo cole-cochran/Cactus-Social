@@ -165,11 +165,14 @@ const typeDefs = gql`
         updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
+        removePostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
 
         createPostComment(postId: ID!, comment_text: String!, author: ID!): Comment
         removePostComment(postId: ID!, commentId: ID!): Post
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
+
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
+        removePostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
         createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID!): Event
         updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Event
@@ -183,6 +186,7 @@ const typeDefs = gql`
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
+        removeEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
 
         sendFriendRequest(userId: ID!, friend: ID!): User
         denyFriendRequest(userId: ID!, friend: ID!): User

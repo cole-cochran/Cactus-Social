@@ -11,20 +11,25 @@ export default function ReactionBar(props) {
     let groupedReactions = {};
 
     for (let reaction of reactions) {
+        console.log(reaction)
         if (!groupedReactions[reaction]) {
             groupedReactions[reaction] = 1;
         } else {
-            groupedReactions[reaction] = groupedReactions[reaction] + 1;
+            groupedReactions[reaction] += 1;
         }
     }
 
     let updatedReactions = [];
 
+    console.log(groupedReactions)
+
     for (let group in groupedReactions) {
+        console.log(group);
         let element = {
-            emoji: group.key,
-            count: group.value
+            emoji: group,
+            count: groupedReactions[group]
         };
+        console.log(element)
         updatedReactions.push(element);
     }
 
@@ -32,7 +37,7 @@ export default function ReactionBar(props) {
         <React.Fragment>
             {updatedReactions.map((reaction) => (
                 <div className="emoji-box">
-                    <Emoji emoji={{ id: `${reaction.emoji}` }} size={16} />
+                    <Emoji emoji={{ id: `${reaction.emoji}` }} size={24} />
                     <div className="emoji-count">
                         {reaction.count}
                     </div>

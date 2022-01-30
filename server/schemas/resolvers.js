@@ -615,7 +615,24 @@ const resolvers = {
 			await Post.findOneAndUpdate(
 				{ _id: postId },
 				{
-					$addToSet: {
+					$push: {
+						reactions: reaction
+					}
+				},
+				{ new: true }
+			);
+			
+			const thread = await Thread.findOne({ _id: threadId }).populate('posts').populate('moderator').populate('members');
+
+			return thread;
+		},
+
+		removePostReaction: async (parent, args, context) => {
+			const { threadId, postId, reaction } = args;
+			await Post.findOneAndUpdate(
+				{ _id: postId },
+				{
+					$pull: {
 						reactions: reaction
 					}
 				},
@@ -702,7 +719,24 @@ const resolvers = {
 			await Comment.findOneAndUpdate(
 				{ _id: commentId },
 				{
-					$addToSet: {
+					$push: {
+						reactions: reaction
+					}
+				},
+				{ new: true }
+			);
+			
+			const post = await Post.findOne({ _id: postId }).populate('author').populate('thread').populate('comments');
+
+			return post;
+		},
+
+		removePostCommentReaction: async (parent, args, context) => {
+			const { commentId, postId, reaction } = args;
+			await Comment.findOneAndUpdate(
+				{ _id: commentId },
+				{
+					$pull: {
 						reactions: reaction
 					}
 				},
@@ -1011,7 +1045,7 @@ const resolvers = {
 			await Comment.findOneAndUpdate(
 				{ _id: commentId },
 				{
-					$addToSet: {
+					$push: {
 						reactions: reaction
 					}
 				},
@@ -1022,6 +1056,23 @@ const resolvers = {
 			return event;
 			// }
 			// throw new AuthenticationError('Could not find User!');
+		},
+
+		removeEventCommentReaction: async (parent, args, context) => {
+
+			const { commentId, eventId, reaction } = args;
+			await Comment.findOneAndUpdate(
+				{ _id: commentId },
+				{
+					$pull: {
+						reactions: reaction
+					}
+				},
+				{ new: true }
+			);
+			const event = await Event.findOne({ _id: eventId }).populate('owner').populate('attendees').populate('comments');
+
+			return event;
 		},
 
 		createChat: async (parent, args, context) => {
@@ -1061,7 +1112,7 @@ const resolvers = {
 					}
 				},
 				{ new: true }
-			).populate('messages').populate('users');
+			);
 			return user;
 		},
 

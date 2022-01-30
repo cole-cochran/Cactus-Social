@@ -36,10 +36,6 @@ export default function PostComment (props) {
                         <span className="chat-date">{comment.date_created}</span>
                         {comment.edited ? (<span className="edit-span">(edited)</span>):(null)}
                     </div>
-                    <div className="reaction-bar">
-                        <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction"/>
-                        <ReactionBar reactions={comment.reactions}/>
-                    </div>
                     { owner === comment.author._id ? 
                     <div className="dropdown">
                         <img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
@@ -56,6 +52,10 @@ export default function PostComment (props) {
                 }
                 </div>
                 <p>{comment.comment_text}</p>
+                <div className="reaction-bar">
+                    <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
+                    <ReactionBar reactions={comment.reactions}/>
+                </div>
             </div>
             <Modal
                 data-id="emoji-mart"
@@ -65,7 +65,7 @@ export default function PostComment (props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <EmojiPicker elementId={comment._id} parentId={comment.post._id} elementType="post-comment"/>
+                    <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={comment._id} parentId={comment.post._id} elementType="post-comment"/>
                 </Box>
             </Modal>
         </React.Fragment>

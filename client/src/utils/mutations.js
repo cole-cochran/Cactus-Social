@@ -616,6 +616,39 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
 }
 `;
 
+export const REMOVE_POST_REACTION = gql`
+mutation removePostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
+    removePostReaction(threadId: $threadId, postId: $postId, reaction: $reaction) {
+        _id
+        title
+        posts {
+            _id
+            post_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            comments {
+                _id
+            }
+        }
+        moderator {
+            _id
+            username
+            picture
+        }
+        members {
+            _id
+            username
+            picture
+        }
+        date_created
+    }
+}
+`
+
 export const CREATE_POST_COMMENT = gql`
 mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
     createPostComment(postId: $postId, comment_text: $comment_text, author: $author) {
@@ -707,6 +740,40 @@ mutation updatePostComment($postId: ID!, $commentId: ID!, $comment_text: String!
 export const ADD_POST_COMMENT_REACTION = gql`
 mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String!) {
     addPostCommentReaction(commentId: $commentId, postId: $postId, reaction: $reaction) {
+        _id
+        post_text
+        date_created
+        author {
+            _id
+            username
+            picture
+        }
+        reactions
+        edited
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            post {
+                _id
+            }
+        }
+    }
+}
+`;
+
+export const REMOVE_POST_COMMENT_REACTION = gql`
+mutation removePostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String!) {
+    removePostCommentReaction(commentId: $commentId, postId: $postId, reaction: $reaction) {
         _id
         post_text
         date_created
@@ -1015,6 +1082,49 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
 export const ADD_EVENT_COMMENT_REACTION = gql`
 mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: String!) {
     addEventCommentReaction(commentId: $commentId, eventId: $eventId, reaction: $reaction) {
+        _id
+        title
+        description
+        start_date
+        end_date
+        start_time
+        end_time
+        owner {
+            _id
+            username
+            picture
+        }
+        attendees {
+            _id
+            username
+            picture
+        }
+        category
+        in_person
+        location
+        image
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            event {
+                _id
+            }
+        }
+        date_created
+        edited
+    }
+}
+`;
+
+export const REMOVE_EVENT_COMMENT_REACTION = gql`
+mutation removeEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: String!) {
+    removeEventCommentReaction(commentId: $commentId, eventId: $eventId, reaction: $reaction) {
         _id
         title
         description
