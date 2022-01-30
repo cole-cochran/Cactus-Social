@@ -11,7 +11,7 @@ import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE, SENT_INVITES } from '..
 //* THREAD_DETAILS requires threadId and gives us access to
 
 // import { ADD_POST_REACTION } from '../utils/mutations';
-import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD, SEND_THREAD_INVITE } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -42,13 +42,6 @@ function ThreadDisplay(props) {
 	const userId = AuthService.getProfile().data._id;
 
 	const [ createPost ] = useMutation(CREATE_POST);
-
-	const [ sendThreadInvite ] = useMutation(SEND_THREAD_INVITE, {
-		refetchQueries: [
-			SENT_INVITES,
-			"sentInvites"
-		]
-	})
 
 	const [ removePost ] = useMutation(REMOVE_POST, {
 		refetchQueries: [
@@ -87,12 +80,8 @@ function ThreadDisplay(props) {
 		variables: { userId: AuthService.getProfile().data._id }
 	});
 
-	const threadInvites = useQuery(SENT_INVITES, {
-		variables: { userId: AuthService.getProfile().data._id }
-	})
-
-	const errors = singleThread.error || threadPosts.error || userData.error || threadInvites.error;
-	const loading = singleThread.loading || threadPosts.loading || userData.loading || threadInvites.loading;
+	const errors = singleThread.error || threadPosts.error || userData.error;
+	const loading = singleThread.loading || threadPosts.loading || userData.loading;
 
 	const [ open, setOpen ] = React.useState(false);
 	const [ openEditor, setOpenEditor ] = React.useState(false);
@@ -468,7 +457,7 @@ function ThreadDisplay(props) {
 						aria-describedby="modal-modal-description"
 					>
 						<Box sx={style}>
-							<InvitationModal threadId={threadId} handleCloseInvite={handleCloseInvite} />
+							<InvitationModal itemId={threadId} itemType="thread" handleCloseInvite={handleCloseInvite} />
 						</Box>
 					</Modal>
 				</div>

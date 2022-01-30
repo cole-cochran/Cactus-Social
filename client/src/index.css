@@ -1049,6 +1049,19 @@ footer {
     z-index: 1;
 }
 
+.dropdown .event-dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    right: 20px;
+    background-color: var(--ultra-dark);
+    min-width: 60px;
+    /* overflow: auto; */
+    /* min-height: 100%; */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
 .thread-dropdown-content div {
     text-align: center;
     color: white;
@@ -1069,13 +1082,25 @@ footer {
     transition: border background-color 0.7s linear;
 }
 
-.dropdown-content div:nth-of-type(1):hover, .thread-dropdown-content div:nth-of-type(1):hover {
+.event-dropdown-content div {
+    text-align: center;
+    color: white;
+    padding: 8px 12px;
+    border: 1px solid white;
+    background-color: var(--alt-dark-mode);
+    text-decoration: none;
+    display: block;
+    transition: border background-color 0.7s linear;
+}
+
+.dropdown-content div:nth-of-type(1):hover, .thread-dropdown-content div:nth-of-type(1):hover, .event-dropdown-content div:nth-of-type(1):hover,
+.event-dropdown-content div:nth-of-type(2):hover {
     background-color: var(--hero-green);
     border: 1px solid white;
     cursor: pointer;
 }
 
-.dropdown-content div:nth-of-type(2):hover, .thread-dropdown-content div:nth-of-type(2):hover {
+.dropdown-content div:nth-of-type(2):hover, .thread-dropdown-content div:nth-of-type(2):hover, .event-dropdown-content div:nth-of-type(3):hover {
     background-color: red;
     border: 1px solid white;
     cursor: pointer;
@@ -1882,11 +1907,20 @@ footer {
     margin-top: 10px;
 }
 
+.event-dropdown-content div {
+    width: 140px;
+    margin-right: 15px;
+}
+
 .event-more div:nth-of-type(1) {
     margin: 0;
 }
 
-.event-more .dropdown {
+.event-update-option {
+    margin: 0 !important;
+}
+
+/* .event-more .dropdown {
     min-height: 60px;
     width: 100px;
 }
@@ -1898,21 +1932,21 @@ footer {
     flex-direction: column;
     right: 20vw;
     position: relative;
-}
+} */
 
-.event-more .dropdown .dropdown-content .div {
+/* .event-more .dropdown .dropdown-content .div {
     margin: 0 !important;
     padding: 0 !important;
-}
+} */
 
 .event-delete {
     margin: 0 !important;
     width: 100%;
 }
 
-.event-update-option {
+/* .event-update-option {
     width: 100%;
-}
+} */
 
 .event-inperson img {
     margin-right: 10px;

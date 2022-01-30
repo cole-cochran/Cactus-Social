@@ -2,12 +2,12 @@ import React from "react";
 
 import { useMutation, useQuery } from '@apollo/client';
 import { USER_FRIENDS, SENT_INVITES } from '../utils/queries';
-import { SEND_THREAD_INVITE } from '../utils/mutations';
+import { SEND_THREAD_INVITE, SEND_EVENT_INVITE } from '../utils/mutations';
 import AuthService from '../utils/auth';
 
 export default function InvitationModal(props) {
 
-    const { threadId, handleCloseInvite } = props;
+    const { itemId, itemType, handleCloseInvite } = props;
 
     const userId = AuthService.getProfile().data._id;
 
@@ -16,7 +16,14 @@ export default function InvitationModal(props) {
 			SENT_INVITES,
 			"sentInvites"
 		]
-	})
+	});
+
+    const [ sendEventInvite ] = useMutation(SEND_EVENT_INVITE, {
+        refetchQueries: [
+            SENT_INVITES,
+            "sentInvites"
+        ]
+    });
 
     const getAllFriends = useQuery(USER_FRIENDS, {
         variables: {
@@ -42,29 +49,56 @@ export default function InvitationModal(props) {
 
     console.log(allSentInvites.sent_invites);
 
-    const handleSendThreadInvite = async (event) => {
+    const handleSendInvite = async (event) => {
         event.preventDefault();
         const receiver = event.target.parentNode.parentNode.parentNode.id;
-        try {
-            await sendThreadInvite({
-                variables: {
-                    sender: userId,
-                    receiver: receiver,
-                    threadId: threadId
-                }
-            })
-        } catch (err) {
-            console.log(err);
+        if (itemType === "thread") {
+            try {
+                await sendThreadInvite({
+                    variables: {
+                        sender: userId,
+                        receiver: receiver,
+                        threadId: itemId
+                    }
+                })
+            } catch (err) {
+                console.log(err);
+            }
+        } else if ( itemType === "event") {
+            try {
+                await sendEventInvite({
+                    variables: {
+                        sender: userId,
+                        receiver: receiver,
+                        eventId: itemId
+                    }
+                })
+            } catch (err) {
+                console.log(err);
+            }
         }
+        
     }
 
-    const threadInvites = allSentInvites.sent_invites.filter((invite) => (
-        invite.thread._id === threadId
-    ));
+    const threadInvites = allSentInvites.sent_invites.filter((invite) => {
+        if (invite.thread) {
+            return invite.thread._id === itemId
+        }
+        return null;
+    });
 
     console.log(threadInvites)
 
-    const uninvitedFriends = allFriends.friends.filter((friend) => {
+    const eventInvites = allSentInvites.sent_invites.filter((invite) => {
+        if (invite.event) {
+            return invite.event._id === itemId
+        }
+        return null;
+    });
+
+    console.log(eventInvites);
+
+    const uninvitedThreadFriends = allFriends.friends.filter((friend) => {
         for (let invitation of threadInvites) {
             console.log(invitation);
             if (invitation.user._id === friend._id) {
@@ -72,9 +106,21 @@ export default function InvitationModal(props) {
             }
         }
         return friend;
-    })
+    });
 
-    console.log(uninvitedFriends);
+    console.log(uninvitedThreadFriends);
+
+    const uninvitedEventFriends = allFriends.friends.filter((friend) => {
+        for (let invitation of eventInvites) {
+            console.log(invitation);
+            if (invitation.user._id === friend._id) {
+                return null;
+            }
+        }
+        return friend;
+    });
+
+    console.log(uninvitedEventFriends);
 
     return (
         <div className="modal-form" id="modal-friends">
@@ -84,12 +130,25 @@ export default function InvitationModal(props) {
             
             <div className="all-friends-div">
                 <ul className="modal-list">
-                    {uninvitedFriends && uninvitedFriends.map((user, index) => (
+                    {itemType === "thread" && uninvitedThreadFriends.length && uninvitedThreadFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
                                 <button 
                                 className="friend-chips"
-                                onClick={handleSendThreadInvite}
+                                onClick={handleSendInvite}
+                                >
+                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    <p>{user.username}</p>
+                                </button>
+                            </a>
+                        </li>
+                    ))}
+                    {itemType === "event" && uninvitedEventFriends.length && uninvitedEventFriends.map((user, index) => (
+                        <li key={`${user}-${index}`} id={user._id}>
+                            <a href = {`/profile/${user._id}`}>
+                                <button 
+                                className="friend-chips"
+                                onClick={handleSendInvite}
                                 >
                                     <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                     <p>{user.username}</p>

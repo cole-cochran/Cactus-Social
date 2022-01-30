@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EventEditor from './EventEditor';
 import EventComment from './EventComment';
+import InvitationModal from "./InvitationModal";
 
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
@@ -74,6 +75,7 @@ export default function EventDisplay(props) {
 	const [toggleComments, setToggleComments] = React.useState(false);
 	const [commentsList, setCommentsList] = React.useState([]);
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
+	const [openInvite, setOpenInvite] = React.useState(false);
 
 	React.useEffect(() => {
 		socket.emit("join_event", {room: eventId, user: AuthService.getProfile().data.username})
@@ -85,6 +87,14 @@ export default function EventDisplay(props) {
 			setCommentsList(commentsList => [...commentsList, data]);
 		});
 	}, [socket]);
+
+	const handleOpenInvite = (event) => {
+		setOpenInvite(true);
+	}
+
+	const handleCloseInvite = (event) => {
+		setOpenInvite(false);
+	}
 
 	const handleAttend = async () => {
 		await attendEvent({
@@ -195,11 +205,9 @@ export default function EventDisplay(props) {
 	}
 
 	const handleCloseDropdown = (event) => {
-		if (event.target.className !== "dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
-			const content = document.querySelectorAll('.dropdown-content');
-			for (let item of content) {
-				item.style.display = "none";
-			}
+		if (event.target.className !== "event-dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
+			const content = document.querySelector('.event-dropdown-content');
+			content.style.display = "none";
 		}
 		
 	}
@@ -352,7 +360,10 @@ export default function EventDisplay(props) {
 												<p>More</p>
 											</div>
 											<div className="dropdown">
-												<div className="dropdown-content">
+											<div className="event-dropdown-content">
+													<div className="dropdown-option" onClick={handleOpenInvite}>
+														Invite Friends
+													</div>
 													<div className="dropdown-option event-update-option" onClick={handleOpenEditor}>
 														Update
 													</div>
@@ -477,6 +488,17 @@ export default function EventDisplay(props) {
 						<EventEditor eventId={eventId} eventData={eventData} />
 					</Box>
 				</Modal>
+				<Modal
+                        data-id="invite"
+						open={openInvite}
+						onClose={handleCloseInvite}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<InvitationModal itemId={eventId} itemType="event" handleCloseInvite={handleCloseInvite} />
+						</Box>
+					</Modal>
 				<Modal
 					data-id="editComment"
 					open={openCommentEditor}
