@@ -90,7 +90,7 @@ function App() {
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
-							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
 							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
