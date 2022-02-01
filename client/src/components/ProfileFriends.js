@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import UserSearchModal from './UserSearchModal';
 // import {Link} from 'react-router-dom';
 
-import { ALL_USERS, FRIEND_REQUESTS, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
+import { ALL_USERS, FRIEND_REQUESTS, RECEIVED_INVITES, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
 import { ADD_FRIEND, DENY_FRIEND_REQUEST } from '../utils/mutations';
 
 import { useQuery, useMutation } from '@apollo/client';
@@ -32,6 +32,11 @@ function ProfileFriends(props) {
             userId: userId
         }
     });
+    const getAllInvites = useQuery(RECEIVED_INVITES, {
+        variables: {
+            userId: userId
+        }
+    });
 
     const [ addFriend ] = useMutation(ADD_FRIEND, {
         refetchQueries: [
@@ -53,9 +58,9 @@ function ProfileFriends(props) {
     const [openSentFriendRequests, setOpenSentFriendRequests] = React.useState(false);
     const [ openInvitations, setOpenInvitations] = React.useState(false);
 
-    const loading = getAllUsers.loading || allFriendRequests.loading || allSentFriendRequests.loading;
+    const loading = getAllUsers.loading || allFriendRequests.loading || allSentFriendRequests.loading || getAllInvites.loading;
 
-    const errors = getAllUsers.error || allSentFriendRequests.error || allSentFriendRequests.error;
+    const errors = getAllUsers.error || allSentFriendRequests.error || allSentFriendRequests.error || getAllInvites.error;
 
     if (loading) {
         return <div>Loading...</div>
@@ -65,8 +70,9 @@ function ProfileFriends(props) {
     const friendRequests = allFriendRequests.data?.friendRequests || [];
     const sentFriendRequests = allSentFriendRequests.data?.sentFriendRequests || [];
     const allFriends = getAllFriends.data?.userFriends || [];
+    const allInvitations = getAllInvites.data?.receivedInvites || [];
 
-    console.log(sentFriendRequests);
+    console.log(allInvitations);
 
     const handleOpen = (e) => {
         setOpenSearch(true);
@@ -77,11 +83,11 @@ function ProfileFriends(props) {
     }
 
     const handleOpenInvitations = async () => {
-
+        setOpenInvitations(true);
     }
 
     const handleCloseInvitations = async () => {
-        
+        setOpenInvitations(false);
     }
 
     const handleOpenFriendRequests = (e) => {
@@ -98,6 +104,16 @@ function ProfileFriends(props) {
 
     const handleCloseSentFriendRequests = (e) => {
         setOpenSentFriendRequests(false);
+    }
+
+    const handleAcceptInvite = async (event) => {
+        event.preventDefault();
+        console.log(event.target);
+    }
+
+    const handleRejectInvite = async (event) => {
+        event.preventDefault();
+        console.log(event.target);
     }
 
     const handleAddNewFriend = async (e) => {
@@ -301,7 +317,8 @@ function ProfileFriends(props) {
                     <div className="modal-header">
                         <h3>Invitations</h3>
                     </div>
-                    {/* <ul className="modal-list"> */}
+                        <ul className="modal-list">
+                            {/* //! May need to update resolvers to handle the population of more event and thread data to display */}
                         {/* {sentFriendRequests.sent_friend_requests.map((user,index) => (
                             <li key={`${user}-${index}`}>
                                 <a href = {`/profile/${user._id}`}>
@@ -310,9 +327,9 @@ function ProfileFriends(props) {
                                     {/* </button>
                                 </a>
                             </li>
-                        ))}
-                    </ul> */}
-                </div>
+                        ))} */}
+                        </ul> 
+                    </div>
                 </Box>
             </Modal>
         </div>
