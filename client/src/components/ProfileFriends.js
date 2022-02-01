@@ -51,6 +51,7 @@ function ProfileFriends(props) {
     const [openSearch, setOpenSearch] = React.useState(false);
     const [openFriendRequests, setOpenFriendRequests] = React.useState(false);
     const [openSentFriendRequests, setOpenSentFriendRequests] = React.useState(false);
+    const [ openInvitations, setOpenInvitations] = React.useState(false);
 
     const loading = getAllUsers.loading || allFriendRequests.loading || allSentFriendRequests.loading;
 
@@ -73,6 +74,14 @@ function ProfileFriends(props) {
 
     const handleClose = (e) => {
         setOpenSearch(false);
+    }
+
+    const handleOpenInvitations = async () => {
+
+    }
+
+    const handleCloseInvitations = async () => {
+        
     }
 
     const handleOpenFriendRequests = (e) => {
@@ -220,6 +229,14 @@ function ProfileFriends(props) {
                     <div>{sentFriendRequests.sent_friend_requests && sentFriendRequests.sent_friend_requests.length}</div>
                 </button>
             </div>
+            <div className="invites-received-div">
+                <button onClick={handleOpenInvitations} className="friend-request-chip">
+                    Invitations
+                    <div>
+                        Information from user profile
+                    </div>
+                </button>
+            </div>
             <Modal 
                 open={openFriendRequests} 
                 onClose={handleCloseFriendRequests}
@@ -272,6 +289,29 @@ function ProfileFriends(props) {
                             </li>
                         ))}
                     </ul>
+                </div>
+                </Box>
+            </Modal>
+            <Modal 
+                open={openInvitations} 
+                onClose={handleCloseInvitations}
+            >
+                <Box sx={style}>
+                <div className="modal-form" id="modal-friends">
+                    <div className="modal-header">
+                        <h3>Invitations</h3>
+                    </div>
+                    {/* <ul className="modal-list"> */}
+                        {/* {sentFriendRequests.sent_friend_requests.map((user,index) => (
+                            <li key={`${user}-${index}`}>
+                                <a href = {`/profile/${user._id}`}>
+                                    <button className="friend-chips"> */}
+                                        {/* //! conditionally render the event/thread title and other information  */}
+                                    {/* </button>
+                                </a>
+                            </li>
+                        ))}
+                    </ul> */}
                 </div>
                 </Box>
             </Modal>
