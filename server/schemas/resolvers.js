@@ -191,7 +191,29 @@ const resolvers = {
 
 		receivedInvites: async (parent, args, context) => {
 			const { userId } = args;
-			const user = await User.findById(userId).populate("received_invites");
+			const user = await User.findById(userId).populate("received_invites")
+			.populate({
+				path: "received_invites",
+				populate: {
+					path: "user",
+					model: "User"
+				}
+			})
+			.populate({
+				path: "received_invites",
+				populate: {
+					path: "event",
+					model: "Event"
+				}
+			})
+			.populate({
+				path: "received_invites",
+				populate: {
+					path: "thread",
+					model: "Thread"
+				}
+			})
+			;
 			return user;
 		},
 

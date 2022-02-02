@@ -1238,6 +1238,10 @@ footer {
     margin-top: 15px;
 }
 
+.invites-received-div {
+    margin-top: 15px;
+}
+
 .friend-request-chip {
     display: flex;
     align-items: center;
@@ -1733,6 +1737,23 @@ footer {
 .modal-button:hover {
     box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
     cursor: pointer;
+}
+
+.modal-title {
+    margin: 15px 0px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.modal-list-item {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid white;
+    width: 100%;
+}
+
+.invite-modal-list {
+    
 }
 
 .remove-friend-btn {

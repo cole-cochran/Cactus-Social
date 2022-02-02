@@ -72,7 +72,18 @@ function ProfileFriends(props) {
     const allFriends = getAllFriends.data?.userFriends || [];
     const allInvitations = getAllInvites.data?.receivedInvites || [];
 
-    console.log(allInvitations);
+    console.log(allInvitations.received_invites);
+
+    let eventInvitations = [];
+    let threadInvitations = [];
+
+    for (let invite of allInvitations.received_invites) {
+        if (invite.event) {
+            eventInvitations.push(invite);
+        } else if (invite.thread) {
+            threadInvitations.push(invite);
+        }
+    }
 
     const handleOpen = (e) => {
         setOpenSearch(true);
@@ -249,7 +260,7 @@ function ProfileFriends(props) {
                 <button onClick={handleOpenInvitations} className="friend-request-chip">
                     Invitations
                     <div>
-                        Information from user profile
+                        {allInvitations.received_invites.length}
                     </div>
                 </button>
             </div>
@@ -317,17 +328,51 @@ function ProfileFriends(props) {
                     <div className="modal-header">
                         <h3>Invitations</h3>
                     </div>
+                        <ul className="modal-list invite-modal-list">
+                            {/* //! May need to update resolvers to handle the population of more event and thread data to display */}
+                            <div className="modal-title">Events:</div>
+                            {eventInvitations.map((invite)=> (
+                                <li key={`${invite._id}`} className="modal-list-item">
+                                        <button className="friend-chips">
+                                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                            <p> {invite.user.username} </p>
+                                        </button>
+                                        <div>
+                                            <p> Invited You To Attend </p>
+                                        </div>
+                                        <div>
+                                        <a href={`/events/${invite.event._id}`}>
+                                            <button className="friend-chips">
+                                                <img src="../../assets/img/cactus_event.png" style={{width: "30px", height: "30px", marginRight: "15px"}} alt="event icon" />
+                                                <p>{invite.event.title}</p>
+                                            </button>
+                                        </a>
+                                        </div>
+                                </li>
+                            ))}
+                        </ul> 
                         <ul className="modal-list">
                             {/* //! May need to update resolvers to handle the population of more event and thread data to display */}
-                        {/* {sentFriendRequests.sent_friend_requests.map((user,index) => (
-                            <li key={`${user}-${index}`}>
-                                <a href = {`/profile/${user._id}`}>
-                                    <button className="friend-chips"> */}
-                                        {/* //! conditionally render the event/thread title and other information  */}
-                                    {/* </button>
-                                </a>
-                            </li>
-                        ))} */}
+                            <div className="modal-title">Threads:</div>
+                            {threadInvitations.map((invite)=> (
+                                <li key={`${invite._id}`} className="modal-list-item">
+                                        <button className="friend-chips">
+                                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                            <p> {invite.user.username} </p>
+                                        </button>
+                                        <div>
+                                            <p> Invited You To Join </p>
+                                        </div>
+                                        <div>
+                                        <a href={`/events/${invite.thread._id}`}>
+                                            <button className="friend-chips">
+                                                <img src="../../assets/img/cactus_threads_icon.png" style={{width: "30px", height: "15px", marginRight: "15px"}} alt="event icon" />
+                                                <p> {invite.thread.title}</p>
+                                            </button>
+                                        </a>
+                                        </div>
+                                </li>
+                            ))}
                         </ul> 
                     </div>
                 </Box>

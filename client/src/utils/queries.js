@@ -587,12 +587,15 @@ query receivedInvites($userId: ID!) {
 			_id
 			user {
 			_id
+			username
 			}
 			event {
 			_id
+			title
 			}
 			thread {
 			_id
+			title
 			}
 			date_created
 		}
