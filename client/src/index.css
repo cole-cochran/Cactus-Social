@@ -1752,9 +1752,75 @@ footer {
     width: 100%;
 }
 
-.invite-modal-list {
-    
+.modal-list-text {
+    margin-top: 15px;
+    /* padding-left: 20px; */
 }
+
+.modal-left-top {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-right-bottom {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.modal-right-bottom .accept-button {
+    background-color: var(--hero-green);
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid white;
+    transition: box-shadow 0.4s linear;
+}
+
+.modal-right-bottom .reject-button {
+    background-color: red;
+    color: white;
+    font-weight: 600;
+    border: 1px solid white;
+    padding: 0.5rem 0.75rem;
+    transition: box-shadow 0.4s linear;
+}
+
+.modal-right-bottom .accept-button:hover {
+    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    cursor: pointer;
+}
+
+.modal-right-bottom .reject-button:hover {
+    box-shadow: 3px 3px 3px red, 3px -3px 3px red, -3px 3px 3px red, -3px -3px 3px red;
+    cursor: pointer;
+}
+
+.invite-modal-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.invite-modal-list {
+    background-color: var(--alt-dark-mode);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.invite-modal-list button {
+    max-width: 200px;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 10px;
+}
+
+
 
 .remove-friend-btn {
     display: flex;

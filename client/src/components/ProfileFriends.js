@@ -5,7 +5,7 @@ import UserSearchModal from './UserSearchModal';
 // import {Link} from 'react-router-dom';
 
 import { ALL_USERS, FRIEND_REQUESTS, RECEIVED_INVITES, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
-import { ADD_FRIEND, DENY_FRIEND_REQUEST } from '../utils/mutations';
+import { ADD_FRIEND, DENY_FRIEND_REQUEST, ACCEPT_EVENT_INVITE, ACCEPT_THREAD_INVITE, REJECT_EVENT_INVITE, REJECT_THREAD_INVITE } from '../utils/mutations';
 
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
@@ -49,6 +49,34 @@ function ProfileFriends(props) {
         refetchQueries: [
             FRIEND_REQUESTS,
             "friendRequests"
+        ]
+    });
+
+    const [ acceptThreadInvite ] = useMutation(ACCEPT_THREAD_INVITE, {
+        refetchQueries: [
+            RECEIVED_INVITES,
+            "receivedInvites"
+        ]
+    });
+
+    const [ rejectThreadInvite ] = useMutation(REJECT_THREAD_INVITE, {
+        refetchQueries: [
+            RECEIVED_INVITES,
+            "receivedInvites"
+        ]
+    });
+
+    const [ acceptEventInvite ] = useMutation(ACCEPT_EVENT_INVITE, {
+        refetchQueries: [
+            RECEIVED_INVITES,
+            "receivedInvites"
+        ]
+    });
+
+    const [ rejectEventInvite ] = useMutation(REJECT_EVENT_INVITE, {
+        refetchQueries: [
+            RECEIVED_INVITES,
+            "receivedInvites"
         ]
     });
 
@@ -119,12 +147,73 @@ function ProfileFriends(props) {
 
     const handleAcceptInvite = async (event) => {
         event.preventDefault();
-        console.log(event.target);
+        console.log(event.target.dataset);
+        const data = event.target.dataset;
+        const senderId = data.user;
+        
+        if (data.name === "event") {
+            let eventId = data.id;
+            try {
+                await acceptEventInvite({
+                    variables: {
+                        senderId: senderId,
+                        eventId: eventId,
+                        userId: userId
+                    }
+                })
+            } catch(err) {
+                console.log(err);
+            }
+        } else if (data.name === "thread") {
+            let threadId = data.id;
+            try {
+                await acceptThreadInvite({
+                    variables: {
+                        senderId: senderId,
+                        threadId: threadId,
+                        userId: userId
+                    }
+                })
+            } catch(err) {
+                console.log(err);
+            }
+        }
+
     }
 
     const handleRejectInvite = async (event) => {
         event.preventDefault();
         console.log(event.target);
+        const data = event.target.dataset;
+        const senderId = data.user;
+        
+        if (data.name === "event") {
+            let eventId = data.id;
+            try {
+                await rejectEventInvite({
+                    variables: {
+                        senderId: senderId,
+                        eventId: eventId,
+                        userId: userId
+                    }
+                })
+            } catch(err) {
+                console.log(err);
+            }
+        } else if (data.name === "thread") {
+            let threadId = data.id;
+            try {
+                await rejectThreadInvite({
+                    variables: {
+                        senderId: senderId,
+                        threadId: threadId,
+                        userId: userId
+                    }
+                })
+            } catch(err) {
+                console.log(err);
+            }
+        }
     }
 
     const handleAddNewFriend = async (e) => {
@@ -329,48 +418,91 @@ function ProfileFriends(props) {
                         <h3>Invitations</h3>
                     </div>
                         <ul className="modal-list invite-modal-list">
-                            {/* //! May need to update resolvers to handle the population of more event and thread data to display */}
                             <div className="modal-title">Events:</div>
                             {eventInvitations.map((invite)=> (
-                                <li key={`${invite._id}`} className="modal-list-item">
-                                        <button className="friend-chips">
-                                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                                            <p> {invite.user.username} </p>
-                                        </button>
-                                        <div>
-                                            <p> Invited You To Attend </p>
-                                        </div>
-                                        <div>
+                                <li id={invite.event._id} key={`${invite._id}`} className="modal-list-item invite-modal-item">
+                                    <div className="modal-left-top">
+                                    <button className="friend-chips">
+                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                        <p> {invite.user.username} </p>
+                                    </button>
+                                    <div className="modal-list-text">
+                                        <p> Invited You To Attend </p>
+                                    </div>
+                                    <div>
                                         <a href={`/events/${invite.event._id}`}>
                                             <button className="friend-chips">
                                                 <img src="../../assets/img/cactus_event.png" style={{width: "30px", height: "30px", marginRight: "15px"}} alt="event icon" />
                                                 <p>{invite.event.title}</p>
                                             </button>
                                         </a>
-                                        </div>
+                                    </div>
+                                    </div>
+                                    <div className="modal-right-bottom">
+                                        <button 
+                                        className="accept-button"
+                                        onClick={handleAcceptInvite}
+                                        data-name="event"
+                                        data-id={invite.event._id}
+                                        data-user={invite.user._id}
+                                        >
+                                            Accept
+                                        </button>
+                                        <button 
+                                        className="reject-button"
+                                        onClick={handleRejectInvite}
+                                        data-name="event"
+                                        data-id={invite.event._id}
+                                        data-user={invite.user._id}
+                                        >
+                                            Reject
+                                        </button>
+                                    </div>
                                 </li>
                             ))}
                         </ul> 
-                        <ul className="modal-list">
+                        <ul className="modal-list invite-modal-list">
                             {/* //! May need to update resolvers to handle the population of more event and thread data to display */}
                             <div className="modal-title">Threads:</div>
                             {threadInvitations.map((invite)=> (
-                                <li key={`${invite._id}`} className="modal-list-item">
+                                <li id={invite.thread._id} key={`${invite._id}`} className="modal-list-item invite-modal-item">
+                                    <div className="modal-left-top">
                                         <button className="friend-chips">
                                             <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                             <p> {invite.user.username} </p>
                                         </button>
-                                        <div>
+                                        <div className="modal-list-text">
                                             <p> Invited You To Join </p>
                                         </div>
                                         <div>
-                                        <a href={`/events/${invite.thread._id}`}>
+                                        <a href={`/threads/${invite.thread._id}`}>
                                             <button className="friend-chips">
                                                 <img src="../../assets/img/cactus_threads_icon.png" style={{width: "30px", height: "15px", marginRight: "15px"}} alt="event icon" />
                                                 <p> {invite.thread.title}</p>
                                             </button>
                                         </a>
                                         </div>
+                                    </div>
+                                    <div className="modal-right-bottom">
+                                    <button 
+                                        className="accept-button"
+                                        onClick={handleAcceptInvite}
+                                        data-name="thread"
+                                        data-id={invite.thread._id}
+                                        data-user={invite.user._id}
+                                        >
+                                            Accept
+                                        </button>
+                                        <button 
+                                        className="reject-button"
+                                        onClick={handleRejectInvite}
+                                        data-name="thread"
+                                        data-id={invite.thread._id}
+                                        data-user={invite.user._id}
+                                        >
+                                            Reject
+                                        </button>
+                                    </div>
                                 </li>
                             ))}
                         </ul> 
