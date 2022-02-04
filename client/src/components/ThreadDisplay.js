@@ -149,7 +149,7 @@ function ThreadDisplay(props) {
 	const handleCloseThreadDropdown = (event) => {
 		if (event.target.className !== "thread-dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
 			const threadDrop = document.querySelector('.thread-dropdown-content');
-			threadDrop.style.display = "none";
+			if (threadDrop) {threadDrop.style.display = "none";}
 		}
 	}
 

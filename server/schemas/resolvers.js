@@ -178,7 +178,14 @@ const resolvers = {
 		chatDetails: async (parent, args, context) => {
 			const { chatId } = args;
 			const chat = await Chat.findById(chatId)
-			.populate("users").populate("messages");
+			.populate("users").populate("messages")
+			.populate({
+				path: "messages",
+				populate: {
+					path: "sender",
+					model: "User"
+				}
+			});
 			return chat;
 		},
 
