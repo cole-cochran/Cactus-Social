@@ -603,5 +603,20 @@ query receivedInvites($userId: ID!) {
 }
 `;
 
-
+export const USER_CHATS = gql`
+query userChats($userId: ID!) {
+	userChats(userId: $userId) {
+		_id
+		users {
+			_id
+			username
+			picture
+		}
+		messages {
+			_id
+		}
+		date_created
+	}
+}
+`
 //!  USERNAME IS NESTED IN AUTHOR - FIX RESOLVERS TO POPULATE THAT DATA

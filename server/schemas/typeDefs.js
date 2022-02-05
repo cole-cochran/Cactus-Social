@@ -135,6 +135,7 @@ const typeDefs = gql`
         sentFriendRequests(userId: ID!): User
 
         chatDetails(chatId: ID!): Chat
+        userChats(userId: ID!): [Chat]
         
         sentInvites(userId: ID!): User
         receivedInvites(userId: ID!): User

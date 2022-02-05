@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Error from './pages/Error';
 import EventDisplay from './components/EventDisplay';
+import ChatDisplay from './components/ChatDisplay';
 // import EventCreation from './components/EventCreation';
 //*import browser router
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -88,6 +89,10 @@ function App() {
 						</Route>
 						<Route exact path="/chat">
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
+						</Route>
+						<Route exact path="/chats/:chatId">
+							{AuthService.loggedIn() ? 
+							<ChatDisplay /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}

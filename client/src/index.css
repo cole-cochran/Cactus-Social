@@ -2530,3 +2530,51 @@ footer {
     width: 30px;
     height: 30px;
 }
+
+.chat-create-div {
+    padding: 10px;
+}
+
+.chat-create-main {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.chat-create-main h2 {
+    font-size: 24px;
+    color: white;
+    border-bottom: 1px solid white;
+    margin-bottom: 15px;
+}
+
+.chat-create-main .all-friends-div h3 {
+    color: white;
+}
+
+.chat-create-main .all-friends-div ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selected-chat-friends h3 {
+    color: white;
+}
+
+.chat-create-actions {
+    padding: 10px;
+}
+
+.chat-create-actions .cancel-button {
+    background-color: red;
+    cursor: pointer;
+    color: white;
+    padding: 5px 10px;
+    font-weight: 600;
+    border: 1px solid white;
+    transition: box-shadow 0.4s linear;
+}
+
+.chat-create-actions .cancel-button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}

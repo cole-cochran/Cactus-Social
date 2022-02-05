@@ -189,6 +189,18 @@ const resolvers = {
 			return chat;
 		},
 
+		userChats: async (parent, args, context) => {
+			const { userId } = args;
+			const chats = await Chat.find({
+				users: {
+					$elemMatch: {
+						_id: userId
+					}
+				}
+			}).populate("users").populate("messages");
+			return chats;
+		},
+
 		sentInvites: async (parent, args, context) => {
 			const { userId } = args;
 			const user = await User.findById(userId)

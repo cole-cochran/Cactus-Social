@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import EventCreation from "./EventCreation";
 

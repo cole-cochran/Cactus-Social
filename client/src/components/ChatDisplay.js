@@ -1,5 +1,6 @@
 import React from "react";
 
+import ChatMessage from "./ChatMessage";
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
@@ -61,6 +62,20 @@ export default function ChatDisplay(props) {
         }
     }
 
+    const handleRemoveChat = async (event) => {
+        event.preventDefault();
+        try {
+            await removeChat({
+                variables: {
+                    chatId: chatId,
+                    userId: userId
+                }
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <div>
             <div>
@@ -76,13 +91,8 @@ export default function ChatDisplay(props) {
             </div>
             <div>
                 {chatDetails.messages.map((message) => (
-                    <div>
-                        <p>{message.message}</p>
-                        <p>{message.sender.username}</p>
-                        <p>{message.date_created}</p>
-                    </div>
+                    <ChatMessage message={message} key={message._id}/>
                 ))}
-                {/* <ChatMessage />  */}
             </div>
             <div>
                 <form onSubmit={handleCreateChatMessage}>
