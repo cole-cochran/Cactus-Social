@@ -60,21 +60,64 @@ export default function ChatsPanel(props) {
     const allChats = getAllChats.data?.userChats || [];
 
     const handleAddChatMember = async (event) => {
-        console.log(event.target.parentNode.childNodes[1].innerText)
 
         const addedUserId = event.target.id;
         const userUsername = event.target.parentNode.childNodes[1].innerText;
 
         const addedUser = {
-            userId: addedUserId,
+            _id: addedUserId,
             username: userUsername
+        };
+
+        setChatMembers([...chatMembers, addedUser]);
+
+        const filteredFriends = nonChatFriends.filter((friend) => (friend._id !== addedUser._id));
+
+        setNonChatFriends([...filteredFriends]);
+    }
+
+    const handleRemoveChatMember = async (event) => {
+        const removedUserId = event.target.id;
+        const removedUsername = event.target.parentNode.childNodes[1].innerText;
+
+        const filteredUsers = chatMembers.filter((member) => {
+            return member._id !== removedUserId
+        });
+
+        setChatMembers([...filteredUsers]);
+        console.log([...chatMembers])
+
+        const removedUser = {
+            _id: removedUserId,
+            username: removedUsername
         }
 
-        setChatMembers([...chatMembers, addedUser])
+        setNonChatFriends([...nonChatFriends, removedUser]);
+    }
 
-        const filteredFriends = nonChatFriends.filter((friend) => (friend._id !== addedUser.userId))
+    const handleCreateNewChat = async (event) => {
+        event.preventDefault();
+        const newChatUsers = chatMembers.map((member) => (
+            member._id
+        ))
 
-        setNonChatFriends([...filteredFriends])
+        try {
+            console.log([...newChatUsers, userId])
+            const chatArrObj = newChatUsers.map((user) => (
+                {
+                    _id: user._id
+                }
+            ))
+            await createChat({
+                variables: {
+                    participants: [...chatArrObj, {_id: userId}]
+                }
+            })
+        } catch(err) {
+            console.log(err);
+        }
+
+        handleClose();
     }
 
     const handleOpen = () => {
@@ -91,23 +134,21 @@ export default function ChatsPanel(props) {
         // setActiveChat(event);
     }
 
-    const handleRemoveChatMember = async (event) => {
-
-    }
-
     const handleOpenDropdown = (event) => {
-        const eventInfo = document.getElementById("chats-dropdown");
+        const chatInfo = document.getElementById("chats-dropdown");
 
         setDroppedChats(true);
-        eventInfo.style.display = "block";
+        chatInfo.style.display = "block";
     }
 
     const handleCloseDropdown = (event) => {
-        const eventInfo = document.getElementById("chats-dropdown");
+        const chatInfo = document.getElementById("chats-dropdown");
 
         setDroppedChats(false);
-        eventInfo.style.display = "none";
+        chatInfo.style.display = "none";
     }
+
+    console.log(allChats)
 
     return (
         <div id="sidebar-chats-panel">
@@ -141,13 +182,21 @@ export default function ChatsPanel(props) {
                 {allChats.map((chat) => (
                     <li key={chat._id}>
                         <Link onClick={(e) => {handleEventChange(chat._id)}} to={`/chats/${chat._id}`} >
-                            <button className="friend-chips">
-                            {chat.users.map((user) => (
+                            <button className="chat-chips">{chat.users.map((user) => (
+                                <div className="chat-chip-div">
+                                <div className="chat-chip-img">
+                                    
                                 <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
 
-                            ))}
-                            {chat.users.map((user) => (
+                            {/* ))} */}
+                                </div>
+                            <div className="chat-chip-span">
+                                {/* {chat.users.map((user) => ( */}
                                 <span>{user.username}</span> 
+                            
+                            </div>
+
+                            </div>
                             ))}
                             </button>
                         </Link>
@@ -177,7 +226,7 @@ export default function ChatsPanel(props) {
                                                     src="../../assets/img/open-circle.svg" 
                                                     alt="open check box" 
                                                     style={{height: "20px", marginLeft: "15px", cursor: "pointer"}}
-                                                    onClick={null}
+                                                    onClick={handleRemoveChatMember}
                                                     id={user._id}
                                                     />
                                                 </button>
@@ -212,6 +261,9 @@ export default function ChatsPanel(props) {
                         <div className="chat-create-actions">
                             <button className="cancel-button" onClick={handleClose}>
                                 Cancel
+                            </button>
+                            <button className="create-button" onClick={handleCreateNewChat} disabled={chatMembers.length === 0 ? true : false}>
+                                Create Chat
                             </button>
                         </div>
                     </div>

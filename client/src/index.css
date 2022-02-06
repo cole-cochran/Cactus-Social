@@ -2578,3 +2578,56 @@ footer {
 .chat-create-actions .cancel-button:hover {
     box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
 }
+
+.chat-create-actions .create-button {
+    background-color: var(--cactus-green-1);
+    cursor: pointer;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 20px;
+    font-weight: 600;
+    border: 1px solid white;
+    transition: box-shadow 0.4s linear;
+}
+
+.chat-create-actions .create-button:disabled {
+    display: none;
+}
+
+.chat-create-actions .create-button:hover {
+    box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
+}
+
+.chat-chips {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-color: var(--alt-dark-mode);
+    border: none;
+    padding: 5px;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    cursor: pointer;
+}
+
+.chat-chips:hover {
+    background-color: var(--hero-green);
+}
+
+.chat-chip-div {
+    display: flex;
+    width: 100%;
+    padding: 2px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.chat-chip-img {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+

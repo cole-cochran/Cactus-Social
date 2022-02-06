@@ -193,9 +193,7 @@ const resolvers = {
 			const { userId } = args;
 			const chats = await Chat.find({
 				users: {
-					$elemMatch: {
-						_id: userId
-					}
+					_id: userId
 				}
 			}).populate("users").populate("messages");
 			return chats;
