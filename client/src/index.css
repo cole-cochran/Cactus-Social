@@ -2641,6 +2641,7 @@ footer {
     align-items: center;
     text-align: center;
     background-color: var(--ultra-dark);
+    max-height: 100vh;
 }
 
 .chat-banner {
@@ -2648,6 +2649,9 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 150px;
+    border-bottom: 1px solid white;
+    width: 90%;
 }
 
 .chat-banner h2 {
@@ -2685,6 +2689,12 @@ footer {
 .chat-messages-container {
     width: 100%;
     padding-bottom: 30px;
+    min-height: calc(100vh - 320px);
+    overflow: scroll;
+}
+
+.chat-messages-container::-webkit-scrollbar {
+    display: none;
 }
 
 .chat-message-submit-div {
@@ -2711,3 +2721,12 @@ footer {
 .from-other {
     padding-right: 25%;
 }
+
+.dm-bar {
+    align-items: center;
+    max-height: 15px;
+    height: 15px;
+    padding-right: 3px;
+    padding-left: 3px;
+}
+

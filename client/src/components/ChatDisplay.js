@@ -55,6 +55,7 @@ export default function ChatDisplay(props) {
         } catch (err) {
             console.log(err);
         }
+        setChatMessage("");
     }
 
     const handleChange = (event) => {
@@ -78,8 +79,30 @@ export default function ChatDisplay(props) {
         }
     }
 
+    const handleOpenMessageDropdown = async (event) => {
+        const content = event.target.parentNode.childNodes[1];
+        content.style.display = "flex"
+    }
+
+    const handleCloseMessageDropdown = (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const chatDrops = document.querySelectorAll('.dropdown-content');
+			for(let chatDrop of chatDrops) {
+                if (chatDrop) {
+                    chatDrop.style.display = "none";
+                }
+            }
+            
+		}
+	}
+
+    const scroll = () => {
+		var element = document.getElementById("chat-messages-container");
+		element.scrollTop = element.scrollHeight;
+	}
+
     return (
-        <div className="chat-display">
+        <div className="chat-display" onClick={handleCloseMessageDropdown}>
             <div className="chat-banner">
                 <h2>Cactus Chat</h2>
                 <div className="chat-users-div">
@@ -93,9 +116,10 @@ export default function ChatDisplay(props) {
                     </div>
                 </div>
             </div>
-            <div className="chat-messages-container">
+            
+            <div onLoad={scroll} id="chat-messages-container" className="chat-messages-container">
                 {chatDetails.messages.map((message) => (
-                    <ChatMessage message={message} key={message._id}/>
+                    <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
                 ))}
             </div>
             <div className="chat-message-submit-div">
