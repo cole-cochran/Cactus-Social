@@ -536,10 +536,16 @@ query chatDetails($chatId: ID!) {
 		_id
 		users {
 			_id
+			username
 		}
 		messages {
 			_id
 			message
+			sender {
+				_id
+				username
+			}
+			date_created
 		}
 		date_created
 		}

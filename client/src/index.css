@@ -2598,6 +2598,10 @@ footer {
     box-shadow: 1px 1px 2px white, 1px -1px 2px white, -1px 1px 2px white, -1px -1px 2px white;
 }
 
+#chats-dropdown {
+    display: none;
+}
+
 .chat-chips {
     display: flex;
     flex-direction: column;
@@ -2630,4 +2634,80 @@ footer {
     margin-right: 10px;
 }
 
+.chat-display {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: var(--ultra-dark);
+}
 
+.chat-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-banner h2 {
+    color: white;
+    margin-top: 15px;
+}
+
+.chat-users-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+}
+
+.chat-users {
+    display: flex;
+    align-items: center;
+    height: 35px;
+}
+
+.chat-users button {
+    padding: 6px;
+    font-weight: 500;
+    background-color: var(--ultra-dark);
+    border: 1px solid white;
+    margin-left: 10px;
+    color: white;
+}
+
+.chat-users-div h3 {
+    color: white;
+    margin-right: 10px;
+}
+
+.chat-messages-container {
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+.chat-message-submit-div {
+    width: 100%;
+    /* padding-top: 20px; */
+}
+
+.from-user {
+    padding-left: 25%;
+}
+
+.from-user .chat-name, .from-user .chat-date {
+    color: var(--hero-green)
+}
+
+.from-user .post-text {
+    border: 1px solid var(--hero-green);
+}
+
+.from-other .post-text {
+    border: 1px solid var(--cactus-purple-highlight);
+}
+
+.from-other {
+    padding-right: 25%;
+}

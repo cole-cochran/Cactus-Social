@@ -40,6 +40,8 @@ export default function ChatDisplay(props) {
 
     const chatDetails = getChatDetails.data?.chatDetails || {};
 
+    console.log(chatDetails);
+
     const handleCreateChatMessage = async (event) => {
         event.preventDefault();
         try {
@@ -77,29 +79,34 @@ export default function ChatDisplay(props) {
     }
 
     return (
-        <div>
-            <div>
-                <h2>Chat</h2>
-                <div>
+        <div className="chat-display">
+            <div className="chat-banner">
+                <h2>Cactus Chat</h2>
+                <div className="chat-users-div">
                     <h3>Users:</h3>
-                    {chatDetails.users.map((user) => (
-                    <button key={user._id}>
-                        {user.username}
-                    </button>
-                    ))}
+                    <div className="chat-users">
+                        {chatDetails.users.map((user) => (
+                        <button key={user._id}>
+                            {user.username}
+                        </button>
+                        ))}
+                    </div>
                 </div>
             </div>
-            <div>
+            <div className="chat-messages-container">
                 {chatDetails.messages.map((message) => (
                     <ChatMessage message={message} key={message._id}/>
                 ))}
             </div>
-            <div>
-                <form onSubmit={handleCreateChatMessage}>
+            <div className="chat-message-submit-div">
+                <form onSubmit={handleCreateChatMessage} className="chat-input">
                     <textarea name="createMessage" onChange={handleChange} value={chatMessage} placeholder="Chat Message"/>
-                    <button type="submit">
-                        Send
-                    </button>
+                    <div className="chat-input-buttons">
+                        <button className="chat-input-send-button" type="submit">
+                            Send
+                        </button>
+                    </div>
+                    
                 </form>
             </div>
         </div>
