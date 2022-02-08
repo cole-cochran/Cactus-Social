@@ -156,7 +156,7 @@ export default function ChatsPanel(props) {
                 <div>
                     <img
                         style={{width: "35px", height: "auto", marginRight: "20px", marginLeft: "8px"}}
-                        src="/assets/img/cactus_events_alt.png"
+                        src="../../assets/img/cactus-speech-bubble.svg"
                         alt="events icon"
                     />
                     <h3>Chats</h3>

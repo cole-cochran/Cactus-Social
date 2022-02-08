@@ -18,7 +18,7 @@ import { setContext } from '@apollo/client/link/context';
 
 //*import authService middleware
 import AuthService from './utils/auth';
-import Sendbird from './pages/Sendbird/Sendbird';
+// import Sendbird from './pages/Sendbird/Sendbird';
 
 import {io} from 'socket.io-client';
 
@@ -87,12 +87,12 @@ function App() {
 						<Route exact path="/profile/:userId">
 							{AuthService.loggedIn() ? <Profile setActiveEvent={setActiveEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
 						</Route>
-						<Route exact path="/chat">
+						{/* <Route exact path="/chat">
 							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
-						</Route>
+						</Route> */}
 						<Route exact path="/chats/:chatId">
 							{AuthService.loggedIn() ? 
-							<ChatDisplay /> : <SplashPage />}
+							<ChatDisplay setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket}/> : <SplashPage />}

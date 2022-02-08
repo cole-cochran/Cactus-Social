@@ -258,6 +258,14 @@ function ProfileInfo(props) {
 		}
 	}
 
+	let userFirstNameArr = specificUser.first_name.split("");
+	userFirstNameArr[0] = userFirstNameArr[0].toUpperCase();
+	let updatedFirstName = userFirstNameArr.join("");
+
+	let userLastNameArr = specificUser.last_name.split("");
+	userLastNameArr[0] = userLastNameArr[0].toUpperCase();
+	let updatedLastName = userLastNameArr.join("");
+
 	return (
 		<React.Fragment>
 		<div className="profile-wrapper">
@@ -265,7 +273,8 @@ function ProfileInfo(props) {
 				<div className="profile-header">
 					<div className='profile-top'>
 						<h3>
-						{specificUser.first_name} {specificUser.last_name}
+						{`${updatedFirstName} 
+						${updatedLastName}`}
 						</h3>
 						{!canEditProfile ? (
 						<div className='friend-options-div'>

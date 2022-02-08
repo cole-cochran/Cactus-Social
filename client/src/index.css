@@ -2641,7 +2641,8 @@ footer {
     align-items: center;
     text-align: center;
     background-color: var(--ultra-dark);
-    max-height: 100vh;
+    height: calc(100vh - 66px);
+    width: calc(100vw - 48px);
 }
 
 .chat-banner {
@@ -2649,14 +2650,15 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 150px;
+    min-height: 200px;
     border-bottom: 1px solid white;
     width: 90%;
 }
 
 .chat-banner h2 {
     color: white;
-    margin-top: 15px;
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 .chat-users-div {
@@ -2664,12 +2666,16 @@ footer {
     display: flex;
     justify-content: center;
     padding: 5px;
+    margin-bottom: 15px;
 }
 
 .chat-users {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    height: 35px;
+    justify-content: center;
+    height: 70px;
 }
 
 .chat-users button {
@@ -2684,12 +2690,13 @@ footer {
 .chat-users-div h3 {
     color: white;
     margin-right: 10px;
+    display: none;
 }
 
 .chat-messages-container {
     width: 100%;
     padding-bottom: 30px;
-    min-height: calc(100vh - 320px);
+    min-height: calc(100vh - 436px);
     overflow: scroll;
 }
 
@@ -2704,6 +2711,12 @@ footer {
 
 .from-user {
     padding-left: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0px;
+    /* padding-bottom: 15px; */
 }
 
 .from-user .chat-name, .from-user .chat-date {
@@ -2720,6 +2733,12 @@ footer {
 
 .from-other {
     padding-right: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0px;
+    /* padding-bottom: 15px; */
 }
 
 .dm-bar {
@@ -2730,3 +2749,8 @@ footer {
     padding-left: 3px;
 }
 
+.chat-dots {
+    width: 25px;
+    margin-left: 10px;
+    cursor: pointer;
+}

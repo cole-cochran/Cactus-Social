@@ -5,6 +5,10 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
+import Sidebar from './Sidebar';
+import NavBar from './NavBar';
+import Footer from './Footer';
+
 import { CHAT_DETAILS } from "../utils/queries";
 import { CREATE_CHAT_MESSAGE, REMOVE_CHAT } from "../utils/mutations";
 
@@ -13,6 +17,8 @@ export default function ChatDisplay(props) {
     const userId = AuthService.getProfile().data._id;
 
     const { chatId } = useParams();
+
+    const {setActiveThread, setActiveEvent} = props;
 
     const [ createChatMessage ] = useMutation(CREATE_CHAT_MESSAGE, {
         refetchQueries: [
@@ -85,7 +91,7 @@ export default function ChatDisplay(props) {
     }
 
     const handleCloseMessageDropdown = (event) => {
-		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "chat-dots" && event.target.className !== "dropdown-option") {
 			const chatDrops = document.querySelectorAll('.dropdown-content');
 			for(let chatDrop of chatDrops) {
                 if (chatDrop) {
@@ -102,37 +108,44 @@ export default function ChatDisplay(props) {
 	}
 
     return (
-        <div className="chat-display" onClick={handleCloseMessageDropdown}>
-            <div className="chat-banner">
-                <h2>Cactus Chat</h2>
-                <div className="chat-users-div">
-                    <h3>Users:</h3>
-                    <div className="chat-users">
-                        {chatDetails.users.map((user) => (
-                        <button key={user._id}>
-                            {user.username}
-                        </button>
+        <div onClick={handleCloseMessageDropdown}>
+			<NavBar userId={userId} />
+            <div className="app-content-container" >
+				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
+                <div className="chat-display" >
+                    <div className="chat-banner">
+                        <h2>Cactus Chat</h2>
+                        <div className="chat-users-div">
+                            <h3>Users:</h3>
+                            <div className="chat-users">
+                                {chatDetails.users.map((user) => (
+                                <button key={user._id}>
+                                    {user.username}
+                                </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div onLoad={scroll} id="chat-messages-container" className="chat-messages-container">
+                        {chatDetails.messages.map((message) => (
+                            <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
                         ))}
+                    </div>
+                    <div className="chat-message-submit-div">
+                        <form onSubmit={handleCreateChatMessage} className="chat-input">
+                            <textarea name="createMessage" onChange={handleChange} value={chatMessage} placeholder="Chat Message"/>
+                            <div className="chat-input-buttons">
+                                <button className="chat-input-send-button" type="submit">
+                                    Send
+                                </button>
+                            </div>
+                            
+                        </form>
                     </div>
                 </div>
             </div>
-            
-            <div onLoad={scroll} id="chat-messages-container" className="chat-messages-container">
-                {chatDetails.messages.map((message) => (
-                    <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
-                ))}
-            </div>
-            <div className="chat-message-submit-div">
-                <form onSubmit={handleCreateChatMessage} className="chat-input">
-                    <textarea name="createMessage" onChange={handleChange} value={chatMessage} placeholder="Chat Message"/>
-                    <div className="chat-input-buttons">
-                        <button className="chat-input-send-button" type="submit">
-                            Send
-                        </button>
-                    </div>
-                    
-                </form>
-            </div>
-        </div>
+			<Footer />
+		</div>
     )
 }
