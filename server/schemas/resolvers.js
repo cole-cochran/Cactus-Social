@@ -1138,7 +1138,7 @@ const resolvers = {
 				{ _id: userId },
 				{
 					$pull: {
-						chats: chatId
+						"chats._id": chatId
 					}
 				},
 				{ new: true }
@@ -1202,7 +1202,8 @@ const resolvers = {
 			await ChatMessage.findOneAndUpdate(
 				{ _id: messageId },
 				{
-					message: message
+					message: message,
+					edited: true
 				},
 				{ new: true }
 			);

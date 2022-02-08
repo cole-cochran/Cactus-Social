@@ -107,6 +107,11 @@ export default function ChatMessage(props) {
                 <div>
                     <span className="chat-name">{message.sender.username}</span>
                     <span className="chat-date">{message.date_created}</span>
+                    {message.edited ? (
+                        <span className="chat-edited">(edited)</span>
+                    ) : (
+                        <React.Fragment />
+                    )}
                 </div>
                 {userId === message.sender._id ? (
                     <div className="dropdown">

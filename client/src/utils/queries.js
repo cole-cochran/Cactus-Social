@@ -545,6 +545,7 @@ query chatDetails($chatId: ID!) {
 				_id
 				username
 			}
+			edited
 			date_created
 		}
 		date_created

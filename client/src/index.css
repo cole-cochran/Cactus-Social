@@ -2719,8 +2719,14 @@ footer {
     /* padding-bottom: 15px; */
 }
 
-.from-user .chat-name, .from-user .chat-date {
-    color: var(--hero-green)
+.from-user .chat-name, .from-user .chat-date, .from-user .chat-edited {
+    color: var(--hero-green);
+    margin-left: 15px;
+}
+
+.chat-edited {
+    font-style: italic;
+    font-size: 12px;
 }
 
 .from-user .post-text {
@@ -2752,5 +2758,22 @@ footer {
 .chat-dots {
     width: 25px;
     margin-left: 10px;
+    cursor: pointer;
+}
+
+.chat-title-div {
+    display: flex;
+    align-items: center;
+
+}
+
+.chat-title-div img {
+    width: 30px;
+    height: 10px;
+    margin-left: 20px;
+    margin-top: 15px;
+}
+
+.chat-title-div img:hover {
     cursor: pointer;
 }

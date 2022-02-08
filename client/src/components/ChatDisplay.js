@@ -27,7 +27,12 @@ export default function ChatDisplay(props) {
         ]
     });
 
-    const [ removeChat ] = useMutation(REMOVE_CHAT);
+    const [ removeChat ] = useMutation(REMOVE_CHAT, {
+        refetchQueries: [
+            CHAT_DETAILS,
+            "chatDetails"
+        ]
+    });
 
     const getChatDetails = useQuery(CHAT_DETAILS, {
         variables: {
@@ -83,6 +88,8 @@ export default function ChatDisplay(props) {
         } catch (err) {
             console.log(err);
         }
+
+        window.location.replace(`/profile/${userId}`);
     }
 
     const handleOpenMessageDropdown = async (event) => {
@@ -102,6 +109,11 @@ export default function ChatDisplay(props) {
 		}
 	}
 
+    const handleOpenOptionsDropdown = (event) => {
+        const content = event.target.parentNode.childNodes[1];
+        content.style.display = "flex"
+    }
+
     const scroll = () => {
 		var element = document.getElementById("chat-messages-container");
 		element.scrollTop = element.scrollHeight;
@@ -114,7 +126,18 @@ export default function ChatDisplay(props) {
 				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
                 <div className="chat-display" >
                     <div className="chat-banner">
-                        <h2>Cactus Chat</h2>
+                        <div className="chat-title-div">
+                            <h2>Cactus Chat</h2>
+                            <div className="dropdown">
+                                <img className="chat-dots" src="../../assets/img/purple_dots.png" alt="chat options" onClick={handleOpenOptionsDropdown}/>
+                                <div className="dropdown-content">
+                                    <div onClick={handleRemoveChat} >
+                                        Remove Chat
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div className="chat-users-div">
                             <h3>Users:</h3>
                             <div className="chat-users">
