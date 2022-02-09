@@ -1037,6 +1037,10 @@ footer {
     z-index: 1;
 }
 
+.dropdown .chat-option-dropdown {
+    min-width: 160px;
+}
+
 .dropdown .thread-dropdown-content {
     display: none;
     flex-direction: column;

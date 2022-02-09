@@ -130,7 +130,7 @@ export default function ChatDisplay(props) {
                             <h2>Cactus Chat</h2>
                             <div className="dropdown">
                                 <img className="chat-dots" src="../../assets/img/purple_dots.png" alt="chat options" onClick={handleOpenOptionsDropdown}/>
-                                <div className="dropdown-content">
+                                <div className="dropdown-content chat-option-dropdown">
                                     <div onClick={handleRemoveChat} >
                                         Remove Chat
                                     </div>

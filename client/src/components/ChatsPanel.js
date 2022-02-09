@@ -103,14 +103,9 @@ export default function ChatsPanel(props) {
 
         try {
             console.log([...newChatUsers, userId])
-            const chatArrObj = newChatUsers.map((user) => (
-                {
-                    _id: user._id
-                }
-            ))
             await createChat({
                 variables: {
-                    participants: [...chatArrObj, {_id: userId}]
+                    participants: [...newChatUsers, userId]
                 }
             })
         } catch(err) {
