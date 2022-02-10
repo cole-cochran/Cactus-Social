@@ -155,6 +155,10 @@ const userSchema = new Schema({
 			default: Date.now,
 			get: (timestamp) => dateFormat(timestamp)
 		}
+	}],
+	portfolio_projects: [{
+		type: ObjectId,
+		ref: "Portfolio"
 	}]
 });
 

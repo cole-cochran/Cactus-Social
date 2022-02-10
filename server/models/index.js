@@ -6,6 +6,7 @@ const Event = require("./events");
 const PinnedPost = require('./pinnedPosts');
 const Chat = require('./chats');
 const ChatMessage = require('./chatMessages');
+const Portfolio = require('./portfolios');
 // const Tech = require("./tech");
 
 module.exports = {
@@ -16,5 +17,6 @@ module.exports = {
     Comment: Comment,
     PinnedPost: PinnedPost,
     Chat: Chat,
-    ChatMessage: ChatMessage
+    ChatMessage: ChatMessage,
+    Portfolio: Portfolio
 };

@@ -255,6 +255,16 @@ export const USER_PROFILE = gql`
 					}
 				}
 			}
+			portfolio_projects {
+				_id
+				title
+				description
+				image
+				responsibilities
+				techstack
+				repo
+				demo
+			}
 		}
 	}
 `;

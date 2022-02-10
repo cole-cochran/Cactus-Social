@@ -12,6 +12,18 @@ const typeDefs = gql`
         comments: [Comment]
     }
 
+    type Portfolio {
+        _id: ID!
+        title: String!
+        description: String!
+        owner: User
+        image: String
+        responsibilities: String
+        techstack: String
+        repo: String
+        demo: String
+    }
+
     type PinnedPost {
         _id: ID!
         pinTitle: String
@@ -74,6 +86,7 @@ const typeDefs = gql`
         chats: [Chat]
         received_invites: [Invites]
         sent_invites: [Invites]
+        portfolio_projects: [Portfolio]
     }
 
     type Thread {
@@ -208,6 +221,8 @@ const typeDefs = gql`
 
         rejectEventInvite(userId: ID!, senderId: ID!, eventId: ID!): User
         rejectThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): User
+
+        createPortfolioProject(owner: ID!, title: String!, description: String!, image: String, responsibilities: String, techstack: String, repo: String, demo: String): User
     }
 `;
 

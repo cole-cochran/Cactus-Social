@@ -1435,7 +1435,8 @@ footer {
     list-style-type: none;
     display: flex;
     align-items: center;
-    flex-direction: column;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
     justify-content: center;
 }
 .tech-stack ul li {

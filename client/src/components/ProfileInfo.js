@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
+import PortfolioProject from './PortfolioProject';
+
 import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND } from '../utils/mutations';
 import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
 
@@ -344,6 +346,9 @@ function ProfileInfo(props) {
 							))}
                         </ul>
 					</div>
+				</div>
+				<div className='user-projects'>
+					<PortfolioProject />
 				</div>
 			</div>
 			<Modal

@@ -1,4 +1,4 @@
-const { User, Comment, Post, Thread, Event, PinnedPost, Chat, ChatMessage } = require('../models/index');
+const { User, Comment, Post, Thread, Event, PinnedPost, Chat, ChatMessage, Portfolio } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
 
@@ -33,7 +33,8 @@ const resolvers = {
 						model: "Thread"
 					}
 				}
-			});
+			})
+			.populate('portfolio_projects');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
 		},
@@ -1416,6 +1417,31 @@ const resolvers = {
 			).populate("sent_invites");
 			return updatedUser;
 		},
+
+		createPortfolioProject: async (parent, args, context) => {
+			const {owner, title, description, image, responsibilities, techstack, repo, demo} = args;
+
+			const newProject = await Portfolio.create({
+				owner: owner,
+				title: title,
+				description: description,
+				image: image,
+				responsibilities: responsibilities,
+				techstack: techstack,
+				repo: repo,
+				demo: demo
+			});
+			const user = await User.findOneAndUpdate(
+				{ _id: owner },
+				{
+					$addToSet: {
+						portfolio_projects: newProject._id
+					}
+				},
+				{ new: true }
+			).populate('portfolio_projects');
+			return user;
+		}
 	}
 };
 
