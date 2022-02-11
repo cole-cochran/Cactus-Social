@@ -411,7 +411,7 @@ function ProfileInfo(props) {
 					{canEditProfile && 
 						<div className='add-project-div'>
 							<button onClick={handleOpenProjectCreator} className='add-project-button'>
-								+
+								<img src="../../assets/img/plus-sign.svg" alt="add project"/>
 							</button>
 						</div>
 					}
@@ -493,13 +493,13 @@ function ProfileInfo(props) {
 			</Modal>
 			<Modal
 				open={openProjectCreator}
-                id="bioModal"
+                id="projectModal"
 				onClose={handleCloseProjectCreator}
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
 				<Box sx={style}>
-					<form id="userBio" className="modal-form" onSubmit={handleCreateProject}>
+					<form id="userProject" className="modal-form modal-project" onSubmit={handleCreateProject}>
 						<div className="modal-header">
 							<h3>Create Project</h3>
 						</div>
@@ -528,7 +528,7 @@ function ProfileInfo(props) {
                             <input id="demo" name='demo' value={createdProject.demo} onChange={handleProjectChange}/>
                         </div>
                         <button className="modal-button" type="submit">
-							Update
+							Create
 						</button>
 					</form>
 				</Box>

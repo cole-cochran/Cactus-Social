@@ -37,7 +37,7 @@ export default function PortfolioProject(props) {
                     <h2>{portfolioProject.title}</h2>
                 </div>
                 <div>
-                    <p>Description:</p>
+                    {/* <p>Description:</p> */}
                     <p>{portfolioProject.description}</p>
                 </div>
                 <div>
@@ -52,10 +52,13 @@ export default function PortfolioProject(props) {
             <div className="portfolio-bottom">
                 <div className="portfolio-links">
                     <div>
-                        {portfolioProject.repo}
+                        <a href={portfolioProject.repo}>Repo Link</a>
                     </div>
                     <div>
-                        {portfolioProject.demo}
+                        <a href={portfolioProject.demo}>
+                            Live/Demo Link
+                        </a>
+                        
                     </div>
                 </div>
                 {canEditProfile && 
