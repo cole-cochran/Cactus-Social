@@ -7,7 +7,7 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 import PortfolioProject from './PortfolioProject';
 
-import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND } from '../utils/mutations';
+import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND, CREATE_PORTFOLIO_PROJECT } from '../utils/mutations';
 import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
 
 import { useMutation, useQuery } from '@apollo/client';
@@ -62,6 +62,13 @@ function ProfileInfo(props) {
 		]
 	});
 
+	const [ createPortfolioProject ] = useMutation(CREATE_PORTFOLIO_PROJECT, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	})
+
     //* photo state
 	const [ photo, setPhoto ] = React.useState(specificUser.picture || '');
     //* tech stack states for adding and updating tech data
@@ -69,6 +76,18 @@ function ProfileInfo(props) {
 	const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
     //* bio state
 	const [ bio, setBio ] = React.useState(specificUser.bio || '');
+	const [createdProject, setCreatedProject] = React.useState(
+		{
+			title: "",
+			description: "",
+			image: "",
+			responsibilities: "",
+			techstack: "",
+			repo: "",
+			demo: ""
+		}
+	);
+	const [openProjectCreator, setOpenProjectCreator] = React.useState(false);
 
     //* Modal states
 	const [ openTech, setOpenTech ] = React.useState(false);
@@ -84,6 +103,57 @@ function ProfileInfo(props) {
 
 	const loading = getAllUsers.loading || getAllFriends.loading;
 
+	const handleOpenProjectCreator = (event) => {
+		setOpenProjectCreator(true);
+	}
+
+	const handleCloseProjectCreator = (event) => {
+		setOpenProjectCreator(false);
+	}
+
+	const handleProjectChange = async (event) => {
+		const {value, name} = event.target;
+		console.log({value, name});
+		
+		setCreatedProject({
+			...createdProject,
+			[name]: value
+		})
+		console.log(createdProject)
+	}
+
+	const handleCreateProject = async (event) => {
+		event.preventDefault();
+		console.log(createdProject);
+
+		try {
+			await createPortfolioProject({
+				variables: {
+					owner: userId,
+					title: createdProject.title,
+					description: createdProject.description,
+					image: createdProject.image,
+					responsibilities: createdProject.responsibilities,
+					techstack: createdProject.techstack,
+					repo: createdProject.repo,
+					demo: createdProject.demo
+				}
+			})
+		} catch(err) {
+			console.log(err);
+		}
+
+		setCreatedProject({
+			title: "",
+			description: "",
+			image: "",
+			responsibilities: "",
+			techstack: "",
+			repo: "",
+			demo: ""
+		});
+	}
+	
 	const handleRemoveFriend = async (event) => {
 		event.preventDefault();
 
@@ -293,9 +363,6 @@ function ProfileInfo(props) {
 
 					<div className='profile-bio-block'>
 						<div className='profile-pic-div'>
-							{/* <div style={imageStyles}>
-								<InsertEmoticonIcon sx={{ width: "150px", height: "150px", alignSelf: "center" }} />
-							</div> */}
 							<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
 							{/* {canEditProfile && 
 							<img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
@@ -319,16 +386,6 @@ function ProfileInfo(props) {
 					</div>
                     
 				</div>
-				{/* <div className="profile-edit-container">
-					<span className="join-date">Member Since: {specificUser.date_joined}</span>
-				</div>
-                <div style={{display: "flex"}}>
-                    <div className="user-bio">{specificUser.bio}</div>
-                    {canEditProfile && 
-                    <div style={{marginLeft: "10px"}}>
-                        <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
-                    </div>}
-                </div> */}
 				<div className="user-info">
 					<div style={{display: "flex"}} className="tech-stack">
 						{canEditProfile && 
@@ -348,7 +405,16 @@ function ProfileInfo(props) {
 					</div>
 				</div>
 				<div className='user-projects'>
-					<PortfolioProject />
+					{specificUser.portfolio_projects.map((project) => (
+						<PortfolioProject key={project._id} canEditProfile={canEditProfile} portfolioProject={project} specificUserId={specificUser._id}/>
+					))}
+					{canEditProfile && 
+						<div className='add-project-div'>
+							<button onClick={handleOpenProjectCreator} className='add-project-button'>
+								+
+							</button>
+						</div>
+					}
 				</div>
 			</div>
 			<Modal
@@ -421,6 +487,48 @@ function ProfileInfo(props) {
 						</textarea>
 						<button className="modal-button" type="submit">
 							Add
+						</button>
+					</form>
+				</Box>
+			</Modal>
+			<Modal
+				open={openProjectCreator}
+                id="bioModal"
+				onClose={handleCloseProjectCreator}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<form id="userBio" className="modal-form" onSubmit={handleCreateProject}>
+						<div className="modal-header">
+							<h3>Create Project</h3>
+						</div>
+                        <div>
+                            <label htmlFor="title" >Title</label>
+                            <input id="title" name='title' value={createdProject.title} onChange={handleProjectChange}/>
+                        </div>
+						<div>
+                            <label htmlFor="description">Description</label>
+                            <textarea id="description" name="description" value={createdProject.description} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+						<div>
+                            <label htmlFor="responsibilities">Responsibilities</label>
+                            <textarea id="responsibilities" name="responsibilities" value={createdProject.responsibilities} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+                        <div>
+                            <label htmlFor="techstack">Tech Stack</label>
+                            <textarea id="techstack" name="techstack" value={createdProject.techstack} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+                        <div>
+                            <label htmlFor="repo" >Repo Link</label>
+                            <input id="repo" name='repo' value={createdProject.repo} onChange={handleProjectChange}/>
+                        </div>
+                        <div>
+                            <label htmlFor="demo" >Live/Demo Link</label>
+                            <input id="demo" name='demo' value={createdProject.demo} onChange={handleProjectChange}/>
+                        </div>
+                        <button className="modal-button" type="submit">
+							Update
 						</button>
 					</form>
 				</Box>

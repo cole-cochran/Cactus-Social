@@ -1431,6 +1431,27 @@ mutation rejectThreadInvite($userId: ID!, $senderId: ID!, $threadId: ID!) {
 }
 `;
 
+export const CREATE_PORTFOLIO_PROJECT = gql`
+mutation createPortfolioProject($owner: ID!, $title: String!, $description: String!, $image: String!, $responsibilities: String!, $techstack: String!, $repo: String!, $demo: String!) {
+    createPortfolioProject(owner: $owner, title: $title, description: $description, image: $image, responsibilities: $responsibilities, techstack: $techstack, repo: $repo, demo: $demo) {
+        _id
+        first_name
+        last_name
+        username
+        portfolio_projects {
+            _id
+            title
+            description
+            image
+            responsibilities
+            techstack
+            repo
+            demo
+        }
+    }
+}
+`;
+
 
 
 //* OLD PIN_POST MUTATION
