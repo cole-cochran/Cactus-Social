@@ -7,7 +7,7 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 import PortfolioProject from './PortfolioProject';
 
-import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND, CREATE_PORTFOLIO_PROJECT } from '../utils/mutations';
+import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND, CREATE_PORTFOLIO_PROJECT, UPDATE_USER_LINKS } from '../utils/mutations';
 import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
 
 import { useMutation, useQuery } from '@apollo/client';
@@ -67,7 +67,14 @@ function ProfileInfo(props) {
 			USER_PROFILE,
 			"userProfile"
 		]
-	})
+	});
+
+	const [ updateUserLinks ] = useMutation(UPDATE_USER_LINKS, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
 
     //* photo state
 	const [ photo, setPhoto ] = React.useState(specificUser.picture || '');
@@ -93,6 +100,13 @@ function ProfileInfo(props) {
 	const [ openTech, setOpenTech ] = React.useState(false);
 	const [ openBio, setOpenBio ] = React.useState(false);
 	const [ openImage, setOpenImage ] = React.useState(false);
+	const [ openLinks, setOpenLinks ] = React.useState(false);
+
+	const [ profileLinks, setProfileLinks ] = React.useState({
+		linkedin: "",
+		github: "",
+		portfolio_page: ""
+	});
 
 	const getAllUsers = useQuery(ALL_USERS);
 	const getAllFriends = useQuery(USER_FRIENDS, {
@@ -110,6 +124,22 @@ function ProfileInfo(props) {
 	const handleCloseProjectCreator = (event) => {
 		setOpenProjectCreator(false);
 	}
+
+	const handleUpdateProfileLinks = async (event) => {
+		event.preventDefault();
+
+		try {
+			await updateUserLinks({
+				variable: {
+
+				}
+			})
+		} catch(err) {
+			console.log(err);
+		}
+	}
+
+
 
 	const handleProjectChange = async (event) => {
 		const {value, name} = event.target;
@@ -193,18 +223,24 @@ function ProfileInfo(props) {
             setOpenTech(true)
         } else if (event.target.id === "editImage") {
             setOpenImage(true)
-        }
+        } else if (event.target.id === "editLinks") {
+			setOpenLinks(true);
+			setProfileLinks({
+				linkedin: specificUser.linkedin,
+				github: specificUser.github,
+				portfolio_page: specificUser.portfolio_page
+			});
+		}
     }
 
     //* conditional modal closers
 	const handleClose = async (event) => {
-        if (event.target.id === "bioModal") {
-            setOpenBio(false)
-        } else if (event.target.id === "techModal") {
-            setOpenTech(false)
-        } else if (event.target.id === "imageModal") {
-            setOpenImage(false)
-        }
+		if (event.target.id !== "bioModal" || event.target.id !== "techModal" || event.target.id !== "imageModal" || event.target.id !== "linksModal") {
+			setOpenBio(false);
+			setOpenTech(false);
+			setOpenImage(false);
+			setOpenLinks(false);
+		}
     }
 
     //* make sure user is logged in and can only edit their own profile
@@ -222,7 +258,23 @@ function ProfileInfo(props) {
 				setBio(event.target.value);
 			} else if (event.target.name === 'photoInput') {
 				setPhoto(event.target.value);
+			} else if (event.target.name === "linkedin") {
+				setProfileLinks({
+					...profileLinks,
+					linkedin: event.target.value
+				})
+			} else if (event.target.name === "github") {
+				setProfileLinks({
+					...profileLinks,
+					github: event.target.value
+				})
+			} else if (event.target.name === "portfolio_page") {
+				setProfileLinks({
+					...profileLinks,
+					portfolio_page: event.target.value
+				})
 			}
+
 		} catch (err) {
 			console.error(err);
 		}
@@ -266,6 +318,26 @@ function ProfileInfo(props) {
                 });
                 setTechData([...techData, addedTech])
 				setAddedTech('');
+			} else if (event.target.id === 'profileLinks') {
+				event.preventDefault();
+				try {
+					await updateUserLinks({
+						variables: {
+							userId: userId,
+							linkedin: profileLinks.linkedin,
+							github: profileLinks.github,
+							portfolio_page: profileLinks.portfolio_page
+						}
+					})
+				} catch(err) {
+					console.log(err)
+				}
+				setProfileLinks({
+					linkedin: "",
+					github: "",
+					portfolio_page: ""
+				})
+				setOpenLinks(false);
 			}
 		} catch (err) {
 			console.error(err);
@@ -371,13 +443,32 @@ function ProfileInfo(props) {
 						</div>
 						<div className='profile-info-links'>
 							<div>
-								<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+								{specificUser.linkedin ? 
+								(
+									<a href={`${specificUser.linkedin}`}>
+										<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+									</a>
+								) : (
+									<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+								)}
 							</div>
 							<div>
-								<img src="../../assets/img/github_2.svg" alt="github profile"/>
+								{specificUser.github ? (
+									<a href={`${specificUser.github}`}>
+										<img src="../../assets/img/github_2.svg" alt="github profile"/>
+									</a>
+								) : (
+									<img src="../../assets/img/github_2.svg" alt="github profile"/>
+								)}
 							</div>
 							<div>
-								<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+								{specificUser.portfolio_page ? (
+									<a href={specificUser.portfolio_page}>
+										<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+									</a>
+								) : (
+									<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+								)}
 							</div>
 							<div className='edit-profile-button'>
 								<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
@@ -545,6 +636,31 @@ function ProfileInfo(props) {
                         </div>
                         <button className="modal-button" type="submit">
 							Create
+						</button>
+					</form>
+				</Box>
+			</Modal>
+			<Modal
+				open={openLinks}
+                id="linksModal"
+				onClose={handleClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<form id="profileLinks" className="modal-form" onSubmit={handleFormUpdate}>
+						<div className="modal-header">
+							<h4>Update Links</h4>
+						</div>
+						<label htmlFor='linkedin'>LinkedIn: </label>
+						<input id="linkedin" name='linkedin' value={profileLinks.linkedin} onChange={handleChange} className="modal-input" />
+						<label htmlFor='github'>Github: </label>
+						<input id='github' name='github' value={profileLinks.github} onChange={handleChange} className="modal-input" />
+						<label htmlFor='porfolio_page'>Porfolio Page: </label>
+						<input id="portfolio_page" name='portfolio_page' value={profileLinks.portfolio_page} onChange={handleChange} className="modal-input" />
+						
+						<button className="modal-button" type="submit">
+							Update
 						</button>
 					</form>
 				</Box>

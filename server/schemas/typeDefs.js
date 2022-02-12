@@ -87,6 +87,9 @@ const typeDefs = gql`
         received_invites: [Invites]
         sent_invites: [Invites]
         portfolio_projects: [Portfolio]
+        github: String
+		linkedin: String
+		portfolio_page: String
     }
 
     type Thread {
@@ -227,6 +230,8 @@ const typeDefs = gql`
         updatePortfolioProject(userId: ID!, projectId: ID!, title: String!, description: String!, image: String!, responsibilities: String!, techstack: String!, repo: String!, demo: String!): User
 
         deletePortfolioProject(projectId: ID!, userId: ID!): User
+
+        updateUserLinks(userId: ID!, linkedin: String!, github: String!, portfolio_page: String!): User
     }
 `;
 

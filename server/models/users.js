@@ -159,7 +159,19 @@ const userSchema = new Schema({
 	portfolio_projects: [{
 		type: ObjectId,
 		ref: "Portfolio"
-	}]
+	}],
+	github: {
+		type: String,
+		default: ""
+	},
+	linkedin: {
+		type: String,
+		default: ""
+	},
+	portfolio_page: {
+		type: String,
+		default: ""
+	}
 });
 
 userSchema.pre('save', async function(next) {

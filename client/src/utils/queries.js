@@ -265,6 +265,9 @@ export const USER_PROFILE = gql`
 				repo
 				demo
 			}
+			github
+			linkedin
+			portfolio_page
 		}
 	}
 `;

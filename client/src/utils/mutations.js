@@ -1494,6 +1494,19 @@ mutation deletePortfolioProject($projectId: ID!, $userId: ID!) {
 }
 `;
 
+export const UPDATE_USER_LINKS = gql`
+mutation updateUserLinks($userId: ID!, $linkedin: String!, $github: String!, $portfolio_page: String!) {
+    updateUserLinks(userId: $userId, linkedin: $linkedin, github: $github, portfolio_page: $portfolio_page) {
+        _id
+        first_name
+        last_name
+        username
+        github
+        linkedin
+        portfolio_page
+    }
+}
+`;
 
 //* OLD PIN_POST MUTATION
 // export const PIN_POST = gql`

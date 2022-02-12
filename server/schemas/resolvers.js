@@ -1485,6 +1485,20 @@ const resolvers = {
 			).populate("portfolio_projects");
 
 			return user;
+		},
+
+		updateUserLinks: async (parent, args, context) => {
+			const {userId, linkedin, github, portfolio_page} = args;
+			const user = await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					github: github,
+					linkedin: linkedin,
+					portfolio_page: portfolio_page
+				},
+				{ new: true }
+			)
+			return user;
 		}
 	}
 };
