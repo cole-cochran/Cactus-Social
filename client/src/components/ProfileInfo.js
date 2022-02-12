@@ -152,6 +152,7 @@ function ProfileInfo(props) {
 			repo: "",
 			demo: ""
 		});
+		handleCloseProjectCreator();
 	}
 	
 	const handleRemoveFriend = async (event) => {

@@ -1452,6 +1452,47 @@ mutation createPortfolioProject($owner: ID!, $title: String!, $description: Stri
 }
 `;
 
+export const UPDATE_PORTFOLIO_PROJECT = gql`
+mutation updatePortfolioProject($userId: ID!, $projectId: ID!, $title: String!, $description: String!, $image: String!, $responsibilities: String!, $techstack: String!, $repo: String!, $demo: String!) {
+    updatePortfolioProject(userId: $userId, projectId: $projectId, title: $title, description: $description, image: $image, responsibilities: $responsibilities, techstack: $techstack, repo: $repo, demo: $demo) {
+        _id
+        first_name
+        last_name
+        username
+        portfolio_projects {
+            _id
+            title
+            description
+            image
+            responsibilities
+            techstack
+            repo
+            demo
+        }
+    }
+}
+`;
+
+export const DELETE_PORTFOLIO_PROJECT = gql`
+mutation deletePortfolioProject($projectId: ID!, $userId: ID!) {
+    deletePortfolioProject(projectId: $projectId, userId: $userId) {
+        _id
+        first_name
+        last_name
+        username
+        portfolio_projects {
+            _id
+            title
+            description
+            image
+            responsibilities
+            techstack
+            repo
+            demo
+        }
+    }
+}
+`;
 
 
 //* OLD PIN_POST MUTATION

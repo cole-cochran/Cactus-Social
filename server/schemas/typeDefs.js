@@ -223,6 +223,10 @@ const typeDefs = gql`
         rejectThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): User
 
         createPortfolioProject(owner: ID!, title: String!, description: String!, image: String, responsibilities: String, techstack: String, repo: String, demo: String): User
+
+        updatePortfolioProject(userId: ID!, projectId: ID!, title: String!, description: String!, image: String!, responsibilities: String!, techstack: String!, repo: String!, demo: String!): User
+
+        deletePortfolioProject(projectId: ID!, userId: ID!): User
     }
 `;
 

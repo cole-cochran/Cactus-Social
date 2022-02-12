@@ -1736,11 +1736,11 @@ footer {
     padding-top: .5rem;
     padding-bottom: .5rem;
     border-radius: .25rem;
-    transition: box-shadow 0.6s linear;
+    transition: box-shadow 0.3s linear;
 }
 
 .modal-button:hover {
-    box-shadow: 1px 1px 3px white, 1px -1px 3px white, -1px 1px 3px white, -1px -1px 3px white;
+    box-shadow: 2px 2px 3px white, 2px -2px 3px white, -2px 2px 3px white, -2px -2px 3px white;
     cursor: pointer;
 }
 
@@ -2784,7 +2784,7 @@ footer {
 }
 
 
-.modal-project div{
+.modal-project div {
     width: 100% !important;
 }
 
@@ -2877,4 +2877,18 @@ footer {
     font-weight: 600;
     border: 1px solid var(--hero-green);
     cursor: pointer;
+}
+
+#userProject div {
+    width: 100%;
+}
+
+.modal-button-div {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 25px;
+}
+
+.delete-button {
+    background-color: red;
 }

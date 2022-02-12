@@ -1,6 +1,7 @@
 const { User, Comment, Post, Thread, Event, PinnedPost, Chat, ChatMessage, Portfolio } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
+const { findById } = require('../models/users');
 
 //! ADD ARRAY OF PIN STRINGS TO THREADS MODEL 
 
@@ -1440,6 +1441,49 @@ const resolvers = {
 				},
 				{ new: true }
 			).populate('portfolio_projects');
+			return user;
+		},
+
+		updatePortfolioProject: async (parent, args, context) => {
+			const {userId, projectId, title, description, image, responsibilities, techstack, repo, demo} = args;
+
+			await Portfolio.findOneAndUpdate(
+				{_id: projectId},
+				{
+					title: title,
+					description: description,
+					image: image,
+					responsibilities: responsibilities,
+					techstack: techstack,
+					repo: repo,
+					demo: demo
+				},
+				{ new: true }
+			);
+
+			const user = await User.findOne({ _id: userId }).populate('portfolio_projects');
+
+			return user;
+		},
+
+		deletePortfolioProject: async (parent, args, context) => {
+			const {projectId, userId} = args;
+
+			await Portfolio.findOneAndDelete(
+				{_id: projectId},
+				{ new: true }
+			);
+
+			const user = await User.findOneAndUpdate(
+				{_id: userId},
+				{
+					$pull: {
+						portfolio_projects: projectId
+					}
+				},
+				{ new: true }
+			).populate("portfolio_projects");
+
 			return user;
 		}
 	}
