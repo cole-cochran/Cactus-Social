@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import { useMutation } from '@apollo/client';
 import { UPDATE_PORTFOLIO_PROJECT, DELETE_PORTFOLIO_PROJECT } from "../utils/mutations";
 import { USER_PROFILE } from "../utils/queries";
+import ProfileInfo from "./ProfileInfo";
 
 
 const style = {
@@ -51,6 +52,40 @@ export default function PortfolioProject(props) {
         repo: portfolioProject.repo,
         demo: portfolioProject.demo
     });
+
+    const handleOpenProjectDropdown = async (event) => {
+        console.log(event.target);
+        const projId = event.target.parentNode.getAttribute("data-id");
+
+        const display = event.target.parentNode.getAttribute('data-displays');
+        console.log(display);
+
+        const targetDropdown = document.getElementById(projId);
+
+        if (display === "show") {
+
+            targetDropdown.style.display = "none";
+
+            event.target.style.transform = "rotate(267.5deg)";
+
+            event.target.parentNode.setAttribute('data-displays', 'hidden');
+
+        } else {
+
+            targetDropdown.style.display = "block";
+
+            event.target.style.transform = "rotate(87.5deg)";
+
+            event.target.parentNode.setAttribute('data-displays', 'show');
+
+        }
+
+        
+    }
+
+    const handleCloseProjectDropdown = async (event) => {
+
+    }
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -125,14 +160,24 @@ export default function PortfolioProject(props) {
                     {/* <p>Description:</p> */}
                     <p>{portfolioProject.description}</p>
                 </div>
-                <div>
-                    <p>Responsibilities:</p>
-                    <p>{portfolioProject.responsibilities}</p>
+                <div className="project-dropdown">
+                    <div data-id={portfolioProject._id} data-displays="hidden" className="dropdown-button-div">
+                        <span>See More</span>
+                        <img style={{cursor: "pointer"}} src="../../assets/img/cactus_opener.png" alt="show more" onClick={handleOpenProjectDropdown}/>
+                    </div>
+                    <div id={portfolioProject._id} className="dropdown-project-content">
+                        <div>
+                            <p>Responsibilities:</p>
+                            <p>{portfolioProject.responsibilities}</p>
+                        </div>
+                        <div>
+                            <p>Tech-Stack:</p>
+                            <p>{portfolioProject.techstack}</p>
+                        </div>
+                    </div>
+                    
                 </div>
-                <div>
-                    <p>Tech-Stack:</p>
-                    <p>{portfolioProject.techstack}</p>
-                </div>
+                
             </div>
             <div className="portfolio-bottom">
                 <div className="portfolio-links">
@@ -148,9 +193,11 @@ export default function PortfolioProject(props) {
                 </div>
                 {canEditProfile && 
                     <div className="edit-button-div">
-                        <button onClick={handleOpenEditor} className="edit-button">
+                        {/* <button onClick={handleOpenEditor} className="edit-button">
                             Edit
-                        </button>
+                        </button> */}
+                        <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpenEditor}  />
+                        
                     </div>
                 }
             </div>

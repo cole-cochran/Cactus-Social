@@ -369,6 +369,20 @@ function ProfileInfo(props) {
 							<img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
 							} */}
 						</div>
+						<div className='profile-info-links'>
+							<div>
+								<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+							</div>
+							<div>
+								<img src="../../assets/img/github_2.svg" alt="github profile"/>
+							</div>
+							<div>
+								<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+							</div>
+							<div className='edit-profile-button'>
+								<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
+							</div>
+						</div>
 						<div className='profile-bio-section'>
 							<h5>Bio</h5>
 							<div className='user-bio-box'>
@@ -414,6 +428,7 @@ function ProfileInfo(props) {
 							<button onClick={handleOpenProjectCreator} className='add-project-button'>
 								<img src="../../assets/img/plus-sign.svg" alt="add project"/>
 							</button>
+							<p>Add Project</p>
 						</div>
 					}
 				</div>
