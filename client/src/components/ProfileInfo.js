@@ -441,6 +441,7 @@ function ProfileInfo(props) {
 							<img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
 							} */}
 						</div>
+						<div>
 						<div className='profile-info-links'>
 							<div>
 								{specificUser.linkedin ? 
@@ -470,9 +471,12 @@ function ProfileInfo(props) {
 									<img src="../../assets/img/chain_link.png" alt="portfolio"/>
 								)}
 							</div>
-							<div className='edit-profile-button'>
-								<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
-							</div>
+							{canEditProfile &&
+								<div className='edit-profile-button'>
+									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
+								</div>
+							}
+							
 						</div>
 						<div className='profile-bio-section'>
 							<h5>Bio</h5>
@@ -488,7 +492,7 @@ function ProfileInfo(props) {
 								<span className="join-date">Member Since: {specificUser.date_joined}</span>
 							</div>
 						</div>
-							
+						</div>	
 					</div>
                     
 				</div>
@@ -656,7 +660,7 @@ function ProfileInfo(props) {
 						<input id="linkedin" name='linkedin' value={profileLinks.linkedin} onChange={handleChange} className="modal-input" />
 						<label htmlFor='github'>Github: </label>
 						<input id='github' name='github' value={profileLinks.github} onChange={handleChange} className="modal-input" />
-						<label htmlFor='porfolio_page'>Porfolio Page: </label>
+						<label htmlFor='portfolio_page'>Porfolio Page: </label>
 						<input id="portfolio_page" name='portfolio_page' value={profileLinks.portfolio_page} onChange={handleChange} className="modal-input" />
 						
 						<button className="modal-button" type="submit">

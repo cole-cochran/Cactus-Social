@@ -1527,6 +1527,11 @@ footer {
         flex-wrap: wrap;
         justify-content: left;
     }
+
+    .profile-info-links {
+        justify-content: left !important;
+        margin-left: 10px;
+    }
 }
 
 .right-shelf div {
@@ -2790,8 +2795,9 @@ footer {
 
 .portfolio-project-card {
     width: 100%;
-    max-width: 350px;
-    margin: 30px 0px;
+    max-width: 308px;
+    height: 100%;
+    margin: 30px 6px;
     border: 1px solid white;
     padding: 15px;
 }
