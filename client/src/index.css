@@ -1519,6 +1519,8 @@ footer {
 
     .profile-top {
         flex-direction: row;
+        justify-content: space-between;
+        margin-right: 10px;
     }
 
     .tech-stack ul {
@@ -1830,7 +1832,9 @@ footer {
     margin-left: 10px;
 }
 
-
+.friend-options-div {
+    max-width: 250px;
+}
 
 .remove-friend-btn {
     display: flex;
@@ -1841,7 +1845,8 @@ footer {
     font-weight: 600;
     color: rgba(255, 0, 0, 0.596);
     border: none;
-    width: 100%;
+    margin-left: 5%;
+    width: 90%;
     height: 60px;
     padding: .25rem;
     border-radius: .25rem;

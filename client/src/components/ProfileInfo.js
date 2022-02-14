@@ -3,7 +3,9 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+
+import Axios from "axios";
+import { CloudinaryContext, Image } from 'cloudinary-react';
 
 import PortfolioProject from './PortfolioProject';
 
@@ -117,6 +119,39 @@ function ProfileInfo(props) {
 
 	const loading = getAllUsers.loading || getAllFriends.loading;
 
+	const uploadImage = async (event) => {
+		event.preventDefault();
+		const formData = new FormData();
+		formData.append("file", photo);
+		formData.append("upload_preset", "b3zjdfsi");
+		formData.append("public_id", photo.lastModified);
+		formData.append("folder", "CactusSocial");
+
+		console.log(photo);
+
+		await updatePhoto({
+			variables: {
+				userId: AuthService.getProfile().data._id,
+				picture: `${photo.lastModified}`
+			}
+		});
+		
+		const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+		console.log(response);
+
+		setPhoto('');
+		setOpenImage(false);
+	}
+
+	console.log(specificUser)
+
+	const displayImage = async () => {
+		const response = await Axios.get(`https://api.cloudinary.com/v1_1/damienluzzo/resources/image/CactusSocial/${specificUser.picture}`);
+		console.log(response)
+		console.log(response.data.resources)
+		// const profileImage = response.data.resources;
+	}
+
 	const handleOpenProjectCreator = (event) => {
 		setOpenProjectCreator(true);
 	}
@@ -124,22 +159,6 @@ function ProfileInfo(props) {
 	const handleCloseProjectCreator = (event) => {
 		setOpenProjectCreator(false);
 	}
-
-	const handleUpdateProfileLinks = async (event) => {
-		event.preventDefault();
-
-		try {
-			await updateUserLinks({
-				variable: {
-
-				}
-			})
-		} catch(err) {
-			console.log(err);
-		}
-	}
-
-
 
 	const handleProjectChange = async (event) => {
 		const {value, name} = event.target;
@@ -250,14 +269,15 @@ function ProfileInfo(props) {
 	}
 
 	const handleChange = async (event) => {
-		event.preventDefault();
+		// event.preventDefault();
 		try {
 			if (event.target.name === 'techInput') {
 				setAddedTech(event.target.value);
 			} else if (event.target.name === 'bioInput') {
 				setBio(event.target.value);
 			} else if (event.target.name === 'photoInput') {
-				setPhoto(event.target.value);
+				console.log(event.target.files);
+				setPhoto(event.target.files[0]);
 			} else if (event.target.name === "linkedin") {
 				setProfileLinks({
 					...profileLinks,
@@ -295,17 +315,17 @@ function ProfileInfo(props) {
 				setOpenBio(false);
 				// window.location.reload(false);
 				
-			} else if (event.target.id === 'userPhoto') {
-				event.preventDefault();
-				// const updatedPhoto = 
-				await updatePhoto({
-					variables: {
-						userId: AuthService.getProfile().data._id,
-						picture: photo
-					}
-				});
-				setPhoto('');
-				setOpenImage(false);
+			// } else if (event.target.id === 'userPhoto') {
+			// 	event.preventDefault();
+			// 	// const updatedPhoto = 
+			// 	await updatePhoto({
+			// 		variables: {
+			// 			userId: AuthService.getProfile().data._id,
+			// 			picture: photo
+			// 		}
+			// 	});
+			// 	setPhoto('');
+			// 	setOpenImage(false);
 				// window.location.reload(false);
 
 			} else if (event.target.id === 'addTechStack') {
@@ -417,10 +437,7 @@ function ProfileInfo(props) {
 			<div className="profile-content-container">
 				<div className="profile-header">
 					<div className='profile-top'>
-						<h3>
-						{`${updatedFirstName} 
-						${updatedLastName}`}
-						</h3>
+						<h3>{`${updatedFirstName} ${updatedLastName}`}</h3>
 						{!canEditProfile ? (
 						<div className='friend-options-div'>
 							{userFriendChecker ? (
@@ -429,69 +446,71 @@ function ProfileInfo(props) {
 								<button className="send-request-btn" onClick={handleSendFriendRequest}><img src="../../assets/img/plus-sign.svg" alt="plus sign"/>Send Friend Request</button>
 							)}
 						</div>
-					) : (
-						<React.Fragment />
-					)}
+					) : ( <React.Fragment /> )}
 					</div>
-
 					<div className='profile-bio-block'>
 						<div className='profile-pic-div'>
-							<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
-							{/* {canEditProfile && 
+							{specificUser.picture === "" ? (
+								<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
+							) : (
+								<CloudinaryContext cloudName="damienluzzo" >
+									<Image publicId={`CactusSocial/${specificUser.picture}`} />
+								</CloudinaryContext>
+							)}
+
+							{canEditProfile && 
 							<img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
-							} */}
-						</div>
-						<div>
-						<div className='profile-info-links'>
-							<div>
-								{specificUser.linkedin ? 
-								(
-									<a href={`${specificUser.linkedin}`}>
-										<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
-									</a>
-								) : (
-									<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
-								)}
-							</div>
-							<div>
-								{specificUser.github ? (
-									<a href={`${specificUser.github}`}>
-										<img src="../../assets/img/github_2.svg" alt="github profile"/>
-									</a>
-								) : (
-									<img src="../../assets/img/github_2.svg" alt="github profile"/>
-								)}
-							</div>
-							<div>
-								{specificUser.portfolio_page ? (
-									<a href={specificUser.portfolio_page}>
-										<img src="../../assets/img/chain_link.png" alt="portfolio"/>
-									</a>
-								) : (
-									<img src="../../assets/img/chain_link.png" alt="portfolio"/>
-								)}
-							</div>
-							{canEditProfile &&
-								<div className='edit-profile-button'>
-									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
-								</div>
 							}
 							
 						</div>
-						<div className='profile-bio-section'>
-							<h5>Bio</h5>
-							<div className='user-bio-box'>
-								<div className="user-bio">{specificUser.bio}</div>
-								{canEditProfile && 
-								<div style={{marginLeft: "10px"}}>
-									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+						<div>
+							<div className='profile-info-links'>
+								<div>
+									{specificUser.linkedin ? 
+									(
+										<a href={`${specificUser.linkedin}`} target='_blank' rel="noreferrer">
+											<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+										</a>
+									) : (
+										<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+									)}
+								</div>
+								<div>
+									{specificUser.github ? (
+										<a href={`${specificUser.github}`} target='_blank' rel="noreferrer">
+											<img src="../../assets/img/github_2.svg" alt="github profile"/>
+										</a>
+									) : (
+										<img src="../../assets/img/github_2.svg" alt="github profile"/>
+									)}
+								</div>
+								<div>
+									{specificUser.portfolio_page ? (
+										<a href={specificUser.portfolio_page} target='_blank' rel="noreferrer">
+											<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+										</a>
+									) : (
+										<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+									)}
+								</div>
+								{canEditProfile &&
+								<div className='edit-profile-button'>
+									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
 								</div>}
 							</div>
-							
-							<div className="profile-edit-container">
-								<span className="join-date">Member Since: {specificUser.date_joined}</span>
+							<div className='profile-bio-section'>
+								<h5>Bio</h5>
+								<div className='user-bio-box'>
+									<div className="user-bio">{specificUser.bio}</div>
+									{canEditProfile && 
+									<div style={{marginLeft: "10px"}}>
+										<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+									</div>}
+								</div>
+								<div className="profile-edit-container">
+									<span className="join-date">Member Since: {specificUser.date_joined}</span>
+								</div>
 							</div>
-						</div>
 						</div>	
 					</div>
                     
@@ -506,7 +525,6 @@ function ProfileInfo(props) {
 							{specificUser.tech_stack.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
 									<button className="tech-chip">
-										{/* <div>{index}</div> */}
 										{tech}
 									</button>
 								</li>
@@ -536,12 +554,12 @@ function ProfileInfo(props) {
 				aria-describedby="modal-modal-description"
 			>
 				<Box sx={style}>
-					<form id="userPhoto" className="modal-form" onSubmit={handleFormUpdate}>
+					<form id="userPhoto" className="modal-form" onSubmit={uploadImage}>
 						<div className="modal-header">
 							<h4>Update Profile Picture</h4>
 						</div>
 						<label>Image Path</label>
-						<input name='photoInput' value={photo} onChange={handleChange} />
+						<input name='photoInput' type="file" onChange={handleChange} />
 						<button className="modal-button" type="submit">
 							Upload
 						</button>
@@ -662,7 +680,6 @@ function ProfileInfo(props) {
 						<input id='github' name='github' value={profileLinks.github} onChange={handleChange} className="modal-input" />
 						<label htmlFor='portfolio_page'>Porfolio Page: </label>
 						<input id="portfolio_page" name='portfolio_page' value={profileLinks.portfolio_page} onChange={handleChange} className="modal-input" />
-						
 						<button className="modal-button" type="submit">
 							Update
 						</button>
