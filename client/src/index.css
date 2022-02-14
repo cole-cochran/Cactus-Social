@@ -1222,10 +1222,10 @@ footer {
 .right-shelf {
     display: block;
     background-color: var(--grey1);
-    width: 4.5rem;
-    min-width: 4.5rem;
+    width: 5rem !important;
+    min-width: 5rem;
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     background-color: var(--ultra-dark);
 }

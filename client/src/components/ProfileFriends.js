@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import UserSearchModal from './UserSearchModal';
 // import {Link} from 'react-router-dom';
 
+import { CloudinaryContext, Image } from 'cloudinary-react';
+
 import { ALL_USERS, FRIEND_REQUESTS, RECEIVED_INVITES, SENT_FRIEND_REQUESTS, USER_FRIENDS } from '../utils/queries';
 import { ADD_FRIEND, DENY_FRIEND_REQUEST, ACCEPT_EVENT_INVITE, ACCEPT_THREAD_INVITE, REJECT_EVENT_INVITE, REJECT_THREAD_INVITE } from '../utils/mutations';
 
@@ -310,7 +312,15 @@ function ProfileFriends(props) {
                         <li key={`${user}-${index}`}>
                             <a href = {`/profile/${user._id}`}>
                                 <button className="friend-chips">
-                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    {user.picture === "" ? (
+                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    ) : (
+                                        <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                                            <Image className="friend-pic" publicId={`CactusSocial/${user.picture}`} />
+                                        </CloudinaryContext>
+                                    )}
+                                    
+                                    
                                     <p>{user.username}</p>
                                 </button>
                             </a>
@@ -325,7 +335,13 @@ function ProfileFriends(props) {
                         <li key={`${user}-${index}`}>
                             <a href = {`/profile/${user._id}`}>
                                 <button className="friend-chips">
-                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    {user.picture === "" ? (
+                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    ) : (
+                                        <CloudinaryContext cloudName="damienluzzo" >
+                                            <Image publicId={`CactusSocial/${user.picture}`} />
+                                        </CloudinaryContext>
+                                    )}
                                     <p>{user.username}</p>
                                 </button>
                             </a>

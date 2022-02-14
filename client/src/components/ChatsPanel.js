@@ -6,6 +6,8 @@ import AuthService from '../utils/auth';
 
 import { useQuery, useMutation } from '@apollo/client';
 
+import { CloudinaryContext, Image } from 'cloudinary-react';
+
 import { USER_CHATS, USER_FRIENDS } from '../utils/queries';
 import { CREATE_CHAT } from '../utils/mutations';
 
@@ -179,12 +181,15 @@ export default function ChatsPanel(props) {
                         <Link onClick={(e) => {handleEventChange(chat._id)}} to={`/chats/${chat._id}`} >
                             <button className="chat-chips">{chat.users.map((user) => (
                                 <div className="chat-chip-div">
-                                <div className="chat-chip-img">
-                                    
-                                <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-
-                            {/* ))} */}
-                                </div>
+                                {user.picture === "" ? (
+                                    <div className="chat-chip-img">
+                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    </div>
+                                ) : (
+                                    <CloudinaryContext cloudName="damienluzzo" >
+									    <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}`} />
+								    </CloudinaryContext>
+                                )}
                             <div className="chat-chip-span">
                                 {/* {chat.users.map((user) => ( */}
                                 <span>{user.username}</span> 
