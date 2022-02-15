@@ -1937,7 +1937,7 @@ footer {
 .event-img-div {
     display: flex;
     justify-content: center;
-    background-color: #76D7D1;
+    /* background-color: #76D7D1; */
     margin: 20px;
 }
 

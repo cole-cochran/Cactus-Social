@@ -8,6 +8,8 @@ import EventEditor from './EventEditor';
 import EventComment from './EventComment';
 import InvitationModal from "./InvitationModal";
 
+import { CloudinaryContext, Image } from 'cloudinary-react';
+
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
@@ -235,13 +237,10 @@ export default function EventDisplay(props) {
 		setToggleComments(!toggleComments);
 	}
 
-	if (loading) {
 
-		return (
-			<div className='loading-icon-box'>
-				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-			</div>
-		)
+
+	if (loading) {
+		return <div>Loading...</div>
 	}
 
 	if (errors) {
@@ -294,7 +293,14 @@ export default function EventDisplay(props) {
 					<div className='event-card'>
 						<div className='event-main-div'>
 							<div className='event-img-div'>
+								{eventData.image === "" ? (
 								<img className='event-img' src="../../assets/img/cactus_event.png" alt="event icon" />
+								) : (
+								<CloudinaryContext cloudName="damienluzzo" >
+									<Image className="event-img" publicId={`CactusSocial/${eventData.image}`} />
+								</CloudinaryContext>
+								)}
+								
 							</div>
 							<div className="event-main-top">
 							<div className='event-meta'>
@@ -389,36 +395,8 @@ export default function EventDisplay(props) {
 							</div>
 						<div className='event-desc-div'>
 							<p className='event-description'><span>Description: </span>{eventData.description}</p>
-							{/* {eventData.start_date === eventData.end_date ? (
-								<div className='event-datetime'>
-								<p>
-									<span>Start: </span>{eventData.start_date} at {eventData.start_time}
-								</p>
-								<p>
-									<span>End: </span>{eventData.start_date} at {eventData.end_time}
-								</p>
-								</div>
-							) : (
-								<div className='event-datetime'>
-									<p>
-										<span>Begins: </span>
-										{eventData.start_date} @ {eventData.start_time}
-									</p>
-									<p>
-										<span>Ends: </span>{eventData.end_date} @ {eventData.end_time}
-									</p>
-								</div>
-							)} */}
 						</div>
 						<div className='event-other-div'>
-							{/* {eventData.in_person ? (
-								<p className='event-location'><span>Location: </span>
-									{eventData.location}
-								</p>
-							) : (
-								<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
-							)} */}
-
 							<div className='event-attendees'>
 								<h5>
 									Attendees
@@ -426,7 +404,14 @@ export default function EventDisplay(props) {
 								<div className='event-attendees-div'>
 								{eventData.attendees.map((attendee) => (
 									<div className='event-attendee' key={attendee._id}>
+										{attendee.picture === "" ? (
 										<img src="../../assets/img/test_account.png" alt="user profile pic"/>
+										) : (
+										<CloudinaryContext cloudName="damienluzzo" >
+											<Image className="friend-pic" publicId={`CactusSocial/${attendee.picture}`} />
+										</CloudinaryContext>
+										)}
+										
 										<p>{attendee.username}</p>
 									</div>
 									)

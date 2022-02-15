@@ -3,6 +3,9 @@ import * as React from 'react';
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
+import Axios from "axios";
+// import { CloudinaryContext, Image } from 'cloudinary-react';
+
 import { CREATE_EVENT } from '../utils/mutations';
 //* CREATE_EVENT requires: threadId, title, description, start_date, end_date, start_time, end_time, category, in_person, location, image, and owner and it returns the Event
 
@@ -24,13 +27,29 @@ export default function EventCreation() {
 		category: '',
 		in_person: false,
 		location: '',
-		image: ''
+		image: {}
 	});
+
+	const uploadImage = async () => {
+		const formData = new FormData();
+		formData.append("file", eventDetails.image);
+		formData.append("upload_preset", "b3zjdfsi");
+		formData.append("public_id", eventDetails.image.lastModified);
+		formData.append("folder", "CactusSocial");
+
+		console.log(eventDetails.image);
+		
+		const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+		console.log(response);
+	}
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		if (name === 'in_person') {
 			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person})
+		} else if (name === 'addImage') {
+			setEventDetails({...eventDetails, image: event.target.files[0]})
+			console.log(event.target.files[0])
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}
@@ -45,6 +64,8 @@ export default function EventCreation() {
 			return false;
 		}
 
+		uploadImage();
+
 		try {
 			const res = await createEvent({
 				variables: {
@@ -57,7 +78,7 @@ export default function EventCreation() {
 					category: eventDetails.category,
 					in_person: eventDetails.in_person,
 					location: eventDetails.location,
-					image: eventDetails.image,
+					image: `${eventDetails.image.lastModified}`,
 					owner: AuthService.getProfile().data._id
 				}
 			});
@@ -77,7 +98,7 @@ export default function EventCreation() {
 			category: '',
 			in_person: false,
 			location: '',
-			image: ''
+			image: {}
 		});
 	};
 
@@ -91,6 +112,10 @@ export default function EventCreation() {
 				<div>
 					<label forhtml="description">Description</label>
 					<input type="text" value={eventDetails.description} onChange={handleChange} id="description" name="description" ></input>
+				</div>
+				<div>
+					<label forhtml="addImage">Image</label>
+					<input type='file' onChange={handleChange} name="addImage" id="addImage" />
 				</div>
 				<div>
 					<label forhtml="start_date">Start Date</label>

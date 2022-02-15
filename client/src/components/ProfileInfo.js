@@ -145,12 +145,12 @@ function ProfileInfo(props) {
 
 	console.log(specificUser)
 
-	const displayImage = async () => {
-		const response = await Axios.get(`https://api.cloudinary.com/v1_1/damienluzzo/resources/image/CactusSocial/${specificUser.picture}`);
-		console.log(response)
-		console.log(response.data.resources)
-		// const profileImage = response.data.resources;
-	}
+	// const displayImage = async () => {
+	// 	const response = await Axios.get(`https://api.cloudinary.com/v1_1/damienluzzo/resources/image/CactusSocial/${specificUser.picture}`);
+	// 	console.log(response)
+	// 	console.log(response.data.resources)
+	// 	// const profileImage = response.data.resources;
+	// }
 
 	const handleOpenProjectCreator = (event) => {
 		setOpenProjectCreator(true);
