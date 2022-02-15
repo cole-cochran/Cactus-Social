@@ -8,6 +8,8 @@ import { UPDATE_PORTFOLIO_PROJECT, DELETE_PORTFOLIO_PROJECT } from "../utils/mut
 import { USER_PROFILE } from "../utils/queries";
 import ProfileInfo from "./ProfileInfo";
 
+import Axios from "axios";
+import { CloudinaryContext, Image } from 'cloudinary-react';
 
 const style = {
     position: 'absolute',
@@ -83,16 +85,20 @@ export default function PortfolioProject(props) {
         
     }
 
-    const handleCloseProjectDropdown = async (event) => {
-
-    }
-
     const handleChange = (event) => {
         const {name, value} = event.target;
-        setEditedProject({
-            ...editedProject,
-            [name]: value
-        })
+        if (name === "addImage") {
+            setEditedProject({
+                ...editedProject,
+                image: event.target.files[0]
+            })
+        } else {
+            setEditedProject({
+                ...editedProject,
+                [name]: value
+            })
+        }
+        
     }
 
     const handleOpenEditor = (event) => {
@@ -108,6 +114,17 @@ export default function PortfolioProject(props) {
         console.log(editedProject);
         console.log(portfolioProject);
 
+        if (portfolioProject.image !== editedProject.image && editedProject.image !== "") {
+			const formData = new FormData();
+			formData.append("file", editedProject.image);
+			formData.append("upload_preset", "b3zjdfsi");
+			formData.append("public_id", editedProject.image.lastModified);
+			formData.append("folder", "CactusSocial");
+			
+			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			console.log(response);
+		}
+
         try {
             await updatePortfolioProject({
                 variables: {
@@ -115,7 +132,7 @@ export default function PortfolioProject(props) {
                     projectId: portfolioProject._id,
                     title: editedProject.title,
                     description: editedProject.description,
-                    image: editedProject.image,
+                    image: (editedProject.image !== portfolioProject.image ? `${editedProject.image.lastModified}` : portfolioProject.image),
                     responsibilities: editedProject.responsibilities,
                     techstack: editedProject.techstack,
                     repo: editedProject.repo,
@@ -149,7 +166,9 @@ export default function PortfolioProject(props) {
                 {portfolioProject.image === "" ? (
                     <img src="../../assets/img/cactus-profile.svg" alt="placeholder"/>
                 ) : (
-                    <img src={`${portfolioProject.image}`} alt="portfolio preview" />
+                    <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                        <Image publicId={`CactusSocial/${portfolioProject.image}`} />
+                    </CloudinaryContext>
                 )}
             </div>
             <div className="portfolio-body">
@@ -157,7 +176,6 @@ export default function PortfolioProject(props) {
                     <h2>{portfolioProject.title}</h2>
                 </div>
                 <div>
-                    {/* <p>Description:</p> */}
                     <p>{portfolioProject.description}</p>
                 </div>
                 <div className="project-dropdown">
@@ -193,11 +211,7 @@ export default function PortfolioProject(props) {
                 </div>
                 {canEditProfile && 
                     <div className="edit-button-div">
-                        {/* <button onClick={handleOpenEditor} className="edit-button">
-                            Edit
-                        </button> */}
                         <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpenEditor}  />
-                        
                     </div>
                 }
             </div>
@@ -220,6 +234,10 @@ export default function PortfolioProject(props) {
 						<div>
                             <label htmlFor="description">Description</label>
                             <textarea id="description" name="description" value={editedProject.description} onChange={handleChange} className="modal-textarea" />
+                        </div>
+                        <div>
+                            <label htmlfor="addImage">Image</label>
+                            <input type="file" id="addImage" name="addImage" onChange={handleChange} />
                         </div>
 						<div>
                             <label htmlFor="responsibilities">Responsibilities</label>

@@ -163,11 +163,18 @@ function ProfileInfo(props) {
 	const handleProjectChange = async (event) => {
 		const {value, name} = event.target;
 		console.log({value, name});
+		if (name === "addImage") {
+            setCreatedProject({
+                ...createdProject,
+                image: event.target.files[0]
+            })
+        } else {
+			setCreatedProject({
+				...createdProject,
+				[name]: value
+			})
+		}
 		
-		setCreatedProject({
-			...createdProject,
-			[name]: value
-		})
 		console.log(createdProject)
 	}
 
@@ -175,13 +182,24 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		console.log(createdProject);
 
+		if (createdProject.image !== "") {
+			const formData = new FormData();
+			formData.append("file", createdProject.image);
+			formData.append("upload_preset", "b3zjdfsi");
+			formData.append("public_id", createdProject.image.lastModified);
+			formData.append("folder", "CactusSocial");
+			
+			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			console.log(response);
+		}
+
 		try {
 			await createPortfolioProject({
 				variables: {
 					owner: userId,
 					title: createdProject.title,
 					description: createdProject.description,
-					image: createdProject.image,
+					image: (createdProject.image === "" ? "" : `${createdProject.image.lastModified}`),
 					responsibilities: createdProject.responsibilities,
 					techstack: createdProject.techstack,
 					repo: createdProject.repo,
@@ -639,6 +657,10 @@ function ProfileInfo(props) {
 						<div>
                             <label htmlFor="description">Description</label>
                             <textarea id="description" name="description" value={createdProject.description} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+						<div>
+                            <label htmlfor="addImage">Image</label>
+                            <input type="file" id="addImage" name="addImage" onChange={handleProjectChange} />
                         </div>
 						<div>
                             <label htmlFor="responsibilities">Responsibilities</label>

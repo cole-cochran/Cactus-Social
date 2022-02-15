@@ -338,8 +338,8 @@ function ProfileFriends(props) {
                                     {user.picture === "" ? (
                                         <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                     ) : (
-                                        <CloudinaryContext cloudName="damienluzzo" >
-                                            <Image publicId={`CactusSocial/${user.picture}`} />
+                                        <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                                            <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}`} />
                                         </CloudinaryContext>
                                     )}
                                     <p>{user.username}</p>
@@ -439,7 +439,14 @@ function ProfileFriends(props) {
                                 <li id={invite.event._id} key={`${invite._id}`} className="modal-list-item invite-modal-item">
                                     <div className="modal-left-top">
                                     <button className="friend-chips">
-                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                        {invite.user.picture === "" ? (
+                                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                        ) : (
+                                            <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                                                <Image className="friend-pic" publicId={`CactusSocial/${invite.user.picture}`} />
+                                            </CloudinaryContext>
+                                        )}
+                                        
                                         <p> {invite.user.username} </p>
                                     </button>
                                     <div className="modal-list-text">
@@ -484,7 +491,14 @@ function ProfileFriends(props) {
                                 <li id={invite.thread._id} key={`${invite._id}`} className="modal-list-item invite-modal-item">
                                     <div className="modal-left-top">
                                         <button className="friend-chips">
+                                            {invite.user.picture === "" ? (
                                             <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                            ) : (
+                                            <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                                                <Image className="friend-pic" publicId={`CactusSocial/${invite.user.picture}`} />
+                                            </CloudinaryContext>
+                                            )}
+                                            
                                             <p> {invite.user.username} </p>
                                         </button>
                                         <div className="modal-list-text">
