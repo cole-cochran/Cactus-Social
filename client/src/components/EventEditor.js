@@ -3,9 +3,11 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_EVENT } from '../utils/mutations';
 import { EVENT_DETAILS } from '../utils/queries';
 
+import Axios from "axios";
+
 export default function EventEditor(props) {
 
-    const { eventData, eventId } = props;
+    const { eventData, eventId, handleCloseEditor} = props;
 
     const [ updateEvent ] = useMutation(UPDATE_EVENT, {
 		refetchQueries: [
@@ -20,6 +22,21 @@ export default function EventEditor(props) {
 
     const handleEdit = async (event) => {
 		event.preventDefault();
+		console.log(eventData.image)
+
+		if (eventData.image !== editedEvent.image && editedEvent.image !== "") {
+			const formData = new FormData();
+			formData.append("file", editedEvent.image);
+			formData.append("upload_preset", "b3zjdfsi");
+			formData.append("public_id", editedEvent.image.lastModified);
+			formData.append("folder", "CactusSocial");
+
+			console.log(editedEvent.image);
+			
+			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			console.log(response);
+		}
+
 		try {
 
 			console.log(editedEvent);
@@ -35,13 +52,13 @@ export default function EventEditor(props) {
 					category: editedEvent.category,
 					in_person: editedEvent.in_person,
 					location: editedEvent.location,
-					image: editedEvent.image
+					image: (editedEvent.image !== eventData.image ? `${editedEvent.image.lastModified}` : eventData.image)
 				}
 			});
 		} catch (err) {
 			console.log(err);
 		}
-		
+		handleCloseEditor();
 	}
 
     const handleChange = async (event) => {
@@ -51,6 +68,11 @@ export default function EventEditor(props) {
 			setEditedEvent({
 				...editedEvent,
 				[name]: event.target.checked
+			})
+		} else if (name === "addImage") {
+			setEditedEvent({
+				...editedEvent,
+				image: event.target.files[0]
 			})
 		} else {
 			setEditedEvent({
@@ -89,6 +111,10 @@ export default function EventEditor(props) {
 				<div>
 					<label forhtml="description">Description</label>
 					<input type="text" value={editedEvent.description} onChange={handleChange} id="description" name="description" ></input>
+				</div>
+				<div>
+					<label forhtml="addImage">Image</label>
+					<input style={{maxWidth: "250px"}} type='file' onChange={handleChange} name="addImage" id="addImage" />
 				</div>
 				<div>
 					<label forhtml="start_date">Start Date</label>

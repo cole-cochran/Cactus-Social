@@ -470,7 +470,7 @@ export default function EventDisplay(props) {
 					aria-describedby="modal-modal-description"
 				>
 					<Box sx={style}>
-						<EventEditor eventId={eventId} eventData={eventData} />
+						<EventEditor handleCloseEditor={handleCloseEditor} eventId={eventId} eventData={eventData} />
 					</Box>
 				</Modal>
 				<Modal
