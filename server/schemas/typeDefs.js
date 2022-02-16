@@ -115,6 +115,7 @@ const typeDefs = gql`
         start_time: String!
         end_time: String!
         owner: User
+        private: Boolean
         attendees: [User]
         category: String!
         in_person: Boolean!
@@ -191,7 +192,7 @@ const typeDefs = gql`
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
         removePostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID!): Event
+        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID!): Event
         updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Event
         removeEvent(eventId: ID!, userId: ID!): User
 

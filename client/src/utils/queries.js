@@ -95,6 +95,7 @@ export const ALL_EVENTS = gql`
 				_id
 				username
 			}
+			private
 			attendees {
 				_id
 				username
@@ -351,6 +352,7 @@ export const USER_EVENTS = gql`
 				_id
 				username
 			}
+			private
 			attendees {
 				_id
 				username
@@ -514,6 +516,7 @@ export const EVENT_DETAILS = gql`
 				username
 				picture
 			}
+			private
 			attendees {
 				_id
 				username

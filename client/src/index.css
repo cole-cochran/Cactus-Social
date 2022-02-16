@@ -2413,7 +2413,7 @@ footer {
     border-radius: 10px;
 }
 
-.event-creation-form #in_person {
+.event-creation-form #in_person, .event-creation-form #private {
     height: 16px;
     width: 16px;
     margin-left: 6px;

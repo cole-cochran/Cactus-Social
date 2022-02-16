@@ -44,6 +44,10 @@ const eventSchema = new Schema({
         type: ObjectId,
         ref:'User'
     },
+    private: {
+        type: Boolean,
+        default: true
+    },
     attendees: [
         {
             type: ObjectId,

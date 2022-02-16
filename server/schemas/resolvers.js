@@ -799,6 +799,7 @@ const resolvers = {
 				end_date,
 				start_time,
 				end_time,
+				private,
 				category,
 				in_person,
 				location,
@@ -816,6 +817,7 @@ const resolvers = {
 				start_time: start_time,
 				end_time: end_time,
 				owner: owner,
+				private: private,
 				category: category,
 				in_person: in_person,
 				location: location,
@@ -824,9 +826,9 @@ const resolvers = {
 
 			const returnedEvent = await Event.findOne({ _id: newEvent._id }).populate('owner');
 
-			//! use context to get userId and complete this
+			//! when we switch over to userEvents only
 			// await User.findOneAndUpdate(
-			// 	{ _id: context.userId },
+			// 	{ _id: owner },
 			// 	{
 			// 		$addToSet: {
 			// 			events: newEvent._id

@@ -24,6 +24,7 @@ export default function EventCreation() {
 		end_date: '',
 		start_time: '',
 		end_time: '',
+		private: false,
 		category: '',
 		in_person: false,
 		location: '',
@@ -46,10 +47,12 @@ export default function EventCreation() {
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		if (name === 'in_person') {
-			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person})
+			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person});
+		} else if (name === "private") {
+			setEventDetails({ ...eventDetails, private: !eventDetails.private});
 		} else if (name === 'addImage') {
 			setEventDetails({...eventDetails, image: event.target.files[0]})
-			console.log(event.target.files[0])
+			console.log(event.target.files[0]);
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}
@@ -76,6 +79,7 @@ export default function EventCreation() {
 					start_time: eventDetails.start_time,
 					end_time: eventDetails.end_time,
 					category: eventDetails.category,
+					private: eventDetails.private,
 					in_person: eventDetails.in_person,
 					location: eventDetails.location,
 					image: `${eventDetails.image.lastModified}`,
@@ -95,6 +99,7 @@ export default function EventCreation() {
 			end_date: '',
 			start_time: '',
 			end_time: '',
+			private: false,
 			category: '',
 			in_person: false,
 			location: '',
@@ -116,6 +121,10 @@ export default function EventCreation() {
 				<div>
 					<label forhtml="addImage">Image</label>
 					<input type='file' onChange={handleChange} name="addImage" id="addImage" />
+				</div>
+				<div>
+					<label forhtml="private">Private Event</label>
+					<input type="checkbox" value={eventDetails.private} onChange={handleChange} id="private" name="private"/>
 				</div>
 				<div>
 					<label forhtml="start_date">Start Date</label>
