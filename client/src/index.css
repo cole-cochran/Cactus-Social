@@ -1486,8 +1486,11 @@ footer {
     margin-bottom: 30px;
 }
 
-.profile-pic-div img {
+.profile-pic-div div img:nth-of-type(1) {
     max-width: 200px;
+    max-height: 200px;
+    border: 2px solid white;
+    border-radius: 50%;
 }
 
 .profile-bio-block {
@@ -1679,7 +1682,9 @@ footer {
     padding-bottom: 0px;
     justify-content: center;
     align-items: center;
+    min-height: 50px;
 }
+
 
 .modal-request {
     display: flex;

@@ -130,7 +130,7 @@ export default function InvitationModal(props) {
             
             <div className="all-friends-div">
                 <ul className="modal-list">
-                    {itemType === "thread" && uninvitedThreadFriends.length && uninvitedThreadFriends.map((user, index) => (
+                    {itemType === "thread" && uninvitedThreadFriends.length ? uninvitedThreadFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
                                 <button 
@@ -142,8 +142,9 @@ export default function InvitationModal(props) {
                                 </button>
                             </a>
                         </li>
-                    ))}
-                    {itemType === "event" && uninvitedEventFriends.length && uninvitedEventFriends.map((user, index) => (
+                    )) : <React.Fragment /> 
+                    }
+                    {itemType === "event" && uninvitedEventFriends.length ? uninvitedEventFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
                                 <button 
@@ -155,7 +156,8 @@ export default function InvitationModal(props) {
                                 </button>
                             </a>
                         </li>
-                    ))}
+                    )) : <React.Fragment />
+                } 
                 </ul>
             </div>
         </div>
