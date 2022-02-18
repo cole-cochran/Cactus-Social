@@ -1486,11 +1486,15 @@ footer {
     margin-bottom: 30px;
 }
 
-.profile-pic-div div img:nth-of-type(1) {
+.profile-pic-div img {
     max-width: 200px;
     max-height: 200px;
     border: 2px solid white;
     border-radius: 50%;
+}
+
+#editImage {
+    border: none;
 }
 
 .profile-bio-block {
@@ -2671,13 +2675,13 @@ footer {
     justify-content: center;
     align-items: center;
     min-height: 200px;
-    border-bottom: 1px solid white;
+    /* height: auto; */
     width: 90%;
 }
 
 .chat-banner h2 {
     color: white;
-    margin-top: 30px;
+    padding-top: 40px;
     margin-bottom: 15px;
 }
 
@@ -2686,7 +2690,10 @@ footer {
     display: flex;
     justify-content: center;
     padding: 5px;
+    padding-bottom: 15px;
     margin-bottom: 15px;
+    /* height: 100%; */
+    border-bottom: 1px solid white;
 }
 
 .chat-users {
@@ -2695,7 +2702,8 @@ footer {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    height: 70px;
+    min-height: 70px;
+    /* height: 100%; */
 }
 
 .chat-users button {
