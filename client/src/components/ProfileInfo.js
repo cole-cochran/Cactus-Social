@@ -12,7 +12,7 @@ import { CloudinaryContext, Image } from 'cloudinary-react';
 import PortfolioProject from './PortfolioProject';
 
 import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND, CREATE_PORTFOLIO_PROJECT, UPDATE_USER_LINKS } from '../utils/mutations';
-import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
+import { USER_PROFILE, ALL_USERS, USER_FRIENDS, PINNED_POSTS } from '../utils/queries';
 
 import { useMutation, useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
@@ -25,6 +25,12 @@ function ProfileInfo(props) {
 	const { specificUser } = props;
 
 	const userId = AuthService.getProfile().data._id;
+
+	const allPinnedPosts = useQuery(PINNED_POSTS, {
+		variables: {
+			userId: userId
+		}
+	})
 
     //* UPDATE_PHOTO needs: userId and picture args
 	const [ updatePhoto ] = useMutation(UPDATE_PHOTO, {
@@ -112,6 +118,7 @@ function ProfileInfo(props) {
 		portfolio_page: ""
 	});
 
+
 	const getAllUsers = useQuery(ALL_USERS);
 	const getAllFriends = useQuery(USER_FRIENDS, {
 		variables: {
@@ -119,7 +126,7 @@ function ProfileInfo(props) {
 		}
 	});
 
-	const loading = getAllUsers.loading || getAllFriends.loading;
+	const loading = allPinnedPosts.loading || getAllUsers.loading || getAllFriends.loading;
 
 	const uploadImage = async (event) => {
 
@@ -415,6 +422,22 @@ function ProfileInfo(props) {
         setTechData(editedTech);
 	};
 
+	const handleOpenDropdown = (event) => {
+		const userData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+		localStorage.setItem('userId', JSON.stringify(userData));
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseDropdown = (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const dropdowns = document.querySelectorAll('.dropdown-content');
+			for (let dropdown of dropdowns) {
+				dropdown.style.display = "none";
+			}
+		}
+	}
+
 	const style = {
 		position: 'absolute',
 		top: '50%',
@@ -458,11 +481,25 @@ function ProfileInfo(props) {
 
 	return (
 		<React.Fragment>
-		<div className="profile-wrapper">
+		<div className="profile-wrapper" onClick={handleCloseDropdown}>
 			<div className="profile-content-container">
 				<div className="profile-header">
 					<div className='profile-top'>
-						<h3>{`${updatedFirstName} ${updatedLastName}`}</h3>
+						<div className='profile-title'>
+							<h3>{`${updatedFirstName} ${updatedLastName}`}</h3>
+							{ userId === specificUser._id ? 
+								<div className="dropdown">
+								<img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
+								<div className="dropdown-content" style={{width: "200px"}}>
+									<div className="dropdown-option">
+										View Pinned Posts
+									</div>
+								</div>
+							</div>
+								: <React.Fragment />
+							}
+						</div>
+						
 						{!canEditProfile ? (
 						<div className='friend-options-div'>
 							{userFriendChecker ? (

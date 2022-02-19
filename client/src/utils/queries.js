@@ -251,6 +251,10 @@ export const USER_PROFILE = gql`
 				pinHash
 				post {
 					_id
+					post_text
+					author {
+						_id
+					}
 					thread {
 						_id
 					}
