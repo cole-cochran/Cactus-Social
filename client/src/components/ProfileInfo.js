@@ -542,10 +542,6 @@ function ProfileInfo(props) {
 				</div>
 				<div className="user-info">
 					<div style={{display: "flex"}} className="tech-stack">
-						{canEditProfile && 
-                        <div>
-                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
-                        </div>}
 						<ul>
 							{specificUser.tech_stack.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
@@ -554,6 +550,10 @@ function ProfileInfo(props) {
 									</button>
 								</li>
 							))}
+							{canEditProfile && 
+                        <div>
+                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
+                        </div>}
                         </ul>
 					</div>
 				</div>

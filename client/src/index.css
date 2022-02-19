@@ -1492,10 +1492,12 @@ footer {
     max-height: 200px;
     border: 2px solid white;
     border-radius: 50%;
+    width:100%;
 }
 
 #editImage {
     border: none;
+    width: 30px;
 }
 
 .profile-bio-block {
@@ -1541,6 +1543,10 @@ footer {
     .profile-info-links {
         justify-content: left !important;
         margin-left: 10px;
+    }
+
+    .profile-info-links div {
+        margin: 15px;
     }
 }
 
@@ -2932,7 +2938,7 @@ footer {
 }
 
 .profile-info-links div {
-    margin: 15px;
+    margin: 10px;
 }
 
 .profile-info-links div img {
@@ -2969,4 +2975,8 @@ footer {
 
 .edit-profile-button img:hover {
     box-shadow: none !important;
+}
+
+#editTech {
+    margin-left: 20px;
 }
