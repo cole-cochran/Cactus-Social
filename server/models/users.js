@@ -58,8 +58,8 @@ const userSchema = new Schema({
 		// validate: {...}
 	},
 	picture: {
-		type: String
-		// default: "empty profile template"
+		type: String,
+		default: ""
 	},
 	bio: {
 		type: String,

@@ -1225,6 +1225,7 @@ footer {
     width: 5rem !important;
     min-width: 5rem;
     height: 100%;
+    padding-bottom: 20px;
     overflow-y: scroll;
     overflow-x: hidden;
     background-color: var(--ultra-dark);

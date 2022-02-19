@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import Axios from "axios";
 import { CloudinaryContext, Image } from 'cloudinary-react';
 
@@ -120,11 +122,14 @@ function ProfileInfo(props) {
 	const loading = getAllUsers.loading || getAllFriends.loading;
 
 	const uploadImage = async (event) => {
+
+		const uuid = uuidv4();
+
 		event.preventDefault();
 		const formData = new FormData();
 		formData.append("file", photo);
 		formData.append("upload_preset", "b3zjdfsi");
-		formData.append("public_id", photo.lastModified);
+		formData.append("public_id", uuid);
 		formData.append("folder", "CactusSocial");
 
 		console.log(photo);
@@ -132,7 +137,7 @@ function ProfileInfo(props) {
 		await updatePhoto({
 			variables: {
 				userId: AuthService.getProfile().data._id,
-				picture: `${photo.lastModified}`
+				picture: `${uuid}`
 			}
 		});
 		
@@ -182,11 +187,13 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		console.log(createdProject);
 
+		const uuid = uuidv4();
+
 		if (createdProject.image !== "") {
 			const formData = new FormData();
 			formData.append("file", createdProject.image);
 			formData.append("upload_preset", "b3zjdfsi");
-			formData.append("public_id", createdProject.image.lastModified);
+			formData.append("public_id", uuid);
 			formData.append("folder", "CactusSocial");
 			
 			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
@@ -199,7 +206,7 @@ function ProfileInfo(props) {
 					owner: userId,
 					title: createdProject.title,
 					description: createdProject.description,
-					image: (createdProject.image === "" ? "" : `${createdProject.image.lastModified}`),
+					image: (createdProject.image === "" ? "" : `${uuid}`),
 					responsibilities: createdProject.responsibilities,
 					techstack: createdProject.techstack,
 					repo: createdProject.repo,

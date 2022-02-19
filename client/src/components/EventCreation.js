@@ -3,6 +3,8 @@ import * as React from 'react';
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import Axios from "axios";
 // import { CloudinaryContext, Image } from 'cloudinary-react';
 
@@ -31,11 +33,12 @@ export default function EventCreation() {
 		image: {}
 	});
 
-	const uploadImage = async () => {
+	const uploadImage = async (uuid) => {
+
 		const formData = new FormData();
 		formData.append("file", eventDetails.image);
 		formData.append("upload_preset", "b3zjdfsi");
-		formData.append("public_id", eventDetails.image.lastModified);
+		formData.append("public_id", uuid);
 		formData.append("folder", "CactusSocial");
 
 		console.log(eventDetails.image);
@@ -67,7 +70,9 @@ export default function EventCreation() {
 			return false;
 		}
 
-		uploadImage();
+		const uuid = uuidv4();
+
+		uploadImage(uuid);
 
 		try {
 			const res = await createEvent({
@@ -82,7 +87,7 @@ export default function EventCreation() {
 					private: eventDetails.private,
 					in_person: eventDetails.in_person,
 					location: eventDetails.location,
-					image: `${eventDetails.image.lastModified}`,
+					image: `${uuid}`,
 					owner: AuthService.getProfile().data._id
 				}
 			});

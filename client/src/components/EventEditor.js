@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_EVENT } from '../utils/mutations';
 import { EVENT_DETAILS } from '../utils/queries';
 
+import { v4 as uuidv4 } from 'uuid';
 import Axios from "axios";
 
 export default function EventEditor(props) {
@@ -22,13 +23,15 @@ export default function EventEditor(props) {
 
     const handleEdit = async (event) => {
 		event.preventDefault();
-		console.log(eventData.image)
+		console.log(eventData.image);
+
+		const uuid = uuidv4();
 
 		if (eventData.image !== editedEvent.image && editedEvent.image !== "") {
 			const formData = new FormData();
 			formData.append("file", editedEvent.image);
 			formData.append("upload_preset", "b3zjdfsi");
-			formData.append("public_id", editedEvent.image.lastModified);
+			formData.append("public_id", uuid);
 			formData.append("folder", "CactusSocial");
 
 			console.log(editedEvent.image);
@@ -52,7 +55,7 @@ export default function EventEditor(props) {
 					category: editedEvent.category,
 					in_person: editedEvent.in_person,
 					location: editedEvent.location,
-					image: (editedEvent.image !== eventData.image ? `${editedEvent.image.lastModified}` : eventData.image)
+					image: (editedEvent.image !== eventData.image ? `${uuid}` : eventData.image)
 				}
 			});
 		} catch (err) {
