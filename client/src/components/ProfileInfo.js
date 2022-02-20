@@ -24,13 +24,9 @@ function ProfileInfo(props) {
 
 	const { specificUser } = props;
 
-	const userId = AuthService.getProfile().data._id;
+	console.log(specificUser)
 
-	const allPinnedPosts = useQuery(PINNED_POSTS, {
-		variables: {
-			userId: userId
-		}
-	})
+	const userId = AuthService.getProfile().data._id;
 
     //* UPDATE_PHOTO needs: userId and picture args
 	const [ updatePhoto ] = useMutation(UPDATE_PHOTO, {
@@ -118,6 +114,8 @@ function ProfileInfo(props) {
 		portfolio_page: ""
 	});
 
+	const [ openPins, setOpenPins ] = React.useState(false);
+
 
 	const getAllUsers = useQuery(ALL_USERS);
 	const getAllFriends = useQuery(USER_FRIENDS, {
@@ -126,7 +124,7 @@ function ProfileInfo(props) {
 		}
 	});
 
-	const loading = allPinnedPosts.loading || getAllUsers.loading || getAllFriends.loading;
+	const loading = getAllUsers.loading || getAllFriends.loading;
 
 	const uploadImage = async (event) => {
 
@@ -163,6 +161,14 @@ function ProfileInfo(props) {
 	// 	console.log(response.data.resources)
 	// 	// const profileImage = response.data.resources;
 	// }
+
+	const handleOpenPins = (event) => {
+		setOpenPins(true);
+	}
+
+	const handleClosePins = (event) => {
+		setOpenPins(false);
+	}
 
 	const handleOpenProjectCreator = (event) => {
 		setOpenProjectCreator(true);
@@ -491,7 +497,7 @@ function ProfileInfo(props) {
 								<div className="dropdown">
 								<img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
 								<div className="dropdown-content" style={{width: "200px"}}>
-									<div className="dropdown-option">
+									<div className="dropdown-option" onClick={handleOpenPins}>
 										View Pinned Posts
 									</div>
 								</div>
@@ -750,6 +756,32 @@ function ProfileInfo(props) {
 							Update
 						</button>
 					</form>
+				</Box>
+			</Modal>
+			<Modal
+				open={openPins}
+				onClose={handleClosePins}
+                id="pinModal"
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<div id="userPins" className="modal-form">
+						<div className="modal-header">
+							<h4>Pinned Posts</h4>
+						</div>
+						{specificUser.pinned_posts.map((pin) => (
+							<div className="chat subthread" data-id={pin.post._id} key={pin.post._id} >
+							<div className="pos post-bar">
+								<div>
+									<span className="chat-name">{pin.post.author.username}</span>
+									<span className="chat-date">{pin.date_created}</span>
+								</div>
+							</div>
+							<p className="pos post-text">{pin.post.post_text}</p>
+							</div>
+						))}
+					</div>
 				</Box>
 			</Modal>
 		</div>

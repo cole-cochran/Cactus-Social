@@ -35,6 +35,19 @@ const resolvers = {
 					}
 				}
 			})
+			.populate({
+				path: "pinned_posts",
+				model: "PinnedPost",
+				populate: {
+					path: "post",
+					model: "Post",
+					populate: {
+						path: "author",
+						model: "User"
+					}
+				}
+				
+			})
 			.populate('portfolio_projects');
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');

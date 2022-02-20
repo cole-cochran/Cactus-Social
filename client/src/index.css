@@ -2989,3 +2989,12 @@ footer {
 #editTech {
     margin-left: 20px;
 }
+
+#userPins {
+    max-height: 600px !important;
+    overflow-y: scroll;
+}
+
+#userPins::-webkit-scrollbar {
+    display: none;
+}

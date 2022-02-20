@@ -254,10 +254,13 @@ export const USER_PROFILE = gql`
 					post_text
 					author {
 						_id
+						username
 					}
 					thread {
 						_id
+						title
 					}
+					date_created
 				}
 			}
 			portfolio_projects {
