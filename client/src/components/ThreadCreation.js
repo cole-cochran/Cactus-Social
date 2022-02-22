@@ -8,12 +8,23 @@ export default function ThreadCreation() {
 
 	const [ threadData, setThreadData ] = React.useState({
 		title: '',
+		private: true,
 		moderator: AuthService.getProfile().data._id
 	});
 
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
-		setThreadData({ ...threadData, [name]: value });
+		if (name === "private") {
+			setThreadData({
+				...threadData,
+				private: !threadData.private
+			})
+		} else {
+			setThreadData({ 
+				...threadData, 
+				[name]: value 
+			});
+		}
 	};
 
 	const handleThreadSubmit = async (event) => {
@@ -29,6 +40,7 @@ export default function ThreadCreation() {
 			const res = await createThread({
 				variables: {
 					title: threadData.title,
+					private: threadData.private,
 					moderator: AuthService.getProfile().data._id
 				}
 			});
@@ -39,7 +51,8 @@ export default function ThreadCreation() {
 		}
 
 		setThreadData({
-			title: ''
+			title: '',
+			private: true
 		});
 	};
 
@@ -48,8 +61,9 @@ export default function ThreadCreation() {
 			<div className="modal-header">
 				<h4>Create New Thread</h4>
 			</div>
-			<label>Title</label>
+			<label forhtml="title">Title</label>
 			<input
+				id="title"
 				type="text"
 				name="title"
 				onChange={handleInputChange}
@@ -57,6 +71,19 @@ export default function ThreadCreation() {
 				placeholder="e.g. Halo 2 Forum"
 				required
 			/>
+			<div className='private-div'>
+				<label forhtml="private">Make Thread Public?</label>
+				<div className='private-checkbox'>
+					<input 
+					type="checkbox"
+					name="private"
+					id="private"
+					onChange={handleInputChange}
+				/>
+				</div>
+			</div>
+			
+			
 			<button className="modal-button" type="submit">
 				Create
 			</button>

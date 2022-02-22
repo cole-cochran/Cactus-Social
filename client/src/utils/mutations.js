@@ -423,14 +423,30 @@ mutation denyFriendRequest($userId: ID!, $friend: ID!) {
 //*  THREAD STUFF
 
 export const CREATE_THREAD = gql`
-mutation createThread($moderator: ID!, $title: String!) {
-    createThread(moderator: $moderator, title: $title) {
+mutation createThread($moderator: ID!, $private: Boolean!, $title: String!) {
+    createThread(moderator: $moderator, private: $private, title: $title) {
         _id
         title
+        private
         moderator {
             _id
         }
         date_created
+    }
+}
+`;
+
+export const LEAVE_THREAD = gql`
+mutation leaveThread($userId: ID!, $threadId: ID!) {
+    leaveThread(userId: $userId, threadId: $threadId) {
+        _id
+        first_name
+        last_name
+        username
+        picture
+        bio
+        tech_stack
+        date_joined
     }
 }
 `;
@@ -457,32 +473,32 @@ export const CREATE_POST = gql`
 mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
     createPost( threadId: $threadId, post_text: $post_text, author: $author) {
         _id
-			post_text
-			date_created
-			author {
-				_id
-				username
-				picture
-			}
-			reactions
-			edited
-			thread {
-				_id
-				title
-			}
-			comments {
-				_id
-				comment_text
-				date_created
-				author {
-					_id
-				}
-				reactions
-				edited
-				post {
-					_id
-				}
-			}
+        post_text
+        date_created
+        author {
+            _id
+            username
+            picture
+        }
+        reactions
+        edited
+        thread {
+            _id
+            title
+        }
+        comments {
+            _id
+            comment_text
+            date_created
+            author {
+                _id
+            }
+            reactions
+            edited
+            post {
+                _id
+            }
+        }
     }
 }
 `;
@@ -505,6 +521,7 @@ mutation removePost($threadId: ID!, $postId: ID!) {
                 _id
             }
         }
+        private
         moderator {
             _id
             username
@@ -538,6 +555,7 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
                 _id
             }
         }
+        private
         moderator {
             _id
             username
@@ -601,6 +619,7 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
                 _id
             }
         }
+        private
         moderator {
             _id
             username
@@ -634,6 +653,7 @@ mutation removePostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
                 _id
             }
         }
+        private
         moderator {
             _id
             username
@@ -850,8 +870,8 @@ mutation removeEvent($eventId: ID!, $userId: ID!) {
 `;
 
 export const UPDATE_EVENT = gql`
-mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
-    updateEvent(eventId: $eventId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
+mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $private: Boolean!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
+    updateEvent(eventId: $eventId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, private: $private, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
         _id
         title
         description
@@ -870,6 +890,7 @@ mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $sta
             picture
         }
         category
+        private
         in_person
         location
         image
@@ -915,6 +936,7 @@ mutation attendEvent($eventId: ID!, $attendee: ID!) {
         category
         in_person
         location
+        private
         image
         comments {
             _id
@@ -956,6 +978,7 @@ mutation leaveEvent($eventId: ID!, $attendee: ID!) {
             picture
         }
         category
+        private
         in_person
         location
         image
@@ -1021,6 +1044,7 @@ mutation removeEventComment($eventId: ID!, $commentId: ID!) {
             picture
         }
         category
+        private
         in_person
         location
         image
@@ -1061,6 +1085,7 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
             picture
         }
         category
+        private
         in_person
         location
         image
@@ -1101,6 +1126,7 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
             picture
         }
         category
+        private
         in_person
         location
         image
@@ -1144,6 +1170,7 @@ mutation removeEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: S
             picture
         }
         category
+        private
         in_person
         location
         image
@@ -1333,6 +1360,7 @@ mutation acceptEventInvite($userId: ID!, $senderId: ID!, $eventId: ID!) {
         category
         in_person
         location
+        private
         image
         date_created
         edited
@@ -1365,6 +1393,7 @@ mutation acceptThreadInvite($threadId:ID!, $userId:ID!, $senderId: ID!) {
             }
             post_text
         }
+        private
         moderator {
             _id
             username

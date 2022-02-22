@@ -52,6 +52,7 @@ export default function EventEditor(props) {
 					end_date: editedEvent.end_date,
 					start_time: timeParser(editedEvent.start_time),
 					end_time: timeParser(editedEvent.end_time),
+					private: editedEvent.private,
 					category: editedEvent.category,
 					in_person: editedEvent.in_person,
 					location: editedEvent.location,
@@ -70,7 +71,12 @@ export default function EventEditor(props) {
 		if (name === "in_person") {
 			setEditedEvent({
 				...editedEvent,
-				[name]: event.target.checked
+				in_person: !editedEvent.in_person
+			})
+		} else if (name === "private") {
+			setEditedEvent({
+				...editedEvent,
+				private: !editedEvent.private
 			})
 		} else if (name === "addImage") {
 			setEditedEvent({
@@ -114,6 +120,10 @@ export default function EventEditor(props) {
 				<div>
 					<label forhtml="description">Description</label>
 					<input type="text" value={editedEvent.description} onChange={handleChange} id="description" name="description" ></input>
+				</div>
+				<div>
+					<label forhtml="private">Make Event Public?</label>
+					<input type="checkbox" checked={!editedEvent.private} onChange={handleChange} id="private" name="private" />
 				</div>
 				<div>
 					<label forhtml="addImage">Image</label>

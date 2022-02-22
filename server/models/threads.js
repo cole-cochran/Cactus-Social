@@ -19,12 +19,10 @@ const threadSchema = new Schema({
 			ref:'Post'
         }
     ],
-    // events: [
-    //     {
-    //         type: ObjectId,
-	// 		ref:'Event'
-    //     }
-    // ],
+    private: {
+        type: Boolean,
+        default: true
+    },
 	moderator: {
 		type: ObjectId,
 		ref:'User'

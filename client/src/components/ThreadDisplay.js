@@ -11,7 +11,7 @@ import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE, SENT_INVITES } from '..
 //* THREAD_DETAILS requires threadId and gives us access to
 
 // import { ADD_POST_REACTION } from '../utils/mutations';
-import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD, LEAVE_THREAD } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -63,6 +63,8 @@ function ThreadDisplay(props) {
 			'userProfile'
 		],
 	});
+
+	const [ leaveThread ] = useMutation(LEAVE_THREAD);
 
 	const [ removeThread ] = useMutation(REMOVE_THREAD);
 
@@ -182,6 +184,21 @@ function ThreadDisplay(props) {
         localStorage.removeItem('postId');
         setOpen(false);
     }
+
+	const handleLeaveThread = async (event) => {
+		event.preventDefault();
+		try {
+			await leaveThread({
+				variables: {
+					userId: userId,
+					threadId: threadId
+				}
+			})
+		} catch (err) {
+			console.log(err);
+		}
+		window.location.replace(`/profile/${userId}`);
+	}
 
 	const handleRemovePost = (event) => {
 		event.preventDefault();
@@ -383,7 +400,14 @@ function ThreadDisplay(props) {
 							</div>
 						</div>
 					</div>
-					: <React.Fragment />
+					: <div className="dropdown">
+						<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
+						<div className="thread-dropdown-content">
+							<div onClick={handleLeaveThread} >
+								Leave Thread
+							</div>
+						</div>
+					</div>
 					}
 				</div>
 				

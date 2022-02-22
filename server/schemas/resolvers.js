@@ -489,9 +489,10 @@ const resolvers = {
 			// if (context.user) {
 			//! get rid of userId when we can user the context to our advantage
 			try{
-				const { title, moderator } = args;
+				const { title, private, moderator } = args;
 				const newThread = await Thread.create({
 					title: title,
+					private: private,
 					moderator: moderator
 				});
 				await User.findOneAndUpdate(
@@ -510,6 +511,20 @@ const resolvers = {
 			
 			// }
 			// throw new AuthenticationError('You need to be logged in to do that!');
+		},
+
+		leaveThread: async (parent, args, context) => {
+			const { threadId, userId } = args;
+			const user = await User.findOneAndUpdate(
+				{ _id: userId },
+				{
+					$pull: {
+						threads: threadId
+					}
+				},
+				{ new: true }
+			);
+			return user;
 		},
 
 		//* remove thread
@@ -907,6 +922,7 @@ const resolvers = {
 				end_date,
 				start_time,
 				end_time,
+				private,
 				category,
 				in_person,
 				location,
@@ -922,6 +938,7 @@ const resolvers = {
 					end_date: end_date,
 					start_time: start_time,
 					end_time: end_time,
+					private: private,
 					category: category,
 					in_person: in_person,
 					location: location,

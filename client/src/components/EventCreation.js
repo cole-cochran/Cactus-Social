@@ -26,7 +26,7 @@ export default function EventCreation() {
 		end_date: '',
 		start_time: '',
 		end_time: '',
-		private: false,
+		private: true,
 		category: '',
 		in_person: false,
 		location: '',
@@ -104,7 +104,7 @@ export default function EventCreation() {
 			end_date: '',
 			start_time: '',
 			end_time: '',
-			private: false,
+			private: true,
 			category: '',
 			in_person: false,
 			location: '',
@@ -128,7 +128,7 @@ export default function EventCreation() {
 					<input type='file' onChange={handleChange} name="addImage" id="addImage" />
 				</div>
 				<div>
-					<label forhtml="private">Private Event</label>
+					<label forhtml="private">Make Event Public?</label>
 					<input type="checkbox" value={eventDetails.private} onChange={handleChange} id="private" name="private"/>
 				</div>
 				<div>
