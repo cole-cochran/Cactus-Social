@@ -88,6 +88,7 @@ function ThreadsPanel(props) {
                 <img id="thread-create-btn" className="sidebar-add-icon" src="../assets/img/new_cactus_plus.png" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul id="threads-dropdown">
+                <h5>Your Threads</h5>
                 {allThreads.map((individualThread) => (
                     <li key={individualThread._id}>
                         <Link

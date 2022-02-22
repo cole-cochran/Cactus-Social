@@ -314,6 +314,13 @@ export default function EventDisplay(props) {
 										{eventData.category}
 									</button>
 								</div>
+								<div className='event-type'>
+									{eventData.private ? (
+										<p>Invite Only</p>
+									):(
+										<p>Public Event</p>
+									)}
+								</div>
 							</div>
 							<div className='event-secondary'>
 								<div className='event-datetime'>

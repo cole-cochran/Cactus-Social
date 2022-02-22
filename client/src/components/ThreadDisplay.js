@@ -387,6 +387,13 @@ function ThreadDisplay(props) {
 						<div>
 							<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
 						</div>
+						<div>
+							{singleThread.data.threadDetails.private ? (
+								<p>Invite Only</p>
+							):(
+								<p>Public Forum</p>
+							)}
+						</div>
 					</div>
 					{threadOwner ? 
 					<div className="dropdown">
