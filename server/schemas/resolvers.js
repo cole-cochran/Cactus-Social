@@ -1,7 +1,6 @@
 const { User, Comment, Post, Thread, Event, PinnedPost, Chat, ChatMessage, Portfolio } = require('../models/index');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError, ApolloError } = require('apollo-server-express');
-const { findById } = require('../models/users');
 
 //! ADD ARRAY OF PIN STRINGS TO THREADS MODEL 
 
@@ -130,15 +129,15 @@ const resolvers = {
 
 		//* get all user threads
 		userThreads: async (parent, args, context) => {
-			//! add user context to filter results and then go back and change query in typeDefs
 			// if (context.user) {
-			const userData = await User.findOne({ _id: args.userId }).populate('threads');
+			const {userId} = args;
+			const userData = await User.findOne({ _id: userId }).populate('threads');
 
 			const userThreads = [];
 
 			for (let thread of userData.threads) {
-				let threadId = await Thread.findOne({ _id: thread }).populate('posts').populate('moderator').populate('members');
-				userThreads.push(threadId);
+				let threadObj = await Thread.findOne({ _id: thread }).populate('posts').populate('moderator').populate('members');
+				userThreads.push(threadObj);
 			}
 
 			return userThreads;
@@ -148,15 +147,15 @@ const resolvers = {
 
 		//* get all user events
 		userEvents: async (parent, args, context) => {
-			//! add user context to filter results and then go back and change query in typeDefs
+			const {userId} = args;
 			// if (context.user) {
-			const userData = await User.findOne({ _id: args.userId }).populate('events');
+			const userData = await User.findOne({ _id: userId }).populate('events');
 
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventId = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
-				userEvents.push(eventId);
+				let eventObj = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
+				userEvents.push(eventObj);
 			}
 
 			return userEvents;

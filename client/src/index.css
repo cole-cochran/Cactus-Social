@@ -843,6 +843,11 @@ header {
     display: none;
 }
 
+#threads-dropdown h5 {
+    color: white;
+    margin-top: 15px;
+}
+
 #threads-dropdown li:hover {
     background-color: var(--hero-green);
     cursor: pointer;
