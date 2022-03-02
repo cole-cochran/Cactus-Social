@@ -132,11 +132,15 @@ const resolvers = {
 			// if (context.user) {
 			const {userId} = args;
 			const userData = await User.findOne({ _id: userId }).populate('threads');
+			// console.log(userData)
 
 			const userThreads = [];
 
 			for (let thread of userData.threads) {
-				let threadObj = await Thread.findOne({ _id: thread }).populate('posts').populate('moderator').populate('members');
+				let threadObj = await Thread.findOne({ _id: thread._id })
+				.populate("posts")
+				.populate("moderator")
+				.populate("members");
 				userThreads.push(threadObj);
 			}
 
@@ -154,7 +158,9 @@ const resolvers = {
 			const userEvents = [];
 
 			for (let event of userData.events) {
-				let eventObj = await Event.findOne({ _id: event }).populate('owner').populate('attendees');
+				let eventObj = await Event.findOne({ _id: event._id })
+				.populate("owner")
+				.populate("attendees");
 				userEvents.push(eventObj);
 			}
 

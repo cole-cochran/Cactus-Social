@@ -129,7 +129,7 @@ export default function EventCreation() {
 				</div>
 				<div>
 					<label forhtml="private">Make Event Public?</label>
-					<input type="checkbox" value={eventDetails.private} onChange={handleChange} id="private" name="private"/>
+					<input type="checkbox" onChange={handleChange} id="private" name="private"/>
 				</div>
 				<div>
 					<label forhtml="start_date">Start Date</label>
