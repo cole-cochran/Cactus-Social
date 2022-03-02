@@ -62,6 +62,8 @@
 
 //* Make a separate option to show more options in a dropdown to do any sort of "alteration" mutation: editing, deleting
 
+//* Allow only thread owners to delete thread
+
 //! ----------------------------------------------------------------------------------------------- 
 
 //?  EVENT CREATOR MODAL 

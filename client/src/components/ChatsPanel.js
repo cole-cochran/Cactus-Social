@@ -87,7 +87,7 @@ export default function ChatsPanel(props) {
         });
 
         setChatMembers([...filteredUsers]);
-        console.log([...chatMembers])
+        // console.log([...chatMembers])
 
         const removedUser = {
             _id: removedUserId,
@@ -104,7 +104,7 @@ export default function ChatsPanel(props) {
         ))
 
         try {
-            console.log([...newChatUsers, userId])
+            // console.log([...newChatUsers, userId])
             await createChat({
                 variables: {
                     participants: [...newChatUsers, userId]
@@ -145,7 +145,7 @@ export default function ChatsPanel(props) {
         chatInfo.style.display = "none";
     }
 
-    console.log(allChats)
+    // console.log(allChats)
 
     return (
         <div id="sidebar-chats-panel">

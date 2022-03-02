@@ -17,13 +17,13 @@ export default function EventEditor(props) {
 		]
 	});
 
-	console.log(eventData);
+	// console.log(eventData);
 
     const [editedEvent, setEditedEvent] = React.useState(eventData);
 
     const handleEdit = async (event) => {
 		event.preventDefault();
-		console.log(eventData.image);
+		// console.log(eventData.image);
 
 		const uuid = uuidv4();
 
@@ -34,15 +34,15 @@ export default function EventEditor(props) {
 			formData.append("public_id", uuid);
 			formData.append("folder", "CactusSocial");
 
-			console.log(editedEvent.image);
+			// console.log(editedEvent.image);
 			
 			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-			console.log(response);
+			// console.log(response);
 		}
 
 		try {
 
-			console.log(editedEvent);
+			// console.log(editedEvent);
 			await updateEvent({
 				variables: {
 					eventId: eventId,
@@ -90,8 +90,8 @@ export default function EventEditor(props) {
 			})
 		}
 		
-		console.log(event.target.checked);
-		console.log(name);
+		// console.log(event.target.checked);
+		// console.log(name);
 	}
 
 	const timeParser = (time) => {

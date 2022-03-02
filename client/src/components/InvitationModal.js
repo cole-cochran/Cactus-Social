@@ -47,7 +47,7 @@ export default function InvitationModal(props) {
     const allFriends = getAllFriends.data?.userFriends || [];
     const allSentInvites = getAllInvites.data?.sentInvites || {};
 
-    console.log(allSentInvites.sent_invites);
+    // console.log(allSentInvites.sent_invites);
 
     const handleSendInvite = async (event) => {
         event.preventDefault();
@@ -87,7 +87,7 @@ export default function InvitationModal(props) {
         return null;
     });
 
-    console.log(threadInvites)
+    // console.log(threadInvites)
 
     const eventInvites = allSentInvites.sent_invites.filter((invite) => {
         if (invite.event) {
@@ -96,11 +96,11 @@ export default function InvitationModal(props) {
         return null;
     });
 
-    console.log(eventInvites);
+    // console.log(eventInvites);
 
     const uninvitedThreadFriends = allFriends.friends.filter((friend) => {
         for (let invitation of threadInvites) {
-            console.log(invitation);
+            // console.log(invitation);
             if (invitation.user._id === friend._id) {
                 return null;
             }
@@ -108,11 +108,11 @@ export default function InvitationModal(props) {
         return friend;
     });
 
-    console.log(uninvitedThreadFriends);
+    // console.log(uninvitedThreadFriends);
 
     const uninvitedEventFriends = allFriends.friends.filter((friend) => {
         for (let invitation of eventInvites) {
-            console.log(invitation);
+            // console.log(invitation);
             if (invitation.user._id === friend._id) {
                 return null;
             }
@@ -120,7 +120,7 @@ export default function InvitationModal(props) {
         return friend;
     });
 
-    console.log(uninvitedEventFriends);
+    // console.log(uninvitedEventFriends);
 
     return (
         <div className="modal-form" id="modal-friends">

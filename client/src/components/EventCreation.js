@@ -41,10 +41,11 @@ export default function EventCreation() {
 		formData.append("public_id", uuid);
 		formData.append("folder", "CactusSocial");
 
-		console.log(eventDetails.image);
+		// console.log(eventDetails.image);
 		
-		const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-		console.log(response);
+		// const response = 
+		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+		// console.log(response);
 	}
 
 	const handleChange = (event) => {
@@ -55,7 +56,7 @@ export default function EventCreation() {
 			setEventDetails({ ...eventDetails, private: !eventDetails.private});
 		} else if (name === 'addImage') {
 			setEventDetails({...eventDetails, image: event.target.files[0]})
-			console.log(event.target.files[0]);
+			// console.log(event.target.files[0]);
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}

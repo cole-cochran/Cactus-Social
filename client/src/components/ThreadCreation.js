@@ -19,7 +19,7 @@ export default function ThreadCreation() {
 				...threadData,
 				private: !threadData.private
 			})
-			console.log(threadData.private)
+			// console.log(threadData.private)
 		} else {
 			setThreadData({ 
 				...threadData, 
@@ -36,7 +36,7 @@ export default function ThreadCreation() {
 		if (!token) {
 			return false;
 		}
-		console.log(threadData.private)
+		// console.log(threadData.private)
 		try {
 			const res = await createThread({
 				variables: {

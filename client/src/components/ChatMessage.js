@@ -84,12 +84,12 @@ export default function ChatMessage(props) {
     const handleOpenUpdateModal = async (event) => {
         setOpenUpdateModal(true);
         const updatedMessageId = event.target.parentNode.parentNode.parentNode.parentNode.id;
-        console.log(updatedMessageId);
+        // console.log(updatedMessageId);
 
         localStorage.setItem('messageId', JSON.stringify(updatedMessageId));
 
         const updatedMessageText = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[0].innerText;
-        console.log(updatedMessageText)
+        // console.log(updatedMessageText)
         setUpdatedMessage(updatedMessageText);
     }
 

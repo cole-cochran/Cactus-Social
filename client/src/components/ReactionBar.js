@@ -11,7 +11,7 @@ export default function ReactionBar(props) {
     let groupedReactions = {};
 
     for (let reaction of reactions) {
-        console.log(reaction)
+        // console.log(reaction)
         if (!groupedReactions[reaction]) {
             groupedReactions[reaction] = 1;
         } else {
@@ -21,15 +21,15 @@ export default function ReactionBar(props) {
 
     let updatedReactions = [];
 
-    console.log(groupedReactions)
+    // console.log(groupedReactions)
 
     for (let group in groupedReactions) {
-        console.log(group);
+        // console.log(group);
         let element = {
             emoji: group,
             count: groupedReactions[group]
         };
-        console.log(element)
+        // console.log(element)
         updatedReactions.push(element);
     }
 

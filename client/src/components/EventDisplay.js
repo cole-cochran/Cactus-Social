@@ -201,7 +201,7 @@ export default function EventDisplay(props) {
 
 	const handleDropdown = async (event) => {
 		const content = event.target.parentNode.parentNode.childNodes[1].childNodes[0];
-		console.log(content);
+		// console.log(content);
 
 		content.style.display = "flex";
 	}

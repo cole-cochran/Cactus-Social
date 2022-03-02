@@ -24,7 +24,7 @@ function ProfileInfo(props) {
 
 	const { specificUser } = props;
 
-	console.log(specificUser)
+	// console.log(specificUser)
 
 	const userId = AuthService.getProfile().data._id;
 
@@ -137,7 +137,7 @@ function ProfileInfo(props) {
 		formData.append("public_id", uuid);
 		formData.append("folder", "CactusSocial");
 
-		console.log(photo);
+		// console.log(photo);
 
 		await updatePhoto({
 			variables: {
@@ -147,13 +147,13 @@ function ProfileInfo(props) {
 		});
 		
 		const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-		console.log(response);
+		// console.log(response);
 
 		setPhoto('');
 		setOpenImage(false);
 	}
 
-	console.log(specificUser)
+	// console.log(specificUser)
 
 	// const displayImage = async () => {
 	// 	const response = await Axios.get(`https://api.cloudinary.com/v1_1/damienluzzo/resources/image/CactusSocial/${specificUser.picture}`);
@@ -180,7 +180,7 @@ function ProfileInfo(props) {
 
 	const handleProjectChange = async (event) => {
 		const {value, name} = event.target;
-		console.log({value, name});
+		// console.log({value, name});
 		if (name === "addImage") {
             setCreatedProject({
                 ...createdProject,
@@ -193,12 +193,12 @@ function ProfileInfo(props) {
 			})
 		}
 		
-		console.log(createdProject)
+		// console.log(createdProject)
 	}
 
 	const handleCreateProject = async (event) => {
 		event.preventDefault();
-		console.log(createdProject);
+		// console.log(createdProject);
 
 		const uuid = uuidv4();
 
@@ -210,7 +210,7 @@ function ProfileInfo(props) {
 			formData.append("folder", "CactusSocial");
 			
 			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-			console.log(response);
+			// console.log(response);
 		}
 
 		try {
@@ -245,7 +245,7 @@ function ProfileInfo(props) {
 	const handleRemoveFriend = async (event) => {
 		event.preventDefault();
 
-		console.log(specificUser._id)
+		// console.log(specificUser._id)
 
 		try {
 			await removeFriend({
@@ -314,7 +314,7 @@ function ProfileInfo(props) {
 			} else if (event.target.name === 'bioInput') {
 				setBio(event.target.value);
 			} else if (event.target.name === 'photoInput') {
-				console.log(event.target.files);
+				// console.log(event.target.files);
 				setPhoto(event.target.files[0]);
 			} else if (event.target.name === "linkedin") {
 				setProfileLinks({
@@ -462,11 +462,11 @@ function ProfileInfo(props) {
 
 	const allUsers = getAllUsers.data?.allUsers;
 
-	console.log(allUsers);
+	// console.log(allUsers);
 
 	const allFriends = getAllFriends.data?.userFriends.friends;
 
-	console.log(allFriends)
+	// console.log(allFriends)
 
 	let userFriendChecker = false;
 

@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import ThreadPost from "./ThreadPost";
 import InvitationModal from "./InvitationModal";
 
@@ -7,10 +6,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
-import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE, SENT_INVITES } from '../utils/queries';
-//* THREAD_DETAILS requires threadId and gives us access to
+import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
 
-// import { ADD_POST_REACTION } from '../utils/mutations';
 import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD, LEAVE_THREAD } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
@@ -31,7 +28,6 @@ const style = {
 function ThreadDisplay(props) {
 
 	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
-	// TODO (threadDisplay) Allow only thread owners to delete thread
 
 	let updatedThreadPosts;
 
@@ -41,19 +37,24 @@ function ThreadDisplay(props) {
 
 	const userId = AuthService.getProfile().data._id;
 
-	const [ createPost ] = useMutation(CREATE_POST);
+	const [ createPost ] = useMutation(CREATE_POST, {
+		refetchQueries: [
+			THREAD_DETAILS,
+			'threadDetails'
+		],
+	});
 
 	const [ removePost ] = useMutation(REMOVE_POST, {
 		refetchQueries: [
-			ALL_THREAD_POSTS,
-			'allThreadPosts'
+			THREAD_DETAILS,
+			'threadDetails'
 		],
 	});
 
 	const [ updatePost ] = useMutation(UPDATE_POST, {
 		refetchQueries: [
-			ALL_THREAD_POSTS,
-			'allThreadPosts'
+			THREAD_DETAILS,
+			'threadDetails'
 		],
 	});
 
@@ -79,7 +80,7 @@ function ThreadDisplay(props) {
 	});
 
 	const userData = useQuery(USER_PROFILE, {
-		variables: { userId: AuthService.getProfile().data._id }
+		variables: { userId: userId }
 	});
 
 	const errors = singleThread.error || threadPosts.error || userData.error;
@@ -102,6 +103,10 @@ function ThreadDisplay(props) {
 
 	const [postList, setPostList] = React.useState([]);
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+	React.useEffect(() => (
+		setPostList([])
+	), [threadId]);
 
 	const handleRemoveThread = () => {
 		try {
@@ -224,9 +229,9 @@ function ThreadDisplay(props) {
 			if(socket) {
 				const postData = await createPost({
 					variables: {
-						threadId: singleThread.data.threadDetails._id,
+						threadId: threadId,
 						post_text: newPostText,
-						author: AuthService.getProfile().data._id
+						author: userId
 					}
 				});
 				console.log(postData.data.createPost);
@@ -249,7 +254,7 @@ function ThreadDisplay(props) {
 		try {
 			await updatePinnedPost({
 				variables: {
-                    userId: AuthService.getProfile().data._id,
+                    userId: userId,
                     postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash
@@ -302,7 +307,7 @@ function ThreadDisplay(props) {
 		try {
 			await removePinnedPost({
 				variables: {
-					userId: AuthService.getProfile().data._id,
+					userId: userId,
 					pinnedId: foundPin._id
 				}
 			})

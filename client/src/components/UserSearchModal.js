@@ -14,7 +14,7 @@ function UserSearchModal(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         let friend = allUsers.filter((user) => user.username === searchFriend);
-        console.log(friend);
+        // console.log(friend);
         setFoundFriend(friend[0]);
     }
 

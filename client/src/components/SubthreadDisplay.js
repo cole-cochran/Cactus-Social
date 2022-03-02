@@ -111,7 +111,7 @@ function SubthreadDisplay(props) {
                     author: AuthService.getProfile().data._id
 				}
 			});
-			console.log(commentData.data.createPostComment);
+			// console.log(commentData.data.createPostComment);
 			socket.emit("send_comment", {room: postId, user: AuthService.getProfile().data.username, comment: commentData.data.createPostComment});
 			setNewCommentText('');
 			setMessageTimeout(true);

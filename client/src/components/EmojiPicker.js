@@ -38,7 +38,7 @@ export default function EmojiPicker(props) {
 
 
     const handleAddReaction = async (emoji) => {
-        console.log(emoji);
+        // console.log(emoji);
         if (elementType === "post") {
             try {
                 await addPostReaction({
@@ -51,7 +51,7 @@ export default function EmojiPicker(props) {
             } catch (err) {
                 console.log(err);
             }
-            console.log("post reaction");
+            // console.log("post reaction");
         } else if (elementType === "post-comment") {
             try {
                 await addPostCommentReaction({
@@ -64,7 +64,7 @@ export default function EmojiPicker(props) {
             } catch (err) {
                 console.log(err);
             }
-            console.log("post comment reaction");
+            // console.log("post comment reaction");
         } else if (elementType === "event-comment") {
             try {
                 await addEventCommentReaction({
@@ -77,7 +77,7 @@ export default function EmojiPicker(props) {
             } catch (err) {
                 console.log(err);
             }
-            console.log("event comment reaction");
+            // console.log("event comment reaction");
         }
         closeEmojiMart();
     };

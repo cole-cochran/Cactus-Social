@@ -85,7 +85,7 @@ function ThreadsPanel(props) {
     const allThreads = getAllPublicThreads.data?.allThreads || [];
     const allUserThreads = getAllUserThreads.data?.userThreads || [];
 
-    console.log(allUserThreads);
+    // console.log(allUserThreads);
     return (
         <div id="sidebar-thread-panel">
             <div className="thread-sidebar-header">

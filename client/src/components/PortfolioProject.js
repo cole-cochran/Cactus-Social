@@ -56,11 +56,11 @@ export default function PortfolioProject(props) {
     });
 
     const handleOpenProjectDropdown = async (event) => {
-        console.log(event.target);
+        // console.log(event.target);
         const projId = event.target.parentNode.getAttribute("data-id");
 
         const display = event.target.parentNode.getAttribute('data-displays');
-        console.log(display);
+        // console.log(display);
 
         const targetDropdown = document.getElementById(projId);
 
@@ -111,8 +111,8 @@ export default function PortfolioProject(props) {
 
     const handleUpdateProject = async (event) => {
         event.preventDefault();
-        console.log(editedProject);
-        console.log(portfolioProject);
+        // console.log(editedProject);
+        // console.log(portfolioProject);
 
         if (portfolioProject.image !== editedProject.image && editedProject.image !== "") {
 			const formData = new FormData();
@@ -121,8 +121,9 @@ export default function PortfolioProject(props) {
 			formData.append("public_id", editedProject.image.lastModified);
 			formData.append("folder", "CactusSocial");
 			
-			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-			console.log(response);
+			// const response = 
+            await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			// console.log(response);
 		}
 
         try {

@@ -102,7 +102,7 @@ function ProfileFriends(props) {
     const allFriends = getAllFriends.data?.userFriends || [];
     const allInvitations = getAllInvites.data?.receivedInvites || [];
 
-    console.log(allInvitations.received_invites);
+    // console.log(allInvitations.received_invites);
 
     let eventInvitations = [];
     let threadInvitations = [];
@@ -149,7 +149,7 @@ function ProfileFriends(props) {
 
     const handleAcceptInvite = async (event) => {
         event.preventDefault();
-        console.log(event.target.dataset);
+        // console.log(event.target.dataset);
         const data = event.target.dataset;
         const senderId = data.user;
         
@@ -185,7 +185,7 @@ function ProfileFriends(props) {
 
     const handleRejectInvite = async (event) => {
         event.preventDefault();
-        console.log(event.target);
+        // console.log(event.target);
         const data = event.target.dataset;
         const senderId = data.user;
         
@@ -221,8 +221,8 @@ function ProfileFriends(props) {
     const handleAddNewFriend = async (e) => {
         e.preventDefault();
         const friendId = e.target.parentNode.id;
-        console.log(friendId);
-        console.log(userId);
+        // console.log(friendId);
+        // console.log(userId);
         try {
             await addFriend({
                 variables: {
@@ -238,7 +238,7 @@ function ProfileFriends(props) {
 
     const handleDenyFriendRequest = async (e) => {
         e.preventDefault();
-        console.log(e.target.parentNode.id);
+        // console.log(e.target.parentNode.id);
         const friendId = e.target.parentNode.id;
         try {
             await denyFriendRequest({
