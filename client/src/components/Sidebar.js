@@ -12,34 +12,48 @@ const toggleSidebar = (e) => {
 	const openArrowBtn = document.querySelector('#open-arrow-btn');
 	let sidebarDisplay = sidebar.getAttribute('data-sidebardisplay');
 	const rightShelf = document.querySelector('.right-shelf');
+	const profileWrapper = document.querySelector(".profile-wrapper");
 
 	if (sidebarDisplay === 'hidden') {
-		if (rightShelf) {
-			rightShelf.style.display = 'none';
+		if (rightShelf.getAttribute("data-id") === "opened") {
+			for (let i = 1; i < rightShelf.childNodes.length; i++) {
+                rightShelf.childNodes[i].style.display = "none"
+            }
+			rightShelf.setAttribute("data-id", "closed");
+            rightShelf.style.width = "4.5rem"
+            rightShelf.style.paddingLeft = "0rem";
 		}
 		sidebar.style.left = '2.5rem';
 		sidebar.setAttribute('data-sidebardisplay', 'visible');
 		aside.style.minWidth = '22.5rem';
+		profileWrapper.style.width = "calc(100vw - 27rem)";
 		openArrowBtn.style.transform = 'rotate(0deg)';
 	} else {
-		if (rightShelf) {
-			rightShelf.style.display = 'block';
-		}
 		sidebar.style.left = '-100%';
 		sidebar.setAttribute('data-sidebardisplay', 'hidden');
 		aside.style.minWidth = '3rem';
+		profileWrapper.style.width = "calc(100vw - 8rem)";
 		openArrowBtn.style.transform = 'rotate(180deg)';
 	}
 	toggleSidebarPanelDisplay(e);
 };
 
 function toggleSidebarPanelDisplay(e) {
+	const sidebar = document.querySelector('#sidebar');
+	let sidebarDisplay = sidebar.getAttribute('data-sidebardisplay');
 	const threadPanel = document.querySelector('#sidebar-thread-panel');
 	const eventsPanel = document.querySelector('#sidebar-events-panel');
-	const chatsPanel = document.querySelector('#sidebar-chats-panel')
-	threadPanel.style.display = 'block';
-	eventsPanel.style.display = 'block';
-	chatsPanel.style.display = 'block';
+	const chatsPanel = document.querySelector('#sidebar-chats-panel');
+	if (sidebarDisplay === 'hidden') {
+		threadPanel.style.display = 'none';
+		eventsPanel.style.display = 'none';
+		chatsPanel.style.display = 'none';
+	} else {
+		threadPanel.style.display = 'block';
+		eventsPanel.style.display = 'block';
+		chatsPanel.style.display = 'block';
+	}
+	
 }
 
 function Sidebar(props) {

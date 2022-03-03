@@ -677,7 +677,7 @@ header {
     display: flex;
     height: 100%;
     background-color: var(--ultra-dark);
-    width: 3rem;
+    min-width: 3rem;
     transition: min-width 0.5s linear;
 }
 
@@ -718,7 +718,7 @@ header {
     background-color: var(--ultra-dark);
     transition: left 0.5s linear;
     padding-top: 2rem;
-
+    /* transition: width 0.3s linear; */
     height: calc(100vh - 67px);
     width: calc(100% - 2.5rem);
     overflow: scroll;
@@ -1235,16 +1235,23 @@ footer {
 /*************RIGHTSHELF:START****************/
 
 .right-shelf {
+    position: absolute;
+    right: -11rem;
     display: block;
     background-color: var(--grey1);
-    width: 5rem !important;
-    min-width: 5rem;
+    /* width: 4.5rem; */
+    min-width: 16rem;
     height: 100%;
     padding-bottom: 20px;
     overflow-y: scroll;
     overflow-x: hidden;
     background-color: var(--ultra-dark);
+    transition: right 0.4s linear;
 }
+
+/* .right-shelf * {
+    transition: width 0.3s linear;
+} */
 
 .community-div, all-friends-div {
     margin-bottom: 15px;
@@ -1403,6 +1410,7 @@ footer {
     width: calc(100vw - 128px);
     height: 100%;
     background-color: var(--alt-dark-mode);
+    transition: width 0.8s ease;
 }
 
 .user-bio {

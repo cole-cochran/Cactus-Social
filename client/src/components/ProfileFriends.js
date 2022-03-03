@@ -256,14 +256,25 @@ function ProfileFriends(props) {
     const toggleRightShelf = (e) => {
         const rightShelf = document.querySelector(".right-shelf");
         const profileWrapper = document.querySelector(".profile-wrapper");
+        const sidebar = document.querySelector('#sidebar');
+        const aside = document.querySelector('#aside');
+        const openArrowBtn = document.querySelector('#open-arrow-btn');
 
         if (rightShelf.getAttribute("data-id") === "closed") {
+            if (sidebar.getAttribute("data-sidebarDisplay") === "visible") {
+                sidebar.style.left = '-100%';
+                sidebar.setAttribute('data-sidebardisplay', 'hidden');
+                aside.style.minWidth = '3rem';
+                openArrowBtn.style.transform = 'rotate(180deg)';
+            }
+            
             for (let i = 1; i < rightShelf.childNodes.length; i++) {
                 rightShelf.childNodes[i].style.display = "block"
             }
             rightShelf.setAttribute("data-id", "opened");
-            rightShelf.style.width = "16rem";
-            rightShelf.style.minWidth = "16rem";
+            // rightShelf.style.width = "16rem";
+            // rightShelf.style.minWidth = "16rem";
+            rightShelf.style.right = "0rem";
             profileWrapper.style.width = "calc(100vw - 304px)";
             rightShelf.style.paddingLeft = "1rem";
         } else {
@@ -271,8 +282,8 @@ function ProfileFriends(props) {
                 rightShelf.childNodes[i].style.display = "none"
             }
             rightShelf.setAttribute("data-id", "closed");
-            rightShelf.style.width = "4.5rem"
-            rightShelf.style.minWidth = "4.5rem"
+            // rightShelf.style.width = "4.5rem"
+            rightShelf.style.right = "-11rem";
             profileWrapper.style.width = "calc(100vw - 128px)";
             rightShelf.style.paddingLeft = "0rem";
         }
