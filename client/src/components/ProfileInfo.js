@@ -116,7 +116,6 @@ function ProfileInfo(props) {
 
 	const [ openPins, setOpenPins ] = React.useState(false);
 
-
 	const getAllUsers = useQuery(ALL_USERS);
 	const getAllFriends = useQuery(USER_FRIENDS, {
 		variables: {
@@ -146,21 +145,13 @@ function ProfileInfo(props) {
 			}
 		});
 		
-		const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
 		// console.log(response);
 
 		setPhoto('');
 		setOpenImage(false);
 	}
 
-	// console.log(specificUser)
-
-	// const displayImage = async () => {
-	// 	const response = await Axios.get(`https://api.cloudinary.com/v1_1/damienluzzo/resources/image/CactusSocial/${specificUser.picture}`);
-	// 	console.log(response)
-	// 	console.log(response.data.resources)
-	// 	// const profileImage = response.data.resources;
-	// }
 
 	const handleOpenPins = (event) => {
 		setOpenPins(true);
