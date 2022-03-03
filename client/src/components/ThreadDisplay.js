@@ -102,11 +102,9 @@ function ThreadDisplay(props) {
 	const [openInvite, setOpenInvite] = React.useState(false);
 
 	const [postList, setPostList] = React.useState([]);
+	
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
 
-	React.useEffect(() => (
-		setPostList([])
-	), [threadId]);
 
 	const handleRemoveThread = () => {
 		try {
@@ -339,11 +337,8 @@ function ThreadDisplay(props) {
     };
 
 	if (loading) {
-
 		return (
-			<div className='loading-icon-box'>
-				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-			</div>
+			<p>Loading...</p>
 		)
 	} 
 
@@ -436,7 +431,7 @@ function ThreadDisplay(props) {
 							)
 						)
 					)}
-					{postList.map(
+					{postList.filter(item => item.thread._id === threadId).map(
 						(post) => (
 							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
 							dropdown={handleOpenDropdown} 
