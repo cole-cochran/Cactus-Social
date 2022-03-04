@@ -299,6 +299,7 @@ export default function EventDisplay(props) {
 								<CloudinaryContext cloudName="damienluzzo" >
 									<Image className="event-img" publicId={`CactusSocial/${eventData.image}`} />
 								</CloudinaryContext>
+								// TODO:                   ${eventDate.image_type}
 								)}
 								
 							</div>

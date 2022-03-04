@@ -74,6 +74,7 @@ const typeDefs = gql`
         email: String!
         password: String!
         picture: String
+        picture_type: String
         bio: String
         threads: [Thread]
         events: [Event]
@@ -172,7 +173,7 @@ const typeDefs = gql`
         addFriend(userId: ID!, friend: ID!): User
         removeFriend(userId: ID!, friend: ID!): User
 
-        updatePhoto(userId: ID!, picture: String!): User
+        updatePhoto(userId: ID!, picture: String!, picture_type: String!): User
         updateBio(userId: ID!, bio: String!): User
 
         createThread(title: String!, private: Boolean!, moderator: ID!): Thread

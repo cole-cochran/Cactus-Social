@@ -37,7 +37,7 @@ function EventsPanel(props) {
     let loading = getAllPublicEvents.loading || getAllUserEvents.loading;
 
     const allEvents = getAllPublicEvents.data?.allEvents || [];
-    const allUserEvents = getAllUserEvents.data?.allEvents || [];
+    const allUserEvents = getAllUserEvents.data?.userEvents || [];
 
     const [open, setOpen] = React.useState(false);
 
@@ -81,6 +81,10 @@ function EventsPanel(props) {
     if (loading) {
         return <h2>Loading...</h2>
     }
+
+    const publicEvents = allEvents.filter((event) => (
+        event.private === false
+    ))
     
     return (
         <div id="sidebar-events-panel">
@@ -138,7 +142,7 @@ function EventsPanel(props) {
                     </div>
                     <ul
                     id="public-events-dropdown">
-                        {allEvents.map((event) => (
+                        {publicEvents.map((event) => (
                             <li key={event._id}>
                                 <Link onClick={(e) => {handleEventChange(event._id)}} to={`/events/${event._id}`} >
                                     {event.title}

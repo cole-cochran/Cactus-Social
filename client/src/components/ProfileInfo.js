@@ -136,12 +136,15 @@ function ProfileInfo(props) {
 		formData.append("public_id", uuid);
 		formData.append("folder", "CactusSocial");
 
-		// console.log(photo);
+		const fileType = photo.name.split(".")[1].toLowerCase();
+
+		console.log(photo);
 
 		await updatePhoto({
 			variables: {
 				userId: AuthService.getProfile().data._id,
-				picture: `${uuid}`
+				picture: `${uuid}`,
+				picture_type: fileType
 			}
 		});
 		
@@ -200,7 +203,7 @@ function ProfileInfo(props) {
 			formData.append("public_id", uuid);
 			formData.append("folder", "CactusSocial");
 			
-			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
 			// console.log(response);
 		}
 
@@ -513,7 +516,7 @@ function ProfileInfo(props) {
 								<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
 							) : (
 								<CloudinaryContext cloudName="damienluzzo" >
-									<Image publicId={`CactusSocial/${specificUser.picture}`} />
+									<Image publicId={`CactusSocial/${specificUser.picture}.${specificUser.picture_type}`} />
 								</CloudinaryContext>
 							)}
 

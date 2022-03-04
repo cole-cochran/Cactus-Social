@@ -60,6 +60,10 @@ const userSchema = new Schema({
 		type: String,
 		default: ""
 	},
+	picture_type: {
+		type: String,
+		default: ""
+	},
 	bio: {
 		type: String,
 		maxLength: [ 255, 'Your bio can only be 255 characters long' ]

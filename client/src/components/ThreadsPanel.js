@@ -85,7 +85,12 @@ function ThreadsPanel(props) {
     const allThreads = getAllPublicThreads.data?.allThreads || [];
     const allUserThreads = getAllUserThreads.data?.userThreads || [];
 
-    // console.log(allUserThreads);
+    // console.log(allThreads);
+
+    const publicThreads = allThreads.filter((thread) => (
+        thread.private === false
+    ))
+
     return (
         <div id="sidebar-thread-panel">
             <div className="thread-sidebar-header">
@@ -146,7 +151,7 @@ function ThreadsPanel(props) {
                             )}
                         </div>
                         <ul id="public-threads-dropdown">
-                            {allThreads.map((individualThread) => (
+                            {publicThreads.map((individualThread) => (
                                 <li key={individualThread._id}>
                                     <Link
                                     onClick={(e) => {

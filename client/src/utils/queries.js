@@ -10,6 +10,7 @@ export const ALL_USERS = gql`
 			username
 			email
 			picture
+			picture_type
 			bio
 			threads {
 				_id
@@ -136,6 +137,7 @@ export const ALL_POSTS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			reactions
 			edited
@@ -192,6 +194,7 @@ export const ALL_THREAD_POSTS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			reactions
 			edited
@@ -226,6 +229,7 @@ query allPostComments($postId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
         reactions
         edited
@@ -245,6 +249,7 @@ export const USER_PROFILE = gql`
 			username
 			email
 			picture
+			picture_type
 			bio
 			tech_stack
 			date_joined
@@ -292,6 +297,7 @@ query friendRequests($userId: ID!) {
 		username
 		email
 		picture
+		picture_type
 		bio
 		tech_stack
 		date_joined
@@ -312,6 +318,7 @@ query sentFriendRequests($userId: ID!) {
 		username
 		email
 		picture
+		picture_type
 		bio
 		tech_stack
 		date_joined
@@ -338,12 +345,14 @@ query userThreads($userId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
 		private
 		members {
 			_id
 			username
 			picture
+			picture_type
 		}
 		date_created
 	}
@@ -372,7 +381,6 @@ export const USER_EVENTS = gql`
 			in_person
 			location
 			image
-			thread
 			date_created
 		}
 	}
@@ -395,6 +403,7 @@ export const USER_FRIENDS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 		}
 	}
@@ -423,11 +432,13 @@ export const THREAD_DETAILS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			members {
 				_id
 				username
 				picture
+				picture_type
 			}
 			date_created
 		}
@@ -442,6 +453,7 @@ query pinnedPosts($threadId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
 		pinTitle
 		pinHash
@@ -489,6 +501,7 @@ export const POST_DETAILS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			reactions
 			edited
@@ -527,12 +540,14 @@ export const EVENT_DETAILS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			private
 			attendees {
 				_id
 				username
 				picture
+				picture_type
 			}
 			category
 			in_person
@@ -590,6 +605,7 @@ query sentInvites($userId: ID!) {
 		username
 		email
 		picture
+		picture_type
 		bio
 		sent_invites {
 			_id
@@ -617,6 +633,7 @@ query receivedInvites($userId: ID!) {
 		username
 		email
 		picture
+		picture_type
 		bio
 		received_invites {
 			_id
@@ -646,6 +663,7 @@ query userChats($userId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
 		messages {
 			_id

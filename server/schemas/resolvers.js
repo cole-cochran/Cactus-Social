@@ -467,10 +467,17 @@ const resolvers = {
 		//* update the user's profile photo
 		updatePhoto: async (parent, args, context) => {
 			//! get rid of userId when we can use the context to our advantage
-			const { userId, picture } = args;
+			const { userId, picture, picture_type } = args;
 			//! add user context to authenticate
 			// if (context.user) {
-			const user = await User.findOneAndUpdate({ _id: userId }, { picture: picture }, { new: true });
+			const user = await User.findOneAndUpdate(
+				{ _id: userId }, 
+				{ 
+					picture: picture, 
+					picture_type: picture_type 
+				}, 
+				{ new: true }
+			);
 			// }
 			return user;
 			// throw new AuthenticationError('You need to be logged in to do that!');

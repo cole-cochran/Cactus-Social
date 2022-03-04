@@ -13,6 +13,7 @@ mutation loginUser($username: String!, $password: String!) {
             username
             email
             picture
+            picture_type
             bio
             threads {
                 _id
@@ -65,6 +66,7 @@ mutation addTechnology($userId: ID!, $technology: String!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -81,6 +83,7 @@ mutation removeTechnology($userId: ID!, $technology: String!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -97,6 +100,7 @@ mutation addFriend($userId: ID!, $friend: ID!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -125,6 +129,7 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -145,14 +150,15 @@ mutation removeFriend($userId: ID!, $friend: ID!) {
 `;
 
 export const UPDATE_PHOTO = gql`
-mutation updatePhoto($userId: ID!, $picture: String!) {
-    updatePhoto( userId: $userId, picture: $picture) {
+mutation updatePhoto($userId: ID!, $picture: String!, $picture_type: String!) {
+    updatePhoto( userId: $userId, picture: $picture, picture_type: $picture_type) {
         _id
         first_name
         last_name
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -169,6 +175,7 @@ mutation updateBio($userId: ID!, $bio: String!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -185,6 +192,7 @@ mutation sendFriendRequest($userId: ID!, $friend: ID!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -213,6 +221,7 @@ mutation denyFriendRequest($userId: ID!, $friend: ID!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -256,6 +265,7 @@ mutation leaveThread($userId: ID!, $threadId: ID!) {
         last_name
         username
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -272,6 +282,7 @@ mutation removeThread($threadId: ID!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -291,6 +302,7 @@ mutation createPost($threadId: ID!, $post_text: String!, $author: ID!) {
             _id
             username
             picture
+            picture_type
         }
         reactions
         edited
@@ -338,11 +350,13 @@ mutation removePost($threadId: ID!, $postId: ID!) {
             _id
             username
             picture
+            picture_type
         }
         members {
             _id
             username
             picture
+            picture_type
         }
         date_created
     }
@@ -372,11 +386,13 @@ mutation updatePost($threadId: ID!, $postId: ID! $post_text: String!) {
             _id
             username
             picture
+            picture_type
         }
         members {
             _id
             username
             picture
+            picture_type
         }
         date_created
     }
@@ -436,11 +452,13 @@ mutation addPostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
             _id
             username
             picture
+            picture_type
         }
         members {
             _id
             username
             picture
+            picture_type
         }
         date_created
     }
@@ -470,11 +488,13 @@ mutation removePostReaction($threadId: ID!, $postId: ID!, $reaction: String!) {
             _id
             username
             picture
+            picture_type
         }
         members {
             _id
             username
             picture
+            picture_type
         }
         date_created
     }
@@ -491,6 +511,7 @@ mutation createPostComment($postId: ID!, $comment_text: String!, $author: ID!) {
 			_id
 			username
 			picture
+            picture_type
 		}
         reactions
         edited
@@ -511,6 +532,7 @@ mutation removePostComment($postId: ID!, $commentId: ID!) {
             _id
             username
             picture
+            picture_type
         }
         reactions
         edited
@@ -545,6 +567,7 @@ mutation updatePostComment($postId: ID!, $commentId: ID!, $comment_text: String!
             _id
             username
             picture
+            picture_type
         }
         reactions
         edited
@@ -579,6 +602,7 @@ mutation addPostCommentReaction($commentId: ID!, $postId: ID!, $reaction: String
             _id
             username
             picture
+            picture_type
         }
         reactions
         edited
@@ -613,6 +637,7 @@ mutation removePostCommentReaction($commentId: ID!, $postId: ID!, $reaction: Str
             _id
             username
             picture
+            picture_type
         }
         reactions
         edited
@@ -653,6 +678,7 @@ mutation createEvent($title: String!, $description: String!, $start_date: String
             _id
             username
             picture
+            picture_type
         }
         private
         category
@@ -674,6 +700,7 @@ mutation removeEvent($eventId: ID!, $userId: ID!) {
         username
         email
         picture
+        picture_type
         bio
         tech_stack
         date_joined
@@ -695,11 +722,13 @@ mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $sta
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         private
@@ -739,11 +768,13 @@ mutation attendEvent($eventId: ID!, $attendee: ID!) {
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         in_person
@@ -783,11 +814,13 @@ mutation leaveEvent($eventId: ID!, $attendee: ID!) {
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         private
@@ -849,11 +882,13 @@ mutation removeEventComment($eventId: ID!, $commentId: ID!) {
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         private
@@ -890,11 +925,13 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         private
@@ -931,11 +968,13 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         private
@@ -975,11 +1014,13 @@ mutation removeEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: S
             _id
             username
             picture
+            picture_type
         }
         attendees {
             _id
             username
             picture
+            picture_type
         }
         category
         private
@@ -1107,6 +1148,7 @@ mutation sendEventInvite($sender: ID!, $receiver: ID!, $eventId: ID!) {
         username
         email
         picture
+        picture_type
         bio
         sent_invites {
             _id
@@ -1134,6 +1176,7 @@ mutation sendThreadInvite($sender: ID!, $receiver: ID!, $threadId: ID!) {
         username
         email
         picture
+        picture_type
         bio
         sent_invites {
             _id
@@ -1228,6 +1271,7 @@ mutation rejectEventInvite($userId: ID!, $senderId: ID!, $eventId: ID!) {
         username
         email
         picture
+        picture_type
         bio
         received_invites {
             _id
@@ -1255,6 +1299,7 @@ mutation rejectThreadInvite($userId: ID!, $senderId: ID!, $threadId: ID!) {
         username
         email
         picture
+        picture_type
         bio
         received_invites {
             _id
