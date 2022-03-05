@@ -851,6 +851,7 @@ const resolvers = {
 				in_person,
 				location,
 				image,
+				image_type,
 				owner
 			} = args;
 			//! add user context to authenticate
@@ -868,7 +869,8 @@ const resolvers = {
 				category: category,
 				in_person: in_person,
 				location: location,
-				image: image
+				image: image,
+				image_type: image_type
 			});
 
 			await User.findOneAndUpdate(
@@ -940,7 +942,8 @@ const resolvers = {
 				category,
 				in_person,
 				location,
-				image
+				image,
+				image_type
 			} = args;
 
 			const updatedEvent = await Event.findOneAndUpdate(
@@ -957,6 +960,7 @@ const resolvers = {
 					in_person: in_person,
 					location: location,
 					image: image,
+					image_type: image_type,
 					edited: true
 				},
 				{ new: true }
@@ -1465,13 +1469,14 @@ const resolvers = {
 		},
 
 		createPortfolioProject: async (parent, args, context) => {
-			const {owner, title, description, image, responsibilities, techstack, repo, demo} = args;
+			const {owner, title, description, image, image_type, responsibilities, techstack, repo, demo} = args;
 
 			const newProject = await Portfolio.create({
 				owner: owner,
 				title: title,
 				description: description,
 				image: image,
+				image_type: image_type,
 				responsibilities: responsibilities,
 				techstack: techstack,
 				repo: repo,
@@ -1490,7 +1495,7 @@ const resolvers = {
 		},
 
 		updatePortfolioProject: async (parent, args, context) => {
-			const {userId, projectId, title, description, image, responsibilities, techstack, repo, demo} = args;
+			const {userId, projectId, title, description, image, image_type, responsibilities, techstack, repo, demo} = args;
 
 			await Portfolio.findOneAndUpdate(
 				{_id: projectId},
@@ -1498,6 +1503,7 @@ const resolvers = {
 					title: title,
 					description: description,
 					image: image,
+					image_type: image_type,
 					responsibilities: responsibilities,
 					techstack: techstack,
 					repo: repo,

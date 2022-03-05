@@ -28,6 +28,10 @@ const portfolioSchema = new Schema({
         type: String,
         default: ""
     },
+    image_type: {
+        type: String,
+        default: ""
+    },
     responsibilities: {
         type: String,
         default: "",

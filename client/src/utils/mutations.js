@@ -665,8 +665,8 @@ mutation removePostCommentReaction($commentId: ID!, $postId: ID!, $reaction: Str
 //*  EVENT STUFF
 
 export const CREATE_EVENT = gql`
-mutation createEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $private: Boolean!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $owner: ID!) {
-    createEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, private: $private, category: $category, in_person: $in_person, location: $location, image: $image, owner: $owner) {
+mutation createEvent($title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $end_time: String!, $private: Boolean!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $image_type: String!, $owner: ID!) {
+    createEvent(title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, end_time: $end_time, private: $private, category: $category, in_person: $in_person, location: $location, image: $image, image_type: $image_type, owner: $owner) {
         _id
         title
         description
@@ -685,6 +685,7 @@ mutation createEvent($title: String!, $description: String!, $start_date: String
         in_person
         location
         image
+        image_type
         date_created
         edited
     }
@@ -709,8 +710,8 @@ mutation removeEvent($eventId: ID!, $userId: ID!) {
 `;
 
 export const UPDATE_EVENT = gql`
-mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $private: Boolean!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!) {
-    updateEvent(eventId: $eventId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, private: $private, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image) {
+mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $start_date: String!, $end_date: String!, $start_time: String!, $private: Boolean!, $end_time: String!, $category: String!, $in_person: Boolean!, $location: String!, $image: String!, $image_type: String!) {
+    updateEvent(eventId: $eventId, title: $title, description: $description, start_date: $start_date, end_date: $end_date, start_time: $start_time, private: $private, end_time: $end_time, category: $category, in_person: $in_person, location: $location, image: $image, image_type: $image_type) {
         _id
         title
         description
@@ -735,6 +736,7 @@ mutation updateEvent($eventId: ID!, $title: String!, $description: String!, $sta
         in_person
         location
         image
+        image_type
         comments {
             _id
             comment_text
@@ -781,6 +783,7 @@ mutation attendEvent($eventId: ID!, $attendee: ID!) {
         location
         private
         image
+        image_type
         comments {
             _id
             comment_text
@@ -827,6 +830,7 @@ mutation leaveEvent($eventId: ID!, $attendee: ID!) {
         in_person
         location
         image
+        image_type
         comments {
             _id
             comment_text
@@ -895,6 +899,7 @@ mutation removeEventComment($eventId: ID!, $commentId: ID!) {
         in_person
         location
         image
+        image_type
         comments {
             _id
             comment_text
@@ -938,6 +943,7 @@ mutation updateEventComment($eventId: ID!, $commentId: ID!, $comment_text: Strin
         in_person
         location
         image
+        image_type
         comments {
             _id
             comment_text
@@ -981,6 +987,7 @@ mutation addEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: Stri
         in_person
         location
         image
+        image_type
         comments {
             _id
             comment_text
@@ -1027,6 +1034,7 @@ mutation removeEventCommentReaction($commentId: ID!, $eventId: ID!, $reaction: S
         in_person
         location
         image
+        image_type
         comments {
             _id
             comment_text
@@ -1217,6 +1225,7 @@ mutation acceptEventInvite($userId: ID!, $senderId: ID!, $eventId: ID!) {
         location
         private
         image
+        image_type
         date_created
         edited
         comments {
@@ -1319,8 +1328,8 @@ mutation rejectThreadInvite($userId: ID!, $senderId: ID!, $threadId: ID!) {
 `;
 
 export const CREATE_PORTFOLIO_PROJECT = gql`
-mutation createPortfolioProject($owner: ID!, $title: String!, $description: String!, $image: String!, $responsibilities: String!, $techstack: String!, $repo: String!, $demo: String!) {
-    createPortfolioProject(owner: $owner, title: $title, description: $description, image: $image, responsibilities: $responsibilities, techstack: $techstack, repo: $repo, demo: $demo) {
+mutation createPortfolioProject($owner: ID!, $title: String!, $description: String!, $image: String!, $image_type: String!, $responsibilities: String!, $techstack: String!, $repo: String!, $demo: String!) {
+    createPortfolioProject(owner: $owner, title: $title, description: $description, image: $image, image_type: $image_type, responsibilities: $responsibilities, techstack: $techstack, repo: $repo, demo: $demo) {
         _id
         first_name
         last_name
@@ -1330,6 +1339,7 @@ mutation createPortfolioProject($owner: ID!, $title: String!, $description: Stri
             title
             description
             image
+            image_type
             responsibilities
             techstack
             repo
@@ -1340,8 +1350,8 @@ mutation createPortfolioProject($owner: ID!, $title: String!, $description: Stri
 `;
 
 export const UPDATE_PORTFOLIO_PROJECT = gql`
-mutation updatePortfolioProject($userId: ID!, $projectId: ID!, $title: String!, $description: String!, $image: String!, $responsibilities: String!, $techstack: String!, $repo: String!, $demo: String!) {
-    updatePortfolioProject(userId: $userId, projectId: $projectId, title: $title, description: $description, image: $image, responsibilities: $responsibilities, techstack: $techstack, repo: $repo, demo: $demo) {
+mutation updatePortfolioProject($userId: ID!, $projectId: ID!, $title: String!, $description: String!, $image: String!, $image_type: String!, $responsibilities: String!, $techstack: String!, $repo: String!, $demo: String!) {
+    updatePortfolioProject(userId: $userId, projectId: $projectId, title: $title, description: $description, image: $image, image_type: $image_type, responsibilities: $responsibilities, techstack: $techstack, repo: $repo, demo: $demo) {
         _id
         first_name
         last_name
@@ -1351,6 +1361,7 @@ mutation updatePortfolioProject($userId: ID!, $projectId: ID!, $title: String!, 
             title
             description
             image
+            image_type
             responsibilities
             techstack
             repo
@@ -1372,6 +1383,7 @@ mutation deletePortfolioProject($projectId: ID!, $userId: ID!) {
             title
             description
             image
+            image_type
             responsibilities
             techstack
             repo

@@ -8,7 +8,7 @@
 // TODO  -  Check out module 14
 
 //*  For user sign-up, we want to include: 
-//*  Username, First Name, Last Name, Email (set up email confirmation functionality), Password (make the enter twice?), CAPTCHA (look into NPM package), github for sure, automatic 2FA (3rd party auth or email), Zip-Code (better than geo-location invasive stuff)
+//*  Username, First Name, Last Name, Email (set up email confirmation functionality), Password (make them enter twice?), CAPTCHA (look into NPM package), github for sure, automatic 2FA (3rd party auth or email), Zip-Code (better than geo-location invasive stuff)
 
 //*  CHECK OUT STACK OVERFLOW FOR MORE FIELDS
 

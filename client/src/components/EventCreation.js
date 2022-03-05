@@ -30,7 +30,8 @@ export default function EventCreation() {
 		category: '',
 		in_person: false,
 		location: '',
-		image: {}
+		image: {},
+		image_type: ''
 	});
 
 	const uploadImage = async (uuid) => {
@@ -42,7 +43,7 @@ export default function EventCreation() {
 		formData.append("folder", "CactusSocial");
 
 		// console.log(eventDetails.image);
-		
+	
 		// const response = 
 		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
 		// console.log(response);
@@ -75,6 +76,8 @@ export default function EventCreation() {
 
 		uploadImage(uuid);
 
+		let fileType = eventDetails.image.name.split(".")[1].toLowerCase();
+
 		try {
 			const res = await createEvent({
 				variables: {
@@ -89,6 +92,7 @@ export default function EventCreation() {
 					in_person: eventDetails.in_person,
 					location: eventDetails.location,
 					image: `${uuid}`,
+					image_type: fileType,
 					owner: AuthService.getProfile().data._id
 				}
 			});
@@ -109,7 +113,8 @@ export default function EventCreation() {
 			category: '',
 			in_person: false,
 			location: '',
-			image: {}
+			image: {},
+			image_type: ""
 		});
 	};
 

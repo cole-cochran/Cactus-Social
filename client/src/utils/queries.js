@@ -108,6 +108,7 @@ export const ALL_EVENTS = gql`
 			in_person
 			location
 			image
+			image_type
 			date_created
 			edited
 			comments {
@@ -276,6 +277,7 @@ export const USER_PROFILE = gql`
 				title
 				description
 				image
+				image_type
 				responsibilities
 				techstack
 				repo
@@ -381,6 +383,7 @@ export const USER_EVENTS = gql`
 			in_person
 			location
 			image
+			image_type
 			date_created
 		}
 	}
@@ -461,36 +464,6 @@ query pinnedPosts($threadId: ID!) {
 }
 `;
 
-// export const THREAD_EVENTS = gql`
-// 	query threadEvents($threadId: ID!) {
-// 		threadEvents(threadId: $threadId) {
-// 			_id
-// 			title
-// 			start_date
-// 			end_date
-// 			start_time
-// 			end_time
-// 			owner {
-// 				_id
-// 				username
-// 				picture
-// 			}
-// 			attendees {
-// 				_id
-// 				username
-// 				picture
-// 			}
-// 			category
-// 			image
-// 			date_created
-// 			edited
-// 			comments {
-// 				_id
-// 			}
-// 		}
-// 	}
-// `;
-
 export const POST_DETAILS = gql`
 	query postDetails($postId: ID!) {
 		postDetails(postId: $postId) {
@@ -553,6 +526,7 @@ export const EVENT_DETAILS = gql`
 			in_person
 			location
 			image
+			image_type
 			comments {
 				_id
 				comment_text

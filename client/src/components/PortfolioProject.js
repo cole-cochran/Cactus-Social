@@ -49,6 +49,7 @@ export default function PortfolioProject(props) {
         title: portfolioProject.title,
         description: portfolioProject.description,
         image: portfolioProject.image,
+        image_type: portfolioProject.image_type,
         responsibilities: portfolioProject.responsibilities,
         techstack: portfolioProject.techstack,
         repo: portfolioProject.repo,
@@ -114,13 +115,17 @@ export default function PortfolioProject(props) {
         // console.log(editedProject);
         // console.log(portfolioProject);
 
+        let fileType = "";
+
         if (portfolioProject.image !== editedProject.image && editedProject.image !== "") {
 			const formData = new FormData();
 			formData.append("file", editedProject.image);
 			formData.append("upload_preset", "b3zjdfsi");
 			formData.append("public_id", editedProject.image.lastModified);
 			formData.append("folder", "CactusSocial");
-			
+            
+            fileType = editedProject.image.name.split(".")[1].toLowerCase();
+
 			// const response = 
             await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
 			// console.log(response);
@@ -134,6 +139,7 @@ export default function PortfolioProject(props) {
                     title: editedProject.title,
                     description: editedProject.description,
                     image: (editedProject.image !== portfolioProject.image ? `${editedProject.image.lastModified}` : portfolioProject.image),
+                    image_type: fileType,
                     responsibilities: editedProject.responsibilities,
                     techstack: editedProject.techstack,
                     repo: editedProject.repo,
@@ -168,7 +174,7 @@ export default function PortfolioProject(props) {
                     <img src="../../assets/img/cactus-profile.svg" alt="placeholder"/>
                 ) : (
                     <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
-                        <Image publicId={`CactusSocial/${portfolioProject.image}`} />
+                        <Image publicId={`CactusSocial/${portfolioProject.image}.${portfolioProject.image_type}`} />
                     </CloudinaryContext>
                 )}
             </div>

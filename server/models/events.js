@@ -70,6 +70,10 @@ const eventSchema = new Schema({
         type: String,
         default: ""
     },
+    image_type: {
+        type: String,
+        default: ""
+    },
     comments: [
         {
             type: ObjectId,

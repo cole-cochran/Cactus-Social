@@ -26,6 +26,7 @@ export default function EventEditor(props) {
 		// console.log(eventData.image);
 
 		const uuid = uuidv4();
+		let fileType = "";
 
 		if (eventData.image !== editedEvent.image && editedEvent.image !== "") {
 			const formData = new FormData();
@@ -35,8 +36,12 @@ export default function EventEditor(props) {
 			formData.append("folder", "CactusSocial");
 
 			// console.log(editedEvent.image);
+
+			fileType = editedEvent.image.name.split(".")[1].toLowerCase();
+
+			// editedEvent.image_type
 			
-			const response = await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
 			// console.log(response);
 		}
 
@@ -56,7 +61,8 @@ export default function EventEditor(props) {
 					category: editedEvent.category,
 					in_person: editedEvent.in_person,
 					location: editedEvent.location,
-					image: (editedEvent.image !== eventData.image ? `${uuid}` : eventData.image)
+					image: (editedEvent.image !== eventData.image ? `${uuid}` : eventData.image),
+					image_type: fileType
 				}
 			});
 		} catch (err) {

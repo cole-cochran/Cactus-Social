@@ -18,6 +18,7 @@ const typeDefs = gql`
         description: String!
         owner: User
         image: String
+        image_type: String
         responsibilities: String
         techstack: String
         repo: String
@@ -123,6 +124,7 @@ const typeDefs = gql`
         in_person: Boolean!
         location: String!
         image: String
+        image_type: String
         comments: [Comment]
         date_created: String
         edited: Boolean
@@ -195,8 +197,8 @@ const typeDefs = gql`
         addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
         removePostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID!): Event
-        updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Event
+        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, image_type: String!, owner: ID!): Event
+        updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, image_type: String!): Event
         removeEvent(eventId: ID!, userId: ID!): User
 
         attendEvent(eventId: ID!, attendee: ID!): Event
@@ -229,9 +231,9 @@ const typeDefs = gql`
         rejectEventInvite(userId: ID!, senderId: ID!, eventId: ID!): User
         rejectThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): User
 
-        createPortfolioProject(owner: ID!, title: String!, description: String!, image: String, responsibilities: String, techstack: String, repo: String, demo: String): User
+        createPortfolioProject(owner: ID!, title: String!, description: String!, image: String, image_type: String, responsibilities: String, techstack: String, repo: String, demo: String): User
 
-        updatePortfolioProject(userId: ID!, projectId: ID!, title: String!, description: String!, image: String!, responsibilities: String!, techstack: String!, repo: String!, demo: String!): User
+        updatePortfolioProject(userId: ID!, projectId: ID!, title: String!, description: String!, image: String!, image_type: String!, responsibilities: String!, techstack: String!, repo: String!, demo: String!): User
 
         deletePortfolioProject(projectId: ID!, userId: ID!): User
 

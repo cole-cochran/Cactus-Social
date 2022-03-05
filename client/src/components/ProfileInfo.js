@@ -94,6 +94,7 @@ function ProfileInfo(props) {
 			title: "",
 			description: "",
 			image: "",
+			image_type: "",
 			responsibilities: "",
 			techstack: "",
 			repo: "",
@@ -195,6 +196,7 @@ function ProfileInfo(props) {
 		// console.log(createdProject);
 
 		const uuid = uuidv4();
+		let fileType = "";
 
 		if (createdProject.image !== "") {
 			const formData = new FormData();
@@ -202,6 +204,8 @@ function ProfileInfo(props) {
 			formData.append("upload_preset", "b3zjdfsi");
 			formData.append("public_id", uuid);
 			formData.append("folder", "CactusSocial");
+
+			fileType = createdProject.image.name.split(".")[1].toLowerCase();
 			
 			await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
 			// console.log(response);
@@ -214,6 +218,7 @@ function ProfileInfo(props) {
 					title: createdProject.title,
 					description: createdProject.description,
 					image: (createdProject.image === "" ? "" : `${uuid}`),
+					image_type: fileType,
 					responsibilities: createdProject.responsibilities,
 					techstack: createdProject.techstack,
 					repo: createdProject.repo,
@@ -228,6 +233,7 @@ function ProfileInfo(props) {
 			title: "",
 			description: "",
 			image: "",
+			image_type: "",
 			responsibilities: "",
 			techstack: "",
 			repo: "",
