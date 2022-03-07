@@ -7,7 +7,7 @@ import { Modal, Box } from "@mui/material";
 export default function EventComment(props) {
 
     const {comment, handleCommentDropdown, handleOpenCommentEditor, handleRemoveComment} = props;
-
+    console.log(comment)
     const [emojiModal, setEmojiModal] = React.useState(false);
 
     const openEmojiMart = async () => {
@@ -68,7 +68,10 @@ export default function EventComment(props) {
         aria-describedby="modal-modal-description"
     >
         <Box sx={style}>
-            <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={comment._id} parentId={comment.event._id} elementType="event-comment"/>
+            {(emojiModal && comment._id && comment.event._id) ?
+                (<EmojiPicker closeEmojiMart={closeEmojiMart} elementId={comment._id} parentId={comment.event._id} elementType="event-comment"/>)
+                : <React.Fragment />
+            }
         </Box>
         </Modal>
         </React.Fragment>

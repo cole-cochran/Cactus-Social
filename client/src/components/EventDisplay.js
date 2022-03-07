@@ -126,14 +126,14 @@ export default function EventDisplay(props) {
 				}
 			});
 			socket.emit('send_comment', {room: eventId, user: AuthService.getProfile().data.username, comment: commentData.data.createEventComment});
-			setNewCommentText("");
 			setMessageTimeout(true);
 			setTimeout(() => {setMessageTimeout(false)});
 		} catch (err) {
 			console.error(err);
 		}
-		
-	}
+
+		setNewCommentText("");
+	};
 
 	const handleRemoveComment = async (event) => {
 		const commentId = JSON.parse(localStorage.getItem('commentId'));
@@ -450,7 +450,7 @@ export default function EventDisplay(props) {
 								{eventComments.map((comment) => (
 									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
 								))}
-								{commentsList.map((comment) => (
+								{commentsList.filter(item => item["event"]._id === eventId).map((comment) => (
 									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
 								))}
 								<form onSubmit={handleCreateComment} className="chat-input event-comment-input">

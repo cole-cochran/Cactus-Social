@@ -232,7 +232,7 @@ function ThreadDisplay(props) {
 						author: userId
 					}
 				});
-				console.log(postData.data.createPost);
+				// console.log(postData.data.createPost);
 				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
 				setMessageTimeout(true);
 				setTimeout(() => {setMessageTimeout(false);}, 2000);
@@ -431,7 +431,7 @@ function ThreadDisplay(props) {
 							)
 						)
 					)}
-					{postList.filter(item => item.thread._id === threadId).map(
+					{postList.filter(item => item["thread"]._id === threadId).map(
 						(post) => (
 							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
 							dropdown={handleOpenDropdown} 
