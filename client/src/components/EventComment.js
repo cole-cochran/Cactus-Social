@@ -4,23 +4,7 @@ import ReactionBar from "./ReactionBar";
 import EmojiPicker from "./EmojiPicker";
 import { Modal, Box } from "@mui/material";
 
-export default function EventComment(props) {
-
-    const {comment, handleCommentDropdown, handleOpenCommentEditor, handleRemoveComment} = props;
-    console.log(comment)
-    const [emojiModal, setEmojiModal] = React.useState(false);
-
-    const openEmojiMart = async () => {
-        setEmojiModal(true);
-    }
-
-    const closeEmojiMart = async () => {
-        setEmojiModal(false);
-    }
-
-    const owner = AuthService.getProfile().data._id;
-
-    const style = {
+const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -29,6 +13,20 @@ export default function EventComment(props) {
         bgcolor: 'background.paper',
         boxShadow: 24
     };
+
+export default function EventComment(props) {
+
+    const {comment, handleCommentDropdown, handleOpenCommentEditor, handleRemoveComment} = props;
+    const [emojiModal, setEmojiModal] = React.useState(false);
+
+    const openEmojiMart = async () => {
+        setEmojiModal(true);
+    }
+    const closeEmojiMart = async () => {
+        setEmojiModal(false);
+    }
+
+    const owner = AuthService.getProfile().data._id;
 
     return (
         <React.Fragment>

@@ -9,15 +9,28 @@ import EventComment from './EventComment';
 import InvitationModal from "./InvitationModal";
 
 import { CloudinaryContext, Image } from 'cloudinary-react';
-
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
-// import { ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
-import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
-//! ADD  DESCRIPTION OF EVENT_DETAILS
 
+import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
+import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
 import AuthService from '../utils/auth';
+
+const style = {
+	position: 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: '#232323',
+	boxShadow: 24,
+	border: '2px solid white'
+};
+
+const scroll = () => {
+	var element = document.getElementsByClassName("event-comment");
+	element[0].scrollTop = element[0].scrollHeight;
+}
 
 export default function EventDisplay(props) {
 
@@ -51,15 +64,18 @@ export default function EventDisplay(props) {
 		]
 	});
 
-	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT);
-
+	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
 	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
-
 	const [ updateEventComment ] = useMutation(UPDATE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -85,7 +101,6 @@ export default function EventDisplay(props) {
 
 	React.useEffect(() => {
 		socket.on('receive_comment', (data) => {
-			// console.log(data);
 			setCommentsList(commentsList => [...commentsList, data]);
 		});
 	}, [socket]);
@@ -93,9 +108,22 @@ export default function EventDisplay(props) {
 	const handleOpenInvite = (event) => {
 		setOpenInvite(true);
 	}
-
 	const handleCloseInvite = (event) => {
 		setOpenInvite(false);
+	}
+	const handleOpenEditor = async () => {
+		setOpenEditor(true);
+	}
+	const handleCloseEditor = async () => {
+		setOpenEditor(false);
+	}
+	const handleOpenCommentEditor = async (event) => {
+		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+		setEditedComment(currentComment);
+		setOpenCommentEditor(true);
+	}
+	const handleCloseCommentEditor = async (event) => {
+		setOpenCommentEditor(false);
 	}
 
 	const handleAttend = async () => {
@@ -131,7 +159,6 @@ export default function EventDisplay(props) {
 		} catch (err) {
 			console.error(err);
 		}
-
 		setNewCommentText("");
 	};
 
@@ -147,7 +174,6 @@ export default function EventDisplay(props) {
 		} catch (err) {
 			console.error(err);
 		}
-
 		localStorage.removeItem('commentId');
 	}
 
@@ -171,9 +197,7 @@ export default function EventDisplay(props) {
 	}
 
 	const handleChange = async (event) => {
-		
 		const { name, value } = event.target;
-
 		if (name === 'eventCommentText') {
 			setNewCommentText(value);
 		} else if (name === 'editedCommentText') {
@@ -183,53 +207,36 @@ export default function EventDisplay(props) {
 
 	const handleCommentDropdown = async (event) => {
 		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
-
 		localStorage.setItem('commentId', JSON.stringify(commentId));
-
 		event.target.parentNode.childNodes[1].style.display = "flex";
 	}
 
-	const handleOpenCommentEditor = async (event) => {
-		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
-		setEditedComment(currentComment);
-		setOpenCommentEditor(true);
-	}
-
-	const handleCloseCommentEditor = async (event) => {
-		setOpenCommentEditor(false);
+	const handleCloseCommentDropdown = async (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
+			const content = document.querySelectorAll('.dropdown-content');
+			if (content) content.forEach((el) => (el.style.display = "none"));
+		}
 	}
 
 	const handleDropdown = async (event) => {
 		const content = event.target.parentNode.parentNode.childNodes[1].childNodes[0];
-		// console.log(content);
-
 		content.style.display = "flex";
 	}
 
 	const handleCloseDropdown = (event) => {
 		if (event.target.className !== "event-dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
 			const content = document.querySelector('.event-dropdown-content');
-			content.style.display = "none";
+			if (content) content.style.display = "none";
 		}
-		
 	}
 
-	const handleOpenEditor = async () => {
-		setOpenEditor(true);
-	}
-
-	const handleCloseEditor = async () => {
-		setOpenEditor(false);
-	}
-
-	const handleDelete = async () => {
+	const handleDeleteEvent = async () => {
 		await removeEvent({
 			variables: {
 				eventId: eventId,
 				userId: userId
 			}
 		});
-
 		window.location.replace(`/profile/${userId}`);
 	}
 
@@ -237,22 +244,11 @@ export default function EventDisplay(props) {
 		setToggleComments(!toggleComments);
 	}
 
-
-
-	if (loading) {
-		return <div>Loading...</div>
-	}
-
-	if (errors) {
-		return <div>ERROR: {errors}</div>
-	}
-
-	if (!singleEvent.data.eventDetails) {
-		return <h3>This event no longer exists!</h3>;
-	}
+	if (loading) return (<div>Loading...</div>);
+	if (errors) return (<div>ERROR: {errors}</div>);
+	if (!singleEvent.data.eventDetails) return (<h3>This event no longer exists!</h3>);
 
 	const eventComments = singleEvent.data.eventDetails.comments;
-
 	const eventData = singleEvent.data.eventDetails;
 
 	let attending = false;
@@ -264,30 +260,12 @@ export default function EventDisplay(props) {
 	}
 
 	let owner = false;
-	if (eventData.owner._id === userId) {
-		owner = true;
-	}
-
-	const style = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-		width: 400,
-		bgcolor: '#232323',
-		boxShadow: 24,
-		border: '2px solid white'
-	};
-
-	const scroll = () => {
-		var element = document.getElementsByClassName("event-comment");
-		element[0].scrollTop = element[0].scrollHeight;
-	}
+	if (eventData.owner._id === userId) owner = true;
 
 	return (
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
-            <div className="app-content-container" >
+            <div className="app-content-container" onClick={handleCloseCommentDropdown}>
 				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
 				<div className='event-container'>
 					<div className='event-card'>
@@ -380,7 +358,7 @@ export default function EventDisplay(props) {
 													<div className="dropdown-option event-update-option" onClick={handleOpenEditor}>
 														Update
 													</div>
-													<div className='event-delete' onClick={handleDelete} >
+													<div className='event-delete' onClick={handleDeleteEvent} >
 														Delete
 													</div>
 												</div>

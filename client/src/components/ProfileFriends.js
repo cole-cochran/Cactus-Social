@@ -12,12 +12,22 @@ import { ADD_FRIEND, DENY_FRIEND_REQUEST, ACCEPT_EVENT_INVITE, ACCEPT_THREAD_INV
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: "100%",
+    maxWidth: "500px",
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+};
 
 function ProfileFriends(props) {
 
     const userId = AuthService.getProfile().data._id;
-    // const [searchUsername, setSearchUsername] = React.useState('');
-    // const friendsQuery = useQuery(USER_FRIENDS);
+
     const getAllUsers = useQuery(ALL_USERS);
     const allFriendRequests = useQuery(FRIEND_REQUESTS, {
         variables: {
@@ -82,7 +92,6 @@ function ProfileFriends(props) {
         ]
     });
 
-    // const friendsQuery = useQuery(USER_FRIENDS);
     const [openSearch, setOpenSearch] = React.useState(false);
     const [openFriendRequests, setOpenFriendRequests] = React.useState(false);
     const [openSentFriendRequests, setOpenSentFriendRequests] = React.useState(false);
@@ -101,8 +110,6 @@ function ProfileFriends(props) {
     const sentFriendRequests = allSentFriendRequests.data?.sentFriendRequests || [];
     const allFriends = getAllFriends.data?.userFriends || [];
     const allInvitations = getAllInvites.data?.receivedInvites || [];
-
-    // console.log(allInvitations.received_invites);
 
     let eventInvitations = [];
     let threadInvitations = [];
@@ -149,7 +156,6 @@ function ProfileFriends(props) {
 
     const handleAcceptInvite = async (event) => {
         event.preventDefault();
-        // console.log(event.target.dataset);
         const data = event.target.dataset;
         const senderId = data.user;
         
@@ -180,12 +186,10 @@ function ProfileFriends(props) {
                 console.log(err);
             }
         }
-
     }
 
     const handleRejectInvite = async (event) => {
         event.preventDefault();
-        // console.log(event.target);
         const data = event.target.dataset;
         const senderId = data.user;
         
@@ -221,8 +225,6 @@ function ProfileFriends(props) {
     const handleAddNewFriend = async (e) => {
         e.preventDefault();
         const friendId = e.target.parentNode.id;
-        // console.log(friendId);
-        // console.log(userId);
         try {
             await addFriend({
                 variables: {
@@ -238,7 +240,6 @@ function ProfileFriends(props) {
 
     const handleDenyFriendRequest = async (e) => {
         e.preventDefault();
-        // console.log(e.target.parentNode.id);
         const friendId = e.target.parentNode.id;
         try {
             await denyFriendRequest({
@@ -272,8 +273,6 @@ function ProfileFriends(props) {
                 rightShelf.childNodes[i].style.display = "block"
             }
             rightShelf.setAttribute("data-id", "opened");
-            // rightShelf.style.width = "16rem";
-            // rightShelf.style.minWidth = "16rem";
             rightShelf.style.right = "0rem";
             profileWrapper.style.width = "calc(100vw - 304px)";
             rightShelf.style.paddingLeft = "1rem";
@@ -282,25 +281,12 @@ function ProfileFriends(props) {
                 rightShelf.childNodes[i].style.display = "none"
             }
             rightShelf.setAttribute("data-id", "closed");
-            // rightShelf.style.width = "4.5rem"
             rightShelf.style.right = "-11rem";
             profileWrapper.style.width = "calc(100vw - 128px)";
             rightShelf.style.paddingLeft = "0rem";
         }
         
     }
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: "100%",
-        maxWidth: "500px",
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-    };
     
     return (
         <div data-id="closed" className="right-shelf">
@@ -327,11 +313,9 @@ function ProfileFriends(props) {
                                         <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                     ) : (
                                         <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
-                                            <Image className="friend-pic" publicId={`CactusSocial/${user.picture}`} />
+                                            <Image className="friend-pic" publicId={`CactusSocial/${user.picture}.${user.picture_type}`} />
                                         </CloudinaryContext>
                                     )}
-                                    
-                                    
                                     <p>{user.username}</p>
                                 </button>
                             </a>
@@ -394,9 +378,15 @@ function ProfileFriends(props) {
                                 <li className="modal-request" key={`${user}-${index}`}>
                                     <a href = {`/profile/${user._id}`}>
                                         <button className="friend-chips">
-                                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                                            <p>{user.username}</p>
-                                        </button>
+                                    {user.picture === "" ? (
+                                        <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
+                                    ) : (
+                                        <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                                            <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}.${user.picture_type}`} />
+                                        </CloudinaryContext>
+                                    )}
+                                    <p>{user.username}</p>
+                                </button>
                                     </a>
                                     <div id={user._id}>
                                         <button onClick={handleAddNewFriend}>Accept</button>
@@ -425,9 +415,15 @@ function ProfileFriends(props) {
                             <li key={`${user}-${index}`}>
                                 <a href = {`/profile/${user._id}`}>
                                     <button className="friend-chips">
+                                    {user.picture === "" ? (
                                         <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                                        <p>{user.username}</p>
-                                    </button>
+                                    ) : (
+                                        <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
+                                            <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}.${user.picture_type}`} />
+                                        </CloudinaryContext>
+                                    )}
+                                    <p>{user.username}</p>
+                                </button>
                                 </a>
                             </li>
                         ))}

@@ -18,7 +18,7 @@ export default function ChatDisplay(props) {
 
     const { chatId } = useParams();
 
-    const {setActiveThread, setActiveEvent, socket, activeChat, setActiveChat} = props;
+    const { setActiveThread, setActiveEvent, socket, activeChat } = props;
 
     const [ createChatMessage ] = useMutation(CREATE_CHAT_MESSAGE, {
         refetchQueries: [

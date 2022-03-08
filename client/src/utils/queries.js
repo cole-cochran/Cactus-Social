@@ -306,6 +306,8 @@ query friendRequests($userId: ID!) {
 		friend_requests {
 			_id
 			username
+			picture
+			picture_type
 		}
 	}
 }
@@ -327,6 +329,8 @@ query sentFriendRequests($userId: ID!) {
 		sent_friend_requests {
 			_id
 			username
+			picture
+			picture_type
 		}
 	}
 }

@@ -187,7 +187,7 @@ export default function ChatsPanel(props) {
                                     </div>
                                 ) : (
                                     <CloudinaryContext cloudName="damienluzzo" >
-									    <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}`} />
+									    <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}.${user.picture_type}`} />
 								    </CloudinaryContext>
                                 )}
                             <div className="chat-chip-span">
@@ -223,7 +223,7 @@ export default function ChatsPanel(props) {
                                                     <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                                     <p>{user.username}</p>
                                                     <img 
-                                                    src="../../assets/img/open-circle.svg" 
+                                                    src="../../assets/img/exit_icon.svg" 
                                                     alt="open check box" 
                                                     style={{height: "20px", marginLeft: "15px", cursor: "pointer"}}
                                                     onClick={handleRemoveChatMember}

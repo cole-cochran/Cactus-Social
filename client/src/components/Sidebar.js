@@ -20,7 +20,7 @@ const toggleSidebar = (e) => {
                 rightShelf.childNodes[i].style.display = "none"
             }
 			rightShelf.setAttribute("data-id", "closed");
-            rightShelf.style.width = "4.5rem"
+            rightShelf.style.right = "-11rem"
             rightShelf.style.paddingLeft = "0rem";
 		}
 		if (profileWrapper) {
