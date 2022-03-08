@@ -1087,12 +1087,13 @@ export const CREATE_CHAT_MESSAGE = gql`
 mutation createChatMessage($chatId: ID!, $sender:ID!, $message: String!) {
     createChatMessage(chatId: $chatId, sender: $sender, message: $message) {
         _id
-        users {
+        sender {
             _id
         }
-        messages {
+        message
+        edited
+        chat {
             _id
-            message
         }
         date_created
     }

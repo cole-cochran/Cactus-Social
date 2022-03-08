@@ -18,7 +18,7 @@ export default function ChatDisplay(props) {
 
     const { chatId } = useParams();
 
-    const {setActiveThread, setActiveEvent} = props;
+    const {setActiveThread, setActiveEvent, socket, activeChat, setActiveChat} = props;
 
     const [ createChatMessage ] = useMutation(CREATE_CHAT_MESSAGE, {
         refetchQueries: [
@@ -45,6 +45,20 @@ export default function ChatDisplay(props) {
 
     const [chatMessage, setChatMessage] = React.useState("");
 
+    const [chatList, setChatList] = React.useState([]);
+
+    const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+    React.useEffect(() => {
+        socket.emit("join_chat", {room: activeChat, user: AuthService.getProfile().data.username});
+    }, [activeChat]);
+
+    React.useEffect(() => {
+        socket.on('receive_chat_message', (data) => {
+            setChatList(chatList => [...chatList, data]);
+        })
+    }, [socket]);
+
     if (loading) {
         return <div>Loading...</div>
     }
@@ -56,13 +70,20 @@ export default function ChatDisplay(props) {
     const handleCreateChatMessage = async (event) => {
         event.preventDefault();
         try {
-            await createChatMessage({
-                variables: {
-                    chatId: chatId,
-                    sender: userId,
-                    message: chatMessage
-                }
-            })
+            if (socket) {
+                const messageData = 
+                await createChatMessage({
+                    variables: {
+                        chatId: chatId,
+                        sender: userId,
+                        message: chatMessage
+                    }
+                })
+
+                socket.emit("send_chat_message", {room: activeChat, user: AuthService.getProfile().data.username, message: messageData.data.createChatMessage})
+                setMessageTimeout(true);
+				setTimeout(() => {setMessageTimeout(false);}, 2000);
+            }
         } catch (err) {
             console.log(err);
         }
@@ -141,7 +162,7 @@ export default function ChatDisplay(props) {
                         <div className="chat-users-div">
                             <h3>Users:</h3>
                             <div className="chat-users">
-                                {chatDetails.users.map((user) => (
+                                {chatDetails.users && chatDetails.users.map((user) => (
                                 <button key={user._id}>
                                     {user.username}
                                 </button>
@@ -151,9 +172,14 @@ export default function ChatDisplay(props) {
                     </div>
                     
                     <div onLoad={scroll} id="chat-messages-container" className="chat-messages-container">
-                        {chatDetails.messages.map((message) => (
+                        {chatDetails.messages && chatDetails.messages.map((message) => (
                             <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
                         ))}
+                        {/* {chatList.filter(item => item["chat"]._id === chatId).map(
+                            (message) => (
+                                <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
+                            )
+                        )} */}
                     </div>
                     <div className="chat-message-submit-div">
                         <form onSubmit={handleCreateChatMessage} className="chat-input">

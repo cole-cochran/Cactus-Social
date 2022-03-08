@@ -63,11 +63,9 @@ function App() {
 	// console.log(AuthService.getProfile())
 	const [activeEvent, setActiveEvent] = React.useState('');
 	const [activeThread, setActiveThread] = React.useState('');
+	const [activeChat, setActiveChat] = React.useState('');
 
 	return (
-		// <ThreadCreation/>
-		// <SplashPage/>
-		// <EventCreation/>
 		<ApolloProvider client={client}>
 			<Router>
 				<div className="App">
@@ -92,7 +90,7 @@ function App() {
 						</Route> */}
 						<Route exact path="/chats/:chatId">
 							{AuthService.loggedIn() ? 
-							<ChatDisplay setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} /> : <SplashPage />}
+							<ChatDisplay socket={socket} activeChat={activeChat} setActiveChat={setActiveChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}

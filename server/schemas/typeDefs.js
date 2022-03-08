@@ -214,7 +214,7 @@ const typeDefs = gql`
         sendFriendRequest(userId: ID!, friend: ID!): User
         denyFriendRequest(userId: ID!, friend: ID!): User
 
-        createChatMessage(chatId: ID!, sender: ID!, message: String!): Chat
+        createChatMessage(chatId: ID!, sender: ID!, message: String!): ChatMessage
         deleteChatMessage(chatId: ID!, messageId: ID!): Chat
         updateChatMessage(chatId: ID!, messageId: ID!, message: String!): Chat
 

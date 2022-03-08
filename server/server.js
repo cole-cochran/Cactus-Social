@@ -9,7 +9,6 @@ const cors = require('cors');
 
 //* set up port and express app
 const PORT = process.env.PORT || 3001;
-// const PORT = process.env.PORT || 3000;
 const app = express();
 
 //* get authentication middleware and db connection
@@ -90,10 +89,19 @@ io.on('connection', (socket) => {
 		console.log(`User ${socket.id} has joined event ${data.room}`);
 	});
 
-	// socket.on("leave_existing_thread", (socket) => {
-	// 	console.log("leave existing thread");
-	// 	socket.leaveAll();
-	// })
+	socket.on("join_chat", (data) => {
+		socket.rooms.forEach(room => {
+			socket.leave(room);
+			console.log(`User ${socket.id} leaving room ${room} to join chat`);
+		})
+		socket.join(data.room);
+		console.log(`User ${socket.id} has joined chat ${data.room}`);
+	});
+
+	socket.on("leave_existing_thread", (socket) => {
+		console.log("leave existing thread");
+		socket.leaveAll();
+	});
 
 	socket.on("send_post", (data) => {
 		console.log(socket.id);
@@ -105,6 +113,12 @@ io.on('connection', (socket) => {
 		console.log(socket.id);
 		console.log(`${data.user} has sent comment ${data.comment} to room ${data.room}`);
 		socket.to(data.room).emit("receive_comment", data.comment);
+	})
+
+	socket.on("send_chat_message", (data) => {
+		console.log(socket.id);
+		console.log(`${data.user} has sent chat message ${data.message} to room ${data.room}`);
+		socket.to(data.room).emit("receive_chat_message", data.message);
 	})
 
 	socket.on('disconnect', () => {

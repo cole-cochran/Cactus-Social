@@ -105,6 +105,15 @@ function ThreadDisplay(props) {
 	
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
 
+	React.useEffect(() => {
+		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
+	}, [activeThread]);
+
+	React.useEffect(() => {
+		socket.on('receive_post', (data) => {
+			setPostList(postList => [...postList, data]);
+		})
+	}, [socket]);
 
 	const handleRemoveThread = () => {
 		try {
@@ -120,15 +129,7 @@ function ThreadDisplay(props) {
 		window.location.replace(`/profile/${userId}`);
 	}
 
-	React.useEffect(() => {
-		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
-	}, [activeThread]);
-
-	React.useEffect(() => {
-		socket.on('receive_post', (data) => {
-			setPostList(postList => [...postList, data]);
-		})
-	}, [socket]);
+	
 
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');

@@ -1221,7 +1221,7 @@ const resolvers = {
 				message: message,
 				chat: chatId
 			});
-			const updatedChat = await Chat.findOneAndUpdate(
+			await Chat.findOneAndUpdate(
 				{ _id: chatId },
 				{
 					$addToSet: {
@@ -1230,7 +1230,12 @@ const resolvers = {
 				},
 				{ new: true }
 			).populate("messages").populate("users");
-			return updatedChat;
+			
+			const returnMsg = await ChatMessage.findOne({ _id: newMsg._id})
+			.populate("sender")
+			.populate("chat");
+
+			return returnMsg;
 		},
 
 		deleteChatMessage: async (parent, args, context) => {
