@@ -26,7 +26,7 @@ function Dashboard(props) {
                 { props.subThread ? (
                     <SubthreadDisplay activeComment={activeComment} socket={socket} setActiveThread={setActiveThread}/>
                 ) : (
-                    <ThreadDisplay activeThread={activeThread} socket={socket} setActiveComment={setActiveComment}/>
+                    <ThreadDisplay activeThread={activeThread} socket={socket} setActiveThread={setActiveThread} setActiveComment={setActiveComment}/>
                 )}
                 
             </div>

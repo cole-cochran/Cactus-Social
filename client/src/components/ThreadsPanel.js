@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import ThreadCreation from "./ThreadCreation";
 
 import { useQuery } from '@apollo/client';
-// import AuthService from '../utils/auth';
+import AuthService from '../utils/auth';
 
-import { ALL_THREADS } from '../utils/queries';
-
+import { ALL_THREADS, USER_THREADS } from '../utils/queries';
 
 const style = {
     position: 'absolute',
@@ -25,10 +23,19 @@ const style = {
 
 function ThreadsPanel(props) {
 
+    const userId = AuthService.getProfile().data._id;
+
     const {toggle, setActiveThread} = props;
 
-    const { loading, data } = useQuery(ALL_THREADS);
-    const allThreads = data?.allThreads || [];
+    const getAllPublicThreads = useQuery(ALL_THREADS);
+    
+    const getAllUserThreads = useQuery(USER_THREADS, {
+        variables: {
+            userId: userId
+        }
+    });
+
+    let loading = getAllPublicThreads.loading || getAllUserThreads.loading;
 
     const [open, setOpen] = React.useState(false);
     
@@ -36,6 +43,7 @@ function ThreadsPanel(props) {
     const handleClose = () => setOpen(false);
 
     const [droppedThreads, setDroppedThreads] = React.useState(false);
+    const [droppedPublicThreads, setDroppedPublicThreads] = React.useState(false);
 
     const handleOpenDropdown = (event) => {
         const eventInfo = document.getElementById("threads-dropdown");
@@ -50,6 +58,20 @@ function ThreadsPanel(props) {
         setDroppedThreads(false);
         eventInfo.style.display = "none";
     }
+
+    const handleOpenPublicDropdown = (event) => {
+        const eventInfo = document.getElementById("public-threads-dropdown");
+
+        setDroppedPublicThreads(true);
+        eventInfo.style.display = "block";
+    }
+
+    const handleClosePublicDropdown = (event) => {
+        const eventInfo = document.getElementById("public-threads-dropdown");
+
+        setDroppedPublicThreads(false);
+        eventInfo.style.display = "none";
+    }
     
     const handleThreadChange = (thread, e) => {
         setActiveThread(thread);
@@ -59,6 +81,15 @@ function ThreadsPanel(props) {
     if (loading) {
         return <h2>LOADING...</h2>;
     }
+
+    const allThreads = getAllPublicThreads.data?.allThreads || [];
+    const allUserThreads = getAllUserThreads.data?.userThreads || [];
+
+    // console.log(allThreads);
+
+    const publicThreads = allThreads.filter((thread) => (
+        thread.private === false
+    ))
 
     return (
         <div id="sidebar-thread-panel">
@@ -88,7 +119,8 @@ function ThreadsPanel(props) {
                 <img id="thread-create-btn" className="sidebar-add-icon" src="../assets/img/new_cactus_plus.png" alt="click to add thread" onClick={handleOpen}/>
             </div>
             <ul id="threads-dropdown">
-                {allThreads.map((individualThread) => (
+                <h5>Your Threads</h5>
+                {allUserThreads.map((individualThread) => (
                     <li key={individualThread._id}>
                         <Link
                         onClick={(e) => {
@@ -100,6 +132,40 @@ function ThreadsPanel(props) {
                         </Link>
                     </li>
                 ))}
+                <li className="public-dropdown">
+                    {/* <div className="thread-sidebar-header"> */}
+                        <div className="public-threads-btn">
+                            <h3>Public Threads</h3>
+                            {droppedPublicThreads ? (
+                                <img
+                                    src="/assets/img/up_btn.png"
+                                    alt="threads icon"
+                                    onClick={handleClosePublicDropdown}
+                                />
+                            ) : (
+                                <img
+                                    src="/assets/img/down_btn.png"
+                                    alt="threads icon"
+                                    onClick={handleOpenPublicDropdown}
+                                />
+                            )}
+                        </div>
+                        <ul id="public-threads-dropdown">
+                            {publicThreads.map((individualThread) => (
+                                <li key={individualThread._id}>
+                                    <Link
+                                    onClick={(e) => {
+                                        handleThreadChange(individualThread._id, e);
+                                    }}
+                                        to={`/threads/${individualThread._id}`}
+                                    >
+                                        {individualThread.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    {/* </div> */}
+                </li>
             </ul>
             <Modal
                 open={open}

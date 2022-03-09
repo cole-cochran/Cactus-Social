@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 const bcrypt = require('bcrypt');
-const SALT_WORK_FACTOR = 10;
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
@@ -58,8 +57,12 @@ const userSchema = new Schema({
 		// validate: {...}
 	},
 	picture: {
-		type: String
-		// default: "empty profile template"
+		type: String,
+		default: ""
+	},
+	picture_type: {
+		type: String,
+		default: ""
 	},
 	bio: {
 		type: String,
@@ -111,7 +114,67 @@ const userSchema = new Schema({
 			type: ObjectId,
 			ref: 'User'
 		}
-	]
+	],
+	chats: [
+		{
+			type: ObjectId,
+			ref: 'Chat'
+		}
+	],
+	received_invites: [{
+		user: {
+			type: ObjectId,
+			ref: "User"
+		},
+		event: {
+			type: ObjectId,
+			ref: "Event"
+		},
+		thread: {
+			type: ObjectId,
+			ref: "Thread"
+		},
+		date_created: {
+			type: Date,
+			default: Date.now,
+			get: (timestamp) => dateFormat(timestamp)
+		}
+	}],
+	sent_invites: [{
+		user: {
+			type: ObjectId,
+			ref: "User"
+		},
+		event: {
+			type: ObjectId,
+			ref: "Event"
+		},
+		thread: {
+			type: ObjectId,
+			ref: "Thread"
+		},
+		date_created: {
+			type: Date,
+			default: Date.now,
+			get: (timestamp) => dateFormat(timestamp)
+		}
+	}],
+	portfolio_projects: [{
+		type: ObjectId,
+		ref: "Portfolio"
+	}],
+	github: {
+		type: String,
+		default: ""
+	},
+	linkedin: {
+		type: String,
+		default: ""
+	},
+	portfolio_page: {
+		type: String,
+		default: ""
+	}
 });
 
 userSchema.pre('save', async function(next) {

@@ -3,10 +3,16 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
-import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND } from '../utils/mutations';
-import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
+import { v4 as uuidv4 } from 'uuid';
+
+import Axios from "axios";
+import { CloudinaryContext, Image } from 'cloudinary-react';
+
+import PortfolioProject from './PortfolioProject';
+
+import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND, CREATE_PORTFOLIO_PROJECT, UPDATE_USER_LINKS } from '../utils/mutations';
+import { USER_PROFILE, ALL_USERS, USER_FRIENDS, PINNED_POSTS } from '../utils/queries';
 
 import { useMutation, useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
@@ -17,6 +23,8 @@ function ProfileInfo(props) {
 	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
 
 	const { specificUser } = props;
+
+	// console.log(specificUser)
 
 	const userId = AuthService.getProfile().data._id;
 
@@ -60,6 +68,20 @@ function ProfileInfo(props) {
 		]
 	});
 
+	const [ createPortfolioProject ] = useMutation(CREATE_PORTFOLIO_PROJECT, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+
+	const [ updateUserLinks ] = useMutation(UPDATE_USER_LINKS, {
+		refetchQueries: [
+			USER_PROFILE,
+			"userProfile"
+		]
+	});
+
     //* photo state
 	const [ photo, setPhoto ] = React.useState(specificUser.picture || '');
     //* tech stack states for adding and updating tech data
@@ -67,11 +89,33 @@ function ProfileInfo(props) {
 	const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
     //* bio state
 	const [ bio, setBio ] = React.useState(specificUser.bio || '');
+	const [createdProject, setCreatedProject] = React.useState(
+		{
+			title: "",
+			description: "",
+			image: "",
+			image_type: "",
+			responsibilities: "",
+			techstack: "",
+			repo: "",
+			demo: ""
+		}
+	);
+	const [openProjectCreator, setOpenProjectCreator] = React.useState(false);
 
     //* Modal states
 	const [ openTech, setOpenTech ] = React.useState(false);
 	const [ openBio, setOpenBio ] = React.useState(false);
 	const [ openImage, setOpenImage ] = React.useState(false);
+	const [ openLinks, setOpenLinks ] = React.useState(false);
+
+	const [ profileLinks, setProfileLinks ] = React.useState({
+		linkedin: "",
+		github: "",
+		portfolio_page: ""
+	});
+
+	const [ openPins, setOpenPins ] = React.useState(false);
 
 	const getAllUsers = useQuery(ALL_USERS);
 	const getAllFriends = useQuery(USER_FRIENDS, {
@@ -82,10 +126,126 @@ function ProfileInfo(props) {
 
 	const loading = getAllUsers.loading || getAllFriends.loading;
 
+	const uploadImage = async (event) => {
+
+		const uuid = uuidv4();
+
+		event.preventDefault();
+		const formData = new FormData();
+		formData.append("file", photo);
+		formData.append("upload_preset", "b3zjdfsi");
+		formData.append("public_id", uuid);
+		formData.append("folder", "CactusSocial");
+
+		const fileType = photo.name.split(".")[1].toLowerCase();
+
+		console.log(photo);
+
+		await updatePhoto({
+			variables: {
+				userId: AuthService.getProfile().data._id,
+				picture: `${uuid}`,
+				picture_type: fileType
+			}
+		});
+		
+		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+		// console.log(response);
+
+		setPhoto('');
+		setOpenImage(false);
+	}
+
+
+	const handleOpenPins = (event) => {
+		setOpenPins(true);
+	}
+
+	const handleClosePins = (event) => {
+		setOpenPins(false);
+	}
+
+	const handleOpenProjectCreator = (event) => {
+		setOpenProjectCreator(true);
+	}
+
+	const handleCloseProjectCreator = (event) => {
+		setOpenProjectCreator(false);
+	}
+
+	const handleProjectChange = async (event) => {
+		const {value, name} = event.target;
+		// console.log({value, name});
+		if (name === "addImage") {
+            setCreatedProject({
+                ...createdProject,
+                image: event.target.files[0]
+            })
+        } else {
+			setCreatedProject({
+				...createdProject,
+				[name]: value
+			})
+		}
+		
+		// console.log(createdProject)
+	}
+
+	const handleCreateProject = async (event) => {
+		event.preventDefault();
+		// console.log(createdProject);
+
+		const uuid = uuidv4();
+		let fileType = "";
+
+		if (createdProject.image !== "") {
+			const formData = new FormData();
+			formData.append("file", createdProject.image);
+			formData.append("upload_preset", "b3zjdfsi");
+			formData.append("public_id", uuid);
+			formData.append("folder", "CactusSocial");
+
+			fileType = createdProject.image.name.split(".")[1].toLowerCase();
+			
+			await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+			// console.log(response);
+		}
+
+		try {
+			await createPortfolioProject({
+				variables: {
+					owner: userId,
+					title: createdProject.title,
+					description: createdProject.description,
+					image: (createdProject.image === "" ? "" : `${uuid}`),
+					image_type: fileType,
+					responsibilities: createdProject.responsibilities,
+					techstack: createdProject.techstack,
+					repo: createdProject.repo,
+					demo: createdProject.demo
+				}
+			})
+		} catch(err) {
+			console.log(err);
+		}
+
+		setCreatedProject({
+			title: "",
+			description: "",
+			image: "",
+			image_type: "",
+			responsibilities: "",
+			techstack: "",
+			repo: "",
+			demo: ""
+		});
+		handleCloseProjectCreator();
+	}
+	
 	const handleRemoveFriend = async (event) => {
 		event.preventDefault();
 
-		console.log(specificUser._id)
+		// console.log(specificUser._id)
 
 		try {
 			await removeFriend({
@@ -120,18 +280,24 @@ function ProfileInfo(props) {
             setOpenTech(true)
         } else if (event.target.id === "editImage") {
             setOpenImage(true)
-        }
+        } else if (event.target.id === "editLinks") {
+			setOpenLinks(true);
+			setProfileLinks({
+				linkedin: specificUser.linkedin,
+				github: specificUser.github,
+				portfolio_page: specificUser.portfolio_page
+			});
+		}
     }
 
     //* conditional modal closers
 	const handleClose = async (event) => {
-        if (event.target.id === "bioModal") {
-            setOpenBio(false)
-        } else if (event.target.id === "techModal") {
-            setOpenTech(false)
-        } else if (event.target.id === "imageModal") {
-            setOpenImage(false)
-        }
+		if (event.target.id !== "bioModal" || event.target.id !== "techModal" || event.target.id !== "imageModal" || event.target.id !== "linksModal") {
+			setOpenBio(false);
+			setOpenTech(false);
+			setOpenImage(false);
+			setOpenLinks(false);
+		}
     }
 
     //* make sure user is logged in and can only edit their own profile
@@ -141,15 +307,32 @@ function ProfileInfo(props) {
 	}
 
 	const handleChange = async (event) => {
-		event.preventDefault();
+		// event.preventDefault();
 		try {
 			if (event.target.name === 'techInput') {
 				setAddedTech(event.target.value);
 			} else if (event.target.name === 'bioInput') {
 				setBio(event.target.value);
 			} else if (event.target.name === 'photoInput') {
-				setPhoto(event.target.value);
+				// console.log(event.target.files);
+				setPhoto(event.target.files[0]);
+			} else if (event.target.name === "linkedin") {
+				setProfileLinks({
+					...profileLinks,
+					linkedin: event.target.value
+				})
+			} else if (event.target.name === "github") {
+				setProfileLinks({
+					...profileLinks,
+					github: event.target.value
+				})
+			} else if (event.target.name === "portfolio_page") {
+				setProfileLinks({
+					...profileLinks,
+					portfolio_page: event.target.value
+				})
 			}
+
 		} catch (err) {
 			console.error(err);
 		}
@@ -170,17 +353,17 @@ function ProfileInfo(props) {
 				setOpenBio(false);
 				// window.location.reload(false);
 				
-			} else if (event.target.id === 'userPhoto') {
-				event.preventDefault();
-				// const updatedPhoto = 
-				await updatePhoto({
-					variables: {
-						userId: AuthService.getProfile().data._id,
-						picture: photo
-					}
-				});
-				setPhoto('');
-				setOpenImage(false);
+			// } else if (event.target.id === 'userPhoto') {
+			// 	event.preventDefault();
+			// 	// const updatedPhoto = 
+			// 	await updatePhoto({
+			// 		variables: {
+			// 			userId: AuthService.getProfile().data._id,
+			// 			picture: photo
+			// 		}
+			// 	});
+			// 	setPhoto('');
+			// 	setOpenImage(false);
 				// window.location.reload(false);
 
 			} else if (event.target.id === 'addTechStack') {
@@ -193,6 +376,26 @@ function ProfileInfo(props) {
                 });
                 setTechData([...techData, addedTech])
 				setAddedTech('');
+			} else if (event.target.id === 'profileLinks') {
+				event.preventDefault();
+				try {
+					await updateUserLinks({
+						variables: {
+							userId: userId,
+							linkedin: profileLinks.linkedin,
+							github: profileLinks.github,
+							portfolio_page: profileLinks.portfolio_page
+						}
+					})
+				} catch(err) {
+					console.log(err)
+				}
+				setProfileLinks({
+					linkedin: "",
+					github: "",
+					portfolio_page: ""
+				})
+				setOpenLinks(false);
 			}
 		} catch (err) {
 			console.error(err);
@@ -225,18 +428,21 @@ function ProfileInfo(props) {
         setTechData(editedTech);
 	};
 
-    const imageStyles = {
-        height: "200px",
-        width: "200px",
-        borderRadius: "50%",
-        backgroundColor: 'var(--cactus-green-1)',
-        color: "white",
-        alignContent: "center",
-        textAlign: "center",
-        justifyContent: "center",
-        display: "flex",
-        flexDirection: "column"
-    }
+	const handleOpenDropdown = (event) => {
+		const userData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
+		localStorage.setItem('userId', JSON.stringify(userData));
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseDropdown = (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const dropdowns = document.querySelectorAll('.dropdown-content');
+			for (let dropdown of dropdowns) {
+				dropdown.style.display = "none";
+			}
+		}
+	}
 
 	const style = {
 		position: 'absolute',
@@ -256,11 +462,11 @@ function ProfileInfo(props) {
 
 	const allUsers = getAllUsers.data?.allUsers;
 
-	console.log(allUsers);
+	// console.log(allUsers);
 
 	const allFriends = getAllFriends.data?.userFriends.friends;
 
-	console.log(allFriends)
+	// console.log(allFriends)
 
 	let userFriendChecker = false;
 
@@ -271,15 +477,35 @@ function ProfileInfo(props) {
 		}
 	}
 
+	let userFirstNameArr = specificUser.first_name.split("");
+	userFirstNameArr[0] = userFirstNameArr[0].toUpperCase();
+	let updatedFirstName = userFirstNameArr.join("");
+
+	let userLastNameArr = specificUser.last_name.split("");
+	userLastNameArr[0] = userLastNameArr[0].toUpperCase();
+	let updatedLastName = userLastNameArr.join("");
+
 	return (
 		<React.Fragment>
-		<div className="profile-wrapper">
+		<div className="profile-wrapper" onClick={handleCloseDropdown}>
 			<div className="profile-content-container">
 				<div className="profile-header">
 					<div className='profile-top'>
-						<h3>
-						{specificUser.first_name} {specificUser.last_name}
-						</h3>
+						<div className='profile-title'>
+							<h3>{`${updatedFirstName} ${updatedLastName}`}</h3>
+							{ userId === specificUser._id ? 
+								<div className="dropdown">
+								<img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
+								<div className="dropdown-content" style={{width: "200px"}}>
+									<div className="dropdown-option" onClick={handleOpenPins}>
+										View Pinned Posts
+									</div>
+								</div>
+							</div>
+								: <React.Fragment />
+							}
+						</div>
+						
 						{!canEditProfile ? (
 						<div className='friend-options-div'>
 							{userFriendChecker ? (
@@ -288,66 +514,104 @@ function ProfileInfo(props) {
 								<button className="send-request-btn" onClick={handleSendFriendRequest}><img src="../../assets/img/plus-sign.svg" alt="plus sign"/>Send Friend Request</button>
 							)}
 						</div>
-					) : (
-						<React.Fragment />
-					)}
+					) : ( <React.Fragment /> )}
 					</div>
-
 					<div className='profile-bio-block'>
 						<div className='profile-pic-div'>
-							{/* <div style={imageStyles}>
-								<InsertEmoticonIcon sx={{ width: "150px", height: "150px", alignSelf: "center" }} />
-							</div> */}
-							<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
-							{/* {canEditProfile && 
+							{specificUser.picture === "" ? (
+								<img src="../../assets/img/default_profile_pic.png" alt="profile pic"/>
+							) : (
+								<CloudinaryContext cloudName="damienluzzo" >
+									<Image publicId={`CactusSocial/${specificUser.picture}.${specificUser.picture_type}`} />
+								</CloudinaryContext>
+							)}
+
+							{canEditProfile && 
 							<img className="edit-profile-pic" src="/assets/img/edit-icon.svg" alt="edit button" id="editImage" onClick={handleOpen} />
-							} */}
+							}
+							
 						</div>
-						<div className='profile-bio-section'>
-							<h5>Bio</h5>
-							<div className='user-bio-box'>
-								<div className="user-bio">{specificUser.bio}</div>
-								{canEditProfile && 
-								<div style={{marginLeft: "10px"}}>
-									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+						<div>
+							<div className='profile-info-links'>
+								<div>
+									{specificUser.linkedin ? 
+									(
+										<a href={`${specificUser.linkedin}`} target='_blank' rel="noreferrer">
+											<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+										</a>
+									) : (
+										<img src="../../assets/img/linked_in_2.svg" alt="linkedin profile"/>
+									)}
+								</div>
+								<div>
+									{specificUser.github ? (
+										<a href={`${specificUser.github}`} target='_blank' rel="noreferrer">
+											<img src="../../assets/img/github_2.svg" alt="github profile"/>
+										</a>
+									) : (
+										<img src="../../assets/img/github_2.svg" alt="github profile"/>
+									)}
+								</div>
+								<div>
+									{specificUser.portfolio_page ? (
+										<a href={specificUser.portfolio_page} target='_blank' rel="noreferrer">
+											<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+										</a>
+									) : (
+										<img src="../../assets/img/chain_link.png" alt="portfolio"/>
+									)}
+								</div>
+								{canEditProfile &&
+								<div className='edit-profile-button'>
+									<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editLinks" onClick={handleOpen} />
 								</div>}
 							</div>
-							
-							<div className="profile-edit-container">
-								<span className="join-date">Member Since: {specificUser.date_joined}</span>
+							<div className='profile-bio-section'>
+								<h5>Bio</h5>
+								<div className='user-bio-box'>
+									<div className="user-bio">{specificUser.bio}</div>
+									{canEditProfile && 
+									<div style={{marginLeft: "10px"}}>
+										<img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
+									</div>}
+								</div>
+								<div className="profile-edit-container">
+									<span className="join-date">Member Since: {specificUser.date_joined}</span>
+								</div>
 							</div>
-						</div>
-							
+						</div>	
 					</div>
                     
 				</div>
-				{/* <div className="profile-edit-container">
-					<span className="join-date">Member Since: {specificUser.date_joined}</span>
-				</div>
-                <div style={{display: "flex"}}>
-                    <div className="user-bio">{specificUser.bio}</div>
-                    {canEditProfile && 
-                    <div style={{marginLeft: "10px"}}>
-                        <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editBio" onClick={handleOpen} />
-                    </div>}
-                </div> */}
 				<div className="user-info">
 					<div style={{display: "flex"}} className="tech-stack">
-						{canEditProfile && 
-                        <div>
-                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
-                        </div>}
 						<ul>
 							{specificUser.tech_stack.map((tech, index) => (
 								<li key={`${tech}-${index}`}>
 									<button className="tech-chip">
-										{/* <div>{index}</div> */}
 										{tech}
 									</button>
 								</li>
 							))}
+							{canEditProfile && 
+                        <div>
+                            <img style={{cursor: "pointer"}} src="/assets/img/edit-icon.svg" alt="edit button" id="editTech" onClick={handleOpen} />
+                        </div>}
                         </ul>
 					</div>
+				</div>
+				<div className='user-projects'>
+					{specificUser.portfolio_projects.map((project) => (
+						<PortfolioProject key={project._id} canEditProfile={canEditProfile} portfolioProject={project} specificUserId={specificUser._id}/>
+					))}
+					{canEditProfile && 
+						<div className='add-project-div'>
+							<button onClick={handleOpenProjectCreator} className='add-project-button'>
+								<img src="../../assets/img/plus-sign.svg" alt="add project"/>
+							</button>
+							<p>Add Project</p>
+						</div>
+					}
 				</div>
 			</div>
 			<Modal
@@ -358,12 +622,12 @@ function ProfileInfo(props) {
 				aria-describedby="modal-modal-description"
 			>
 				<Box sx={style}>
-					<form id="userPhoto" className="modal-form" onSubmit={handleFormUpdate}>
+					<form id="userPhoto" className="modal-form" onSubmit={uploadImage}>
 						<div className="modal-header">
 							<h4>Update Profile Picture</h4>
 						</div>
 						<label>Image Path</label>
-						<input name='photoInput' value={photo} onChange={handleChange} />
+						<input name='photoInput' type="file" onChange={handleChange} />
 						<button className="modal-button" type="submit">
 							Upload
 						</button>
@@ -422,6 +686,102 @@ function ProfileInfo(props) {
 							Add
 						</button>
 					</form>
+				</Box>
+			</Modal>
+			<Modal
+				open={openProjectCreator}
+                id="projectModal"
+				onClose={handleCloseProjectCreator}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<form id="userProject" className="modal-form modal-project" onSubmit={handleCreateProject}>
+						<div className="modal-header">
+							<h3>Create Project</h3>
+						</div>
+                        <div>
+                            <label htmlFor="title" >Title</label>
+                            <input id="title" name='title' value={createdProject.title} onChange={handleProjectChange}/>
+                        </div>
+						<div>
+                            <label htmlFor="description">Description</label>
+                            <textarea id="description" name="description" value={createdProject.description} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+						<div>
+                            <label htmlfor="addImage">Image</label>
+                            <input type="file" id="addImage" name="addImage" onChange={handleProjectChange} />
+                        </div>
+						<div>
+                            <label htmlFor="responsibilities">Responsibilities</label>
+                            <textarea id="responsibilities" name="responsibilities" value={createdProject.responsibilities} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+                        <div>
+                            <label htmlFor="techstack">Tech Stack</label>
+                            <textarea id="techstack" name="techstack" value={createdProject.techstack} onChange={handleProjectChange} className="modal-textarea" />
+                        </div>
+                        <div>
+                            <label htmlFor="repo" >Repo Link</label>
+                            <input id="repo" name='repo' value={createdProject.repo} onChange={handleProjectChange}/>
+                        </div>
+                        <div>
+                            <label htmlFor="demo" >Live/Demo Link</label>
+                            <input id="demo" name='demo' value={createdProject.demo} onChange={handleProjectChange}/>
+                        </div>
+                        <button className="modal-button" type="submit">
+							Create
+						</button>
+					</form>
+				</Box>
+			</Modal>
+			<Modal
+				open={openLinks}
+                id="linksModal"
+				onClose={handleClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<form id="profileLinks" className="modal-form" onSubmit={handleFormUpdate}>
+						<div className="modal-header">
+							<h4>Update Links</h4>
+						</div>
+						<label htmlFor='linkedin'>LinkedIn: </label>
+						<input id="linkedin" name='linkedin' value={profileLinks.linkedin} onChange={handleChange} className="modal-input" />
+						<label htmlFor='github'>Github: </label>
+						<input id='github' name='github' value={profileLinks.github} onChange={handleChange} className="modal-input" />
+						<label htmlFor='portfolio_page'>Porfolio Page: </label>
+						<input id="portfolio_page" name='portfolio_page' value={profileLinks.portfolio_page} onChange={handleChange} className="modal-input" />
+						<button className="modal-button" type="submit">
+							Update
+						</button>
+					</form>
+				</Box>
+			</Modal>
+			<Modal
+				open={openPins}
+				onClose={handleClosePins}
+                id="pinModal"
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={style}>
+					<div id="userPins" className="modal-form">
+						<div className="modal-header">
+							<h4>Pinned Posts</h4>
+						</div>
+						{specificUser.pinned_posts.map((pin) => (
+							<div className="chat subthread" data-id={pin.post._id} key={pin.post._id} >
+							<div className="pos post-bar">
+								<div>
+									<span className="chat-name">{pin.post.author.username}</span>
+									<span className="chat-date">{pin.date_created}</span>
+								</div>
+							</div>
+							<p className="pos post-text">{pin.post.post_text}</p>
+							</div>
+						))}
+					</div>
 				</Box>
 			</Modal>
 		</div>

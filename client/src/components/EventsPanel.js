@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
-// import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import EventCreation from "./EventCreation";
 
 import { useQuery } from '@apollo/client';
-// import AuthService from '../utils/auth';
+import AuthService from '../utils/auth';
 
-import { ALL_EVENTS } from '../utils/queries';
+import { ALL_EVENTS, USER_EVENTS } from '../utils/queries';
 
 const style = {
     position: 'absolute',
@@ -24,13 +23,24 @@ const style = {
 
 function EventsPanel(props) {
 
+    const userId = AuthService.getProfile().data._id;
+
     const { setActiveEvent } = props;
 
-    const {loading, data} = useQuery(ALL_EVENTS);
+    const getAllPublicEvents = useQuery(ALL_EVENTS);
+    const getAllUserEvents = useQuery(USER_EVENTS, {
+        variables: {
+            userId: userId
+        }
+    })
 
-    const allEvents = data?.allEvents || [];
+    let loading = getAllPublicEvents.loading || getAllUserEvents.loading;
+
+    const allEvents = getAllPublicEvents.data?.allEvents || [];
+    const allUserEvents = getAllUserEvents.data?.userEvents || [];
 
     const [open, setOpen] = React.useState(false);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -38,6 +48,7 @@ function EventsPanel(props) {
         setActiveEvent(event);
     }
     const [droppedEvents, setDroppedEvents] = React.useState(false);
+    const [droppedPublicEvents, setDroppedPublicEvents] = React.useState(false);
 
     const handleOpenDropdown = (event) => {
         const eventInfo = document.getElementById("events-dropdown");
@@ -53,9 +64,27 @@ function EventsPanel(props) {
         eventInfo.style.display = "none";
     }
 
+    const handleOpenPublicDropdown = (event) => {
+        const eventInfo = document.getElementById("public-events-dropdown");
+
+        setDroppedPublicEvents(true);
+        eventInfo.style.display = "block";
+    }
+
+    const handleClosePublicDropdown = (event) => {
+        const eventInfo = document.getElementById("public-events-dropdown");
+
+        setDroppedPublicEvents(false);
+        eventInfo.style.display = "none";
+    }
+
     if (loading) {
         return <h2>Loading...</h2>
     }
+
+    const publicEvents = allEvents.filter((event) => (
+        event.private === false
+    ))
     
     return (
         <div id="sidebar-events-panel">
@@ -86,13 +115,42 @@ function EventsPanel(props) {
             </div>
             <ul
             id="events-dropdown">
-                {allEvents.map((event) => (
+                {allUserEvents.map((event) => (
                     <li key={event._id}>
                         <Link onClick={(e) => {handleEventChange(event._id)}} to={`/events/${event._id}`} >
                             {event.title}
                         </Link>
                     </li>
                 ))}
+                <li className="public-dropdown">
+                    <div className="public-threads-btn">
+                        <h3>Public Events</h3>
+                        {droppedPublicEvents ? (
+                            <img
+                                src="/assets/img/up_btn.png"
+                                alt="threads icon"
+                                onClick={handleClosePublicDropdown}
+                            />
+                        ) : (
+                            <img
+                                src="/assets/img/down_btn.png"
+                                alt="threads icon"
+                                onClick={handleOpenPublicDropdown}
+                            />
+                        )}
+                        
+                    </div>
+                    <ul
+                    id="public-events-dropdown">
+                        {publicEvents.map((event) => (
+                            <li key={event._id}>
+                                <Link onClick={(e) => {handleEventChange(event._id)}} to={`/events/${event._id}`} >
+                                    {event.title}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </li>
             </ul>
             <Modal
                 open={open}

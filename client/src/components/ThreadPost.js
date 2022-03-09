@@ -1,14 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../utils/auth";
+import ReactionBar from "./ReactionBar";
+import EmojiPicker from "./EmojiPicker";
+import { Modal, Box } from "@mui/material";
 
-export function ThreadPost(props) {
+export default function ThreadPost(props) {
 
     const { post, pin, openEditor, dropdown, remove, setActiveComment } = props;
 
+    const [emojiModal, setEmojiModal] = React.useState(false);
+
+    const openEmojiMart = async () => {
+        setEmojiModal(true);
+    }
+
+    const closeEmojiMart = async () => {
+        setEmojiModal(false);
+    }
+
     const owner = AuthService.getProfile().data._id;
 
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24
+    };
+
     return (
+        <React.Fragment>
         <div data-id={post._id} key={post._id} className="chat">
             <div className="pos post-bar">
                 <div>
@@ -33,19 +57,38 @@ export function ThreadPost(props) {
                 }
             </div>
             <p className="pos post-text">{post.post_text}</p>
-            <div className='post-options'>
-                <button className='comments-chip'>
-                <div>{post.comments.length}</div>
-                <Link className='react-link' to={`/subthread/${post._id}`} onClick={setActiveComment}>
-                    {post.comments.length === 1 ? (<span>Comment</span>) : (<span>Comments</span>)}
-                    </Link>
-                </button>
-                {/* {owner === post.author._id ? 
-                (null) : ( */}
-                <img src="../../assets/img/purple_pin.png" alt="pin" style={{width: "30px", height: "auto", cursor:"pointer"}} onClick={pin}/>
-                {/* )} */}
+            <div className="post-bottom">
+                <div className='post-options'>
+                    <button className='comments-chip'>
+                        <div>{post.comments.length}</div>
+                        <Link className='react-link' to={`/subthread/${post._id}`} onClick={setActiveComment}>
+                            {post.comments.length === 1 ? (<span>Comment</span>) : (<span>Comments</span>)}
+                        </Link>
+                    </button>
+                    {/* {owner === post.author._id ? 
+                    (null) : ( */}
+                    {/* )} */}
+                    <div className="reaction-bar">
+                        <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
+                        <ReactionBar reactions={post.reactions}/>
+                    </div>
+                </div>
+                <img src="../../assets/img/purple_pin.png" alt="pin" style={{width: "30px", height: "30px", cursor:"pointer"}} onClick={pin}/>
             </div>
+            
         </div>
+        <Modal
+            data-id="emoji-mart"
+            open={emojiModal}
+            onClose={closeEmojiMart}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={post._id} parentId={post.thread._id} elementType="post"/>
+            </Box>
+        </Modal>
+        </React.Fragment>
     )
 }
 

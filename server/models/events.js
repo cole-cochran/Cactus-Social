@@ -44,6 +44,10 @@ const eventSchema = new Schema({
         type: ObjectId,
         ref:'User'
     },
+    private: {
+        type: Boolean,
+        default: true
+    },
     attendees: [
         {
             type: ObjectId,
@@ -63,6 +67,10 @@ const eventSchema = new Schema({
         required: true
     },
     image: {
+        type: String,
+        default: ""
+    },
+    image_type: {
         type: String,
         default: ""
     },

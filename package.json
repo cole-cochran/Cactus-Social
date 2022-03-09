@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/cole-cochran/Project-3#readme",
   "dependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "uuid": "^8.3.2"
   }
 }

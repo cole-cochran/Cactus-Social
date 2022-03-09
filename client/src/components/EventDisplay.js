@@ -6,15 +6,31 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import EventEditor from './EventEditor';
 import EventComment from './EventComment';
+import InvitationModal from "./InvitationModal";
 
+import { CloudinaryContext, Image } from 'cloudinary-react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
-// import { ADD_EVENT_COMMENT_REACTION } from '../utils/mutations';
-import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
-//! ADD  DESCRIPTION OF EVENT_DETAILS
 
+import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
+import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
 import AuthService from '../utils/auth';
+
+const style = {
+	position: 'absolute',
+	top: '50%',
+	left: '50%',
+	transform: 'translate(-50%, -50%)',
+	width: 400,
+	bgcolor: '#232323',
+	boxShadow: 24,
+	border: '2px solid white'
+};
+
+const scroll = () => {
+	var element = document.getElementsByClassName("event-comment");
+	element[0].scrollTop = element[0].scrollHeight;
+}
 
 export default function EventDisplay(props) {
 
@@ -48,15 +64,18 @@ export default function EventDisplay(props) {
 		]
 	});
 
-	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT);
-
+	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT, {
+		refetchQueries: [
+			EVENT_DETAILS,
+			'eventDetails'
+		]
+	});
 	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
 			'eventDetails'
 		]
 	});
-
 	const [ updateEventComment ] = useMutation(UPDATE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -74,6 +93,7 @@ export default function EventDisplay(props) {
 	const [toggleComments, setToggleComments] = React.useState(false);
 	const [commentsList, setCommentsList] = React.useState([]);
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
+	const [openInvite, setOpenInvite] = React.useState(false);
 
 	React.useEffect(() => {
 		socket.emit("join_event", {room: eventId, user: AuthService.getProfile().data.username})
@@ -81,10 +101,30 @@ export default function EventDisplay(props) {
 
 	React.useEffect(() => {
 		socket.on('receive_comment', (data) => {
-			// console.log(data);
 			setCommentsList(commentsList => [...commentsList, data]);
 		});
 	}, [socket]);
+
+	const handleOpenInvite = (event) => {
+		setOpenInvite(true);
+	}
+	const handleCloseInvite = (event) => {
+		setOpenInvite(false);
+	}
+	const handleOpenEditor = async () => {
+		setOpenEditor(true);
+	}
+	const handleCloseEditor = async () => {
+		setOpenEditor(false);
+	}
+	const handleOpenCommentEditor = async (event) => {
+		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
+		setEditedComment(currentComment);
+		setOpenCommentEditor(true);
+	}
+	const handleCloseCommentEditor = async (event) => {
+		setOpenCommentEditor(false);
+	}
 
 	const handleAttend = async () => {
 		await attendEvent({
@@ -114,14 +154,13 @@ export default function EventDisplay(props) {
 				}
 			});
 			socket.emit('send_comment', {room: eventId, user: AuthService.getProfile().data.username, comment: commentData.data.createEventComment});
-			setNewCommentText("");
 			setMessageTimeout(true);
 			setTimeout(() => {setMessageTimeout(false)});
 		} catch (err) {
 			console.error(err);
 		}
-		
-	}
+		setNewCommentText("");
+	};
 
 	const handleRemoveComment = async (event) => {
 		const commentId = JSON.parse(localStorage.getItem('commentId'));
@@ -135,7 +174,6 @@ export default function EventDisplay(props) {
 		} catch (err) {
 			console.error(err);
 		}
-
 		localStorage.removeItem('commentId');
 	}
 
@@ -159,9 +197,7 @@ export default function EventDisplay(props) {
 	}
 
 	const handleChange = async (event) => {
-		
 		const { name, value } = event.target;
-
 		if (name === 'eventCommentText') {
 			setNewCommentText(value);
 		} else if (name === 'editedCommentText') {
@@ -171,55 +207,36 @@ export default function EventDisplay(props) {
 
 	const handleCommentDropdown = async (event) => {
 		const commentId = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
-
 		localStorage.setItem('commentId', JSON.stringify(commentId));
-
 		event.target.parentNode.childNodes[1].style.display = "flex";
 	}
 
-	const handleOpenCommentEditor = async (event) => {
-		const currentComment = event.target.parentNode.parentNode.parentNode.parentNode.childNodes[1].textContent;
-		setEditedComment(currentComment);
-		setOpenCommentEditor(true);
-	}
-
-	const handleCloseCommentEditor = async (event) => {
-		setOpenCommentEditor(false);
+	const handleCloseCommentDropdown = async (event) => {
+		if (event.target.className !== "dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
+			const content = document.querySelectorAll('.dropdown-content');
+			if (content) content.forEach((el) => (el.style.display = "none"));
+		}
 	}
 
 	const handleDropdown = async (event) => {
 		const content = event.target.parentNode.parentNode.childNodes[1].childNodes[0];
-		console.log(content);
-
 		content.style.display = "flex";
 	}
 
 	const handleCloseDropdown = (event) => {
-		if (event.target.className !== "dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
-			const content = document.querySelectorAll('.dropdown-content');
-			for (let item of content) {
-				item.style.display = "none";
-			}
+		if (event.target.className !== "event-dropdown-content" && event.target.className !== "dropdown-option" && event.target.className !== "dots") {
+			const content = document.querySelector('.event-dropdown-content');
+			if (content) content.style.display = "none";
 		}
-		
 	}
 
-	const handleOpenEditor = async () => {
-		setOpenEditor(true);
-	}
-
-	const handleCloseEditor = async () => {
-		setOpenEditor(false);
-	}
-
-	const handleDelete = async () => {
+	const handleDeleteEvent = async () => {
 		await removeEvent({
 			variables: {
 				eventId: eventId,
 				userId: userId
 			}
 		});
-
 		window.location.replace(`/profile/${userId}`);
 	}
 
@@ -227,25 +244,11 @@ export default function EventDisplay(props) {
 		setToggleComments(!toggleComments);
 	}
 
-	if (loading) {
-
-		return (
-			<div className='loading-icon-box'>
-				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-			</div>
-		)
-	}
-
-	if (errors) {
-		return <div>ERROR: {errors}</div>
-	}
-
-	if (!singleEvent.data.eventDetails) {
-		return <h3>This event no longer exists!</h3>;
-	}
+	if (loading) return (<div>Loading...</div>);
+	if (errors) return (<div>ERROR: {errors}</div>);
+	if (!singleEvent.data.eventDetails) return (<h3>This event no longer exists!</h3>);
 
 	const eventComments = singleEvent.data.eventDetails.comments;
-
 	const eventData = singleEvent.data.eventDetails;
 
 	let attending = false;
@@ -257,36 +260,25 @@ export default function EventDisplay(props) {
 	}
 
 	let owner = false;
-	if (eventData.owner._id === userId) {
-		owner = true;
-	}
-
-	const style = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-		width: 400,
-		bgcolor: '#232323',
-		boxShadow: 24,
-		border: '2px solid white'
-	};
-
-	const scroll = () => {
-		var element = document.getElementsByClassName("event-comment");
-		element[0].scrollTop = element[0].scrollHeight;
-	}
+	if (eventData.owner._id === userId) owner = true;
 
 	return (
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
-            <div className="app-content-container" >
+            <div className="app-content-container" onClick={handleCloseCommentDropdown}>
 				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
 				<div className='event-container'>
 					<div className='event-card'>
 						<div className='event-main-div'>
 							<div className='event-img-div'>
+								{eventData.image === "" ? (
 								<img className='event-img' src="../../assets/img/cactus_event.png" alt="event icon" />
+								) : (
+								<CloudinaryContext cloudName="damienluzzo" >
+									<Image className="event-img" publicId={`CactusSocial/${eventData.image}.${eventData.image_type}`} />
+								</CloudinaryContext>
+								)}
+								
 							</div>
 							<div className="event-main-top">
 							<div className='event-meta'>
@@ -299,6 +291,13 @@ export default function EventDisplay(props) {
 									<button>
 										{eventData.category}
 									</button>
+								</div>
+								<div className='event-type'>
+									{eventData.private ? (
+										<p>Invite Only</p>
+									):(
+										<p>Public Event</p>
+									)}
 								</div>
 							</div>
 							<div className='event-secondary'>
@@ -352,11 +351,14 @@ export default function EventDisplay(props) {
 												<p>More</p>
 											</div>
 											<div className="dropdown">
-												<div className="dropdown-content">
+											<div className="event-dropdown-content">
+													<div className="dropdown-option" onClick={handleOpenInvite}>
+														Invite Friends
+													</div>
 													<div className="dropdown-option event-update-option" onClick={handleOpenEditor}>
 														Update
 													</div>
-													<div className='event-delete' onClick={handleDelete} >
+													<div className='event-delete' onClick={handleDeleteEvent} >
 														Delete
 													</div>
 												</div>
@@ -378,36 +380,8 @@ export default function EventDisplay(props) {
 							</div>
 						<div className='event-desc-div'>
 							<p className='event-description'><span>Description: </span>{eventData.description}</p>
-							{/* {eventData.start_date === eventData.end_date ? (
-								<div className='event-datetime'>
-								<p>
-									<span>Start: </span>{eventData.start_date} at {eventData.start_time}
-								</p>
-								<p>
-									<span>End: </span>{eventData.start_date} at {eventData.end_time}
-								</p>
-								</div>
-							) : (
-								<div className='event-datetime'>
-									<p>
-										<span>Begins: </span>
-										{eventData.start_date} @ {eventData.start_time}
-									</p>
-									<p>
-										<span>Ends: </span>{eventData.end_date} @ {eventData.end_time}
-									</p>
-								</div>
-							)} */}
 						</div>
 						<div className='event-other-div'>
-							{/* {eventData.in_person ? (
-								<p className='event-location'><span>Location: </span>
-									{eventData.location}
-								</p>
-							) : (
-								<a className='event-virtual' href={eventData.location} rel="noreferrer" target="_blank">Link To Virtual Event</a>
-							)} */}
-
 							<div className='event-attendees'>
 								<h5>
 									Attendees
@@ -415,7 +389,14 @@ export default function EventDisplay(props) {
 								<div className='event-attendees-div'>
 								{eventData.attendees.map((attendee) => (
 									<div className='event-attendee' key={attendee._id}>
+										{attendee.picture === "" ? (
 										<img src="../../assets/img/test_account.png" alt="user profile pic"/>
+										) : (
+										<CloudinaryContext cloudName="damienluzzo" >
+											<Image className="friend-pic" publicId={`CactusSocial/${attendee.picture}`} />
+										</CloudinaryContext>
+										)}
+										
 										<p>{attendee.username}</p>
 									</div>
 									)
@@ -447,7 +428,7 @@ export default function EventDisplay(props) {
 								{eventComments.map((comment) => (
 									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
 								))}
-								{commentsList.map((comment) => (
+								{commentsList.filter(item => item["event"]._id === eventId).map((comment) => (
 									<EventComment comment={comment} handleCommentDropdown={handleCommentDropdown} handleOpenCommentEditor={handleOpenCommentEditor} handleRemoveComment={handleRemoveComment} key={comment._id}/>
 								))}
 								<form onSubmit={handleCreateComment} className="chat-input event-comment-input">
@@ -474,9 +455,20 @@ export default function EventDisplay(props) {
 					aria-describedby="modal-modal-description"
 				>
 					<Box sx={style}>
-						<EventEditor eventId={eventId} eventData={eventData} />
+						<EventEditor handleCloseEditor={handleCloseEditor} eventId={eventId} eventData={eventData} />
 					</Box>
 				</Modal>
+				<Modal
+                        data-id="invite"
+						open={openInvite}
+						onClose={handleCloseInvite}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<InvitationModal itemId={eventId} itemType="event" handleCloseInvite={handleCloseInvite} />
+						</Box>
+					</Modal>
 				<Modal
 					data-id="editComment"
 					open={openCommentEditor}

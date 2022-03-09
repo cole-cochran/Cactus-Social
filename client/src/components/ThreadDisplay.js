@@ -1,16 +1,14 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
-import { ThreadPost } from "../components/ThreadPost";
+import ThreadPost from "./ThreadPost";
+import InvitationModal from "./InvitationModal";
 
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
 import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
-//* THREAD_DETAILS requires threadId and gives us access to
 
-// import { ADD_POST_REACTION } from '../utils/mutations';
-import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD } from '../utils/mutations';
+import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD, LEAVE_THREAD } from '../utils/mutations';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -30,7 +28,6 @@ const style = {
 function ThreadDisplay(props) {
 
 	// TODO (threadDisplay) Option for flagging a post as inappropriate LATER? 
-	// TODO (threadDisplay) Allow only thread owners to delete thread
 
 	let updatedThreadPosts;
 
@@ -40,19 +37,24 @@ function ThreadDisplay(props) {
 
 	const userId = AuthService.getProfile().data._id;
 
-	const [ createPost ] = useMutation(CREATE_POST);
+	const [ createPost ] = useMutation(CREATE_POST, {
+		refetchQueries: [
+			THREAD_DETAILS,
+			'threadDetails'
+		],
+	});
 
 	const [ removePost ] = useMutation(REMOVE_POST, {
 		refetchQueries: [
-			ALL_THREAD_POSTS,
-			'allThreadPosts'
+			THREAD_DETAILS,
+			'threadDetails'
 		],
 	});
 
 	const [ updatePost ] = useMutation(UPDATE_POST, {
 		refetchQueries: [
-			ALL_THREAD_POSTS,
-			'allThreadPosts'
+			THREAD_DETAILS,
+			'threadDetails'
 		],
 	});
 
@@ -62,6 +64,8 @@ function ThreadDisplay(props) {
 			'userProfile'
 		],
 	});
+
+	const [ leaveThread ] = useMutation(LEAVE_THREAD);
 
 	const [ removeThread ] = useMutation(REMOVE_THREAD);
 
@@ -76,7 +80,7 @@ function ThreadDisplay(props) {
 	});
 
 	const userData = useQuery(USER_PROFILE, {
-		variables: { userId: AuthService.getProfile().data._id }
+		variables: { userId: userId }
 	});
 
 	const errors = singleThread.error || threadPosts.error || userData.error;
@@ -95,9 +99,21 @@ function ThreadDisplay(props) {
             pinHash: ''
         }
     );
+	const [openInvite, setOpenInvite] = React.useState(false);
 
 	const [postList, setPostList] = React.useState([]);
+	
 	const [messageTimeout, setMessageTimeout] = React.useState(false);
+
+	React.useEffect(() => {
+		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
+	}, [activeThread]);
+
+	React.useEffect(() => {
+		socket.on('receive_post', (data) => {
+			setPostList(postList => [...postList, data]);
+		})
+	}, [socket]);
 
 	const handleRemoveThread = () => {
 		try {
@@ -113,15 +129,7 @@ function ThreadDisplay(props) {
 		window.location.replace(`/profile/${userId}`);
 	}
 
-	React.useEffect(() => {
-		socket.emit("join_thread", {room: activeThread, user: AuthService.getProfile().data.username});
-	}, [activeThread]);
-
-	React.useEffect(() => {
-		socket.on('receive_post', (data) => {
-			setPostList(postList => [...postList, data]);
-		})
-	}, [socket]);
+	
 
 	const handleOpenDropdown = (event) => {
 		const postData = event.target.parentNode.parentNode.parentNode.getAttribute('data-id');
@@ -137,6 +145,26 @@ function ThreadDisplay(props) {
 				dropdown.style.display = "none";
 			}
 		}
+	}
+
+	const handleOpenThreadDropdown = (event) => {
+		const content = event.target.parentNode.childNodes[1];
+		content.style.display = "flex";
+	}
+
+	const handleCloseThreadDropdown = (event) => {
+		if (event.target.className !== "thread-dropdown-content" && event.target.className !== "dots" && event.target.className !== "dropdown-option") {
+			const threadDrop = document.querySelector('.thread-dropdown-content');
+			if (threadDrop) {threadDrop.style.display = "none";}
+		}
+	}
+
+	const handleOpenInvite = (event) => {
+		setOpenInvite(true);
+	}
+
+	const handleCloseInvite = (event) => {
+		setOpenInvite(false);
 	}
 
 	const handleOpenEditor = (event) => {
@@ -160,6 +188,21 @@ function ThreadDisplay(props) {
         localStorage.removeItem('postId');
         setOpen(false);
     }
+
+	const handleLeaveThread = async (event) => {
+		event.preventDefault();
+		try {
+			await leaveThread({
+				variables: {
+					userId: userId,
+					threadId: threadId
+				}
+			})
+		} catch (err) {
+			console.log(err);
+		}
+		window.location.replace(`/profile/${userId}`);
+	}
 
 	const handleRemovePost = (event) => {
 		event.preventDefault();
@@ -185,12 +228,12 @@ function ThreadDisplay(props) {
 			if(socket) {
 				const postData = await createPost({
 					variables: {
-						threadId: singleThread.data.threadDetails._id,
+						threadId: threadId,
 						post_text: newPostText,
-						author: AuthService.getProfile().data._id
+						author: userId
 					}
 				});
-				console.log(postData.data.createPost);
+				// console.log(postData.data.createPost);
 				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
 				setMessageTimeout(true);
 				setTimeout(() => {setMessageTimeout(false);}, 2000);
@@ -210,7 +253,7 @@ function ThreadDisplay(props) {
 		try {
 			await updatePinnedPost({
 				variables: {
-                    userId: AuthService.getProfile().data._id,
+                    userId: userId,
                     postId: postId,
 					pinTitle: pinnedPost.pinTitle,
                     pinHash: pinnedPost.pinHash
@@ -263,7 +306,7 @@ function ThreadDisplay(props) {
 		try {
 			await removePinnedPost({
 				variables: {
-					userId: AuthService.getProfile().data._id,
+					userId: userId,
 					pinnedId: foundPin._id
 				}
 			})
@@ -295,11 +338,8 @@ function ThreadDisplay(props) {
     };
 
 	if (loading) {
-
 		return (
-			<div className='loading-icon-box'>
-				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-			</div>
+			<p>Loading...</p>
 		)
 	} 
 
@@ -341,20 +381,42 @@ function ThreadDisplay(props) {
 	return (
 		<React.Fragment>
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
-			<div className="thread-content-container" onLoad={scroll}>
+			<div onClick={handleCloseThreadDropdown} className="thread-content-container" onLoad={scroll}>
 				<div className='thread-top'>
 					<div className="thread-header">
 						<h3>{singleThread.data.threadDetails.title}</h3>
 						<div>
 							<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
 						</div>
+						<div>
+							{singleThread.data.threadDetails.private ? (
+								<p>Invite Only</p>
+							):(
+								<p>Public Forum</p>
+							)}
+						</div>
 					</div>
-					{threadOwner ? (
-						<img src="../../assets/img/remove_icon.png" alt="delete thread" onClick={handleRemoveThread}/>
-					) : (
-						<React.Fragment />
-					)}
-					
+					{threadOwner ? 
+					<div className="dropdown">
+						<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
+						<div className="thread-dropdown-content">
+							<div className="dropdown-option" onClick={handleOpenInvite}>
+								Invite Friends
+							</div>
+							<div onClick={handleRemoveThread} >
+								Delete
+							</div>
+						</div>
+					</div>
+					: <div className="dropdown">
+						<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
+						<div className="thread-dropdown-content">
+							<div onClick={handleLeaveThread} >
+								Leave Thread
+							</div>
+						</div>
+					</div>
+					}
 				</div>
 				
 				<div id="chats-container" className="chats-container">
@@ -370,7 +432,7 @@ function ThreadDisplay(props) {
 							)
 						)
 					)}
-					{postList.map(
+					{postList.filter(item => item["thread"]._id === threadId).map(
 						(post) => (
 							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
 							dropdown={handleOpenDropdown} 
@@ -417,6 +479,17 @@ function ThreadDisplay(props) {
 									Update
 								</button>
 							</form>
+						</Box>
+					</Modal>
+					<Modal
+                        data-id="invite"
+						open={openInvite}
+						onClose={handleCloseInvite}
+						aria-labelledby="modal-modal-title"
+						aria-describedby="modal-modal-description"
+					>
+						<Box sx={style}>
+							<InvitationModal itemId={threadId} itemType="thread" handleCloseInvite={handleCloseInvite} />
 						</Box>
 					</Modal>
 				</div>

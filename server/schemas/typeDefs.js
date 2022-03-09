@@ -12,6 +12,19 @@ const typeDefs = gql`
         comments: [Comment]
     }
 
+    type Portfolio {
+        _id: ID!
+        title: String!
+        description: String!
+        owner: User
+        image: String
+        image_type: String
+        responsibilities: String
+        techstack: String
+        repo: String
+        demo: String
+    }
+
     type PinnedPost {
         _id: ID!
         pinTitle: String
@@ -30,6 +43,30 @@ const typeDefs = gql`
         event: Event
     }
 
+    type Chat {
+        _id: ID!
+        users: [User]
+        messages: [ChatMessage]
+        date_created: String
+    }
+
+    type ChatMessage {
+        _id: ID!
+        sender: User
+        message: String!
+        edited: Boolean
+        chat: Chat
+        date_created: String
+    }
+
+    type Invites {
+        _id: ID!
+        user: User
+        thread: Thread
+        event: Event
+        date_created: String
+    }
+
     type User {
         _id: ID!
         first_name: String!
@@ -38,6 +75,7 @@ const typeDefs = gql`
         email: String!
         password: String!
         picture: String
+        picture_type: String
         bio: String
         threads: [Thread]
         events: [Event]
@@ -47,12 +85,20 @@ const typeDefs = gql`
         pinned_posts: [PinnedPost]
         friend_requests: [User]
         sent_friend_requests: [User]
+        chats: [Chat]
+        received_invites: [Invites]
+        sent_invites: [Invites]
+        portfolio_projects: [Portfolio]
+        github: String
+		linkedin: String
+		portfolio_page: String
     }
 
     type Thread {
         _id: ID!
         title: String!
         posts: [Post]
+        private: Boolean
         moderator: User
         members: [User]
         date_created: String
@@ -72,11 +118,13 @@ const typeDefs = gql`
         start_time: String!
         end_time: String!
         owner: User
+        private: Boolean
         attendees: [User]
         category: String!
         in_person: Boolean!
         location: String!
         image: String
+        image_type: String
         comments: [Comment]
         date_created: String
         edited: Boolean
@@ -106,6 +154,12 @@ const typeDefs = gql`
 
         friendRequests(userId: ID!): User
         sentFriendRequests(userId: ID!): User
+
+        chatDetails(chatId: ID!): Chat
+        userChats(userId: ID!): [Chat]
+        
+        sentInvites(userId: ID!): User
+        receivedInvites(userId: ID!): User
     }
 
     type Mutation {
@@ -121,10 +175,11 @@ const typeDefs = gql`
         addFriend(userId: ID!, friend: ID!): User
         removeFriend(userId: ID!, friend: ID!): User
 
-        updatePhoto(userId: ID!, picture: String!): User
+        updatePhoto(userId: ID!, picture: String!, picture_type: String!): User
         updateBio(userId: ID!, bio: String!): User
 
-        createThread(title: String!, moderator: ID!): Thread
+        createThread(title: String!, private: Boolean!, moderator: ID!): Thread
+        leaveThread(userId: ID!, threadId: ID!): User
         removeThread(threadId: ID!): User
 
         createPost(threadId: ID!, post_text: String!, author: ID!): Post
@@ -133,14 +188,17 @@ const typeDefs = gql`
         updatePost(threadId: ID!, postId: ID!, post_text: String!): Thread
 
         addPostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
+        removePostReaction(threadId: ID!, postId: ID!, reaction: String!): Thread
 
         createPostComment(postId: ID!, comment_text: String!, author: ID!): Comment
         removePostComment(postId: ID!, commentId: ID!): Post
         updatePostComment(postId: ID!, commentId: ID!, comment_text: String!) : Post
-        addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
 
-        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, owner: ID!): Event
-        updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!): Event
+        addPostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
+        removePostCommentReaction(commentId: ID!, postId: ID!, reaction: String!): Post
+
+        createEvent(title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, image_type: String!, owner: ID!): Event
+        updateEvent(eventId: ID!, title: String!, description: String!, start_date: String!, end_date: String!, start_time: String!, private: Boolean!, end_time: String!, category: String!, in_person: Boolean!, location: String!, image: String!, image_type: String!): Event
         removeEvent(eventId: ID!, userId: ID!): User
 
         attendEvent(eventId: ID!, attendee: ID!): Event
@@ -151,9 +209,35 @@ const typeDefs = gql`
         updateEventComment(eventId: ID!, commentId: ID!, comment_text: String!): Event
         
         addEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
+        removeEventCommentReaction(commentId: ID!, eventId: ID!, reaction: String!): Event
 
         sendFriendRequest(userId: ID!, friend: ID!): User
         denyFriendRequest(userId: ID!, friend: ID!): User
+
+        createChatMessage(chatId: ID!, sender: ID!, message: String!): ChatMessage
+        deleteChatMessage(chatId: ID!, messageId: ID!): Chat
+        updateChatMessage(chatId: ID!, messageId: ID!, message: String!): Chat
+
+        createChat(participants: [ID!]!): Chat
+        removeChat(chatId: ID!, userId: ID!): User
+        deleteChat(chatId: ID!): [Chat]
+
+        sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!): User
+        sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!): User
+
+        acceptEventInvite(userId: ID!, senderId: ID!, eventId: ID!): Event
+        acceptThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): Thread
+
+        rejectEventInvite(userId: ID!, senderId: ID!, eventId: ID!): User
+        rejectThreadInvite(userId: ID!, senderId: ID!, threadId: ID!): User
+
+        createPortfolioProject(owner: ID!, title: String!, description: String!, image: String, image_type: String, responsibilities: String, techstack: String, repo: String, demo: String): User
+
+        updatePortfolioProject(userId: ID!, projectId: ID!, title: String!, description: String!, image: String!, image_type: String!, responsibilities: String!, techstack: String!, repo: String!, demo: String!): User
+
+        deletePortfolioProject(projectId: ID!, userId: ID!): User
+
+        updateUserLinks(userId: ID!, linkedin: String!, github: String!, portfolio_page: String!): User
     }
 `;
 

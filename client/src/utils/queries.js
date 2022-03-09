@@ -10,6 +10,7 @@ export const ALL_USERS = gql`
 			username
 			email
 			picture
+			picture_type
 			bio
 			threads {
 				_id
@@ -17,6 +18,7 @@ export const ALL_USERS = gql`
 				posts {
 					_id
 				}
+				private
 			}
 			events {
 				_id
@@ -24,6 +26,7 @@ export const ALL_USERS = gql`
 				owner {
 					_id
 				}
+				private
 				category
 				in_person
 			}
@@ -50,6 +53,7 @@ query allThreads {
 			}
 			post_text
 		}
+		private
 		moderator {
 			username
 		}
@@ -95,6 +99,7 @@ export const ALL_EVENTS = gql`
 				_id
 				username
 			}
+			private
 			attendees {
 				_id
 				username
@@ -103,6 +108,7 @@ export const ALL_EVENTS = gql`
 			in_person
 			location
 			image
+			image_type
 			date_created
 			edited
 			comments {
@@ -132,6 +138,7 @@ export const ALL_POSTS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			reactions
 			edited
@@ -188,6 +195,7 @@ export const ALL_THREAD_POSTS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			reactions
 			edited
@@ -222,6 +230,7 @@ query allPostComments($postId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
         reactions
         edited
@@ -241,6 +250,7 @@ export const USER_PROFILE = gql`
 			username
 			email
 			picture
+			picture_type
 			bio
 			tech_stack
 			date_joined
@@ -250,11 +260,32 @@ export const USER_PROFILE = gql`
 				pinHash
 				post {
 					_id
+					post_text
+					author {
+						_id
+						username
+					}
 					thread {
 						_id
+						title
 					}
+					date_created
 				}
 			}
+			portfolio_projects {
+				_id
+				title
+				description
+				image
+				image_type
+				responsibilities
+				techstack
+				repo
+				demo
+			}
+			github
+			linkedin
+			portfolio_page
 		}
 	}
 `;
@@ -268,12 +299,15 @@ query friendRequests($userId: ID!) {
 		username
 		email
 		picture
+		picture_type
 		bio
 		tech_stack
 		date_joined
 		friend_requests {
 			_id
 			username
+			picture
+			picture_type
 		}
 	}
 }
@@ -288,12 +322,15 @@ query sentFriendRequests($userId: ID!) {
 		username
 		email
 		picture
+		picture_type
 		bio
 		tech_stack
 		date_joined
 		sent_friend_requests {
 			_id
 			username
+			picture
+			picture_type
 		}
 	}
 }
@@ -314,11 +351,14 @@ query userThreads($userId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
+		private
 		members {
 			_id
 			username
 			picture
+			picture_type
 		}
 		date_created
 	}
@@ -338,6 +378,7 @@ export const USER_EVENTS = gql`
 				_id
 				username
 			}
+			private
 			attendees {
 				_id
 				username
@@ -346,7 +387,7 @@ export const USER_EVENTS = gql`
 			in_person
 			location
 			image
-			thread
+			image_type
 			date_created
 		}
 	}
@@ -369,6 +410,7 @@ export const USER_FRIENDS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 		}
 	}
@@ -392,15 +434,18 @@ export const THREAD_DETAILS = gql`
 					_id
 				}
 			}
+			private
 			moderator {
 				_id
 				username
 				picture
+				picture_type
 			}
 			members {
 				_id
 				username
 				picture
+				picture_type
 			}
 			date_created
 		}
@@ -415,41 +460,12 @@ query pinnedPosts($threadId: ID!) {
 			_id
 			username
 			picture
+			picture_type
 		}
 		pinTitle
 		pinHash
 	}
 }
-`;
-
-export const THREAD_EVENTS = gql`
-	query threadEvents($threadId: ID!) {
-		threadEvents(threadId: $threadId) {
-			_id
-			title
-			start_date
-			end_date
-			start_time
-			end_time
-			owner {
-				_id
-				username
-				picture
-			}
-			attendees {
-				_id
-				username
-				picture
-			}
-			category
-			image
-			date_created
-			edited
-			comments {
-				_id
-			}
-		}
-	}
 `;
 
 export const POST_DETAILS = gql`
@@ -462,6 +478,7 @@ export const POST_DETAILS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
 			reactions
 			edited
@@ -500,16 +517,20 @@ export const EVENT_DETAILS = gql`
 				_id
 				username
 				picture
+				picture_type
 			}
+			private
 			attendees {
 				_id
 				username
 				picture
+				picture_type
 			}
 			category
 			in_person
 			location
 			image
+			image_type
 			comments {
 				_id
 				comment_text
@@ -530,5 +551,103 @@ export const EVENT_DETAILS = gql`
 	}
 `;
 
+export const CHAT_DETAILS = gql`
+query chatDetails($chatId: ID!) {
+	chatDetails(chatId: $chatId) {
+		_id
+		users {
+			_id
+			username
+		}
+		messages {
+			_id
+			message
+			sender {
+				_id
+				username
+			}
+			edited
+			date_created
+		}
+		date_created
+		}
+	}
+`;
 
+export const SENT_INVITES = gql`
+query sentInvites($userId: ID!) {
+	sentInvites(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		picture_type
+		bio
+		sent_invites {
+			_id
+			user {
+			_id
+			}
+			event {
+			_id
+			}
+			thread {
+			_id
+			}
+			date_created
+		}
+	}
+}
+`;
+
+export const RECEIVED_INVITES = gql`
+query receivedInvites($userId: ID!) {
+	receivedInvites(userId: $userId) {
+		_id
+		first_name
+		last_name
+		username
+		email
+		picture
+		picture_type
+		bio
+		received_invites {
+			_id
+			user {
+			_id
+			username
+			}
+			event {
+			_id
+			title
+			}
+			thread {
+			_id
+			title
+			}
+			date_created
+		}
+	}
+}
+`;
+
+export const USER_CHATS = gql`
+query userChats($userId: ID!) {
+	userChats(userId: $userId) {
+		_id
+		users {
+			_id
+			username
+			picture
+			picture_type
+		}
+		messages {
+			_id
+		}
+		date_created
+	}
+}
+`
 //!  USERNAME IS NESTED IN AUTHOR - FIX RESOLVERS TO POPULATE THAT DATA

@@ -111,7 +111,7 @@ function SubthreadDisplay(props) {
                     author: AuthService.getProfile().data._id
 				}
 			});
-			console.log(commentData.data.createPostComment);
+			// console.log(commentData.data.createPostComment);
 			socket.emit("send_comment", {room: postId, user: AuthService.getProfile().data.username, comment: commentData.data.createPostComment});
 			setNewCommentText('');
 			setMessageTimeout(true);
@@ -220,11 +220,11 @@ function SubthreadDisplay(props) {
 							<p>{singlePost.data.postDetails.post_text}</p>
 						</div>
 						{allPostComments.data.allPostComments.map((comment) => (
-							<PostComment comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
+							<PostComment key={comment._id} comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
 						))}
-						{commentList.map(
+						{commentList.filter(item => item["post"]._id === postId).map(
 							(comment) => (
-								<PostComment comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
+								<PostComment key={comment._id} comment={comment} owner={owner} handleOpenEditor={handleOpenEditor} handleOpenDropdown={handleOpenDropdown} handleRemoveComment={handleRemoveComment}/>
 							))}
 					</div>
 					<form onSubmit={handleCommentSubmit} className="chat-input">

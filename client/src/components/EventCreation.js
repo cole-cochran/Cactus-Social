@@ -3,6 +3,11 @@ import * as React from 'react';
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
+import { v4 as uuidv4 } from 'uuid';
+
+import Axios from "axios";
+// import { CloudinaryContext, Image } from 'cloudinary-react';
+
 import { CREATE_EVENT } from '../utils/mutations';
 //* CREATE_EVENT requires: threadId, title, description, start_date, end_date, start_time, end_time, category, in_person, location, image, and owner and it returns the Event
 
@@ -21,16 +26,38 @@ export default function EventCreation() {
 		end_date: '',
 		start_time: '',
 		end_time: '',
+		private: true,
 		category: '',
 		in_person: false,
 		location: '',
-		image: ''
+		image: {},
+		image_type: ''
 	});
+
+	const uploadImage = async (uuid) => {
+
+		const formData = new FormData();
+		formData.append("file", eventDetails.image);
+		formData.append("upload_preset", "b3zjdfsi");
+		formData.append("public_id", uuid);
+		formData.append("folder", "CactusSocial");
+
+		// console.log(eventDetails.image);
+	
+		// const response = 
+		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
+		// console.log(response);
+	}
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		if (name === 'in_person') {
-			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person})
+			setEventDetails({ ...eventDetails, in_person: !eventDetails.in_person});
+		} else if (name === "private") {
+			setEventDetails({ ...eventDetails, private: !eventDetails.private});
+		} else if (name === 'addImage') {
+			setEventDetails({...eventDetails, image: event.target.files[0]})
+			// console.log(event.target.files[0]);
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}
@@ -45,6 +72,12 @@ export default function EventCreation() {
 			return false;
 		}
 
+		const uuid = uuidv4();
+
+		uploadImage(uuid);
+
+		let fileType = eventDetails.image.name.split(".")[1].toLowerCase();
+
 		try {
 			const res = await createEvent({
 				variables: {
@@ -55,9 +88,11 @@ export default function EventCreation() {
 					start_time: eventDetails.start_time,
 					end_time: eventDetails.end_time,
 					category: eventDetails.category,
+					private: eventDetails.private,
 					in_person: eventDetails.in_person,
 					location: eventDetails.location,
-					image: eventDetails.image,
+					image: `${uuid}`,
+					image_type: fileType,
 					owner: AuthService.getProfile().data._id
 				}
 			});
@@ -74,10 +109,12 @@ export default function EventCreation() {
 			end_date: '',
 			start_time: '',
 			end_time: '',
+			private: true,
 			category: '',
 			in_person: false,
 			location: '',
-			image: ''
+			image: {},
+			image_type: ""
 		});
 	};
 
@@ -91,6 +128,14 @@ export default function EventCreation() {
 				<div>
 					<label forhtml="description">Description</label>
 					<input type="text" value={eventDetails.description} onChange={handleChange} id="description" name="description" ></input>
+				</div>
+				<div>
+					<label forhtml="addImage">Image</label>
+					<input type='file' onChange={handleChange} name="addImage" id="addImage" />
+				</div>
+				<div>
+					<label forhtml="private">Make Event Public?</label>
+					<input type="checkbox" onChange={handleChange} id="private" name="private"/>
 				</div>
 				<div>
 					<label forhtml="start_date">Start Date</label>

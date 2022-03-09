@@ -9,6 +9,7 @@ import AuthService from '../utils/auth';
 function Login(props) {
 	const [ formState, setFormState ] = useState({ username: '', password: '' });
 	const [ loginUser, { error, data } ] = useMutation(LOGIN_USER);
+	const [ errorMsg, setErrorMsg ] = useState("");
 
 	// update state based on form input changes
 	const handleChange = (event) => {
@@ -18,11 +19,20 @@ function Login(props) {
 			...formState,
 			[name]: value
 		});
+		
+		setErrorMsg("");
 	};
 
 	// submit form
 	const handleFormSubmit = async (event) => {
 		event.preventDefault();
+
+		if (formState.username === "") {
+			setErrorMsg("You forgot to enter your username");
+		} else if (formState.password === "") {
+			setErrorMsg("You forgot to enter your password")
+		}
+
 		try {
 			const { data } = await loginUser({
 				variables: { ...formState }
@@ -30,6 +40,7 @@ function Login(props) {
 
 			AuthService.login(data.loginUser.token);
 		} catch (err) {
+			
 			console.error(err);
 		}
 
@@ -48,8 +59,7 @@ function Login(props) {
 				</div>
 				{data ? (
 					<p className='success-msg'>
-						Success! You may now head{' '}
-						<Link to="/">back to the homepage.</Link>
+						Welcome Back!
 					</p>
 				) : (
 				<form className="login-form" onSubmit={handleFormSubmit}>
@@ -86,6 +96,13 @@ function Login(props) {
 				{error && (
 					<div className="error-login">
 						{error.message}
+						{errorMsg.length > 0 ? (
+						<div>
+							{errorMsg}
+						</div>
+					): (
+						<React.Fragment />
+					)}
 					</div>
 				)}
 			</div>

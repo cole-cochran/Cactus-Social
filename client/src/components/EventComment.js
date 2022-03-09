@@ -1,13 +1,35 @@
 import React from "react";
 import AuthService from '../utils/auth';
+import ReactionBar from "./ReactionBar";
+import EmojiPicker from "./EmojiPicker";
+import { Modal, Box } from "@mui/material";
+
+const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24
+    };
 
 export default function EventComment(props) {
 
     const {comment, handleCommentDropdown, handleOpenCommentEditor, handleRemoveComment} = props;
+    const [emojiModal, setEmojiModal] = React.useState(false);
+
+    const openEmojiMart = async () => {
+        setEmojiModal(true);
+    }
+    const closeEmojiMart = async () => {
+        setEmojiModal(false);
+    }
 
     const owner = AuthService.getProfile().data._id;
 
     return (
+        <React.Fragment>
         <div key={comment._id} data-id={comment._id} className="chat event-chat">
             <div className="pos post-bar">
                 <div>
@@ -31,7 +53,26 @@ export default function EventComment(props) {
             }
             </div>
             <p>{comment.comment_text}</p>
+            <div className="reaction-bar">
+                <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji"/>
+                <ReactionBar reactions={comment.reactions}/>
+            </div>
         </div>
+        <Modal
+        data-id="emoji-mart"
+        open={emojiModal}
+        onClose={closeEmojiMart}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+    >
+        <Box sx={style}>
+            {(emojiModal && comment._id && comment.event._id) ?
+                (<EmojiPicker closeEmojiMart={closeEmojiMart} elementId={comment._id} parentId={comment.event._id} elementType="event-comment"/>)
+                : <React.Fragment />
+            }
+        </Box>
+        </Modal>
+        </React.Fragment>
     )
 
 }

@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Error from './pages/Error';
 import EventDisplay from './components/EventDisplay';
+import ChatDisplay from './components/ChatDisplay';
 // import EventCreation from './components/EventCreation';
 //*import browser router
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -17,7 +18,7 @@ import { setContext } from '@apollo/client/link/context';
 
 //*import authService middleware
 import AuthService from './utils/auth';
-import Sendbird from './pages/Sendbird/Sendbird';
+// import Sendbird from './pages/Sendbird/Sendbird';
 
 import {io} from 'socket.io-client';
 
@@ -62,11 +63,9 @@ function App() {
 	// console.log(AuthService.getProfile())
 	const [activeEvent, setActiveEvent] = React.useState('');
 	const [activeThread, setActiveThread] = React.useState('');
+	const [activeChat, setActiveChat] = React.useState('');
 
 	return (
-		// <ThreadCreation/>
-		// <SplashPage/>
-		// <EventCreation/>
 		<ApolloProvider client={client}>
 			<Router>
 				<div className="App">
@@ -86,8 +85,9 @@ function App() {
 						<Route exact path="/profile/:userId">
 							{AuthService.loggedIn() ? <Profile setActiveEvent={setActiveEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
 						</Route>
-						<Route exact path="/chat">
-							{AuthService.loggedIn() ? <Sendbird /> : <SplashPage />}
+						<Route exact path="/chats/:chatId">
+							{AuthService.loggedIn() ? 
+							<ChatDisplay socket={socket} activeChat={activeChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
 							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
