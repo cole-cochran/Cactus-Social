@@ -9,15 +9,8 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_CHAT_MESSAGE, DELETE_CHAT_MESSAGE } from "../utils/mutations";
 import { CHAT_DETAILS } from "../utils/queries";
 
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	boxShadow: 24
-};
+import { modalStyle } from "../utils/constants";
+
 
 export default function ChatMessage(props) {
     const userId = AuthService.getProfile().data._id;
@@ -145,7 +138,7 @@ export default function ChatMessage(props) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={modalStyle}>
                 <form className="modal-form" onSubmit={handleUpdateChatMessage}>
                     <div className="modal-header">
                         <h4>Update Message</h4>

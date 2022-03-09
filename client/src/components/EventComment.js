@@ -4,15 +4,7 @@ import ReactionBar from "./ReactionBar";
 import EmojiPicker from "./EmojiPicker";
 import { Modal, Box } from "@mui/material";
 
-const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        boxShadow: 24
-    };
+import { modalStyle } from "../utils/constants";
 
 export default function EventComment(props) {
 
@@ -65,7 +57,7 @@ export default function EventComment(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
             {(emojiModal && comment._id && comment.event._id) ?
                 (<EmojiPicker closeEmojiMart={closeEmojiMart} elementId={comment._id} parentId={comment.event._id} elementType="event-comment"/>)
                 : <React.Fragment />

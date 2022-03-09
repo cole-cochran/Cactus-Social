@@ -18,7 +18,6 @@ import { setContext } from '@apollo/client/link/context';
 
 //*import authService middleware
 import AuthService from './utils/auth';
-// import Sendbird from './pages/Sendbird/Sendbird';
 
 import {io} from 'socket.io-client';
 
@@ -80,20 +79,22 @@ function App() {
 							<Login />
 						</Route>
 						<Route exact path="/threads/:threadId">
-							{AuthService.loggedIn() ? <Dashboard socket={socket} setActiveEvent={setActiveEvent} setActiveThread={setActiveThread} activeThread={activeThread}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard socket={socket} setActiveEvent={setActiveEvent} setActiveThread={setActiveThread} activeThread={activeThread} setActiveChat={setActiveChat} /> 
+							: <SplashPage />}
 						</Route>
 						<Route exact path="/profile/:userId">
-							{AuthService.loggedIn() ? <Profile setActiveEvent={setActiveEvent} setActiveThread={setActiveThread}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <Profile setActiveEvent={setActiveEvent} setActiveThread={setActiveThread} setActiveChat={setActiveChat} /> 
+							: <SplashPage />}
 						</Route>
 						<Route exact path="/chats/:chatId">
 							{AuthService.loggedIn() ? 
-							<ChatDisplay socket={socket} activeChat={activeChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} /> : <SplashPage />}
+							<ChatDisplay socket={socket} activeChat={activeChat} setActiveChat={setActiveChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} /> : <SplashPage />}
 						</Route>
 						<Route exact path="/subthread/:postId">
-							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <Dashboard subThread={true} socket={socket} setActiveChat={setActiveChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/events/:eventId">
-							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
+							{AuthService.loggedIn() ? <EventDisplay socket={socket} activeEvent={activeEvent} setActiveChat={setActiveChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/> : <SplashPage />}
 						</Route>
 						<Route exact path="/404">
 							<Error />

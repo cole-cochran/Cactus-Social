@@ -1,38 +1,18 @@
 import * as React from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
+import Axios from "axios";
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
-
-import { v4 as uuidv4 } from 'uuid';
-
-import Axios from "axios";
 // import { CloudinaryContext, Image } from 'cloudinary-react';
 
 import { CREATE_EVENT } from '../utils/mutations';
-//* CREATE_EVENT requires: threadId, title, description, start_date, end_date, start_time, end_time, category, in_person, location, image, and owner and it returns the Event
-
-//! REDIRECT (AFTER SUBMISSION) TO THE EVENT DISPLAY
-
-// TODO MAKE PRINT TO CONSOLE FOR AN ASCII CACTUS WITH A LINK TO MOVE YOUR FEET BY JUNIOR SENIOR
+import { emptyEvent } from '../utils/constants';
 
 export default function EventCreation() {
 
 	const [ createEvent ] = useMutation(CREATE_EVENT);
 
-	const [ eventDetails, setEventDetails ] = React.useState({
-		title: '',
-		description: '',
-		start_date: '',
-		end_date: '',
-		start_time: '',
-		end_time: '',
-		private: true,
-		category: '',
-		in_person: false,
-		location: '',
-		image: {},
-		image_type: ''
-	});
+	const [ eventDetails, setEventDetails ] = React.useState(emptyEvent);
 
 	const uploadImage = async (uuid) => {
 
@@ -42,11 +22,7 @@ export default function EventCreation() {
 		formData.append("public_id", uuid);
 		formData.append("folder", "CactusSocial");
 
-		// console.log(eventDetails.image);
-	
-		// const response = 
 		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-		// console.log(response);
 	}
 
 	const handleChange = (event) => {
@@ -57,7 +33,6 @@ export default function EventCreation() {
 			setEventDetails({ ...eventDetails, private: !eventDetails.private});
 		} else if (name === 'addImage') {
 			setEventDetails({...eventDetails, image: event.target.files[0]})
-			// console.log(event.target.files[0]);
 		} else {
 			setEventDetails({ ...eventDetails, [name]: value });
 		}
@@ -102,20 +77,7 @@ export default function EventCreation() {
 			console.error(err);
 		}
 
-		setEventDetails({
-			title: '',
-			description: '',
-			start_date: '',
-			end_date: '',
-			start_time: '',
-			end_time: '',
-			private: true,
-			category: '',
-			in_person: false,
-			location: '',
-			image: {},
-			image_type: ""
-		});
+		setEventDetails(emptyEvent);
 	};
 
 	return (

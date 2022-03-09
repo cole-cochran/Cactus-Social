@@ -8,24 +8,14 @@ import { useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
 
 import { ALL_EVENTS, USER_EVENTS } from '../utils/queries';
+import { modalStyle } from "../utils/constants";
+import { toggleButtonClasses } from "@mui/material";
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "100%",
-    maxWidth: "500px",
-    bgcolor: '#232323',
-    boxShadow: 24,
-    border: '2px solid white'
-};
 
 function EventsPanel(props) {
 
     const userId = AuthService.getProfile().data._id;
-
-    const { setActiveEvent } = props;
+    const { setActiveEvent, toggle } = props;
 
     const getAllPublicEvents = useQuery(ALL_EVENTS);
     const getAllUserEvents = useQuery(USER_EVENTS, {
@@ -44,8 +34,9 @@ function EventsPanel(props) {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleEventChange = (event) => {
+    const handleEventChange = (event, e) => {
         setActiveEvent(event);
+        toggle(e);
     }
     const [droppedEvents, setDroppedEvents] = React.useState(false);
     const [droppedPublicEvents, setDroppedPublicEvents] = React.useState(false);
@@ -117,7 +108,7 @@ function EventsPanel(props) {
             id="events-dropdown">
                 {allUserEvents.map((event) => (
                     <li key={event._id}>
-                        <Link onClick={(e) => {handleEventChange(event._id)}} to={`/events/${event._id}`} >
+                        <Link onClick={(e) => {handleEventChange(event._id, e)}} to={`/events/${event._id}`} >
                             {event.title}
                         </Link>
                     </li>
@@ -158,7 +149,7 @@ function EventsPanel(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={modalStyle}>
                     <EventCreation />
                 </Box>
             </Modal>

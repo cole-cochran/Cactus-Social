@@ -15,17 +15,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { EVENT_DETAILS, USER_PROFILE } from '../utils/queries';
 import { REMOVE_EVENT, ATTEND_EVENT, LEAVE_EVENT, CREATE_EVENT_COMMENT, REMOVE_EVENT_COMMENT, UPDATE_EVENT_COMMENT } from '../utils/mutations';
 import AuthService from '../utils/auth';
-
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: '#232323',
-	boxShadow: 24,
-	border: '2px solid white'
-};
+import { modalStyle } from '../utils/constants';
 
 const scroll = () => {
 	var element = document.getElementsByClassName("event-comment");
@@ -36,7 +26,7 @@ export default function EventDisplay(props) {
 
 	const userId = AuthService.getProfile().data._id;
 	const { eventId } = useParams();
-	const { socket, activeEvent, setActiveThread, setActiveEvent } = props;
+	const { socket, activeEvent, setActiveThread, setActiveEvent, setActiveChat } = props;
 
 	const singleEvent = useQuery(EVENT_DETAILS, {
 		variables: { eventId: eventId }
@@ -266,7 +256,7 @@ export default function EventDisplay(props) {
 		<div onClick={handleCloseDropdown}>
 			<NavBar userId={userId} />
             <div className="app-content-container" onClick={handleCloseCommentDropdown}>
-				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
+				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
 				<div className='event-container'>
 					<div className='event-card'>
 						<div className='event-main-div'>
@@ -454,7 +444,7 @@ export default function EventDisplay(props) {
 					aria-labelledby="modal-modal-title"
 					aria-describedby="modal-modal-description"
 				>
-					<Box sx={style}>
+					<Box sx={modalStyle}>
 						<EventEditor handleCloseEditor={handleCloseEditor} eventId={eventId} eventData={eventData} />
 					</Box>
 				</Modal>
@@ -465,7 +455,7 @@ export default function EventDisplay(props) {
 						aria-labelledby="modal-modal-title"
 						aria-describedby="modal-modal-description"
 					>
-						<Box sx={style}>
+						<Box sx={modalStyle}>
 							<InvitationModal itemId={eventId} itemType="event" handleCloseInvite={handleCloseInvite} />
 						</Box>
 					</Modal>
@@ -476,7 +466,7 @@ export default function EventDisplay(props) {
 					aria-labelledby="modal-modal-title"
 					aria-describedby="modal-modal-description"
 				>
-					<Box sx={style}>
+					<Box sx={modalStyle}>
 						<form onSubmit={handleUpdateComment} className='edit-event-comment-form'>
 							<div>
 								<label htmlFor='editedCommentText'>Comment</label>

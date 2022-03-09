@@ -5,26 +5,23 @@ import Modal from '@mui/material/Modal';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 import { v4 as uuidv4 } from 'uuid';
-
 import Axios from "axios";
 import { CloudinaryContext, Image } from 'cloudinary-react';
 
-import PortfolioProject from './PortfolioProject';
-
 import { ADD_TECH, REMOVE_TECH, UPDATE_BIO, UPDATE_PHOTO, SEND_FRIEND_REQUEST, REMOVE_FRIEND, CREATE_PORTFOLIO_PROJECT, UPDATE_USER_LINKS } from '../utils/mutations';
-import { USER_PROFILE, ALL_USERS, USER_FRIENDS, PINNED_POSTS } from '../utils/queries';
+import { USER_PROFILE, ALL_USERS, USER_FRIENDS } from '../utils/queries';
 
 import { useMutation, useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
 
+import PortfolioProject from './PortfolioProject';
+import { modalStyle, emptyProject } from '../utils/constants';
+
 function ProfileInfo(props) {
+
 	// TODO (profileInfo) Allow user quick access to create a new event or start a new thread without the sidebar
 
-	// TODO (profileInfo) Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
-
 	const { specificUser } = props;
-
-	// console.log(specificUser)
 
 	const userId = AuthService.getProfile().data._id;
 
@@ -89,18 +86,7 @@ function ProfileInfo(props) {
 	const [ techData, setTechData ] = React.useState(specificUser.tech_stack || []);
     //* bio state
 	const [ bio, setBio ] = React.useState(specificUser.bio || '');
-	const [createdProject, setCreatedProject] = React.useState(
-		{
-			title: "",
-			description: "",
-			image: "",
-			image_type: "",
-			responsibilities: "",
-			techstack: "",
-			repo: "",
-			demo: ""
-		}
-	);
+	const [createdProject, setCreatedProject] = React.useState(emptyProject);
 	const [openProjectCreator, setOpenProjectCreator] = React.useState(false);
 
     //* Modal states
@@ -229,23 +215,12 @@ function ProfileInfo(props) {
 			console.log(err);
 		}
 
-		setCreatedProject({
-			title: "",
-			description: "",
-			image: "",
-			image_type: "",
-			responsibilities: "",
-			techstack: "",
-			repo: "",
-			demo: ""
-		});
+		setCreatedProject(emptyProject);
 		handleCloseProjectCreator();
 	}
 	
 	const handleRemoveFriend = async (event) => {
 		event.preventDefault();
-
-		// console.log(specificUser._id)
 
 		try {
 			await removeFriend({
@@ -332,7 +307,6 @@ function ProfileInfo(props) {
 					portfolio_page: event.target.value
 				})
 			}
-
 		} catch (err) {
 			console.error(err);
 		}
@@ -342,7 +316,6 @@ function ProfileInfo(props) {
 		try {
 			event.preventDefault();
 			if (event.target.id === 'userBio') {
-				// const updatedBio = 
 				await updateBio({
 					variables: {
 						userId: AuthService.getProfile().data._id,
@@ -351,29 +324,18 @@ function ProfileInfo(props) {
 				});
 				setBio('');
 				setOpenBio(false);
-				// window.location.reload(false);
-				
-			// } else if (event.target.id === 'userPhoto') {
-			// 	event.preventDefault();
-			// 	// const updatedPhoto = 
-			// 	await updatePhoto({
-			// 		variables: {
-			// 			userId: AuthService.getProfile().data._id,
-			// 			picture: photo
-			// 		}
-			// 	});
-			// 	setPhoto('');
-			// 	setOpenImage(false);
-				// window.location.reload(false);
-
 			} else if (event.target.id === 'addTechStack') {
 				event.preventDefault();
-				await addTechnology({
-                    variables: {
-                        userId: AuthService.getProfile().data._id,
-                        technology: addedTech
-                    }
-                });
+				try {
+					await addTechnology({
+						variables: {
+							userId: AuthService.getProfile().data._id,
+							technology: addedTech
+						}
+					});
+				} catch (err) {
+					console.log(err);
+				}
                 setTechData([...techData, addedTech])
 				setAddedTech('');
 			} else if (event.target.id === 'profileLinks') {
@@ -407,7 +369,6 @@ function ProfileInfo(props) {
 		event.preventDefault();
 		try {
 			setOpenTech(false);
-			// window.location.reload(false);
 		} catch (err) {
 			console.error(err);
 		}
@@ -444,32 +405,15 @@ function ProfileInfo(props) {
 		}
 	}
 
-	const style = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-		width: "100%",
-		maxWidth: "500px",
-		bgcolor: 'background.paper',
-		border: '2px solid #000',
-		boxShadow: 24,
-	};
-
 	if (loading) {
 		return <div>Loading...</div>
 	}
 
 	const allUsers = getAllUsers.data?.allUsers;
 
-	// console.log(allUsers);
-
 	const allFriends = getAllFriends.data?.userFriends.friends;
 
-	// console.log(allFriends)
-
 	let userFriendChecker = false;
-
 	for (let friend of allFriends) {
 		if (friend._id === specificUser._id) {
 			userFriendChecker = true;
@@ -621,7 +565,7 @@ function ProfileInfo(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<form id="userPhoto" className="modal-form" onSubmit={uploadImage}>
 						<div className="modal-header">
 							<h4>Update Profile Picture</h4>
@@ -641,7 +585,7 @@ function ProfileInfo(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<form id="addTechStack" className="modal-form" onSubmit={handleFormUpdate}>
 						<div className="modal-header">
 							<h4>Update Tech Stack</h4>
@@ -673,7 +617,7 @@ function ProfileInfo(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<form id="userBio" className="modal-form" onSubmit={handleFormUpdate}>
 						<div className="modal-header">
 							<h4>Update Bio</h4>
@@ -695,7 +639,7 @@ function ProfileInfo(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<form id="userProject" className="modal-form modal-project" onSubmit={handleCreateProject}>
 						<div className="modal-header">
 							<h3>Create Project</h3>
@@ -741,7 +685,7 @@ function ProfileInfo(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<form id="profileLinks" className="modal-form" onSubmit={handleFormUpdate}>
 						<div className="modal-header">
 							<h4>Update Links</h4>
@@ -765,7 +709,7 @@ function ProfileInfo(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<div id="userPins" className="modal-form">
 						<div className="modal-header">
 							<h4>Pinned Posts</h4>

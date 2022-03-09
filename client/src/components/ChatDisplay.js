@@ -18,14 +18,9 @@ export default function ChatDisplay(props) {
 
     const { chatId } = useParams();
 
-    const { setActiveThread, setActiveEvent, socket, activeChat } = props;
+    const { setActiveThread, setActiveChat, setActiveEvent, socket, activeChat } = props;
 
-    const [ createChatMessage ] = useMutation(CREATE_CHAT_MESSAGE, {
-        refetchQueries: [
-            CHAT_DETAILS,
-            "chatDetails"
-        ]
-    });
+    const [ createChatMessage ] = useMutation(CREATE_CHAT_MESSAGE);
 
     const [ removeChat ] = useMutation(REMOVE_CHAT, {
         refetchQueries: [
@@ -144,7 +139,7 @@ export default function ChatDisplay(props) {
         <div onClick={handleCloseMessageDropdown}>
 			<NavBar userId={userId} />
             <div className="app-content-container" >
-				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
+				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
                 <div className="chat-display" >
                     <div className="chat-banner">
                         <div className="chat-title-div">
@@ -175,11 +170,11 @@ export default function ChatDisplay(props) {
                         {chatDetails.messages && chatDetails.messages.map((message) => (
                             <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
                         ))}
-                        {/* {chatList.filter(item => item["chat"]._id === chatId).map(
+                        {chatList.filter(item => item["chat"]._id === chatId).map(
                             (message) => (
                                 <ChatMessage chatId={chatId} message={message} handleOpenMessageDropdown={handleOpenMessageDropdown} key={message._id}/>
                             )
-                        )} */}
+                        )}
                     </div>
                     <div className="chat-message-submit-div">
                         <form onSubmit={handleCreateChatMessage} className="chat-input">

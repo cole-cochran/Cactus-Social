@@ -14,7 +14,7 @@ function Dashboard(props) {
 
     const userId = AuthService.getProfile().data._id
 
-    const { socket, setActiveEvent, setActiveThread, activeThread } = props;
+    const { socket, setActiveEvent, setActiveThread, activeThread, setActiveChat } = props;
 
     const [activeComment, setActiveComment] = React.useState('');
 
@@ -22,7 +22,7 @@ function Dashboard(props) {
         <React.Fragment>
             <NavBar userId={userId} />
             <div className="app-content-container">
-                <Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
+                <Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat} />
                 { props.subThread ? (
                     <SubthreadDisplay activeComment={activeComment} socket={socket} setActiveThread={setActiveThread}/>
                 ) : (

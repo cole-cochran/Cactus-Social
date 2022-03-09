@@ -33,7 +33,7 @@ function ThreadDisplay(props) {
 
 	const { threadId } = useParams();
 
-	const {activeThread, socket, setActiveComment} = props;
+	const {activeThread, setActiveThread, setActiveEvent, setActiveChat, socket, setActiveComment} = props;
 
 	const userId = AuthService.getProfile().data._id;
 
@@ -425,7 +425,7 @@ function ThreadDisplay(props) {
 						(post) => (
 							post.pinned ? (
 								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
+								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
 							) : (
 								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
 								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>

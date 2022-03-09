@@ -2,7 +2,6 @@ import React from "react";
 import { useMutation } from '@apollo/client';
 import { UPDATE_EVENT } from '../utils/mutations';
 import { EVENT_DETAILS } from '../utils/queries';
-
 import { v4 as uuidv4 } from 'uuid';
 import Axios from "axios";
 
@@ -17,13 +16,10 @@ export default function EventEditor(props) {
 		]
 	});
 
-	// console.log(eventData);
-
     const [editedEvent, setEditedEvent] = React.useState(eventData);
 
     const handleEdit = async (event) => {
 		event.preventDefault();
-		// console.log(eventData.image);
 
 		const uuid = uuidv4();
 		let fileType = "";
@@ -35,19 +31,12 @@ export default function EventEditor(props) {
 			formData.append("public_id", uuid);
 			formData.append("folder", "CactusSocial");
 
-			// console.log(editedEvent.image);
-
 			fileType = editedEvent.image.name.split(".")[1].toLowerCase();
-
-			// editedEvent.image_type
 			
 			await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-			// console.log(response);
 		}
 
 		try {
-
-			// console.log(editedEvent);
 			await updateEvent({
 				variables: {
 					eventId: eventId,
@@ -95,9 +84,6 @@ export default function EventEditor(props) {
 				[name]: value
 			})
 		}
-		
-		// console.log(event.target.checked);
-		// console.log(name);
 	}
 
 	const timeParser = (time) => {

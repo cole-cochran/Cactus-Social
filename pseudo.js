@@ -34,6 +34,10 @@
 
 //*  when pins are clicked, show another level of dropdown functionality (see figma for examples)
 
+//* Add ability for user to include links (linkedIn, GitHub, Twitter) and the ability to display their work and projects with a cool way of importing the preview of the site without needing images or anything to be stored in database
+
+//* Potentially pass down userId into the sidebar to create a more personalized list of events/threads as well as the friends component to show only users friends and connections
+
 //! ----------------------------------------------------------------------------------------------- 
 
 //?  THREAD PAGE

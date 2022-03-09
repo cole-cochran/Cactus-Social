@@ -11,6 +11,10 @@ import { ADD_EVENT_COMMENT_REACTION, ADD_POST_COMMENT_REACTION, ADD_POST_REACTIO
 
 export default function EmojiPicker(props) {
 
+    //TODO  Let user hover over reactions to see who has posted them
+
+    //TODO  Give user ability to undo (remove) reactions 
+
     const userId = AuthService.getProfile().data._id;
 
     const { elementId, elementType, parentId, closeEmojiMart } = props;
@@ -36,9 +40,7 @@ export default function EmojiPicker(props) {
         ]
     });
 
-
     const handleAddReaction = async (emoji) => {
-        // console.log(emoji);
         if (elementType === "post") {
             try {
                 await addPostReaction({
@@ -51,7 +53,6 @@ export default function EmojiPicker(props) {
             } catch (err) {
                 console.log(err);
             }
-            // console.log("post reaction");
         } else if (elementType === "post-comment") {
             try {
                 await addPostCommentReaction({
@@ -64,7 +65,6 @@ export default function EmojiPicker(props) {
             } catch (err) {
                 console.log(err);
             }
-            // console.log("post comment reaction");
         } else if (elementType === "event-comment") {
             try {
                 await addEventCommentReaction({
@@ -77,7 +77,6 @@ export default function EmojiPicker(props) {
             } catch (err) {
                 console.log(err);
             }
-            // console.log("event comment reaction");
         }
         closeEmojiMart();
     };
