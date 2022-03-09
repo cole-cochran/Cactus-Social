@@ -377,6 +377,8 @@ export const USER_EVENTS = gql`
 			owner {
 				_id
 				username
+				picture
+				picture_type
 			}
 			private
 			attendees {
@@ -558,6 +560,8 @@ query chatDetails($chatId: ID!) {
 		users {
 			_id
 			username
+			picture
+			picture_type
 		}
 		messages {
 			_id
@@ -565,6 +569,8 @@ query chatDetails($chatId: ID!) {
 			sender {
 				_id
 				username
+				picture
+				picture_type
 			}
 			edited
 			date_created
@@ -588,10 +594,10 @@ query sentInvites($userId: ID!) {
 		sent_invites {
 			_id
 			user {
-			_id
+				_id
 			}
 			event {
-			_id
+				_id
 			}
 			thread {
 			_id
@@ -618,6 +624,8 @@ query receivedInvites($userId: ID!) {
 			user {
 			_id
 			username
+			picture
+			picture_type
 			}
 			event {
 			_id

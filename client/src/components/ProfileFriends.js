@@ -334,7 +334,7 @@ function ProfileFriends(props) {
                                         <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                     ) : (
                                         <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
-                                            <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}`} />
+                                            <Image className="friend-pic"  publicId={`CactusSocial/${user.picture}.${user.picture_type}`} />
                                         </CloudinaryContext>
                                     )}
                                     <p>{user.username}</p>
@@ -450,7 +450,7 @@ function ProfileFriends(props) {
                                             <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                         ) : (
                                             <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
-                                                <Image className="friend-pic" publicId={`CactusSocial/${invite.user.picture}`} />
+                                                <Image className="friend-pic" publicId={`CactusSocial/${invite.user.picture}.${invite.user.picture_type}`} />
                                             </CloudinaryContext>
                                         )}
                                         
@@ -502,7 +502,7 @@ function ProfileFriends(props) {
                                             <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
                                             ) : (
                                             <CloudinaryContext style={{display: "block"}} cloudName="damienluzzo" >
-                                                <Image className="friend-pic" publicId={`CactusSocial/${invite.user.picture}`} />
+                                                <Image className="friend-pic" publicId={`CactusSocial/${invite.user.picture}.${invite.user.picture_type}`} />
                                             </CloudinaryContext>
                                             )}
                                             
