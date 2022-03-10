@@ -9,7 +9,7 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_CHAT_MESSAGE, DELETE_CHAT_MESSAGE } from "../utils/mutations";
 import { CHAT_DETAILS } from "../utils/queries";
 
-import { modalStyle } from "../utils/constants";
+import { modalStyle, emojiModalStyle } from "../utils/constants";
 
 
 export default function ChatMessage(props) {
@@ -33,7 +33,15 @@ export default function ChatMessage(props) {
 
     const [updatedMessage, setUpdatedMessage] = React.useState("");
     const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
+    const [emojiModal, setEmojiModal] = React.useState(false);
 
+    const openEmojiMart = async () => {
+        setEmojiModal(true);
+    }
+
+    const closeEmojiMart = async () => {
+        setEmojiModal(false);
+    }
     const handleDeleteChatMessage = async (event) => {
         event.preventDefault();
         const messageId = event.target.parentNode.parentNode.parentNode.parentNode.id;
@@ -100,13 +108,19 @@ export default function ChatMessage(props) {
                 <div>
                     <span className="chat-name">{message.sender.username}</span>
                     <span className="chat-date">{message.date_created}</span>
-                    {message.edited ? (
+                    {message.edited && (
                         <span className="chat-edited">(edited)</span>
-                    ) : (
-                        <React.Fragment />
                     )}
                 </div>
-                {userId === message.sender._id ? (
+                <div className="post-bottom">
+                    <div className='post-options'>
+                        <div className="reaction-bar">
+                            <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
+                            {/* <ReactionBar reactions={message.reactions}/> */}
+                        </div>
+                    </div>
+                </div>
+                {userId === message.sender._id && (
                     <div className="dropdown">
                         <img className="chat-dots" src="../../assets/img/dotdotdot.svg" alt="user options" onClick={handleOpenMessageDropdown}/>
                         <div className="dropdown-content">
@@ -118,18 +132,10 @@ export default function ChatMessage(props) {
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <React.Fragment />
                 )}
+                
             </div>
-            {/* <div className="post-bottom">
-                <div className='post-options'>
-                    <div className="reaction-bar">
-                        <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
-                        <ReactionBar reactions={message.reactions}/>
-                    </div>
-                </div>
-            </div> */}
+            
         </div>
         <Modal
             data-id="editor"
@@ -151,6 +157,17 @@ export default function ChatMessage(props) {
                 </form>
             </Box>
         </Modal>
+        <Modal
+                data-id="emoji-mart"
+                open={emojiModal}
+                onClose={closeEmojiMart}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={emojiModalStyle}>
+                    <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={message._id} parentId={chatId} elementType="chat-message"/>
+                </Box>
+            </Modal>
         </React.Fragment>
         
     )

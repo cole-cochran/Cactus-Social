@@ -10,6 +10,15 @@ export const modalStyle = {
     border: '2px solid white'
 };
 
+export const emojiModalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    boxShadow: 24,
+    border: '2px solid white'
+}
+
 export const emptyProject = {
     title: "",
     description: "",

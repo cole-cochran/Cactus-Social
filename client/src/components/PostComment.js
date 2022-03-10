@@ -2,6 +2,7 @@ import React from "react";
 import ReactionBar from "./ReactionBar";
 import EmojiPicker from "./EmojiPicker";
 import { Modal, Box } from "@mui/material";
+import { emojiModalStyle } from "../utils/constants";
 
 export default function PostComment (props) {
 
@@ -16,16 +17,6 @@ export default function PostComment (props) {
     const closeEmojiMart = async () => {
         setEmojiModal(false);
     }
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        boxShadow: 24
-    };
 
     return (
         <React.Fragment>
@@ -64,7 +55,7 @@ export default function PostComment (props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={emojiModalStyle}>
                     <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={comment._id} parentId={comment.post._id} elementType="post-comment"/>
                 </Box>
             </Modal>

@@ -60,8 +60,6 @@ export default function ChatDisplay(props) {
 
     const chatDetails = getChatDetails.data?.chatDetails || {};
 
-    // console.log(chatDetails);
-
     const handleCreateChatMessage = async (event) => {
         event.preventDefault();
         try {

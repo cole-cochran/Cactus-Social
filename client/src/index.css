@@ -57,6 +57,12 @@ html::-webkit-scrollbar {
     width: 100%;
 }
 
+#friends-bar-toggle {
+    width: 60px;
+    margin: 10px 10px;
+    cursor: pointer;
+}
+
 /*************GLOBAL:STYLES************/
 
 /*************SPLASHPAGE:STYLES************/ 

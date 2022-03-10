@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-//! In the future, this is for internal use only, but we will use this to let users create friend requests with other users in the application
 export const ALL_USERS = gql`
 	query allUsers {
 		allUsers {
