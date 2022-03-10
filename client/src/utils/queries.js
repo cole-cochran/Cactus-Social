@@ -572,6 +572,7 @@ query chatDetails($chatId: ID!) {
 				picture_type
 			}
 			edited
+			reactions
 			date_created
 		}
 		date_created

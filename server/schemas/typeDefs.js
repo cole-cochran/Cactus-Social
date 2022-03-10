@@ -55,6 +55,7 @@ const typeDefs = gql`
         sender: User
         message: String!
         edited: Boolean
+        reactions: [String]
         chat: Chat
         date_created: String
     }
@@ -221,6 +222,8 @@ const typeDefs = gql`
         createChat(participants: [ID!]!): Chat
         removeChat(chatId: ID!, userId: ID!): User
         deleteChat(chatId: ID!): [Chat]
+
+        addChatMessageReaction(messageId: ID!, chatId: ID!, reaction: String!): ChatMessage
 
         sendEventInvite(sender: ID!, receiver: ID!, eventId: ID!): User
         sendThreadInvite(sender: ID!, receiver: ID!, threadId: ID!): User

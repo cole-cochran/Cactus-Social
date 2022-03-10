@@ -112,14 +112,6 @@ export default function ChatMessage(props) {
                         <span className="chat-edited">(edited)</span>
                     )}
                 </div>
-                <div className="post-bottom">
-                    <div className='post-options'>
-                        <div className="reaction-bar">
-                            <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
-                            {/* <ReactionBar reactions={message.reactions}/> */}
-                        </div>
-                    </div>
-                </div>
                 {userId === message.sender._id && (
                     <div className="dropdown">
                         <img className="chat-dots" src="../../assets/img/dotdotdot.svg" alt="user options" onClick={handleOpenMessageDropdown}/>
@@ -135,7 +127,14 @@ export default function ChatMessage(props) {
                 )}
                 
             </div>
-            
+            <div className="post-bottom">
+                <div className='post-options'>
+                    <div className="reaction-bar">
+                        <img onClick={openEmojiMart} src="../../assets/img/emoji_icon.png" alt="add reaction" className="add-emoji" />
+                        <ReactionBar reactions={message.reactions}/>
+                    </div>
+                </div>
+            </div>
         </div>
         <Modal
             data-id="editor"

@@ -1092,6 +1092,7 @@ mutation createChatMessage($chatId: ID!, $sender:ID!, $message: String!) {
         }
         message
         edited
+        reactions
         chat {
             _id
         }
@@ -1110,6 +1111,7 @@ mutation deleteChatMessage($chatId: ID!, $messageId: ID!) {
         messages {
             _id
             message
+            reactions
         }
         date_created
     }
@@ -1126,6 +1128,7 @@ mutation updateChatMessage($chatId: ID!, $messageId: ID!, $message: String!) {
         messages {
             _id
             message
+            reactions
         }
         date_created
     }
@@ -1142,6 +1145,25 @@ mutation deleteChat($chatId: ID!) {
         messages {
             _id
             message
+            reactions
+        }
+        date_created
+    }
+}
+`;
+
+export const ADD_CHAT_MESSAGE_REACTION = gql`
+mutation addChatMessageReaction($messageId: ID!, $chatId: ID!, $reaction: String!) {
+    addChatMessageReaction(messageId: $messageId, chatId: $chatId, reaction: $reaction) {
+        _id
+        sender {
+            _id
+        }
+        message
+        edited
+        reactions
+        chat {
+            _id
         }
         date_created
     }

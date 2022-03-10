@@ -1263,8 +1263,21 @@ const resolvers = {
 				},
 				{ new: true }
 			);
-			const updatedChat = Chat.findById(chatId).populate("messages").populate("users");;
+			const updatedChat = Chat.findById(chatId).populate("messages").populate("users");
 			return updatedChat;
+		},
+
+		addChatMessageReaction: async (parent, args, context) => {
+			const {messageId, chatId, reaction} = args;
+			return await ChatMessage.findOneAndUpdate(
+				{ _id: messageId },
+				{
+					$addToSet: {
+						reactions: reaction
+					}
+				},
+				{ new: true }
+			).populate("chat").populate("sender");
 		},
 
 		sendEventInvite: async (parent, args, context) => {

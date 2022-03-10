@@ -18,6 +18,11 @@ const chatMessagesSchema = new Schema({
         type: Boolean,
         default: false
     },
+    reactions: [
+        {
+            type: String
+        }
+    ],
     chat: {
         type: ObjectId,
         ref: "Chat"
