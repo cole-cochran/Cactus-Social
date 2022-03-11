@@ -149,3 +149,103 @@ export function FriendRequests(props) {
     )
 }
 
+export function ChooseChatMembers(props) {
+    const {chatMembers, handleRemoveChatMember, nonChatFriends, handleAddChatMember, handleClose, handleCreateNewChat} = props;
+    return (
+        <div className="chat-create-div">
+            <div className="chat-create-main">
+                <h2>Who Do You Want To Chat With?</h2>
+                <div className="selected-chat-friends">
+                    <h3>Chosen Friends</h3>
+                    <ul>
+                        {chatMembers &&
+                            chatMembers.map((user, index) => (
+                                <li key={`${user}-${index}`}>
+                                    <button
+                                        style={{
+                                            cursor: 'default',
+                                        }}
+                                        className="friend-chips"
+                                    >
+                                        <img
+                                            className="friend-pic"
+                                            src="../../assets/img/github.svg"
+                                            alt="friend avatar"
+                                        />
+                                        <p>{user.username}</p>
+                                        <img
+                                            src="../../assets/img/exit_icon.svg"
+                                            alt="open check box"
+                                            style={{
+                                                height: '20px',
+                                                marginLeft: '15px',
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={
+                                                handleRemoveChatMember
+                                            }
+                                            id={user._id}
+                                        />
+                                    </button>
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+                <div className="all-friends-div">
+                    <h3>Friends</h3>
+                    <ul>
+                        {nonChatFriends &&
+                            nonChatFriends.map((user, index) => (
+                                <li key={`${user}-${index}`}>
+                                    <button
+                                        style={{
+                                            cursor: 'default',
+                                        }}
+                                        className="friend-chips"
+                                    >
+                                        <img
+                                            className="friend-pic"
+                                            src="../../assets/img/github.svg"
+                                            alt="friend avatar"
+                                        />
+                                        <p>{user.username}</p>
+                                        <img
+                                            src="../../assets/img/open-circle.svg"
+                                            alt="open check box"
+                                            style={{
+                                                height: '20px',
+                                                marginLeft: '15px',
+                                                cursor: 'pointer',
+                                            }}
+                                            onClick={
+                                                handleAddChatMember
+                                            }
+                                            id={user._id}
+                                        />
+                                    </button>
+                                </li>
+                            ))}
+                    </ul>
+                </div>
+            </div>
+            <div className="chat-create-actions">
+                <button
+                    className="cancel-button"
+                    onClick={handleClose}
+                >
+                    Cancel
+                </button>
+                <button
+                    className="create-button"
+                    onClick={handleCreateNewChat}
+                    disabled={
+                        chatMembers.length === 0 ? true : false
+                    }
+                >
+                    Create Chat
+                </button>
+            </div>
+        </div>
+    )
+}
+

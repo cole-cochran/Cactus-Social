@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import NewNavbar from "../components/NewNavbar";
 import {Helmet} from "react-helmet";
 
 export default function Error() {
@@ -7,7 +7,7 @@ export default function Error() {
        
 <main class="error-page-body">
     <div>
-        <NavBar/>
+        <NewNavbar/>
      </div>   
     <div>   
     <div id="parallax_illustration">

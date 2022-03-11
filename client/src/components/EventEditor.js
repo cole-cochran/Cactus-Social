@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation } from '@apollo/client';
 import { UPDATE_EVENT } from '../utils/mutations';
 import { EVENT_DETAILS } from '../utils/queries';
+import { timeParser } from "../utils/helpers";
 import { v4 as uuidv4 } from 'uuid';
 import Axios from "axios";
 
@@ -84,19 +85,6 @@ export default function EventEditor(props) {
 				[name]: value
 			})
 		}
-	}
-
-	const timeParser = (time) => {
-		const editTime = time.split(" ");
-		const editTimeAMPM = editTime[1];
-		let editTimeTime = editTime[0];
-		if (editTimeAMPM === "PM") {
-			let hourMinArr = editTimeTime.split(":");
-			const hour = parseInt(hourMinArr[0]) + 12;
-			hourMinArr[0] = hour;
-			editTimeTime = hourMinArr.join(":");
-		}
-		return editTimeTime;
 	}
 
 	const formattedEndTime = timeParser(editedEvent.end_time);

@@ -53,8 +53,8 @@ function SignUp() {
 						<img className="many-cacti-illustration" src="../../assets/img/signup_cactus_logo.png" alt="many cacti hanging out"/>
 					</div>
 				{data ? (
-					<p>
-						Success! You may now head <Link to="/">Back to the homepage</Link>
+					<p>Success!
+						{/* You may now head <Link to="/">Back to the homepage</Link> */}
 					</p>
 				) : (
 					<form class="signup-form" onSubmit={handleFormSubmit}>

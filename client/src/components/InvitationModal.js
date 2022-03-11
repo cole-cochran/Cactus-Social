@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useMutation, useQuery } from '@apollo/client';
 import { USER_FRIENDS, SENT_INVITES } from '../utils/queries';
 import { SEND_THREAD_INVITE, SEND_EVENT_INVITE } from '../utils/mutations';
@@ -8,7 +7,6 @@ import AuthService from '../utils/auth';
 export default function InvitationModal(props) {
 
     const { itemId, itemType, handleCloseInvite } = props;
-
     const userId = AuthService.getProfile().data._id;
 
     const [ sendThreadInvite ] = useMutation(SEND_THREAD_INVITE, {
@@ -17,20 +15,17 @@ export default function InvitationModal(props) {
 			"sentInvites"
 		]
 	});
-
     const [ sendEventInvite ] = useMutation(SEND_EVENT_INVITE, {
         refetchQueries: [
             SENT_INVITES,
             "sentInvites"
         ]
     });
-
     const getAllFriends = useQuery(USER_FRIENDS, {
         variables: {
             userId: userId
         }
     });
-
     const getAllInvites = useQuery(SENT_INVITES, {
 		variables: { 
             userId: userId 
@@ -46,8 +41,6 @@ export default function InvitationModal(props) {
 
     const allFriends = getAllFriends.data?.userFriends || [];
     const allSentInvites = getAllInvites.data?.sentInvites || {};
-
-    // console.log(allSentInvites.sent_invites);
 
     const handleSendInvite = async (event) => {
         event.preventDefault();
@@ -87,40 +80,30 @@ export default function InvitationModal(props) {
         return null;
     });
 
-    // console.log(threadInvites)
-
     const eventInvites = allSentInvites.sent_invites.filter((invite) => {
-        if (invite.event) {
-            return invite.event._id === itemId
+        if (!invite.event) {
+            return null;
         }
-        return null;
+        return invite.event._id === itemId;
     });
-
-    // console.log(eventInvites);
 
     const uninvitedThreadFriends = allFriends.friends.filter((friend) => {
         for (let invitation of threadInvites) {
-            // console.log(invitation);
             if (invitation.user._id === friend._id) {
                 return null;
             }
         }
         return friend;
     });
-
-    // console.log(uninvitedThreadFriends);
 
     const uninvitedEventFriends = allFriends.friends.filter((friend) => {
         for (let invitation of eventInvites) {
-            // console.log(invitation);
             if (invitation.user._id === friend._id) {
                 return null;
             }
         }
         return friend;
     });
-
-    // console.log(uninvitedEventFriends);
 
     return (
         <div className="modal-form" id="modal-friends">
@@ -130,7 +113,7 @@ export default function InvitationModal(props) {
             
             <div className="all-friends-div">
                 <ul className="modal-list">
-                    {itemType === "thread" && uninvitedThreadFriends.length ? uninvitedThreadFriends.map((user, index) => (
+                    {itemType === "thread" && uninvitedThreadFriends.length && uninvitedThreadFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
                                 <button 
@@ -142,9 +125,8 @@ export default function InvitationModal(props) {
                                 </button>
                             </a>
                         </li>
-                    )) : <React.Fragment /> 
-                    }
-                    {itemType === "event" && uninvitedEventFriends.length ? uninvitedEventFriends.map((user, index) => (
+                    ))}
+                    {itemType === "event" && uninvitedEventFriends.length && uninvitedEventFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
                                 <button 
@@ -156,8 +138,7 @@ export default function InvitationModal(props) {
                                 </button>
                             </a>
                         </li>
-                    )) : <React.Fragment />
-                } 
+                    ))} 
                 </ul>
             </div>
         </div>

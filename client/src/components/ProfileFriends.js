@@ -3,7 +3,6 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import UserSearchModal from './UserSearchModal';
 import { FriendRequests, SentRequests, UserInvitations } from './Modals/Modals';
-// import {Link} from 'react-router-dom';
 
 import {
     ALL_USERS,

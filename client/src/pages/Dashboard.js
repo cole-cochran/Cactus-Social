@@ -6,6 +6,7 @@ import ThreadDisplay from "../components/ThreadDisplay";
 import SubthreadDisplay from "../components/SubthreadDisplay";
 
 import AuthService from '../utils/auth';
+import NewNavbar from "../components/NewNavbar";
 
 // import {io} from 'socket.io-client';
 // const socket = io.connect('localhost:3001');
@@ -20,7 +21,8 @@ function Dashboard(props) {
 
     return (
         <React.Fragment>
-            <NavBar userId={userId} />
+            {/* <NavBar userId={userId} /> */}
+            <NewNavbar />
             <div className="app-content-container">
                 <Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat} />
                 { props.subThread ? (

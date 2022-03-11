@@ -9,8 +9,6 @@ import AuthService from '../utils/auth';
 
 import { ALL_EVENTS, USER_EVENTS } from '../utils/queries';
 import { modalStyle } from "../utils/constants";
-import { toggleButtonClasses } from "@mui/material";
-
 
 function EventsPanel(props) {
 

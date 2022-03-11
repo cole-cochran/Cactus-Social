@@ -17,8 +17,6 @@ const ResponsiveAppBar = (props) => {
 
   const userId = AuthService.getProfile().data._id;
 
-  // {name: "DM's", url: "/chat"},
-
   const pages = [];
   const settings = [
     {name: 'Profile', url: `/profile/${userId}`}
@@ -42,18 +40,13 @@ const ResponsiveAppBar = (props) => {
     setAnchorElUser(null);
   };
 
-  const handleSearchFriendSubmit = (username) => {
-
-  }
-
   return (
     <AppBar position="static" elevation={0} style={{ background: 'var(--alt-dark-mode)', borderBottom: "1px solid white" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <p className="logo">Cactus Social</p>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <Menu
+            {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -76,10 +69,10 @@ const ResponsiveAppBar = (props) => {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -87,9 +80,8 @@ const ResponsiveAppBar = (props) => {
               >
                 {page}
               </Button>
-            ))}
+            ))} */}
           </Box>
-
           <Box sx={{ flexGrow: 0, bgcolor: "#9200bb", p: 1 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, borderRadius: "0" }}>

@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { USER_PROFILE } from '../utils/queries'; 
 //* USER_PROFILE accepts a userId and has access to _id, first_name, last_name, username, email, picture, bio, tech_stack, and date_joined
 
-import NavBar from "../components/NavBar";
+import NewNavbar from "../components/NewNavbar";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import ProfileInfo from "../components/ProfileInfo";
@@ -43,7 +43,7 @@ function Profile(props) {
 
     return (
         <React.Fragment>
-            <NavBar />
+            <NewNavbar />
             <div className="app-content-container">
                 <Sidebar setActiveChat={setActiveChat} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent}/>
                 <div>

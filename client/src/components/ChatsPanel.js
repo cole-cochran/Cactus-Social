@@ -5,13 +5,11 @@ import Modal from '@mui/material/Modal';
 import AuthService from '../utils/auth';
 
 import { useQuery, useMutation } from '@apollo/client';
-
-import { CloudinaryContext, Image } from 'cloudinary-react';
-
 import { USER_CHATS, USER_FRIENDS } from '../utils/queries';
 import { CREATE_CHAT } from '../utils/mutations';
-
 import { modalStyle } from '../utils/constants';
+import { ChooseChatMembers } from './Modals/Modals';
+import UserChip from './UserChip';
 
 export default function ChatsPanel(props) {
 
@@ -29,30 +27,28 @@ export default function ChatsPanel(props) {
             userId: userId,
         },
     });
-
-    const loading = getAllFriends.loading || getAllChats.loading;
-
     const [createChat] = useMutation(CREATE_CHAT, {
         refetchQueries: [USER_CHATS, 'userChats'],
     });
+    
+    const loading = getAllFriends.loading || getAllChats.loading;
 
     const [open, setOpen] = React.useState(false);
-
     const [droppedChats, setDroppedChats] = React.useState(false);
-
     const [chatMembers, setChatMembers] = React.useState([]);
     const [nonChatFriends, setNonChatFriends] = React.useState([]);
 
     if (loading) {
         return <h2>Loading...</h2>;
     }
+
+    const allFriends = getAllFriends.data?.userFriends || [];
+    const allChats = getAllChats.data?.userChats || [];
+
     const handleChatChange = (chat, e) => {
         setActiveChat(chat);
         toggle(e);
     };
-
-    const allFriends = getAllFriends.data?.userFriends || [];
-    const allChats = getAllChats.data?.userChats || [];
 
     const handleAddChatMember = async (event) => {
         const addedUserId = event.target.id;
@@ -117,10 +113,6 @@ export default function ChatsPanel(props) {
         setChatMembers([]);
     };
 
-    // const handleEventChange = (event) => {
-    //     // setActiveChat(event);
-    // };
-
     const handleOpenDropdown = (event) => {
         const chatInfo = document.getElementById('chats-dropdown');
 
@@ -179,25 +171,7 @@ export default function ChatsPanel(props) {
                             <button className="chat-chips">
                                 {chat.users.map((user) => (
                                     <div className="chat-chip-div">
-                                        {user.picture === '' ? (
-                                            <div className="chat-chip-img">
-                                                <img
-                                                    className="friend-pic"
-                                                    src="../../assets/img/github.svg"
-                                                    alt="friend avatar"
-                                                />
-                                            </div>
-                                        ) : (
-                                            <CloudinaryContext cloudName="damienluzzo">
-                                                <Image
-                                                    className="friend-pic"
-                                                    publicId={`CactusSocial/${user.picture}.${user.picture_type}`}
-                                                />
-                                            </CloudinaryContext>
-                                        )}
-                                        <div className="chat-chip-span">
-                                            <span>{user.username}</span>
-                                        </div>
+                                        <UserChip user={user} />
                                     </div>
                                 ))}
                             </button>
@@ -212,104 +186,7 @@ export default function ChatsPanel(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={modalStyle}>
-                    <div className="chat-create-div">
-                        <div className="chat-create-main">
-                            <h2>Who Do You Want To Chat With?</h2>
-                            <div className="selected-chat-friends">
-                                <h3>Chosen Friends</h3>
-                                <ul>
-                                    {chatMembers &&
-                                        chatMembers.map((user, index) => (
-                                            <li key={`${user}-${index}`}>
-                                                {/* <a href = {`/profile/${user._id}`}> */}
-                                                <button
-                                                    style={{
-                                                        cursor: 'default',
-                                                    }}
-                                                    className="friend-chips"
-                                                >
-                                                    <img
-                                                        className="friend-pic"
-                                                        src="../../assets/img/github.svg"
-                                                        alt="friend avatar"
-                                                    />
-                                                    <p>{user.username}</p>
-                                                    <img
-                                                        src="../../assets/img/exit_icon.svg"
-                                                        alt="open check box"
-                                                        style={{
-                                                            height: '20px',
-                                                            marginLeft: '15px',
-                                                            cursor: 'pointer',
-                                                        }}
-                                                        onClick={
-                                                            handleRemoveChatMember
-                                                        }
-                                                        id={user._id}
-                                                    />
-                                                </button>
-                                                {/* </a> */}
-                                            </li>
-                                        ))}
-                                </ul>
-                            </div>
-                            <div className="all-friends-div">
-                                <h3>Friends</h3>
-                                <ul>
-                                    {nonChatFriends &&
-                                        nonChatFriends.map((user, index) => (
-                                            <li key={`${user}-${index}`}>
-                                                {/* <a href = {`/profile/${user._id}`}> */}
-                                                <button
-                                                    style={{
-                                                        cursor: 'default',
-                                                    }}
-                                                    className="friend-chips"
-                                                >
-                                                    <img
-                                                        className="friend-pic"
-                                                        src="../../assets/img/github.svg"
-                                                        alt="friend avatar"
-                                                    />
-                                                    <p>{user.username}</p>
-                                                    <img
-                                                        src="../../assets/img/open-circle.svg"
-                                                        alt="open check box"
-                                                        style={{
-                                                            height: '20px',
-                                                            marginLeft: '15px',
-                                                            cursor: 'pointer',
-                                                        }}
-                                                        onClick={
-                                                            handleAddChatMember
-                                                        }
-                                                        id={user._id}
-                                                    />
-                                                </button>
-                                                {/* </a> */}
-                                            </li>
-                                        ))}
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="chat-create-actions">
-                            <button
-                                className="cancel-button"
-                                onClick={handleClose}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="create-button"
-                                onClick={handleCreateNewChat}
-                                disabled={
-                                    chatMembers.length === 0 ? true : false
-                                }
-                            >
-                                Create Chat
-                            </button>
-                        </div>
-                    </div>
+                    <ChooseChatMembers chatMembers={chatMembers} handleRemoveChatMember={handleRemoveChatMember} nonChatFriends={nonChatFriends} handleAddChatMember={handleAddChatMember} handleClose={handleClose} handleCreateNewChat={handleCreateNewChat} />
                 </Box>
             </Modal>
         </div>

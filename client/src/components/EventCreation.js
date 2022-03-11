@@ -3,8 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Axios from "axios";
 import { useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
-// import { CloudinaryContext, Image } from 'cloudinary-react';
-
 import { CREATE_EVENT } from '../utils/mutations';
 import { emptyEvent } from '../utils/constants';
 

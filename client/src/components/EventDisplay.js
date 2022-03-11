@@ -1,6 +1,6 @@
 import React from 'react';
 import Sidebar from './Sidebar';
-import NavBar from './NavBar';
+import NewNavbar from "./NewNavbar";
 import Footer from './Footer';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -54,12 +54,7 @@ export default function EventDisplay(props) {
 		]
 	});
 
-	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT, {
-		refetchQueries: [
-			EVENT_DETAILS,
-			'eventDetails'
-		]
-	});
+	const [ createEventComment ] = useMutation(CREATE_EVENT_COMMENT);
 	const [ removeEventComment ] = useMutation(REMOVE_EVENT_COMMENT, {
 		refetchQueries: [
 			EVENT_DETAILS,
@@ -254,7 +249,7 @@ export default function EventDisplay(props) {
 
 	return (
 		<div onClick={handleCloseDropdown}>
-			<NavBar userId={userId} />
+			<NewNavbar />
             <div className="app-content-container" onClick={handleCloseCommentDropdown}>
 				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
 				<div className='event-container'>

@@ -6,7 +6,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
 
 import Sidebar from './Sidebar';
-import NavBar from './NavBar';
+import NewNavbar from "../components/NewNavbar";
 import Footer from './Footer';
 
 import { CHAT_DETAILS } from "../utils/queries";
@@ -135,7 +135,7 @@ export default function ChatDisplay(props) {
 
     return (
         <div onClick={handleCloseMessageDropdown}>
-			<NavBar userId={userId} />
+			<NewNavbar />
             <div className="app-content-container" >
 				<Sidebar setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
                 <div className="chat-display" >
