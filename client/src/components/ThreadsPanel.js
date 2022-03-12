@@ -3,23 +3,10 @@ import { Link } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import ThreadCreation from "./ThreadCreation";
-
 import { useQuery } from '@apollo/client';
 import AuthService from '../utils/auth';
-
 import { ALL_THREADS, USER_THREADS } from '../utils/queries';
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "100%",
-    maxWidth: "500px",
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-};
+import { modalStyle } from "../utils/constants";
 
 function ThreadsPanel(props) {
 
@@ -84,8 +71,6 @@ function ThreadsPanel(props) {
 
     const allThreads = getAllPublicThreads.data?.allThreads || [];
     const allUserThreads = getAllUserThreads.data?.userThreads || [];
-
-    // console.log(allThreads);
 
     const publicThreads = allThreads.filter((thread) => (
         thread.private === false
@@ -173,7 +158,7 @@ function ThreadsPanel(props) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box sx={modalStyle}>
                     <ThreadCreation />
                 </Box>
             </Modal>

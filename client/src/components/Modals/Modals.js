@@ -249,3 +249,93 @@ export function ChooseChatMembers(props) {
     )
 }
 
+export function UpdateProjectModal(props) {
+    const {handleChange, handleUpdateProject, editedProject, handleDeleteProject} = props;
+    return (
+        <form id="userProject" className="modal-form" onSubmit={handleUpdateProject}>
+            <div className="modal-header">
+                <h3>Update Project</h3>
+            </div>
+            <div>
+                <label htmlFor="title" >Title</label>
+                <input id="title" name='title' value={editedProject.title} onChange={handleChange}/>
+            </div>
+            <div>
+                <label htmlFor="description">Description</label>
+                <textarea id="description" name="description" value={editedProject.description} onChange={handleChange} className="modal-textarea" />
+            </div>
+            <div>
+                <label htmlfor="addImage">Image</label>
+                <input type="file" id="addImage" name="addImage" onChange={handleChange} />
+            </div>
+            <div>
+                <label htmlFor="responsibilities">Responsibilities</label>
+                <textarea id="responsibilities" name="responsibilities" value={editedProject.responsibilities} onChange={handleChange} className="modal-textarea" />
+            </div>
+            <div>
+                <label htmlFor="techstack">Tech Stack</label>
+                <textarea id="techstack" name="techstack" value={editedProject.techstack} onChange={handleChange} className="modal-textarea" />
+            </div>
+            <div>
+                <label htmlFor="repo" >Repo Link</label>
+                <input id="repo" name='repo' value={editedProject.repo} onChange={handleChange}/>
+            </div>
+            <div>
+                <label htmlFor="repo" >Live/Demo Link</label>
+                <input id="repo" name='repo' value={editedProject.repo} onChange={handleChange}/>
+            </div>
+            <div className="modal-button-div">
+                <button className="modal-button" type="submit">
+                    Update
+                </button>
+                <button className="modal-button delete-button" onClick={handleDeleteProject}>
+                    Delete
+                </button>
+            </div>
+        </form>
+    )
+}
+
+export function CreateProjectModal(props) {
+    const {handleCreateProject, createdProject, handleProjectChange, } = props;
+
+    return (
+        <form id="userProject" className="modal-form modal-project" onSubmit={handleCreateProject}>
+            <div className="modal-header">
+                <h3>Create Project</h3>
+            </div>
+            <div>
+                <label htmlFor="title" >Title</label>
+                <input id="title" name='title' value={createdProject.title} onChange={handleProjectChange}/>
+            </div>
+            <div>
+                <label htmlFor="description">Description</label>
+                <textarea id="description" name="description" value={createdProject.description} onChange={handleProjectChange} className="modal-textarea" />
+            </div>
+            <div>
+                <label htmlfor="addImage">Image</label>
+                <input type="file" id="addImage" name="addImage" onChange={handleProjectChange} />
+            </div>
+            <div>
+                <label htmlFor="responsibilities">Responsibilities</label>
+                <textarea id="responsibilities" name="responsibilities" value={createdProject.responsibilities} onChange={handleProjectChange} className="modal-textarea" />
+            </div>
+            <div>
+                <label htmlFor="techstack">Tech Stack</label>
+                <textarea id="techstack" name="techstack" value={createdProject.techstack} onChange={handleProjectChange} className="modal-textarea" />
+            </div>
+            <div>
+                <label htmlFor="repo" >Repo Link</label>
+                <input id="repo" name='repo' value={createdProject.repo} onChange={handleProjectChange}/>
+            </div>
+            <div>
+                <label htmlFor="demo" >Live/Demo Link</label>
+                <input id="demo" name='demo' value={createdProject.demo} onChange={handleProjectChange}/>
+            </div>
+            <button className="modal-button" type="submit">
+                Create
+            </button>
+        </form>
+    )
+}
+

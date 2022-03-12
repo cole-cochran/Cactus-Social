@@ -4,11 +4,14 @@ import AuthService from "../utils/auth";
 import ReactionBar from "./ReactionBar";
 import EmojiPicker from "./EmojiPicker";
 import { Modal, Box } from "@mui/material";
+import { emojiModalStyle } from "../utils/constants";
 
 export function PinnedPost(props) {
 
     const { post, unpin, openEditor, dropdown, remove, setActiveComment } = props;
-
+    
+    const userId = AuthService.getProfile().data._id;
+    
     const [emojiModal, setEmojiModal] = React.useState(false);
 
     const openEmojiMart = async () => {
@@ -19,17 +22,7 @@ export function PinnedPost(props) {
         setEmojiModal(false);
     }
 
-    const owner = AuthService.getProfile().data._id;
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        boxShadow: 24
-    };
+    
     
     return (
         <React.Fragment>
@@ -41,7 +34,7 @@ export function PinnedPost(props) {
                     {post.edited ? (<span className="edit-span">(edited)</span>):(null)}
                 </div>
                 {
-                owner === post.author._id && 
+                userId === post.author._id && 
                 <div className="dropdown">
                     <img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={dropdown}/>
                     <div className="dropdown-content">
@@ -79,7 +72,7 @@ export function PinnedPost(props) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={emojiModalStyle}>
                 <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={post._id} parentId={post.thread._id} elementType="post"/>
             </Box>
         </Modal>

@@ -1,29 +1,15 @@
 import React from 'react';
 import ThreadPost from "./ThreadPost";
 import InvitationModal from "./InvitationModal";
-
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
-
 import { ALL_THREAD_POSTS, THREAD_DETAILS, USER_PROFILE } from '../utils/queries';
-
 import { CREATE_POST, PIN_POST, UNPIN_POST, REMOVE_POST, UPDATE_POST, REMOVE_THREAD, LEAVE_THREAD } from '../utils/mutations';
-
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { PinnedPost } from './PinnedPost';
-
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	boxShadow: 24
-};
-
+import { modalStyle } from '../utils/constants';
 
 function ThreadDisplay(props) {
 
@@ -233,7 +219,6 @@ function ThreadDisplay(props) {
 						author: userId
 					}
 				});
-				// console.log(postData.data.createPost);
 				socket.emit("send_post", {room: activeThread, user: AuthService.getProfile().data.username, post: postData.data.createPost});
 				setMessageTimeout(true);
 				setTimeout(() => {setMessageTimeout(false);}, 2000);
@@ -380,130 +365,129 @@ function ThreadDisplay(props) {
 
 	return (
 		<React.Fragment>
-		<main onClick={handleCloseDropdown} className="thread-wrapper">
-			<div onClick={handleCloseThreadDropdown} className="thread-content-container" onLoad={scroll}>
-				<div className='thread-top'>
-					<div className="thread-header">
-						<h3>{singleThread.data.threadDetails.title}</h3>
-						<div>
-							<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
-						</div>
-						<div>
-							{singleThread.data.threadDetails.private ? (
-								<p>Invite Only</p>
-							):(
-								<p>Public Forum</p>
-							)}
-						</div>
-					</div>
-					{threadOwner ? 
-					<div className="dropdown">
-						<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
-						<div className="thread-dropdown-content">
-							<div className="dropdown-option" onClick={handleOpenInvite}>
-								Invite Friends
+			<main onClick={handleCloseDropdown} className="thread-wrapper">
+				<div onClick={handleCloseThreadDropdown} className="thread-content-container" onLoad={scroll}>
+					<div className='thread-top'>
+						<div className="thread-header">
+							<h3>{singleThread.data.threadDetails.title}</h3>
+							<div>
+								<p>Moderator: {singleThread.data.threadDetails.moderator.username}</p>
 							</div>
-							<div onClick={handleRemoveThread} >
-								Delete
+							<div>
+								{singleThread.data.threadDetails.private ? (
+									<p>Invite Only</p>
+								):(
+									<p>Public Forum</p>
+								)}
 							</div>
 						</div>
-					</div>
-					: <div className="dropdown">
-						<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
-						<div className="thread-dropdown-content">
-							<div onClick={handleLeaveThread} >
-								Leave Thread
+						{threadOwner ? 
+						<div className="dropdown">
+							<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
+							<div className="thread-dropdown-content">
+								<div className="dropdown-option" onClick={handleOpenInvite}>
+									Invite Friends
+								</div>
+								<div onClick={handleRemoveThread} >
+									Delete
+								</div>
 							</div>
 						</div>
+						: <div className="dropdown">
+							<img className="dots" src="../../assets/img/purple_dots.png" alt="dots" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenThreadDropdown}/>
+							<div className="thread-dropdown-content">
+								<div onClick={handleLeaveThread} >
+									Leave Thread
+								</div>
+							</div>
+						</div>
+						}
 					</div>
-					}
-				</div>
-				
-				<div id="chats-container" className="chats-container">
-					{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
-					{updatedThreadPosts.map(
-						(post) => (
-							post.pinned ? (
-								<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
-							) : (
-								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
-								dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
+					
+					<div id="chats-container" className="chats-container">
+						{errors && <h3 style={{ color: 'red' }}>{errors}</h3>}
+						{updatedThreadPosts.map(
+							(post) => (
+								post.pinned ? (
+									<PinnedPost key={post._id} post={post} unpin={handleUnpinPost} openEditor={handleOpenEditor}
+									dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment} setActiveThread={setActiveThread} setActiveEvent={setActiveEvent} setActiveChat={setActiveChat}/>
+								) : (
+									<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+									dropdown={handleOpenDropdown} remove={handleRemovePost} setActiveComment={setActiveComment}/>
+								)
 							)
-						)
-					)}
-					{postList.filter(item => item["thread"]._id === threadId).map(
-						(post) => (
-							<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
-							dropdown={handleOpenDropdown} 
-							remove={handleRemovePost} />
-						)
-					)}
-					<Modal
-                        data-id="pinning"
-						open={open}
-						onClose={handleClose}
-						aria-labelledby="modal-modal-title"
-						aria-describedby="modal-modal-description"
-					>
-						<Box sx={style}>
-							<form className="modal-form" onSubmit={handlePinPost}>
-								<div className="modal-header">
-									<h4>Add Subthread</h4>
-								</div>
-								<label>Pin Title</label>
-								<input value={pinnedPost.pinTitle} name="pinTitle" onChange={handleChange} placeholder="e.g. Cactus Party" />
-								<label>Pin Hash</label>
-								<input value={pinnedPost.pinHash} name="pinHash" onChange={handleChange} placeholder="e.g. #cactus-party" />
-								<button className="modal-button" type="submit">
-									Add
-								</button>
-							</form>
-						</Box>
-					</Modal>
-					<Modal
-                        data-id="editor"
-						open={openEditor}
-						onClose={handleCloseEditor}
-						aria-labelledby="modal-modal-title"
-						aria-describedby="modal-modal-description"
-					>
-						<Box sx={style}>
-							<form className="modal-form" onSubmit={handleEditPost}>
-								<div className="modal-header">
-									<h4>Update Post</h4>
-								</div>
-								<label>Post Text</label>
-								<input value={editPost.post_text} name="editedPost" onChange={handleChange} placeholder="e.g. Cactus Party" />
-								<button className="modal-button" type="submit">
-									Update
-								</button>
-							</form>
-						</Box>
-					</Modal>
-					<Modal
-                        data-id="invite"
-						open={openInvite}
-						onClose={handleCloseInvite}
-						aria-labelledby="modal-modal-title"
-						aria-describedby="modal-modal-description"
-					>
-						<Box sx={style}>
-							<InvitationModal itemId={threadId} itemType="thread" handleCloseInvite={handleCloseInvite} />
-						</Box>
-					</Modal>
-				</div>
-				<form onSubmit={handlePostSubmit} className="chat-input">
-					{/* <span onChange={handleChange} name="postText" value={newPostText} contentEditable></span> */}
-					<textarea onChange={handleChange} name="postText" value={newPostText} contentEditable  autoComplete='off' />
-                    {/* <input onChange={handleChange} name="postText" value={newPostText} contentEditable autoComplete='off'/> */}
-					<div className="chat-input-buttons">
-						<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Submit</button>
+						)}
+						{postList.filter(item => item["thread"]._id === threadId).map(
+							(post) => (
+								<ThreadPost key={post._id} post={post} unpin={handleUnpinPost} pin={handleOpen} openEditor={handleOpenEditor}
+								dropdown={handleOpenDropdown} 
+								remove={handleRemovePost} />
+							)
+						)}
+						
 					</div>
-					{messageTimeout && newPostText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
-				</form>
-			</div>
-		</main>
+					<form onSubmit={handlePostSubmit} className="chat-input">
+						<textarea onChange={handleChange} name="postText" value={newPostText} contentEditable  autoComplete='off' />
+						<div className="chat-input-buttons">
+							<button type="submit" className="chat-input-send-button" disabled={messageTimeout}>Submit</button>
+						</div>
+						{messageTimeout && newPostText ? <div style={{color: 'white'}}>You have to wait 2 seconds before sending another message</div> : <React.Fragment />}
+					</form>
+				</div>
+			</main>
+			<Modal
+				data-id="pinning"
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={modalStyle}>
+					<form className="modal-form" onSubmit={handlePinPost}>
+						<div className="modal-header">
+							<h4>Add Subthread</h4>
+						</div>
+						<label>Pin Title</label>
+						<input value={pinnedPost.pinTitle} name="pinTitle" onChange={handleChange} placeholder="e.g. Cactus Party" />
+						<label>Pin Hash</label>
+						<input value={pinnedPost.pinHash} name="pinHash" onChange={handleChange} placeholder="e.g. #cactus-party" />
+						<button className="modal-button" type="submit">
+							Add
+						</button>
+					</form>
+				</Box>
+			</Modal>
+			<Modal
+				data-id="editor"
+				open={openEditor}
+				onClose={handleCloseEditor}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={modalStyle}>
+					<form className="modal-form" onSubmit={handleEditPost}>
+						<div className="modal-header">
+							<h4>Update Post</h4>
+						</div>
+						<label>Post Text</label>
+						<input value={editPost.post_text} name="editedPost" onChange={handleChange} placeholder="e.g. Cactus Party" />
+						<button className="modal-button" type="submit">
+							Update
+						</button>
+					</form>
+				</Box>
+			</Modal>
+			<Modal
+				data-id="invite"
+				open={openInvite}
+				onClose={handleCloseInvite}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box sx={modalStyle}>
+					<InvitationModal itemId={threadId} itemType="thread" handleCloseInvite={handleCloseInvite} />
+				</Box>
+			</Modal>
 		</React.Fragment>
 	);
 }

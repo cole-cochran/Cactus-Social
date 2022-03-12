@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { USER_FRIENDS, SENT_INVITES } from '../utils/queries';
 import { SEND_THREAD_INVITE, SEND_EVENT_INVITE } from '../utils/mutations';
 import AuthService from '../utils/auth';
+import UserChip from "./UserChip";
 
 export default function InvitationModal(props) {
 
@@ -116,26 +117,14 @@ export default function InvitationModal(props) {
                     {itemType === "thread" && uninvitedThreadFriends.length && uninvitedThreadFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
-                                <button 
-                                className="friend-chips"
-                                onClick={handleSendInvite}
-                                >
-                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                                    <p>{user.username}</p>
-                                </button>
+                                <UserChip user={user} />
                             </a>
                         </li>
                     ))}
                     {itemType === "event" && uninvitedEventFriends.length && uninvitedEventFriends.map((user, index) => (
                         <li key={`${user}-${index}`} id={user._id}>
                             <a href = {`/profile/${user._id}`}>
-                                <button 
-                                className="friend-chips"
-                                onClick={handleSendInvite}
-                                >
-                                    <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                                    <p>{user.username}</p>
-                                </button>
+                                <UserChip user={user} />
                             </a>
                         </li>
                     ))} 

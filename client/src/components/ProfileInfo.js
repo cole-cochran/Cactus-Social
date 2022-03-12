@@ -16,6 +16,7 @@ import AuthService from '../utils/auth';
 
 import PortfolioProject from './PortfolioProject';
 import { modalStyle, emptyProject } from '../utils/constants';
+import { CreateProjectModal } from './Modals/Modals';
 
 function ProfileInfo(props) {
 
@@ -136,7 +137,6 @@ function ProfileInfo(props) {
 		});
 		
 		await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-		// console.log(response);
 
 		setPhoto('');
 		setOpenImage(false);
@@ -161,7 +161,7 @@ function ProfileInfo(props) {
 
 	const handleProjectChange = async (event) => {
 		const {value, name} = event.target;
-		// console.log({value, name});
+
 		if (name === "addImage") {
             setCreatedProject({
                 ...createdProject,
@@ -173,13 +173,10 @@ function ProfileInfo(props) {
 				[name]: value
 			})
 		}
-		
-		// console.log(createdProject)
 	}
 
 	const handleCreateProject = async (event) => {
 		event.preventDefault();
-		// console.log(createdProject);
 
 		const uuid = uuidv4();
 		let fileType = "";
@@ -194,7 +191,6 @@ function ProfileInfo(props) {
 			fileType = createdProject.image.name.split(".")[1].toLowerCase();
 			
 			await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-			// console.log(response);
 		}
 
 		try {
@@ -289,7 +285,6 @@ function ProfileInfo(props) {
 			} else if (event.target.name === 'bioInput') {
 				setBio(event.target.value);
 			} else if (event.target.name === 'photoInput') {
-				// console.log(event.target.files);
 				setPhoto(event.target.files[0]);
 			} else if (event.target.name === "linkedin") {
 				setProfileLinks({
@@ -437,19 +432,17 @@ function ProfileInfo(props) {
 					<div className='profile-top'>
 						<div className='profile-title'>
 							<h3>{`${updatedFirstName} ${updatedLastName}`}</h3>
-							{ userId === specificUser._id ? 
+							{ userId === specificUser._id && 
 								<div className="dropdown">
-								<img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
-								<div className="dropdown-content" style={{width: "200px"}}>
-									<div className="dropdown-option" onClick={handleOpenPins}>
-										View Pinned Posts
+									<img className="dots" src="../../assets/img/purple_dots.png" alt="pin" style={{width: "30px", height: "auto", marginRight: "5px", cursor: "pointer"}} onClick={handleOpenDropdown}/>
+									<div className="dropdown-content" style={{width: "200px"}}>
+										<div className="dropdown-option" onClick={handleOpenPins}>
+											View Pinned Posts
+										</div>
 									</div>
 								</div>
-							</div>
-								: <React.Fragment />
 							}
 						</div>
-						
 						{!canEditProfile ? (
 						<div className='friend-options-div'>
 							{userFriendChecker ? (
@@ -640,42 +633,7 @@ function ProfileInfo(props) {
 				aria-describedby="modal-modal-description"
 			>
 				<Box sx={modalStyle}>
-					<form id="userProject" className="modal-form modal-project" onSubmit={handleCreateProject}>
-						<div className="modal-header">
-							<h3>Create Project</h3>
-						</div>
-                        <div>
-                            <label htmlFor="title" >Title</label>
-                            <input id="title" name='title' value={createdProject.title} onChange={handleProjectChange}/>
-                        </div>
-						<div>
-                            <label htmlFor="description">Description</label>
-                            <textarea id="description" name="description" value={createdProject.description} onChange={handleProjectChange} className="modal-textarea" />
-                        </div>
-						<div>
-                            <label htmlfor="addImage">Image</label>
-                            <input type="file" id="addImage" name="addImage" onChange={handleProjectChange} />
-                        </div>
-						<div>
-                            <label htmlFor="responsibilities">Responsibilities</label>
-                            <textarea id="responsibilities" name="responsibilities" value={createdProject.responsibilities} onChange={handleProjectChange} className="modal-textarea" />
-                        </div>
-                        <div>
-                            <label htmlFor="techstack">Tech Stack</label>
-                            <textarea id="techstack" name="techstack" value={createdProject.techstack} onChange={handleProjectChange} className="modal-textarea" />
-                        </div>
-                        <div>
-                            <label htmlFor="repo" >Repo Link</label>
-                            <input id="repo" name='repo' value={createdProject.repo} onChange={handleProjectChange}/>
-                        </div>
-                        <div>
-                            <label htmlFor="demo" >Live/Demo Link</label>
-                            <input id="demo" name='demo' value={createdProject.demo} onChange={handleProjectChange}/>
-                        </div>
-                        <button className="modal-button" type="submit">
-							Create
-						</button>
-					</form>
+					<CreateProjectModal handleCreateProject={handleCreateProject} createdProject={createdProject} handleProjectChange={handleProjectChange}  />
 				</Box>
 			</Modal>
 			<Modal

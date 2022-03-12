@@ -4,6 +4,7 @@ import AuthService from "../utils/auth";
 import ReactionBar from "./ReactionBar";
 import EmojiPicker from "./EmojiPicker";
 import { Modal, Box } from "@mui/material";
+import { emojiModalStyle } from "../utils/constants";
 
 export default function ThreadPost(props) {
 
@@ -20,16 +21,6 @@ export default function ThreadPost(props) {
     }
 
     const owner = AuthService.getProfile().data._id;
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        boxShadow: 24
-    };
 
     return (
         <React.Fragment>
@@ -84,12 +75,10 @@ export default function ThreadPost(props) {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+            <Box sx={emojiModalStyle}>
                 <EmojiPicker closeEmojiMart={closeEmojiMart} elementId={post._id} parentId={post.thread._id} elementType="post"/>
             </Box>
         </Modal>
         </React.Fragment>
     )
 }
-
-

@@ -91,11 +91,9 @@ function Sidebar(props) {
 						<h3>Logout</h3>
 					</div>
 				</div>
-						
 				<ThreadsPanel toggle={toggleSidebar} setActiveThread={setActiveThread}/>
 				<EventsPanel toggle={toggleSidebar} setActiveEvent={setActiveEvent}/>
 				<ChatsPanel toggle={toggleSidebar} setActiveChat={setActiveChat}/>
-
 			</div>
 		</aside>
 	);

@@ -1,32 +1,18 @@
 import React from "react";
+import Axios from "axios";
 import AuthService from "../utils/auth";
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-
 import { useMutation } from '@apollo/client';
+import { CloudinaryContext, Image } from 'cloudinary-react';
+import { UpdateProjectModal } from "./Modals/Modals";
 import { UPDATE_PORTFOLIO_PROJECT, DELETE_PORTFOLIO_PROJECT } from "../utils/mutations";
 import { USER_PROFILE } from "../utils/queries";
-import ProfileInfo from "./ProfileInfo";
-
-import Axios from "axios";
-import { CloudinaryContext, Image } from 'cloudinary-react';
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: "100%",
-    maxWidth: "500px",
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-};
+import { modalStyle } from "../utils/constants";
 
 export default function PortfolioProject(props) {
     
     const { portfolioProject, canEditProfile, specificUserId } = props;
-
     const userId = AuthService.getProfile().data._id;
 
     const [ updatePortfolioProject ] = useMutation(UPDATE_PORTFOLIO_PROJECT, {
@@ -57,33 +43,19 @@ export default function PortfolioProject(props) {
     });
 
     const handleOpenProjectDropdown = async (event) => {
-        // console.log(event.target);
         const projId = event.target.parentNode.getAttribute("data-id");
-
         const display = event.target.parentNode.getAttribute('data-displays');
-        // console.log(display);
-
         const targetDropdown = document.getElementById(projId);
 
         if (display === "show") {
-
             targetDropdown.style.display = "none";
-
             event.target.style.transform = "rotate(267.5deg)";
-
             event.target.parentNode.setAttribute('data-displays', 'hidden');
-
         } else {
-
             targetDropdown.style.display = "block";
-
             event.target.style.transform = "rotate(87.5deg)";
-
             event.target.parentNode.setAttribute('data-displays', 'show');
-
         }
-
-        
     }
 
     const handleChange = (event) => {
@@ -112,9 +84,6 @@ export default function PortfolioProject(props) {
 
     const handleUpdateProject = async (event) => {
         event.preventDefault();
-        // console.log(editedProject);
-        // console.log(portfolioProject);
-
         let fileType = "";
 
         if (portfolioProject.image !== editedProject.image && editedProject.image !== "") {
@@ -125,10 +94,7 @@ export default function PortfolioProject(props) {
 			formData.append("folder", "CactusSocial");
             
             fileType = editedProject.image.name.split(".")[1].toLowerCase();
-
-			// const response = 
             await Axios.post("https://api.cloudinary.com/v1_1/damienluzzo/image/upload", formData);
-			// console.log(response);
 		}
 
         try {
@@ -200,9 +166,7 @@ export default function PortfolioProject(props) {
                             <p>{portfolioProject.techstack}</p>
                         </div>
                     </div>
-                    
                 </div>
-                
             </div>
             <div className="portfolio-bottom">
                 <div className="portfolio-links">
@@ -229,53 +193,10 @@ export default function PortfolioProject(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
-					<form id="userProject" className="modal-form" onSubmit={handleUpdateProject}>
-						<div className="modal-header">
-							<h3>Update Project</h3>
-						</div>
-                        <div>
-                            <label htmlFor="title" >Title</label>
-                            <input id="title" name='title' value={editedProject.title} onChange={handleChange}/>
-                        </div>
-						<div>
-                            <label htmlFor="description">Description</label>
-                            <textarea id="description" name="description" value={editedProject.description} onChange={handleChange} className="modal-textarea" />
-                        </div>
-                        <div>
-                            <label htmlfor="addImage">Image</label>
-                            <input type="file" id="addImage" name="addImage" onChange={handleChange} />
-                        </div>
-						<div>
-                            <label htmlFor="responsibilities">Responsibilities</label>
-                            <textarea id="responsibilities" name="responsibilities" value={editedProject.responsibilities} onChange={handleChange} className="modal-textarea" />
-                        </div>
-                        <div>
-                            <label htmlFor="techstack">Tech Stack</label>
-                            <textarea id="techstack" name="techstack" value={editedProject.techstack} onChange={handleChange} className="modal-textarea" />
-                        </div>
-                        <div>
-                            <label htmlFor="repo" >Repo Link</label>
-                            <input id="repo" name='repo' value={editedProject.repo} onChange={handleChange}/>
-                        </div>
-                        <div>
-                            <label htmlFor="repo" >Live/Demo Link</label>
-                            <input id="repo" name='repo' value={editedProject.repo} onChange={handleChange}/>
-                        </div>
-                        <div className="modal-button-div">
-                            <button className="modal-button" type="submit">
-                                Update
-                            </button>
-                            <button className="modal-button delete-button" onClick={handleDeleteProject}>
-                                Delete
-                            </button>
-                        </div>
-                        
-
-					</form>
+				<Box sx={modalStyle}>
+                    <UpdateProjectModal handleChange={handleChange} handleUpdateProject={handleUpdateProject} editedProject={editedProject} handleDeleteProject={handleDeleteProject} />
 				</Box>
 			</Modal>
-            
         </div>
     )
 } 

@@ -1,32 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PostComment from './PostComment';
-
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from '../utils/auth';
-
 import { POST_DETAILS, ALL_POST_COMMENTS } from '../utils/queries';
-//* THREAD_DETAILS requires threadId and gives us access to
-
 import { CREATE_POST_COMMENT, UPDATE_POST_COMMENT, REMOVE_POST_COMMENT } from '../utils/mutations';
-
-// import { REMOVE_POST, UPDATE_POST, UNPIN_POST, ADD_POST_REACTION, REMOVE_POST_COMMENT, ADD_POST_COMMENT_REACTION } from '../utils/mutations';
-
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-// import Avatar from '@mui/material/Avatar';
-// import Chip from '@mui/material/Chip';
+import { modalStyle } from '../utils/constants';
 
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	boxShadow: 24
-};
+const scroll = () => {
+	var element = document.getElementsByClassName("chats-container")[0];
+	element.scrollTop = element.scrollHeight;
+}
 
 function SubthreadDisplay(props) {
 	
@@ -111,7 +98,6 @@ function SubthreadDisplay(props) {
                     author: AuthService.getProfile().data._id
 				}
 			});
-			// console.log(commentData.data.createPostComment);
 			socket.emit("send_comment", {room: postId, user: AuthService.getProfile().data.username, comment: commentData.data.createPostComment});
 			setNewCommentText('');
 			setMessageTimeout(true);
@@ -184,19 +170,7 @@ function SubthreadDisplay(props) {
 		}
     };
 
-	const scroll = () => {
-		var element = document.getElementsByClassName("chats-container")[0];
-		element.scrollTop = element.scrollHeight;
-	}
-
-	if (loading) {
-
-		return (
-			<div className='loading-icon-box'>
-				<img className='loading-icon' src="../../assets/img/cactus_loading.svg" alt="loading icon"/>
-			</div>
-		)
-	} 
+	if (loading) return <div>Loading...</div>;
 
 	return (
 		<main onClick={handleCloseDropdown} className="thread-wrapper">
@@ -245,7 +219,7 @@ function SubthreadDisplay(props) {
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
-				<Box sx={style}>
+				<Box sx={modalStyle}>
 					<form className="modal-form" onSubmit={handleCommentUpdate}>
 						<div className="modal-header">
 							<h4>Edit Comment</h4>

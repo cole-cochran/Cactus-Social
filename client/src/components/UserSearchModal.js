@@ -1,10 +1,10 @@
 import React from 'react';
+import UserChip from './UserChip';
 
 
 function UserSearchModal(props) {
     const [searchFriend, setSearchFriend] = React.useState('');
     const [foundFriend, setFoundFriend] = React.useState({});
-
     const {allUsers} = props;
 
     const handleChange = (e) => {
@@ -14,7 +14,6 @@ function UserSearchModal(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         let friend = allUsers.filter((user) => user.username === searchFriend);
-        // console.log(friend);
         setFoundFriend(friend[0]);
     }
 
@@ -26,10 +25,7 @@ function UserSearchModal(props) {
                 {foundFriend._id ? (
                 <li className='user-search-result'>
                     <a href = {`/profile/${foundFriend._id}`}>
-                        <button className="friend-chips">
-                            <img className="friend-pic" src="../../assets/img/github.svg" alt="friend avatar"/>
-                            <p>{foundFriend.username}</p>
-                        </button>
+                        <UserChip user={foundFriend} />
                     </a>
                 </li>
             ) : (<React.Fragment />)}
